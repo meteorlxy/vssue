@@ -1,0 +1,22 @@
+@import './variables'
+
+.vssue
+  width 100%
+  padding 10px
+  color $textColor
+  font-size 16px
+  font-family $fontFamily
+  &, *
+    box-sizing border-box
+  :not(.vssue-comment-content)
+    a
+      font-weight 500
+      color $themeColor
+      text-decoration none
+    hr
+      display block
+      height 1px
+      border 0
+      border-top 1px solid $borderColor
+      margin 1.2rem 0
+      padding 0

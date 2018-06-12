@@ -1,0 +1,81 @@
+{
+  "name": "vssue",
+  "version": "0.0.1",
+  "description": "A vue-powered issue-based comment plugin",
+  "main": "dist/vssue.component.js",
+  "browser": "dist/vssue.component.js",
+  "module": "dist/vssue.component.js",
+  "keywords": [
+    "comment",
+    "issue",
+    "vue"
+  ],
+  "author": "Xinyu Liu <meteor.lxy@foxmail.com> (https://www.meteorlxy.cn)",
+  "license": "MIT",
+  "scripts": {
+    "dev": "webpack-dev-server --inline --hide-modules --config scripts/webpack/devConfig.js",
+    "build": "node scripts/build.js",
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "lint": "eslint --fix --ext .js,.vue src test",
+    "test": "jest --config test/config.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,vue}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "date-fns": "^1.29.0",
+    "github-markdown-css": "^2.10.0",
+    "query-string": "^6.1.0",
+    "vue": "^2.5.16"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0-beta.51",
+    "@babel/plugin-transform-runtime": "^7.0.0-beta.51",
+    "@babel/preset-env": "^7.0.0-beta.51",
+    "@babel/preset-stage-2": "^7.0.0-beta.51",
+    "@babel/runtime": "^7.0.0-beta.51",
+    "autoprefixer": "^8.6.2",
+    "babel-eslint": "^8.2.3",
+    "babel-loader": "^8.0.0-beta.3",
+    "css-loader": "^0.28.11",
+    "eslint": "^4.19.1",
+    "eslint-config-standard": "^11.0.0",
+    "eslint-loader": "^2.0.0",
+    "eslint-plugin-import": "^2.12.0",
+    "eslint-plugin-jest": "^21.17.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.1.0",
+    "eslint-plugin-vue": "^4.5.0",
+    "friendly-errors-webpack-plugin": "^1.7.0",
+    "html-webpack-plugin": "^3.2.0",
+    "husky": "^1.0.0-rc.8",
+    "jest": "^23.1.0",
+    "lint-staged": "^7.2.0",
+    "mini-css-extract-plugin": "^0.4.0",
+    "optimize-css-assets-webpack-plugin": "^4.0.2",
+    "portfinder": "^1.0.13",
+    "postcss-loader": "^2.1.5",
+    "rimraf": "^2.6.2",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vue-loader": "^15.2.4",
+    "vue-template-compiler": "^2.5.16",
+    "vuepress": "^0.10.1",
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.3",
+    "webpack-dev-server": "^3.1.4",
+    "webpack-merge": "^4.1.2",
+    "webpackbar": "^2.6.1"
+  }
+}
