@@ -13,4 +13,6 @@ features:
 footer: MIT Licensed | Vssue
 ---
 
-<VssueDemo/>
+<ClientOnly>
+  <VssueDemo/>
+</ClientOnly>
