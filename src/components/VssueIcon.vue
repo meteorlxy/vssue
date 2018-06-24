@@ -1,6 +1,8 @@
 <template>
   <svg
-    class="icon"
+    class="vssue-icon"
+    :class="iconClass"
+    :style="iconStyle"
     aria-hidden="true">
     <use :xlink:href="xlinkHref"/>
   </svg>
@@ -14,12 +16,27 @@ export default {
     name: {
       type: String,
       required: true
+    },
+    size: {
+      type: String,
+      required: false,
+      default: '1em'
     }
   },
 
   computed: {
+    iconClass () {
+      return `icon-${this.name}`
+    },
+
     xlinkHref () {
-      return `#icon-${this.name}`
+      return `#${this.iconClass}`
+    },
+
+    iconStyle () {
+      return {
+        'font-size': this.size
+      }
     }
   },
 
@@ -32,10 +49,18 @@ export default {
 <style lang="stylus" scoped>
 @import '../styles/variables'
 
-.icon
+.vssue-icon
   width 1em
   height 1em
   vertical-align -0.15em
   fill $themeColor
   overflow hidden
+.icon-loading
+  animation rotation 1s linear infinite
+
+@keyframes rotation
+  from
+    transform rotate(0deg)
+  to
+    transform rotate(360deg)
 </style>

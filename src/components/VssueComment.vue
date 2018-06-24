@@ -144,5 +144,7 @@ export default {
       text-align right
   .vssue-comment-reaction
     cursor pointer
+    display inline-block
+    min-width 30px
     color $themeColor
 </style>

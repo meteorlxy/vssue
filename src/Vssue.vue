@@ -2,82 +2,79 @@
   <div
     class="vssue"
     :class="themeClass">
-    <template v-if="isLoginRequired">
-      <VssueButton
-        class="vssue-button-login"
-        :type="isLogined ? 'default' : 'primary'"
-        @click.native="isLogined ? handleLogout() : handleLogin()"
-      >
-        {{ isLogined ? 'Logout' : `Login with ${config.platform}` }}
-      </VssueButton>
-    </template>
+    <TransitionFade>
+      <VssueStatusInitializing v-if="isInitializing"/>
 
-    <template v-else-if="isFailed">
-      <p>failed...</p>
-    </template>
+      <VssueStatusRequireLogin
+        v-else-if="isLoginRequired"
+        @login="handleLogin"
+      />
 
-    <template v-else-if="!isInitialized">
-      <p>initializing...</p>
-    </template>
+      <VssueStatusFailed v-else-if="isFailed"/>
 
-    <template v-else>
-      <div class="vssue-header">
-        <span>{{ vssue.commentsCount }} comments</span>
-      </div>
-
-      <div class="vssue-body">
-        <div class="vssue-comments">
-          <VssueComment
-            v-for="comment in comments"
-            :key="comment.id"
-            :comment="comment"
-            :create-reaction="createCommentReaction"
-          />
+      <div v-else>
+        <div class="vssue-header">
+          <span>{{ vssue.commentsCount }} comments</span>
         </div>
-      </div>
 
-      <div class="vssue-footer">
-        <div class="vssue-new-comment">
-          <div class="vssue-new-comment-body">
-            <VssueNewCommentInput
-              :disabled="!isLogined"
-              v-model="newComment"/>
+        <div class="vssue-body">
+          <div class="vssue-comments">
+            <VssueComment
+              v-for="comment in comments"
+              :key="comment.id"
+              :comment="comment"
+              :create-reaction="createCommentReaction"
+            />
+          </div>
+        </div>
 
-            <div class="vssue-new-comment-footer">
-              <VssuePoweredBy/>
+        <div class="vssue-footer">
+          <div class="vssue-new-comment">
+            <div class="vssue-new-comment-body">
+              <VssueNewCommentInput
+                :disabled="!isLogined"
+                v-model="newComment"/>
 
-              <div class="vssue-new-comment-operations">
-                <VssueButton
-                  class="vssue-button-login"
-                  :type="isLogined ? 'default' : 'primary'"
-                  @click.native="isLogined ? handleLogout() : handleLogin()"
-                >
-                  {{ isLogined ? 'Logout' : `Login with ${config.platform}` }}
-                </VssueButton>
+              <div class="vssue-new-comment-footer">
+                <VssuePoweredBy/>
 
-                <VssueButton
-                  v-if="isLogined"
-                  class="vssue-button-submit-comment"
-                  type="primary"
-                  :disabled="newComment === ''"
-                  @click.native="createComment({ content: newComment })"
-                >
-                  Submit comment
-                </VssueButton>
+                <div class="vssue-new-comment-operations">
+                  <VssueButton
+                    class="vssue-button-login"
+                    :type="isLogined ? 'default' : 'primary'"
+                    @click.native="isLogined ? handleLogout() : handleLogin()"
+                  >
+                    {{ isLogined ? 'Logout' : `Login with ${config.platform}` }}
+                  </VssueButton>
+
+                  <VssueButton
+                    v-if="isLogined"
+                    class="vssue-button-submit-comment"
+                    type="primary"
+                    :disabled="newComment === ''"
+                    @click.native="createComment({ content: newComment })"
+                  >
+                    Submit comment
+                  </VssueButton>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </template>
+    </TransitionFade>
   </div>
 </template>
 
 <script>
+import TransitionFade from './components/transitions/TransitionFade'
 import VssueButton from './components/VssueButton'
 import VssueComment from './components/VssueComment'
 import VssueNewCommentInput from './components/VssueNewCommentInput'
 import VssuePoweredBy from './components/VssuePoweredBy'
+import VssueStatusFailed from './components/VssueStatusFailed'
+import VssueStatusInitializing from './components/VssueStatusInitializing'
+import VssueStatusRequireLogin from './components/VssueStatusRequireLogin'
 import authorizationMixin from './mixins/authorizationMixin'
 import { Github, Gitlab, Bitbucket } from './api'
 import { getCleanURL } from './utils'
@@ -86,10 +83,14 @@ export default {
   name: 'Vssue',
 
   components: {
+    TransitionFade,
     VssueButton,
     VssueComment,
     VssueNewCommentInput,
-    VssuePoweredBy
+    VssuePoweredBy,
+    VssueStatusFailed,
+    VssueStatusInitializing,
+    VssueStatusRequireLogin
   },
 
   mixins: [
@@ -125,10 +126,10 @@ export default {
 
       newComment: '',
 
-      isInitialized: false,
+      isInitializing: false,
       isLoading: false,
-      isFailed: false,
-      isLoginRequired: false
+      isLoginRequired: false,
+      isFailed: false
     }
   },
 
@@ -175,6 +176,7 @@ export default {
 
   async created () {
     try {
+      this.isInitializing = true
       // Get user
       this.accessToken = this.getAccessToken()
       await this.handleAuthorize()
@@ -182,16 +184,15 @@ export default {
       await this.getVssue()
       // Get comments of vssue
       await this.getComments()
-      // Initialized
-      this.isInitialized = true
     } catch (e) {
-      console.error(e)
       if (e.response) {
-        if (e.response.status === 401) {
+        if ([401, 403].includes(e.response.status)) {
           this.isLoginRequired = true
         }
       }
       this.isFailed = true
+    } finally {
+      this.isInitializing = false
     }
   },
 
@@ -227,12 +228,20 @@ export default {
     },
 
     async createComment ({ content }) {
-      await this.api.createIssueComment({
-        issueId: this.vssue.id,
-        content,
-        accessToken: this.accessToken
-      })
-      await this.getComments()
+      try {
+        this.isLoading = true
+        await this.api.createIssueComment({
+          issueId: this.vssue.id,
+          content,
+          accessToken: this.accessToken
+        })
+        await this.getComments()
+      } catch (e) {
+
+      } finally {
+        this.newComment = ''
+        this.isLoading = false
+      }
     },
 
     async createCommentReaction ({ commentId, reaction }) {
@@ -269,7 +278,13 @@ export default {
 
 .vssue-new-comment
   .vssue-new-comment-body
+    position relative
     margin-left 70px
+    .vssue-new-comment-loading
+      position absolute
+      top 50%
+      left 50%
+      transform translate(-50%, -50%)
     .vssue-new-comment-footer
       padding 10px 0
       @extend .clearfix
