@@ -100,22 +100,25 @@ export default class GithubV3 {
   }
 
   async getIssues ({ accessToken }) {
-    const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues`, {
+    const options = {
       params: {
         labels: this.labels,
         // to avoid caching
         timestamp: Date.now()
-      },
-      headers: {
+      }
+    }
+    if (accessToken) {
+      options.headers = {
         'Authorization': `token ${accessToken}`
       }
-    })
+    }
+    const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues`, options)
     const issues = response.data
     return issues.map(normalizeIssue)
   }
 
   async getComments ({ issueId, accessToken }) {
-    const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
+    const options = {
       params: {
         // to avoid caching
         timestamp: Date.now()
@@ -128,7 +131,11 @@ export default class GithubV3 {
         ],
         'Authorization': `token ${accessToken}`
       }
-    })
+    }
+    if (accessToken) {
+      options.headers['Authorization'] = `token ${accessToken}`
+    }
+    const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
     const comments = response.data
     return comments.map(normalizeComment)
   }
