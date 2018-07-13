@@ -8,6 +8,8 @@ Inspired by [gitment](https://github.com/imsun/gitment) and [gitalk](https://git
 
 You can take Vssue as a Vue version of them, which also supports other platforms besides GitHub.
 
+[**Live Demo and Docs here**](https://vssue.js.org)
+
 ## Support Platforms
 
 - GitHub
