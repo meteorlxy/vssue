@@ -1,6 +1,6 @@
 {
   "name": "vssue",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A vue-powered issue-based comment plugin",
   "main": "dist/vssue.component.js",
   "browser": "dist/vssue.component.js",
