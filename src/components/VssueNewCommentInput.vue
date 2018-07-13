@@ -1,9 +1,11 @@
 <template>
   <textarea
+    ref="input"
     class="vssue-new-comment-input"
     :rows="rows"
     :disabled="disabled"
     :placeholder="placeholder"
+    :spellcheck="false"
     v-model="content"/>
 </template>
 
@@ -46,6 +48,12 @@ export default {
 
     placeholder () {
       return this.disabled ? 'Login to leave a comment' : 'Leave a comment. Styling with Markdown is supported'
+    }
+  },
+
+  methods: {
+    focus () {
+      this.$refs.input.focus()
     }
   }
 }

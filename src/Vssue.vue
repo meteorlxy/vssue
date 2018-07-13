@@ -24,6 +24,7 @@
               :key="comment.id"
               :comment="comment"
               :create-reaction="createCommentReaction"
+              @reply="replyToComment"
             />
           </div>
         </div>
@@ -32,6 +33,7 @@
           <div class="vssue-new-comment">
             <div class="vssue-new-comment-body">
               <VssueNewCommentInput
+                ref="newCommentInput"
                 :disabled="!isLogined"
                 v-model="newComment"/>
 
@@ -252,6 +254,11 @@ export default {
         accessToken: this.accessToken
       })
       await this.getComments()
+    },
+
+    replyToComment (content) {
+      this.newComment = this.newComment.concat(content)
+      this.$refs.newCommentInput.focus()
     }
   }
 }

@@ -35,7 +35,9 @@
         </div>
 
         <div class="vssue-comment-footer">
-          <template v-if="showReactions">
+          <span
+            v-if="showReactions"
+            class="vssue-comment-reactions">
             <span
               class="vssue-comment-reaction"
               @click="createReaction({ commentId: comment.id, reaction: 'heart' })">
@@ -59,7 +61,13 @@
 
               <span>{{ comment.reactions['-1'] }}</span>
             </span>
-          </template>
+          </span>
+
+          <span
+            class="vssue-comment-reply"
+            @click="reply">
+            Reply
+          </span>
         </div>
       </slot>
     </div>
@@ -95,6 +103,10 @@ export default {
       return this.comment.content
     },
 
+    contentRaw () {
+      return this.comment.contentRaw
+    },
+
     author () {
       return this.comment.author
     },
@@ -109,6 +121,14 @@ export default {
 
     showReactions () {
       return Boolean(this.comment.reactions)
+    }
+  },
+
+  methods: {
+    reply () {
+      const quotedComment = this.contentRaw.replace(/\n/g, '\n> ')
+      const replyContent = `@${this.author.username}\n> ${quotedComment}\n`
+      this.$emit('reply', replyContent)
     }
   }
 }
@@ -141,10 +161,15 @@ export default {
     .vssue-comment-footer
       padding 10px 15px
       border-top 1px solid $borderColor
-      text-align right
-  .vssue-comment-reaction
-    cursor pointer
-    display inline-block
-    min-width 30px
-    color $themeColor
+      .vssue-comment-reactions
+        .vssue-comment-reaction
+          cursor pointer
+          display inline-block
+          min-width 30px
+          color $themeColor
+      .vssue-comment-reply
+        cursor pointer
+        display inline-block
+        float right
+        color $themeColor
 </style>
