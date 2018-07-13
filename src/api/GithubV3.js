@@ -2,6 +2,8 @@ import axios from 'axios'
 import { getCleanURL, buildURL, parseQuery } from '../utils'
 
 /**
+ * Github API v3
+ *
  * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/
  * @see https://developer.github.com/v3/issues/
  * @see https://developer.github.com/v3/issues/comments/
@@ -68,7 +70,7 @@ export default class GithubV3 {
   async getAccessToken ({ code }) {
     /**
      * access_token api does not support cors
-     * see [https://github.com/isaacs/github/issues/330]
+     * @see https://github.com/isaacs/github/issues/330
      */
     const response = await this.$http.post(`https://cors-anywhere.herokuapp.com/${'https://github.com/login/oauth/access_token'}`, {
       client_id: this.clientId,
@@ -76,7 +78,7 @@ export default class GithubV3 {
       code
       /**
        * useless but mentioned in docs
-       * see [https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github]
+       * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github
        */
       // redirect_uri: window.location.href,
       // state: this.state
@@ -97,19 +99,22 @@ export default class GithubV3 {
     return normalizeUser(user)
   }
 
-  async getIssues () {
+  async getIssues ({ accessToken }) {
     const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues`, {
       params: {
         labels: this.labels,
         // to avoid caching
         timestamp: Date.now()
+      },
+      headers: {
+        'Authorization': `token ${accessToken}`
       }
     })
     const issues = response.data
     return issues.map(normalizeIssue)
   }
 
-  async getComments ({ issueId }) {
+  async getComments ({ issueId, accessToken }) {
     const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
       params: {
         // to avoid caching
@@ -120,7 +125,8 @@ export default class GithubV3 {
           'application/vnd.github.v3.raw+json',
           'application/vnd.github.v3.html+json',
           'application/vnd.github.squirrel-girl-preview'
-        ]
+        ],
+        'Authorization': `token ${accessToken}`
       }
     })
     const comments = response.data
