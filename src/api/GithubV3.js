@@ -128,8 +128,7 @@ export default class GithubV3 {
           'application/vnd.github.v3.raw+json',
           'application/vnd.github.v3.html+json',
           'application/vnd.github.squirrel-girl-preview'
-        ],
-        'Authorization': `token ${accessToken}`
+        ]
       }
     }
     if (accessToken) {
