@@ -4,7 +4,7 @@
 
     <VssueButton
       type="primary"
-      @click="$emit('login')"
+      @click.native="$emit('login')"
     >
       {{ `Login to view comments` }}
     </VssueButton>
