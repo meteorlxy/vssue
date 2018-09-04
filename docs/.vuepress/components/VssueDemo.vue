@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Vssue from '../../../src/Vssue'
+import Vssue from 'vssue'
 
 export default {
   name: 'VssueDemo',

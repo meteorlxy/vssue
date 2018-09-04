@@ -4,6 +4,7 @@ const webpackMerge = require('webpack-merge')
 const webpackBaseConfig = require('./baseConfig')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+const utils = require('../utils')
 
 const webpackDevConfig = webpackMerge(webpackBaseConfig, {
   mode: 'development',
@@ -25,7 +26,7 @@ const webpackDevConfig = webpackMerge(webpackBaseConfig, {
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: 'scripts/webpack/devTemplate.html',
+      template: utils.path.root('scripts/dev/index.html'),
       inject: 'head'
     })
   ]

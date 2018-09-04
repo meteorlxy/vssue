@@ -192,6 +192,7 @@ export default {
           this.isLoginRequired = true
         }
       }
+      console.error(e)
       this.isFailed = true
     } finally {
       this.isInitializing = false
@@ -223,10 +224,14 @@ export default {
     },
 
     async getComments () {
-      this.comments = await this.api.getComments({
-        issueId: this.vssue.id,
-        accessToken: this.accessToken
-      })
+      try {
+        this.comments = await this.api.getComments({
+          issueId: this.vssue.id,
+          accessToken: this.accessToken
+        })
+      } catch (e) {
+        throw Error('Failed to get comments')
+      }
     },
 
     async createComment ({ content }) {
@@ -238,10 +243,10 @@ export default {
           accessToken: this.accessToken
         })
         await this.getComments()
-      } catch (e) {
-
-      } finally {
         this.newComment = ''
+      } catch (e) {
+        throw Error('Failed to create comment')
+      } finally {
         this.isLoading = false
       }
     },

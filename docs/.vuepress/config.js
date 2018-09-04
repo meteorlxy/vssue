@@ -1,4 +1,5 @@
 const pkg = require('../../package.json')
+const path = require('path')
 
 module.exports = {
   dest: 'docs-dist',
@@ -50,6 +51,7 @@ module.exports = {
     }
   },
   chainWebpack: (config) => {
+    config.resolve.alias.set('vssue', path.resolve(__dirname, '../../src/entry.component.js'))
     config
       .plugin('version')
       .use(require('webpack/lib/DefinePlugin'), [{

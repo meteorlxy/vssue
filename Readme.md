@@ -29,8 +29,7 @@ You can take Vssue as a Vue version of them, which also supports other platforms
 
 ```shell
 yarn
-cp scripts/webpack/devTemplate.sample.html scripts/webpack/devTemplate.html
-# Modify the options in devTemplate.html
+# Modify the options in scripts/dev/index.html
 yarn dev
 ```
 
