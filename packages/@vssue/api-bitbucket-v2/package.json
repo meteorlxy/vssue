@@ -1,0 +1,36 @@
+{
+  "name": "@vssue/api-bitbucket-v2",
+  "version": "0.1.0-alpha",
+  "description": "Vssue api for bitbucket v2",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "types": "types/index.d.ts",
+  "keywords": [
+    "comment",
+    "issue",
+    "vue"
+  ],
+  "author": "meteorlxy <meteor.lxy@foxmail.com>",
+  "homepage": "https://vssue.js.org",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meteorlxy/vssue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/meteorlxy/vssue/issues"
+  },
+  "scripts": {
+    "build": "rimraf ./lib && tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@vssue/utils": "^0.1.0",
+    "axios": "^0.18.0"
+  },
+  "peerDependencies": {
+    "vssue": "^0.1.0"
+  },
+  "gitHead": "6afb5e8988ec9bdb7b71f1e37791e2c7d618c126"
+}

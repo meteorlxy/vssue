@@ -1,0 +1,14 @@
+# @see https://git-scm.com/docs/gitattributes
+# @see https://help.github.com/articles/dealing-with-line-endings
+
+* text=auto
+
+*.txt text eol=crlf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.tff binary
+*.woff binary
+*.woff2 binary

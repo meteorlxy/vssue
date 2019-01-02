@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es2015",
+    "lib": ["es2017", "es2018", "dom", "dom.iterable"],
+    "newLine": "lf",
+    "declaration": true,
+    "sourceMap": true,
+    "noEmitOnError": true,
+    "importHelpers": true,
+    "downlevelIteration": true,
+    "strict": true,
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "exclude": [
+    "**/*.spec.ts",
+    "node_modules"
+  ]
+}
