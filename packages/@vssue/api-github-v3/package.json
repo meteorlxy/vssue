@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-github-v3",
-  "version": "0.1.0-alpha",
+  "version": "0.1.0",
   "description": "Vssue api for github v3",
   "license": "MIT",
   "main": "lib/index.js",
