@@ -9,7 +9,7 @@ module.exports = {
       lang: 'zh-CN',
       title: 'Vssue',
       description: 'Vue 驱动的、基于 Issue 的评论插件',
-    }
+    },
   },
 
   head: [

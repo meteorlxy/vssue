@@ -11,7 +11,7 @@
     "build": "lerna run build --stream --ignore docs",
     "dev-docs": "yarn workspace docs dev",
     "build-docs": "yarn workspace docs build",
-    "lint": "lerna run lint --stream && eslint --ext .js,.ts,.vue packages/"
+    "lint": "eslint --ext .js,.ts,.vue packages/"
   },
   "husky": {
     "hooks": {
@@ -28,6 +28,7 @@
     "@vue/eslint-config-standard": "^4.0.0",
     "@vue/eslint-config-typescript": "^3.2.0",
     "eslint": "^5.11.0",
+    "eslint-plugin-vue": "^5.1.0",
     "husky": "^1.3.0",
     "lerna": "^3.7.1",
     "lint-staged": "^8.1.0",
