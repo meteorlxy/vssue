@@ -31,10 +31,17 @@ module.exports = {
         lastUpdated: 'Last Updated',
         nav: [
           {
-            text: 'Guide',
+            text: 'Vssue Guide',
             link: '/guide/',
           },
+          {
+            text: 'Options Reference',
+            link: '/options/',
+          },
         ],
+        sidebar: {
+          '/guide/': sidebarGuide('Vssue Guide', 'Set up OAuth App'),
+        },
       },
       '/zh/': {
         label: '简体中文',
@@ -43,10 +50,17 @@ module.exports = {
         lastUpdated: '上次更新',
         nav: [
           {
-            text: '指南',
+            text: 'Vssue 指南',
             link: '/zh/guide/',
           },
+          {
+            text: '配置参考',
+            link: '/zh/options/',
+          },
         ],
+        sidebar: {
+          '/zh/guide/': sidebarGuide('Vssue 指南', '创建 OAuth App'),
+        },
       },
     },
   },
@@ -65,4 +79,28 @@ module.exports = {
       clientSecret: '5c95e2f890b6a2b80dbda17656e9b1db9e87a07b',
     },
   },
+}
+
+function sidebarGuide (titleGuide, titleOAuthApp) {
+  return [
+    {
+      title: titleGuide,
+      collapsable: false,
+      children: [
+        '',
+        'getting-started',
+        'integration-with-vuepress',
+      ],
+    },
+    {
+      title: titleOAuthApp,
+      collapsable: false,
+      children: [
+        'supported-platforms',
+        'github',
+        'gitlab',
+        'bitbucket',
+      ],
+    },
+  ]
 }
