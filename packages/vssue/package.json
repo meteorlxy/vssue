@@ -73,6 +73,5 @@
     "tslib": "^1.9.3",
     "vue-template-compiler": "^2.5.21",
     "webpack": "^4.28.0"
-  },
-  "gitHead": "6afb5e8988ec9bdb7b71f1e37791e2c7d618c126"
+  }
 }
