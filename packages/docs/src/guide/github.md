@@ -8,8 +8,6 @@ Go to [Settings - Developer Settings - OAuth Apps](https://github.com/settings/d
 ![Set up OAuth App - Github 02](/assets/img/oauth-app-github-02.png)
 ![Set up OAuth App - Github 03](/assets/img/oauth-app-github-03.png)
 
-## Set the Auth URL
-
 Set the `Homepage URL` and `Authorization callback URL` to your website URL.
 
 Here we take `localhost:8080` for development example.
@@ -44,7 +42,7 @@ Redirect to Github Authorization page. Click `Authorize ${your account}` to logi
 
 ![Set up OAuth App - Github 08](/assets/img/oauth-app-github-08.png)
 
-7. Leave a comment on this page ~
+Leave a comment on this page ~
 
 ![Set up OAuth App - Github 09](/assets/img/oauth-app-github-09.png)
 
