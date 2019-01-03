@@ -1,21 +1,19 @@
 module.exports = {
-  dest: 'dist',
-
   locales: {
     '/': {
       lang: 'en-US',
       title: 'Vssue',
-      description: 'A Vue-powered Issue-based Comment Plugin'
+      description: 'A Vue-powered Issue-based Comment Plugin',
     },
     '/zh/': {
       lang: 'zh-CN',
       title: 'Vssue',
-      description: 'Vue 驱动的、基于 Issue 的评论插件'
+      description: 'Vue 驱动的、基于 Issue 的评论插件',
     }
   },
 
   head: [
-    ['link', { rel: 'icon', href: `/logo.png` }]
+    ['link', { rel: 'icon', href: `/logo.png` }],
   ],
 
   themeConfig: {
@@ -35,8 +33,8 @@ module.exports = {
           {
             text: 'Guide',
             link: '/guide/',
-          }
-        ]
+          },
+        ],
       },
       '/zh/': {
         label: '简体中文',
@@ -47,17 +45,17 @@ module.exports = {
           {
             text: '指南',
             link: '/zh/guide/',
-          }
-        ]
-      }
-    }
+          },
+        ],
+      },
+    },
   },
 
   plugins: {
     '@vuepress/plugin-back-to-top': true,
     '@vuepress/plugin-pwa': {
       serviceWorker: true,
-      updatePopup: true
+      updatePopup: true,
     },
     '@vssue/vuepress-plugin-vssue': {
       platform: 'github',

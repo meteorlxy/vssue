@@ -6,7 +6,11 @@
     "packages/docs"
   ],
   "scripts": {
-    "build": "lerna run build --stream",
+    "dev": "yarn workspace vssue dev",
+    "staging": "yarn workspace vssue staging",
+    "build": "lerna run build --stream --ignore docs",
+    "dev-docs": "yarn workspace docs dev",
+    "build-docs": "yarn workspace docs build",
     "lint": "lerna run lint --stream && eslint --ext .js,.ts,.vue packages/"
   },
   "husky": {

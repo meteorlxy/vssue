@@ -9,7 +9,7 @@ install:
   - yarn
 
 script:
-  - yarn workspace docs build
+  - yarn build-docs
 
 after_success:
   - cd ./packages/docs/dist

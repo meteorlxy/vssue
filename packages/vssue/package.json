@@ -26,10 +26,9 @@
     "url": "https://github.com/meteorlxy/vssue/issues"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production gulp",
-    "rollup": "cross-env NODE_ENV=production rollup --config ./rollup.config.js",
     "dev": "cross-env NODE_ENV=development vue-cli-service serve ./dev/main.ts --mode development",
     "staging": "cross-env NODE_ENV=production vue-cli-service serve ./dev/main.ts --mode staging",
+    "build": "cross-env NODE_ENV=production gulp",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
