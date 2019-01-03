@@ -5,8 +5,7 @@ import {
 } from 'qs'
 
 export const buildURL = (cleanURL: string, params: Object): string => {
-  let query = stringify(params)
-  query = query === '' ? '' : `?${query}`
+  let query = stringify(params, { addQueryPrefix: true })
   return `${cleanURL}${query}`
 }
 
@@ -21,7 +20,7 @@ export const getCleanURL = (fullURL: string): string => {
   return cleanURL
 }
 
-export const parseQuery = (URL: string): any => parse(URL)
+export const parseQuery = (URL: string): any => parse(URL, { ignoreQueryPrefix: true })
 
 export const buildQuery = (params: Object): string => stringify(params)
 
