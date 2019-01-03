@@ -91,7 +91,7 @@ export default class GithubV3 implements VssueAPI {
       const code = query.code
       delete query.code
       delete query.state
-      const replaceURL = buildURL(getCleanURL(), query) + window.location.hash
+      const replaceURL = buildURL(getCleanURL(window.location.href), query) + window.location.hash
       window.history.replaceState(null, '', replaceURL)
       const accessToken = await this.getAccessToken({ code })
       return accessToken

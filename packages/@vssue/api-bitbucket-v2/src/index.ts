@@ -75,7 +75,7 @@ export default class BitbucketV2 implements VssueAPI {
     if (query.code) {
       const code = query.code
       delete query.code
-      const replaceURL = buildURL(getCleanURL(), query) + window.location.hash
+      const replaceURL = buildURL(getCleanURL(window.location.href), query) + window.location.hash
       window.history.replaceState(null, '', replaceURL)
       const accessToken = await this.getAccessToken({ code })
       return accessToken
