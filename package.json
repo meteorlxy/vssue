@@ -11,7 +11,9 @@
     "build": "lerna run build --stream --ignore docs",
     "dev-docs": "yarn workspace docs dev",
     "build-docs": "yarn workspace docs build",
-    "lint": "eslint --ext .js,.ts,.vue packages/"
+    "lint": "eslint --ext .js,.ts,.vue packages/",
+    "postinstall": "lerna run build --stream --ignore docs --ignore vssue",
+    "prepublishOnly": "lerna run build --stream --ignore docs --ignore vssue"
   },
   "husky": {
     "hooks": {
