@@ -1,4 +1,4 @@
-import { formatDateTime, getCleanURL } from '@vssue/utils';
+import { formatDateTime, getCleanURL, compareDateDesc } from '@vssue/utils';
 
 var _isObject = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
@@ -606,6 +606,32 @@ _fixReWks('replace', 2, function (defined, REPLACE, $replace, maybeCallNative) {
       }
       return capture === undefined ? '' : capture;
     });
+  }
+});
+
+var _strictMethod = function (method, arg) {
+  return !!method && _fails(function () {
+    // eslint-disable-next-line no-useless-call
+    arg ? method.call(null, function () { /* empty */ }, 1) : method.call(null);
+  });
+};
+
+var $sort = [].sort;
+var test = [1, 2, 3];
+
+_export(_export.P + _export.F * (_fails(function () {
+  // IE8-
+  test.sort(undefined);
+}) || !_fails(function () {
+  // V8 bug
+  test.sort(null);
+  // Old WebKit
+}) || !_strictMethod($sort)), 'Array', {
+  // 22.1.3.25 Array.prototype.sort(comparefn)
+  sort: function sort(comparefn) {
+    return comparefn === undefined
+      ? $sort.call(_toObject(this))
+      : $sort.call(_toObject(this), _aFunction(comparefn));
   }
 });
 
@@ -2301,80 +2327,141 @@ var _objectAssign = !$assign || _fails(function () {
 
 _export(_export.S + _export.F, 'Object', { assign: _objectAssign });
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 var script = {
-  name: 'Iconfont'
+  name: 'TransitionFade',
+  props: {
+    group: {
+      type: Boolean,
+      required: false,
+      default: false
+    }
+  },
+  render: function render(h) {
+    return h(this.group ? 'TransitionGroup' : 'Transition', {
+      props: {
+        name: 'fade',
+        mode: 'out-in',
+        appear: true
+      }
+    }, this.$slots.default);
+  }
 };
 
 /* script */
 var __vue_script__ = script;
+/* template */
+
+/* style */
+
+var __vue_inject_styles__ = undefined;
+/* scoped */
+
+var __vue_scope_id__ = undefined;
+/* module identifier */
+
+var __vue_module_identifier__ = undefined;
+/* functional template */
+
+var __vue_is_functional_template__ = undefined;
+/* component normalizer */
+
+function __vue_normalize__(template, style, script$$1, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+  var component = (typeof script$$1 === 'function' ? script$$1.options : script$$1) || {}; // For security concerns, we use only base name in production mode.
+
+  component.__file = "TransitionFade.vue";
+
+  if (!component.render) {
+    component.render = template.render;
+    component.staticRenderFns = template.staticRenderFns;
+    component._compiled = true;
+    if (functional) component.functional = true;
+  }
+
+  component._scopeId = scope;
+
+  return component;
+}
+/* style inject */
+
+/* style inject SSR */
+
+
+var TransitionFade = __vue_normalize__({}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, undefined, undefined);
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var script$1 = {
+  name: 'Iconfont'
+};
+
+/* script */
+var __vue_script__$1 = script$1;
 /* template */
 
 var __vue_render__ = function __vue_render__() {
@@ -2479,20 +2566,20 @@ var __vue_render__ = function __vue_render__() {
 var __vue_staticRenderFns__ = [];
 /* style */
 
-var __vue_inject_styles__ = undefined;
+var __vue_inject_styles__$1 = undefined;
 /* scoped */
 
-var __vue_scope_id__ = undefined;
+var __vue_scope_id__$1 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__ = undefined;
+var __vue_module_identifier__$1 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__ = false;
+var __vue_is_functional_template__$1 = false;
 /* component normalizer */
 
-function __vue_normalize__(template, style, script$$1, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
-  var component = (typeof script$$1 === 'function' ? script$$1.options : script$$1) || {}; // For security concerns, we use only base name in production mode.
+function __vue_normalize__$1(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "Iconfont.vue";
 
@@ -2512,72 +2599,14 @@ function __vue_normalize__(template, style, script$$1, scope, functional, module
 /* style inject SSR */
 
 
-var Iconfont = __vue_normalize__({
+var Iconfont = __vue_normalize__$1({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
-}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, undefined, undefined);
+}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, undefined, undefined);
 
-var script$1 = {
-  name: 'TransitionFade',
-  props: {
-    group: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-  render: function render(h) {
-    return h(this.group ? 'TransitionGroup' : 'Transition', {
-      props: {
-        name: 'fade',
-        mode: 'out-in',
-        appear: true
-      }
-    }, this.$slots.default);
-  }
-};
-
-/* script */
-var __vue_script__$1 = script$1;
-/* template */
-
-/* style */
-
-var __vue_inject_styles__$1 = undefined;
-/* scoped */
-
-var __vue_scope_id__$1 = undefined;
-/* module identifier */
-
-var __vue_module_identifier__$1 = undefined;
-/* functional template */
-
-var __vue_is_functional_template__$1 = undefined;
-/* component normalizer */
-
-function __vue_normalize__$1(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
-  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
-
-  component.__file = "TransitionFade.vue";
-
-  if (!component.render) {
-    component.render = template.render;
-    component.staticRenderFns = template.staticRenderFns;
-    component._compiled = true;
-    if (functional) component.functional = true;
-  }
-
-  component._scopeId = scope;
-
-  return component;
-}
-/* style inject */
-
-/* style inject SSR */
-
-
-var TransitionFade = __vue_normalize__$1({}, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, undefined, undefined);
-
+//
+//
+//
 //
 //
 //
@@ -2589,101 +2618,6 @@ var TransitionFade = __vue_normalize__$1({}, __vue_inject_styles__$1, __vue_scri
 //
 //
 var script$2 = {
-  name: 'VssueButton',
-  props: {
-    disabled: {
-      type: Boolean,
-      required: false,
-      default: false
-    },
-    type: {
-      type: String,
-      required: false,
-      default: 'default'
-    }
-  },
-  computed: {
-    buttonClass: function buttonClass() {
-      return "vssue-button-".concat(this.type);
-    }
-  }
-};
-
-/* script */
-var __vue_script__$2 = script$2;
-/* template */
-
-var __vue_render__$1 = function __vue_render__() {
-  var _vm = this;
-
-  var _h = _vm.$createElement;
-
-  var _c = _vm._self._c || _h;
-
-  return _c('button', {
-    staticClass: "vssue-button",
-    class: _vm.buttonClass,
-    attrs: {
-      "disabled": _vm.disabled
-    }
-  }, [_vm._t("default")], 2);
-};
-
-var __vue_staticRenderFns__$1 = [];
-/* style */
-
-var __vue_inject_styles__$2 = undefined;
-/* scoped */
-
-var __vue_scope_id__$2 = undefined;
-/* module identifier */
-
-var __vue_module_identifier__$2 = undefined;
-/* functional template */
-
-var __vue_is_functional_template__$2 = false;
-/* component normalizer */
-
-function __vue_normalize__$2(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
-  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
-
-  component.__file = "VssueButton.vue";
-
-  if (!component.render) {
-    component.render = template.render;
-    component.staticRenderFns = template.staticRenderFns;
-    component._compiled = true;
-    if (functional) component.functional = true;
-  }
-
-  component._scopeId = scope;
-
-  return component;
-}
-/* style inject */
-
-/* style inject SSR */
-
-
-var VssueButton = __vue_normalize__$2({
-  render: __vue_render__$1,
-  staticRenderFns: __vue_staticRenderFns__$1
-}, __vue_inject_styles__$2, __vue_script__$2, __vue_scope_id__$2, __vue_is_functional_template__$2, __vue_module_identifier__$2, undefined, undefined);
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var script$3 = {
   name: 'VssueIcon',
   props: {
     name: {
@@ -2723,10 +2657,10 @@ var script$3 = {
 };
 
 /* script */
-var __vue_script__$3 = script$3;
+var __vue_script__$2 = script$2;
 /* template */
 
-var __vue_render__$2 = function __vue_render__() {
+var __vue_render__$1 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -2751,22 +2685,22 @@ var __vue_render__$2 = function __vue_render__() {
   })]);
 };
 
-var __vue_staticRenderFns__$2 = [];
+var __vue_staticRenderFns__$1 = [];
 /* style */
 
-var __vue_inject_styles__$3 = undefined;
+var __vue_inject_styles__$2 = undefined;
 /* scoped */
 
-var __vue_scope_id__$3 = undefined;
+var __vue_scope_id__$2 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$3 = undefined;
+var __vue_module_identifier__$2 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$3 = false;
+var __vue_is_functional_template__$2 = false;
 /* component normalizer */
 
-function __vue_normalize__$3(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+function __vue_normalize__$2(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
   var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "VssueIcon.vue";
@@ -2787,13 +2721,13 @@ function __vue_normalize__$3(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssueIcon = __vue_normalize__$3({
-  render: __vue_render__$2,
-  staticRenderFns: __vue_staticRenderFns__$2
-}, __vue_inject_styles__$3, __vue_script__$3, __vue_scope_id__$3, __vue_is_functional_template__$3, __vue_module_identifier__$3, undefined, undefined);
+var VssueIcon = __vue_normalize__$2({
+  render: __vue_render__$1,
+  staticRenderFns: __vue_staticRenderFns__$1
+}, __vue_inject_styles__$2, __vue_script__$2, __vue_scope_id__$2, __vue_is_functional_template__$2, __vue_module_identifier__$2, undefined, undefined);
 
 //
-var script$4 = {
+var script$3 = {
   name: 'VssueComment',
   components: {
     VssueIcon: VssueIcon
@@ -2827,10 +2761,10 @@ var script$4 = {
 };
 
 /* script */
-var __vue_script__$4 = script$4;
+var __vue_script__$3 = script$3;
 /* template */
 
-var __vue_render__$3 = function __vue_render__() {
+var __vue_render__$2 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -2876,55 +2810,26 @@ var __vue_render__$3 = function __vue_render__() {
     staticClass: "vssue-comment-footer"
   }, [_vm.showReactions ? _c('span', {
     staticClass: "vssue-comment-reactions"
-  }, [_c('span', {
-    staticClass: "vssue-comment-reaction",
-    on: {
-      "click": function click($event) {
-        _vm.$emit('create-reaction', {
-          commentId: _vm.comment.id,
-          reaction: 'heart'
-        });
+  }, _vm._l(['heart', 'like', 'unlike'], function (reaction) {
+    return _c('span', {
+      key: reaction,
+      staticClass: "vssue-comment-reaction",
+      on: {
+        "click": function click($event) {
+          _vm.$emit('create-reaction', {
+            commentId: _vm.comment.id,
+            reaction: reaction
+          });
+        }
       }
-    }
-  }, [_c('VssueIcon', {
-    attrs: {
-      "name": "heart"
-    }
-  }), _vm._v(" "), _c('span', {
-    staticClass: "vssue-comment-reaction-number"
-  }, [_vm._v("\n              " + _vm._s(_vm.comment.reactions.heart) + "\n            ")])], 1), _vm._v(" "), _c('span', {
-    staticClass: "vssue-comment-reaction",
-    on: {
-      "click": function click($event) {
-        _vm.$emit('create-reaction', {
-          commentId: _vm.comment.id,
-          reaction: '+1'
-        });
+    }, [_c('VssueIcon', {
+      attrs: {
+        "name": reaction
       }
-    }
-  }, [_c('VssueIcon', {
-    attrs: {
-      "name": "like"
-    }
-  }), _vm._v(" "), _c('span', {
-    staticClass: "vssue-comment-reaction-number"
-  }, [_vm._v("\n              " + _vm._s(_vm.comment.reactions['+1']) + "\n            ")])], 1), _vm._v(" "), _c('span', {
-    staticClass: "vssue-comment-reaction",
-    on: {
-      "click": function click($event) {
-        _vm.$emit('create-reaction', {
-          commentId: _vm.comment.id,
-          reaction: '-1'
-        });
-      }
-    }
-  }, [_c('VssueIcon', {
-    attrs: {
-      "name": "unlike"
-    }
-  }), _vm._v(" "), _c('span', {
-    staticClass: "vssue-comment-reaction-number"
-  }, [_vm._v("\n              " + _vm._s(_vm.comment.reactions['-1']) + "\n            ")])], 1)]) : _vm._e(), _vm._v(" "), _c('span', {
+    }), _vm._v(" "), _c('span', {
+      staticClass: "vssue-comment-reaction-number"
+    }, [_vm._v("\n              " + _vm._s(_vm.comment.reactions[reaction]) + "\n            ")])], 1);
+  }), 0) : _vm._e(), _vm._v(" "), _c('span', {
     staticClass: "vssue-comment-reply",
     on: {
       "click": function click($event) {
@@ -2934,22 +2839,22 @@ var __vue_render__$3 = function __vue_render__() {
   }, [_vm._v("\n          Reply\n        ")])])])], 2)]);
 };
 
-var __vue_staticRenderFns__$3 = [];
+var __vue_staticRenderFns__$2 = [];
 /* style */
 
-var __vue_inject_styles__$4 = undefined;
+var __vue_inject_styles__$3 = undefined;
 /* scoped */
 
-var __vue_scope_id__$4 = undefined;
+var __vue_scope_id__$3 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$4 = undefined;
+var __vue_module_identifier__$3 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$4 = false;
+var __vue_is_functional_template__$3 = false;
 /* component normalizer */
 
-function __vue_normalize__$4(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+function __vue_normalize__$3(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
   var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "VssueComment.vue";
@@ -2970,10 +2875,304 @@ function __vue_normalize__$4(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssueComment = __vue_normalize__$4({
+var VssueComment = __vue_normalize__$3({
+  render: __vue_render__$2,
+  staticRenderFns: __vue_staticRenderFns__$2
+}, __vue_inject_styles__$3, __vue_script__$3, __vue_scope_id__$3, __vue_is_functional_template__$3, __vue_module_identifier__$3, undefined, undefined);
+
+//
+var script$4 = {
+  name: 'VssueStatus',
+  components: {
+    VssueIcon: VssueIcon
+  },
+  props: {
+    iconName: {
+      type: String,
+      required: false,
+      default: null
+    },
+    iconSize: {
+      type: String,
+      required: false,
+      default: '20px'
+    }
+  }
+};
+
+/* script */
+var __vue_script__$4 = script$4;
+/* template */
+
+var __vue_render__$3 = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('div', {
+    staticClass: "vssue-status"
+  }, [_vm.iconName ? _c('VssueIcon', {
+    attrs: {
+      "name": _vm.iconName,
+      "size": _vm.iconSize
+    }
+  }) : _vm._e(), _vm._v(" "), _c('p', [_vm._t("default")], 2)], 1);
+};
+
+var __vue_staticRenderFns__$3 = [];
+/* style */
+
+var __vue_inject_styles__$4 = undefined;
+/* scoped */
+
+var __vue_scope_id__$4 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$4 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$4 = false;
+/* component normalizer */
+
+function __vue_normalize__$4(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+  component.__file = "VssueStatus.vue";
+
+  if (!component.render) {
+    component.render = template.render;
+    component.staticRenderFns = template.staticRenderFns;
+    component._compiled = true;
+    if (functional) component.functional = true;
+  }
+
+  component._scopeId = scope;
+
+  return component;
+}
+/* style inject */
+
+/* style inject SSR */
+
+
+var VssueStatus = __vue_normalize__$4({
   render: __vue_render__$3,
   staticRenderFns: __vue_staticRenderFns__$3
 }, __vue_inject_styles__$4, __vue_script__$4, __vue_scope_id__$4, __vue_is_functional_template__$4, __vue_module_identifier__$4, undefined, undefined);
+
+//
+var script$5 = {
+  name: 'VssueComments',
+  components: {
+    TransitionFade: TransitionFade,
+    VssueComment: VssueComment,
+    VssueStatus: VssueStatus
+  },
+  props: {
+    comments: {
+      type: Array,
+      required: true
+    },
+    failed: {
+      type: Boolean,
+      required: true
+    },
+    loading: {
+      type: Boolean,
+      required: true
+    },
+    requireLogin: {
+      type: Boolean,
+      required: true
+    }
+  }
+};
+
+/* script */
+var __vue_script__$5 = script$5;
+/* template */
+
+var __vue_render__$4 = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('div', {
+    staticClass: "vssue-comments"
+  }, [_c('TransitionFade', [_vm.failed ? _c('VssueStatus', {
+    key: "failed",
+    attrs: {
+      "icon-name": "error",
+      "icon-size": "25px"
+    }
+  }, [_vm._v("\n      Failed to load comments\n    ")]) : _vm.loading ? _c('VssueStatus', {
+    key: "loading",
+    attrs: {
+      "icon-name": "loading"
+    }
+  }, [_vm._v("\n      Loading comments...\n    ")]) : _vm.requireLogin ? _c('VssueStatus', {
+    key: "requie-login"
+  }, [_vm._v("\n      Login to view comments\n    ")]) : _c('div', {
+    key: "comments-list",
+    staticClass: "vssue-comments-list"
+  }, [_c('TransitionFade', {
+    attrs: {
+      "group": ""
+    }
+  }, _vm._l(_vm.comments, function (comment) {
+    return _c('VssueComment', {
+      key: comment.id,
+      attrs: {
+        "comment": comment
+      },
+      on: {
+        "reply": function reply(comment) {
+          return _vm.$emit('reply', comment);
+        },
+        "create-reaction": function createReaction(reaction) {
+          return _vm.$emit('create-reaction', reaction);
+        }
+      }
+    });
+  }), 1)], 1)], 1)], 1);
+};
+
+var __vue_staticRenderFns__$4 = [];
+/* style */
+
+var __vue_inject_styles__$5 = undefined;
+/* scoped */
+
+var __vue_scope_id__$5 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$5 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$5 = false;
+/* component normalizer */
+
+function __vue_normalize__$5(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+  component.__file = "VssueComments.vue";
+
+  if (!component.render) {
+    component.render = template.render;
+    component.staticRenderFns = template.staticRenderFns;
+    component._compiled = true;
+    if (functional) component.functional = true;
+  }
+
+  component._scopeId = scope;
+
+  return component;
+}
+/* style inject */
+
+/* style inject SSR */
+
+
+var VssueComments = __vue_normalize__$5({
+  render: __vue_render__$4,
+  staticRenderFns: __vue_staticRenderFns__$4
+}, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var script$6 = {
+  name: 'VssueButton',
+  props: {
+    disabled: {
+      type: Boolean,
+      required: false,
+      default: false
+    },
+    type: {
+      type: String,
+      required: false,
+      default: 'default'
+    }
+  },
+  computed: {
+    buttonClass: function buttonClass() {
+      return "vssue-button-".concat(this.type);
+    }
+  }
+};
+
+/* script */
+var __vue_script__$6 = script$6;
+/* template */
+
+var __vue_render__$5 = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('button', {
+    staticClass: "vssue-button",
+    class: _vm.buttonClass,
+    attrs: {
+      "disabled": _vm.disabled
+    }
+  }, [_vm._t("default")], 2);
+};
+
+var __vue_staticRenderFns__$5 = [];
+/* style */
+
+var __vue_inject_styles__$6 = undefined;
+/* scoped */
+
+var __vue_scope_id__$6 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$6 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$6 = false;
+/* component normalizer */
+
+function __vue_normalize__$6(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+  component.__file = "VssueButton.vue";
+
+  if (!component.render) {
+    component.render = template.render;
+    component.staticRenderFns = template.staticRenderFns;
+    component._compiled = true;
+    if (functional) component.functional = true;
+  }
+
+  component._scopeId = scope;
+
+  return component;
+}
+/* style inject */
+
+/* style inject SSR */
+
+
+var VssueButton = __vue_normalize__$6({
+  render: __vue_render__$5,
+  staticRenderFns: __vue_staticRenderFns__$5
+}, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
 
 // 7.3.20 SpeciesConstructor(O, defaultConstructor)
 
@@ -3121,7 +3320,7 @@ _fixReWks('split', 2, function (defined, SPLIT, $split, maybeCallNative) {
 //
 //
 //
-var script$5 = {
+var script$7 = {
   name: 'VssueNewCommentInput',
   props: {
     disabled: {
@@ -3162,10 +3361,10 @@ var script$5 = {
 };
 
 /* script */
-var __vue_script__$5 = script$5;
+var __vue_script__$7 = script$7;
 /* template */
 
-var __vue_render__$4 = function __vue_render__() {
+var __vue_render__$6 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -3202,22 +3401,22 @@ var __vue_render__$4 = function __vue_render__() {
   });
 };
 
-var __vue_staticRenderFns__$4 = [];
+var __vue_staticRenderFns__$6 = [];
 /* style */
 
-var __vue_inject_styles__$5 = undefined;
+var __vue_inject_styles__$7 = undefined;
 /* scoped */
 
-var __vue_scope_id__$5 = undefined;
+var __vue_scope_id__$7 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$5 = undefined;
+var __vue_module_identifier__$7 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$5 = false;
+var __vue_is_functional_template__$7 = false;
 /* component normalizer */
 
-function __vue_normalize__$5(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+function __vue_normalize__$7(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
   var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "VssueNewCommentInput.vue";
@@ -3238,34 +3437,279 @@ function __vue_normalize__$5(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssueNewCommentInput = __vue_normalize__$5({
-  render: __vue_render__$4,
-  staticRenderFns: __vue_staticRenderFns__$4
-}, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
+var VssueNewCommentInput = __vue_normalize__$7({
+  render: __vue_render__$6,
+  staticRenderFns: __vue_staticRenderFns__$6
+}, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
 
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-var script$6 = {
-  name: 'VssuePoweredBy'
+var script$8 = {
+  name: 'VssueNewComment',
+  components: {
+    VssueButton: VssueButton,
+    VssueIcon: VssueIcon,
+    VssueNewCommentInput: VssueNewCommentInput
+  },
+  props: {
+    loading: {
+      type: Boolean,
+      required: true
+    },
+    platform: {
+      type: String,
+      required: true
+    },
+    user: {
+      type: Object,
+      required: false,
+      default: null
+    }
+  },
+  data: function data() {
+    return {
+      newComment: ''
+    };
+  }
 };
 
 /* script */
-var __vue_script__$6 = script$6;
+var __vue_script__$8 = script$8;
 /* template */
 
-var __vue_render__$5 = function __vue_render__() {
+var __vue_render__$7 = function __vue_render__() {
+  var _vm = this;
+
+  var _h = _vm.$createElement;
+
+  var _c = _vm._self._c || _h;
+
+  return _c('div', {
+    staticClass: "vssue-new-comment"
+  }, [_c('div', {
+    staticClass: "vssue-comment-avatar"
+  }, [_vm.user ? _c('a', {
+    attrs: {
+      "href": _vm.user.homepage,
+      "title": _vm.user.username,
+      "target": "_blank"
+    }
+  }, [_c('img', {
+    attrs: {
+      "src": _vm.user.avatar
+    }
+  })]) : _c('VssueIcon', {
+    staticStyle: {
+      "padding": "5px",
+      "cursor": "pointer"
+    },
+    attrs: {
+      "name": _vm.platform,
+      "title": "Login with " + _vm.platform,
+      "size": "50px",
+      "color": "grey"
+    },
+    nativeOn: {
+      "click": function click($event) {
+        _vm.$emit('login');
+      }
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "vssue-new-comment-body"
+  }, [_c('VssueNewCommentInput', {
+    ref: "newCommentInput",
+    attrs: {
+      "disabled": !_vm.user
+    },
+    model: {
+      value: _vm.newComment,
+      callback: function callback($$v) {
+        _vm.newComment = $$v;
+      },
+      expression: "newComment"
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "vssue-new-comment-footer"
+  }, [_vm.user ? _c('span', {
+    staticClass: "vssue-current-user"
+  }, [_c('span', [_vm._v("Current user - " + _vm._s(_vm.user.username) + " - ")]), _vm._v(" "), _c('a', {
+    staticClass: "vssue-logout",
+    on: {
+      "click": function click($event) {
+        _vm.$emit('logout');
+      }
+    }
+  }, [_vm._v("\n        Logout\n      ")])]) : _c('span', {
+    staticClass: "vssue-current-user"
+  }, [_vm._v("\n      Login with " + _vm._s(_vm.platform) + " account to leave a comment\n    ")]), _vm._v(" "), _c('div', {
+    staticClass: "vssue-new-comment-operations"
+  }, [_vm.user ? _c('VssueButton', {
+    staticClass: "vssue-button-submit-comment",
+    attrs: {
+      "type": "primary",
+      "disabled": _vm.newComment === '' || _vm.loading
+    },
+    nativeOn: {
+      "click": function click($event) {
+        _vm.$emit('create-comment', {
+          content: _vm.newComment
+        });
+      }
+    }
+  }, [_c('VssueIcon', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.loading,
+      expression: "loading"
+    }],
+    attrs: {
+      "name": "loading",
+      "color": "grey"
+    }
+  }), _vm._v("\n\n        " + _vm._s(_vm.loading ? "Submitting" : "Submit Comment") + "\n      ")], 1) : _c('VssueButton', {
+    staticClass: "vssue-button-login",
+    attrs: {
+      "type": "primary",
+      "title": "Click to Login with " + _vm.platform
+    },
+    nativeOn: {
+      "click": function click($event) {
+        _vm.$emit('login');
+      }
+    }
+  }, [_vm._v("\n        Login\n      ")])], 1)])]);
+};
+
+var __vue_staticRenderFns__$7 = [];
+/* style */
+
+var __vue_inject_styles__$8 = undefined;
+/* scoped */
+
+var __vue_scope_id__$8 = undefined;
+/* module identifier */
+
+var __vue_module_identifier__$8 = undefined;
+/* functional template */
+
+var __vue_is_functional_template__$8 = false;
+/* component normalizer */
+
+function __vue_normalize__$8(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+
+  component.__file = "VssueNewComment.vue";
+
+  if (!component.render) {
+    component.render = template.render;
+    component.staticRenderFns = template.staticRenderFns;
+    component._compiled = true;
+    if (functional) component.functional = true;
+  }
+
+  component._scopeId = scope;
+
+  return component;
+}
+/* style inject */
+
+/* style inject SSR */
+
+
+var VssueNewComment = __vue_normalize__$8({
+  render: __vue_render__$7,
+  staticRenderFns: __vue_staticRenderFns__$7
+}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
+
+var quot = /"/g;
+// B.2.3.2.1 CreateHTML(string, tag, attribute, value)
+var createHTML = function (string, tag, attribute, value) {
+  var S = String(_defined(string));
+  var p1 = '<' + tag;
+  if (attribute !== '') p1 += ' ' + attribute + '="' + String(value).replace(quot, '&quot;') + '"';
+  return p1 + '>' + S + '</' + tag + '>';
+};
+var _stringHtml = function (NAME, exec) {
+  var O = {};
+  O[NAME] = exec(createHTML);
+  _export(_export.P + _export.F * _fails(function () {
+    var test = ''[NAME]('"');
+    return test !== test.toLowerCase() || test.split('"').length > 3;
+  }), 'String', O);
+};
+
+// B.2.3.10 String.prototype.link(url)
+_stringHtml('link', function (createHTML) {
+  return function link(url) {
+    return createHTML(this, 'a', 'href', url);
+  };
+});
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+var platforms = {
+  'github': {
+    name: 'GitHub',
+    link: 'https://github.com'
+  },
+  'gitlab': {
+    name: 'GitLab',
+    link: 'https://gitlab.com'
+  },
+  'bitbucket': {
+    name: 'BitBucket',
+    link: 'https://bitbucket.org'
+  }
+};
+var script$9 = {
+  name: 'VssuePoweredBy',
+  props: {
+    platform: {
+      type: String,
+      required: false,
+      default: null
+    },
+    version: {
+      type: String,
+      required: false,
+      default: null
+    }
+  },
+  computed: {
+    platformInfo: function platformInfo() {
+      return this.platform ? platforms[this.platform] : {};
+    }
+  }
+};
+
+var __vue_script__$9 = script$9;
+/* template */
+
+var __vue_render__$8 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -3274,7 +3718,13 @@ var __vue_render__$5 = function __vue_render__() {
 
   return _c('div', {
     staticClass: "vssue-powered-by"
-  }, [_c('span', [_vm._v("Powered by ")]), _vm._v(" "), _c('a', {
+  }, [_c('span', [_vm._v("Powered by")]), _vm._v(" "), _vm.platform && _vm.version ? _c('span', [_c('a', {
+    attrs: {
+      "href": _vm.platformInfo.link,
+      "target": "_blank",
+      "title": _vm.platformInfo.name + " API " + _vm.version
+    }
+  }, [_vm._v("\n      " + _vm._s(_vm.platformInfo.name) + "\n    ")]), _vm._v(" "), _c('span', [_vm._v("&")])]) : _vm._e(), _vm._v(" "), _c('a', {
     attrs: {
       "href": "https://vssue.js.org",
       "target": "_blank",
@@ -3283,22 +3733,22 @@ var __vue_render__$5 = function __vue_render__() {
   }, [_vm._v("\n    Vssue\n  ")])]);
 };
 
-var __vue_staticRenderFns__$5 = [];
+var __vue_staticRenderFns__$8 = [];
 /* style */
 
-var __vue_inject_styles__$6 = undefined;
+var __vue_inject_styles__$9 = undefined;
 /* scoped */
 
-var __vue_scope_id__$6 = undefined;
+var __vue_scope_id__$9 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$6 = undefined;
+var __vue_module_identifier__$9 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$6 = false;
+var __vue_is_functional_template__$9 = false;
 /* component normalizer */
 
-function __vue_normalize__$6(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+function __vue_normalize__$9(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
   var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "VssuePoweredBy.vue";
@@ -3319,118 +3769,18 @@ function __vue_normalize__$6(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssuePoweredBy = __vue_normalize__$6({
-  render: __vue_render__$5,
-  staticRenderFns: __vue_staticRenderFns__$5
-}, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
+var VssuePoweredBy = __vue_normalize__$9({
+  render: __vue_render__$8,
+  staticRenderFns: __vue_staticRenderFns__$8
+}, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
 
-//
-var script$7 = {
-  name: 'VssueStatus',
-  components: {
-    TransitionFade: TransitionFade,
-    VssueButton: VssueButton,
-    VssueIcon: VssueIcon
-  },
-  props: {
-    status: {
-      type: String,
-      required: true
-    }
-  },
-  computed: {
-    statusClass: function statusClass() {
-      return "vssue-status-".concat(this.status);
-    }
-  }
-};
-
-/* script */
-var __vue_script__$7 = script$7;
-/* template */
-
-var __vue_render__$6 = function __vue_render__() {
-  var _vm = this;
-
-  var _h = _vm.$createElement;
-
-  var _c = _vm._self._c || _h;
-
-  return _c('div', {
-    staticClass: "vssue-status",
-    class: _vm.statusClass
-  }, [_c('hr'), _vm._v(" "), _c('TransitionFade', [_vm.status === 'required-login' ? _c('div', [_c('VssueButton', {
-    attrs: {
-      "type": "primary"
-    },
-    nativeOn: {
-      "click": function click($event) {
-        _vm.$emit('login');
-      }
-    }
-  }, [_vm._v("\n        " + _vm._s("Login to view comments") + "\n      ")])], 1) : _vm.status === 'initializing' ? _c('div', [_c('VssueIcon', {
-    attrs: {
-      "name": "loading",
-      "size": "20px"
-    }
-  }), _vm._v(" "), _c('p', [_vm._v("Loading comments...")])], 1) : _vm.status === 'failed' ? _c('div', [_c('VssueIcon', {
-    attrs: {
-      "name": "error",
-      "size": "20px"
-    }
-  }), _vm._v(" "), _c('span', [_vm._v("Failed to load comments")])], 1) : _vm._e()])], 1);
-};
-
-var __vue_staticRenderFns__$6 = [];
-/* style */
-
-var __vue_inject_styles__$7 = undefined;
-/* scoped */
-
-var __vue_scope_id__$7 = undefined;
-/* module identifier */
-
-var __vue_module_identifier__$7 = undefined;
-/* functional template */
-
-var __vue_is_functional_template__$7 = false;
-/* component normalizer */
-
-function __vue_normalize__$7(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
-  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
-
-  component.__file = "VssueStatus.vue";
-
-  if (!component.render) {
-    component.render = template.render;
-    component.staticRenderFns = template.staticRenderFns;
-    component._compiled = true;
-    if (functional) component.functional = true;
-  }
-
-  component._scopeId = scope;
-
-  return component;
-}
-/* style inject */
-
-/* style inject SSR */
-
-
-var VssueStatus = __vue_normalize__$7({
-  render: __vue_render__$6,
-  staticRenderFns: __vue_staticRenderFns__$6
-}, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
-
-var script$8 = {
+var script$a = {
   name: 'Vssue',
   components: {
     Iconfont: Iconfont,
     TransitionFade: TransitionFade,
-    VssueButton: VssueButton,
-    VssueComment: VssueComment,
-    VssueIcon: VssueIcon,
-    VssueNewCommentInput: VssueNewCommentInput,
+    VssueComments: VssueComments,
+    VssueNewComment: VssueNewComment,
     VssuePoweredBy: VssuePoweredBy,
     VssueStatus: VssueStatus
   },
@@ -3464,36 +3814,29 @@ var script$8 = {
       // the issue that fetched from the platform
       vssue: null,
       // the comments of this issue that fetched from the platform
-      comments: null,
-      // the content of new comment that the user input
-      newComment: '',
+      comments: [],
       // the user that logined
       user: null,
       // access token of user
       accessToken: null,
       // status flags
       isFailed: false,
-      isInitializing: false,
       isLoginRequired: false,
-      isSubmitting: false
+      isCreatingComment: false,
+      hasInitialized: false,
+      hasLoadedComments: false
     };
   },
   computed: {
-    config: function config() {
-      return {
-        platform: this.vssueAPI.platform,
-        owner: this.vssueOptions.owner,
-        labels: this.vssueOptions.labels || 'Vssue',
-        state: this.vssueOptions.stata || 'Vssue',
-        prefix: this.vssueOptions.prefix || '[Vssue]'
-      };
-    },
-
     /**
      * the actual options used by this vssue component
      */
     vssueOptions: function vssueOptions() {
-      return Object.assign({}, this.$vssue.options, this.options);
+      return Object.assign({
+        labels: 'Vssue',
+        state: 'Vssue',
+        prefix: '[Vssue]'
+      }, this.$vssue.options, this.options);
     },
 
     /**
@@ -3504,7 +3847,7 @@ var script$8 = {
         return this.title(this.vssueOptions);
       }
 
-      return this.config.prefix + this.title;
+      return this.vssueOptions.prefix + this.title;
     },
 
     /**
@@ -3515,18 +3858,11 @@ var script$8 = {
     },
 
     /**
-     * current status
-     */
-    vssueStatus: function vssueStatus() {
-      return this.isInitializing ? 'initializing' : this.isLoginRequired ? 'required-login' : this.isFailed ? 'failed' : null;
-    },
-
-    /**
      * the key of access token for local storage
      */
     accessTokenKey: {
       get: function get() {
-        return "Vssue.".concat(this.config.platform, ".access_token");
+        return "Vssue.".concat(this.vssueAPI.platform, ".access_token");
       }
     },
 
@@ -3541,7 +3877,7 @@ var script$8 = {
      * flag that if the logined user is admin
      */
     isAdmin: function isAdmin() {
-      return this.isLogined && (this.user.username === this.config.owner || this.config.admins.contains(this.user.username));
+      return this.isLogined && (this.user.username === this.vssueOptions.owner || this.vssueOptions.admins.contains(this.user.username));
     }
   },
   created: function () {
@@ -3567,25 +3903,25 @@ var script$8 = {
                   clientId: this.vssueOptions.clientId,
                   clientSecret: this.vssueOptions.clientSecret
                 });
-              } // set the isInitializing flag
+              } // get user
 
 
-              this.isInitializing = true; // get user
-
-              this.accessToken = this.getAccessToken();
-              _context.next = 6;
+              _context.next = 4;
               return this.handleAuthorize();
 
-            case 6:
-              _context.next = 8;
+            case 4:
+              this.hasInitialized = true; // get vssue
+
+              _context.next = 7;
               return this.getVssue();
 
-            case 8:
-              _context.next = 10;
+            case 7:
+              _context.next = 9;
               return this.getComments();
 
-            case 10:
-              _context.next = 17;
+            case 9:
+              this.hasLoadedComments = true;
+              _context.next = 15;
               break;
 
             case 12:
@@ -3597,24 +3933,21 @@ var script$8 = {
                 if ([401, 403].includes(_context.t0.response.status)) {
                   this.isLoginRequired = true;
                 }
+              } else {
+                this.isFailed = true;
               }
 
-              console.error(_context.t0); // set the isFailed flag
+            case 15:
+              _context.prev = 15;
+              this.hasInitialized = true;
+              return _context.finish(15);
 
-              this.isFailed = true;
-
-            case 17:
-              _context.prev = 17;
-              // unset the isInitializing flag
-              this.isInitializing = false;
-              return _context.finish(17);
-
-            case 20:
+            case 18:
             case "end":
               return _context.stop();
           }
         }
-      }, _callee, this, [[0, 12, 17, 20]]);
+      }, _callee, this, [[0, 12, 15, 18]]);
     }));
 
     function created() {
@@ -3714,7 +4047,9 @@ var script$8 = {
 
               case 3:
                 this.comments = _context3.sent;
-                this.comments.reverse();
+                this.comments.sort(function (a, b) {
+                  return compareDateDesc(a.createdAt, b.createdAt);
+                });
                 _context3.next = 11;
                 break;
 
@@ -3753,8 +4088,7 @@ var script$8 = {
               case 0:
                 content = _ref.content;
                 _context4.prev = 1;
-                // set the isSubmitting flag
-                this.isSubmitting = true; // create comment
+                this.isCreatingComment = true; // create comment
 
                 _context4.next = 5;
                 return this.vssueAPI.createIssueComment({
@@ -3781,8 +4115,7 @@ var script$8 = {
 
               case 14:
                 _context4.prev = 14;
-                // unset the isSubmitting flag
-                this.isSubmitting = false;
+                this.isCreatingComment = false;
                 return _context4.finish(14);
 
               case 17:
@@ -3862,51 +4195,54 @@ var script$8 = {
           while (1) {
             switch (_context6.prev = _context6.next) {
               case 0:
-                _context6.next = 2;
+                // get access_token from storage
+                this.accessToken = this.getAccessToken(); // handle authorize if query has `code`
+
+                _context6.next = 3;
                 return this.vssueAPI.handleAuthorize();
 
-              case 2:
+              case 3:
                 accessToken = _context6.sent;
 
                 if (!accessToken) {
-                  _context6.next = 10;
+                  _context6.next = 11;
                   break;
                 }
 
                 // new access_token
                 this.setAccessToken(accessToken);
-                _context6.next = 7;
+                _context6.next = 8;
                 return this.vssueAPI.getUser({
                   accessToken: accessToken
                 });
 
-              case 7:
+              case 8:
                 this.user = _context6.sent;
-                _context6.next = 18;
+                _context6.next = 19;
                 break;
 
-              case 10:
+              case 11:
                 if (!this.accessToken) {
-                  _context6.next = 16;
+                  _context6.next = 17;
                   break;
                 }
 
-                _context6.next = 13;
+                _context6.next = 14;
                 return this.vssueAPI.getUser({
                   accessToken: this.accessToken
                 });
 
-              case 13:
+              case 14:
                 this.user = _context6.sent;
-                _context6.next = 18;
+                _context6.next = 19;
                 break;
 
-              case 16:
+              case 17:
                 // no access_token
                 this.setAccessToken(null);
                 this.user = null;
 
-              case 18:
+              case 19:
               case "end":
                 return _context6.stop();
             }
@@ -3959,10 +4295,10 @@ var script$8 = {
 };
 
 /* script */
-var __vue_script__$8 = script$8;
+var __vue_script__$a = script$a;
 /* template */
 
-var __vue_render__$7 = function __vue_render__() {
+var __vue_render__$9 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -3971,149 +4307,72 @@ var __vue_render__$7 = function __vue_render__() {
 
   return _c('div', {
     staticClass: "vssue"
-  }, [_c('Iconfont'), _vm._v(" "), _c('TransitionFade', [_vm.vssueStatus ? _c('VssueStatus', {
-    attrs: {
-      "status": _vm.vssueStatus
-    },
-    on: {
-      "login": _vm.handleLogin
-    }
-  }) : _c('div', [_c('div', {
+  }, [_c('Iconfont'), _vm._v(" "), _c('div', {
     staticClass: "vssue-header"
   }, [_c('span', {
     staticClass: "vssue-comments-count"
-  }, [_vm._v("\n          " + _vm._s(_vm.vssue.commentsCount) + " Comments\n        ")]), _vm._v(" "), _c('VssuePoweredBy')], 1), _vm._v(" "), _c('div', {
-    staticClass: "vssue-new-comment"
-  }, [_c('div', {
-    staticClass: "vssue-comment-avatar"
-  }, [_vm.isLogined ? _c('a', {
-    attrs: {
-      "href": _vm.user.homepage,
-      "title": _vm.user.username,
-      "target": "_blank"
-    }
-  }, [_c('img', {
-    attrs: {
-      "src": _vm.user.avatar
-    }
-  })]) : _c('VssueIcon', {
-    staticStyle: {
-      "padding": "5px",
-      "cursor": "pointer"
-    },
-    attrs: {
-      "name": _vm.config.platform,
-      "title": "Login with " + _vm.config.platform,
-      "size": "50px",
-      "color": "grey"
-    },
-    nativeOn: {
-      "click": function click($event) {
-        _vm.handleLogin();
-      }
-    }
-  })], 1), _vm._v(" "), _c('div', {
-    staticClass: "vssue-new-comment-body"
-  }, [_c('VssueNewCommentInput', {
-    ref: "newCommentInput",
-    attrs: {
-      "disabled": !_vm.isLogined
-    },
-    model: {
-      value: _vm.newComment,
-      callback: function callback($$v) {
-        _vm.newComment = $$v;
-      },
-      expression: "newComment"
-    }
-  })], 1), _vm._v(" "), _c('div', {
-    staticClass: "vssue-new-comment-footer"
-  }, [_vm.isLogined ? _c('span', {
-    staticClass: "vssue-current-user"
-  }, [_c('span', [_vm._v("Current user - " + _vm._s(_vm.user.username) + " - ")]), _vm._v(" "), _c('a', {
-    staticClass: "vssue-logout",
-    on: {
-      "click": function click($event) {
-        _vm.handleLogout();
-      }
-    }
-  }, [_vm._v("\n              Logout\n            ")])]) : _c('span', {
-    staticClass: "vssue-current-user"
-  }, [_vm._v("\n            Login with " + _vm._s(_vm.config.platform) + " account to leave a comment\n          ")]), _vm._v(" "), _c('div', {
-    staticClass: "vssue-new-comment-operations"
-  }, [_vm.isLogined ? _c('VssueButton', {
-    staticClass: "vssue-button-submit-comment",
-    attrs: {
-      "type": "primary",
-      "disabled": _vm.newComment === '' || _vm.isSubmitting
-    },
-    nativeOn: {
-      "click": function click($event) {
-        _vm.createComment({
-          content: _vm.newComment
-        });
-      }
-    }
-  }, [_c('VssueIcon', {
+  }, [_c('span', {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.isSubmitting,
-      expression: "isSubmitting"
-    }],
+      value: _vm.hasLoadedComments,
+      expression: "hasLoadedComments"
+    }]
+  }, [_vm._v("\n        " + _vm._s(_vm.comments.length) + "\n      ")]), _vm._v(" "), _c('span', [_vm._v("\n        Comments\n      ")])]), _vm._v(" "), _c('VssuePoweredBy', {
     attrs: {
-      "name": "loading",
-      "color": "grey"
+      "platform": _vm.vssueAPI.platform,
+      "version": _vm.vssueAPI.version
     }
-  }), _vm._v("\n\n              " + _vm._s(_vm.isSubmitting ? "Submitting" : "Submit Comment") + "\n            ")], 1) : _c('VssueButton', {
-    staticClass: "vssue-button-login",
+  })], 1), _vm._v(" "), _c('TransitionFade', [!_vm.hasInitialized ? _c('VssueStatus', {
+    key: "initializing",
     attrs: {
-      "type": "primary",
-      "title": "Click to Login with " + _vm.config.platform
+      "icon-name": "loading"
+    }
+  }, [_vm._v("\n      Initializing...\n    ")]) : _c('div', {
+    key: "initialized"
+  }, [_c('VssueNewComment', {
+    attrs: {
+      "loading": _vm.isCreatingComment,
+      "platform": _vm.vssueAPI.platform,
+      "user": _vm.user
     },
-    nativeOn: {
-      "click": function click($event) {
-        _vm.handleLogin();
-      }
+    on: {
+      "login": _vm.handleLogin,
+      "logout": _vm.handleLogout,
+      "create-comment": _vm.createComment
     }
-  }, [_vm._v("\n              Login\n            ")])], 1)])]), _vm._v(" "), _c('div', {
+  }), _vm._v(" "), _c('div', {
     staticClass: "vssue-body"
-  }, [_c('div', {
-    staticClass: "vssue-comments"
-  }, [_c('TransitionFade', {
+  }, [_c('VssueComments', {
     attrs: {
-      "group": ""
+      "comments": _vm.comments,
+      "loading": !_vm.hasLoadedComments,
+      "failed": _vm.isFailed,
+      "require-login": _vm.isLoginRequired
+    },
+    on: {
+      "reply": _vm.replyToComment,
+      "create-reaction": _vm.createCommentReaction
     }
-  }, _vm._l(_vm.comments, function (comment) {
-    return _c('VssueComment', {
-      key: comment.id,
-      attrs: {
-        "comment": comment
-      },
-      on: {
-        "reply": _vm.replyToComment,
-        "create-reaction": _vm.createCommentReaction
-      }
-    });
-  }), 1)], 1)])])], 1)], 1);
+  })], 1)], 1)], 1)], 1);
 };
 
-var __vue_staticRenderFns__$7 = [];
+var __vue_staticRenderFns__$9 = [];
 /* style */
 
-var __vue_inject_styles__$8 = undefined;
+var __vue_inject_styles__$a = undefined;
 /* scoped */
 
-var __vue_scope_id__$8 = undefined;
+var __vue_scope_id__$a = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$8 = undefined;
+var __vue_module_identifier__$a = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$8 = false;
+var __vue_is_functional_template__$a = false;
 /* component normalizer */
 
-function __vue_normalize__$8(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+function __vue_normalize__$a(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
   var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "Vssue.vue";
@@ -4134,12 +4393,12 @@ function __vue_normalize__$8(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssueComponent = __vue_normalize__$8({
-  render: __vue_render__$7,
-  staticRenderFns: __vue_staticRenderFns__$7
-}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
+var VssueComponent = __vue_normalize__$a({
+  render: __vue_render__$9,
+  staticRenderFns: __vue_staticRenderFns__$9
+}, __vue_inject_styles__$a, __vue_script__$a, __vue_scope_id__$a, __vue_is_functional_template__$a, __vue_module_identifier__$a, undefined, undefined);
 
-var version = "0.1.0";
+var version = "0.1.1";
 var Vssue = {
     get version() {
         return version;

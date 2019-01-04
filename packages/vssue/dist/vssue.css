@@ -66,50 +66,6 @@
             transform: rotate(360deg);
   }
 }
-.vssue .vssue-new-comment-input {
-  resize: none;
-  outline: none;
-  width: 100%;
-  padding: 15px;
-  font-size: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  background-color: #fafbfc;
-  border: 1px solid #eaecef;
-  border-radius: 5px;
-}
-.vssue .vssue-new-comment-input:disabled {
-  cursor: not-allowed;
-  background-color: #f0f2f4;
-}
-.vssue .vssue-new-comment-input:focus {
-  background-color: #fff;
-  -webkit-box-shadow: 0 0 1px 1px #9adbbe;
-          box-shadow: 0 0 1px 1px #9adbbe;
-}
-.vssue .vssue-new-comment-input::-webkit-input-placeholder {
-  color: #a3aab1;
-}
-.vssue .vssue-new-comment-input:-ms-input-placeholder {
-  color: #a3aab1;
-}
-.vssue .vssue-new-comment-input::-ms-input-placeholder {
-  color: #a3aab1;
-}
-.vssue .vssue-new-comment-input::placeholder {
-  color: #a3aab1;
-}
-.vssue .vssue-status {
-  text-align: center;
-}
-.vssue .vssue-status.vssue-status-failed {
-  color: #a3aab1;
-}
-.vssue .vssue-status.vssue-status-initializing {
-  color: #3eaf7c;
-}
-.vssue .vssue-status.vssue-status-require-login {
-  color: #3eaf7c;
-}
 .vssue .fade-enter-active,
 .vssue .fade-appear-active {
   -webkit-transition: all 0.3s ease;
@@ -124,23 +80,10 @@
 .vssue .fade-appear {
   opacity: 0;
 }
-.vssue,
-.vssue * {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
-}
-.vssue :not(.vssue-comment-content) a {
-  font-weight: 500;
+.vssue .vssue-status {
+  text-align: center;
+  padding-top: 20px;
   color: #3eaf7c;
-  text-decoration: none;
-}
-.vssue :not(.vssue-comment-content) hr {
-  display: block;
-  height: 1px;
-  border: 0;
-  border-top: 1px solid #eaecef;
-  margin: 1.2rem 0;
-  padding: 0;
 }
 .vssue .vssue-header {
   padding-bottom: 10px;
@@ -151,70 +94,8 @@
 .vssue .vssue-header .vssue-powered-by {
   float: right;
 }
-.vssue .vssue-body {
-  margin: 10px 0;
-  border-top: 1px solid #eaecef;
-}
-.vssue .vssue-footer {
-  padding-top: 10px;
-  border-top: 1px solid #eaecef;
-}
-.vssue .vssue-comment {
-  margin: 15px 0;
-}
-.vssue .vssue-comment .vssue-comment-avatar {
-  float: left;
-  width: 50px;
-  height: 50px;
-}
-.vssue .vssue-comment .vssue-comment-avatar img {
-  width: 50px;
-  height: 50px;
-}
-.vssue .vssue-comment .vssue-comment-body {
-  border: 1px solid #eaecef;
-  border-radius: 5px;
-}
-@media screen and (max-width: 576px) {
-  .vssue .vssue-comment .vssue-comment-body {
-    margin-left: 60px;
-  }
-}
-@media screen and (min-width: 577px) {
-  .vssue .vssue-comment .vssue-comment-body {
-    margin-left: 70px;
-  }
-}
-.vssue .vssue-comment .vssue-comment-body .vssue-comment-header {
-  padding: 10px 15px;
-  border-bottom: 1px solid #eaecef;
-  overflow: hidden;
-}
-.vssue .vssue-comment .vssue-comment-body .vssue-comment-header .vssue-comment-created-at {
-  float: right;
-  color: #a3aab1;
-}
-.vssue .vssue-comment .vssue-comment-body .vssue-comment-main {
-  padding: 15px;
-}
-.vssue .vssue-comment .vssue-comment-body .vssue-comment-footer {
-  padding: 10px 15px;
-  border-top: 1px solid #eaecef;
-  overflow: hidden;
-}
-.vssue .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-reactions .vssue-comment-reaction {
-  cursor: pointer;
-  display: inline-block;
-  margin-right: 8px;
-  color: #3eaf7c;
-}
-.vssue .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-reply {
-  cursor: pointer;
-  display: inline-block;
-  float: right;
-  color: #3eaf7c;
-}
 .vssue .vssue-new-comment {
+  border-bottom: 1px solid #eaecef;
   margin-top: 10px;
   margin-bottom: 10px;
 }
@@ -251,6 +132,15 @@
   margin-top: 10px;
   margin-bottom: 10px;
 }
+.vssue .vssue-new-comment .vssue-new-comment-footer .vssue-current-user {
+  color: #a3aab1;
+}
+.vssue .vssue-new-comment .vssue-new-comment-footer .vssue-current-user .vssue-logout {
+  cursor: pointer;
+  text-decoration: underline;
+  color: #a3aab1;
+  font-weight: normal;
+}
 @media screen and (max-width: 576px) {
   .vssue .vssue-new-comment .vssue-new-comment-footer {
     text-align: center;
@@ -268,14 +158,110 @@
     float: left;
   }
 }
-.vssue .vssue-current-user {
+.vssue .vssue-new-comment .vssue-new-comment-input {
+  resize: none;
+  outline: none;
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  background-color: #fafbfc;
+  border: 1px solid #eaecef;
+  border-radius: 5px;
+}
+.vssue .vssue-new-comment .vssue-new-comment-input:disabled {
+  cursor: not-allowed;
+  background-color: #f0f2f4;
+}
+.vssue .vssue-new-comment .vssue-new-comment-input:focus {
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 1px 1px #9adbbe;
+          box-shadow: 0 0 1px 1px #9adbbe;
+}
+.vssue .vssue-new-comment .vssue-new-comment-input::-webkit-input-placeholder {
   color: #a3aab1;
 }
-.vssue .vssue-current-user .vssue-logout {
-  cursor: pointer;
-  text-decoration: underline;
+.vssue .vssue-new-comment .vssue-new-comment-input:-ms-input-placeholder {
   color: #a3aab1;
-  font-weight: normal;
+}
+.vssue .vssue-new-comment .vssue-new-comment-input::-ms-input-placeholder {
+  color: #a3aab1;
+}
+.vssue .vssue-new-comment .vssue-new-comment-input::placeholder {
+  color: #a3aab1;
+}
+.vssue .vssue-comments .vssue-comments-list .vssue-comment {
+  margin: 15px 0;
+}
+.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-avatar {
+  float: left;
+  width: 50px;
+  height: 50px;
+}
+.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-avatar img {
+  width: 50px;
+  height: 50px;
+}
+.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body {
+  border: 1px solid #eaecef;
+  border-radius: 5px;
+}
+@media screen and (max-width: 576px) {
+  .vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body {
+    margin-left: 60px;
+  }
+}
+@media screen and (min-width: 577px) {
+  .vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body {
+    margin-left: 70px;
+  }
+}
+.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-header {
+  padding: 10px 15px;
+  border-bottom: 1px solid #eaecef;
+  overflow: hidden;
+}
+.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-header .vssue-comment-created-at {
+  float: right;
+  color: #a3aab1;
+}
+.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-main {
+  padding: 15px;
+}
+.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-footer {
+  padding: 10px 15px;
+  border-top: 1px solid #eaecef;
+  overflow: hidden;
+}
+.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-reactions .vssue-comment-reaction {
+  cursor: pointer;
+  display: inline-block;
+  margin-right: 8px;
+  color: #3eaf7c;
+}
+.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-reply {
+  cursor: pointer;
+  display: inline-block;
+  float: right;
+  color: #3eaf7c;
+}
+.vssue,
+.vssue * {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.vssue :not(.vssue-comment-content) a {
+  font-weight: 500;
+  color: #3eaf7c;
+  text-decoration: none;
+}
+.vssue :not(.vssue-comment-content) hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #eaecef;
+  margin: 1.2rem 0;
+  padding: 0;
 }
 
 @font-face {
