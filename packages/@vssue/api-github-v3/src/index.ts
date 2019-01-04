@@ -202,7 +202,14 @@ export default class GithubV3 implements VssueAPI {
     const response = await this.$http.post(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
       body: content,
     }, {
-      headers: { 'Authorization': `token ${accessToken}` },
+      headers: {
+        'Authorization': `token ${accessToken}`,
+        'Accept': [
+          'application/vnd.github.v3.raw+json',
+          'application/vnd.github.v3.html+json',
+          'application/vnd.github.squirrel-girl-preview',
+        ],
+      },
     })
     const comment = response.data
     return normalizeComment(comment)
