@@ -1,11 +1,12 @@
 import {
-  User,
-  Issue,
-  Comment,
-  Reactions,
   VssueAPI,
   VssueAPIOptions,
 } from 'vssue'
+
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+} from 'axios'
 
 import {
   buildURL,
@@ -13,10 +14,12 @@ import {
   parseQuery,
 } from '@vssue/utils'
 
-import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-} from 'axios'
+import {
+  normalizeUser,
+  normalizeIssue,
+  normalizeComment,
+  mapReactionName,
+} from './utils'
 
 /**
  * Github API v3
@@ -38,6 +41,10 @@ export default class GithubV3 implements VssueAPI {
 
   get platform () {
     return 'github'
+  }
+
+  get version () {
+    return 'v3'
   }
 
   constructor ({
@@ -208,7 +215,7 @@ export default class GithubV3 implements VssueAPI {
   }) {
     try {
       await this.$http.post(`repos/${this.owner}/${this.repo}/issues/${issueId}/reactions`, {
-        content: reaction,
+        content: mapReactionName(reaction),
       }, {
         headers: { 'Authorization': `token ${accessToken}` },
       })
@@ -225,7 +232,7 @@ export default class GithubV3 implements VssueAPI {
   }) {
     try {
       await this.$http.post(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}/reactions`, {
-        content: reaction,
+        content: mapReactionName(reaction),
       }, {
         headers: {
           'Authorization': `token ${accessToken}`,
@@ -236,34 +243,5 @@ export default class GithubV3 implements VssueAPI {
     } catch (e) {
       return false
     }
-  }
-}
-
-function normalizeUser (user: any): User {
-  return {
-    username: user.login,
-    avatar: user.avatar_url,
-    homepage: user.html_url,
-  }
-}
-
-function normalizeIssue (issue: any): Issue {
-  return {
-    id: issue.number,
-    title: issue.title,
-    content: issue.body,
-    commentsCount: issue.comments,
-  }
-}
-
-function normalizeComment (comment: any): Comment {
-  return {
-    id: comment.id,
-    content: comment.body_html,
-    contentRaw: comment.body,
-    author: normalizeUser(comment.user),
-    createdAt: comment.created_at,
-    updatedAt: comment.updated_at,
-    reactions: <Reactions>comment.reactions,
   }
 }

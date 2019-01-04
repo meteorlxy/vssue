@@ -10,7 +10,6 @@ export interface Issue {
   id: string,
   title: string,
   content: string,
-  commentsCount: number | null,
 }
 
 export interface Comment {
@@ -31,6 +30,7 @@ export interface Reactions {
 
 export interface VssueAPI {
   readonly platform: string
+  readonly version: string
 
   redirectAuthorize (): void
 

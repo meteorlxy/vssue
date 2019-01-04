@@ -1,11 +1,12 @@
 import {
-  User,
-  Issue,
-  Comment,
   Reactions,
   VssueAPI,
   VssueAPIOptions,
 } from 'vssue'
+
+import axios, {
+  AxiosInstance,
+} from 'axios'
 
 import {
   buildURL,
@@ -14,9 +15,13 @@ import {
   parseQuery,
 } from '@vssue/utils'
 
-import axios, {
-  AxiosInstance,
-} from 'axios'
+import {
+  normalizeUser,
+  normalizeIssue,
+  normalizeComment,
+  normalizeReactions,
+  mapReactionName,
+} from './utils'
 
 /**
  * @see https://docs.gitlab.com/ce/api/oauth2.html
@@ -34,8 +39,14 @@ export default class GitlabV4 implements VssueAPI {
   state: string
   $http: AxiosInstance
 
+  private _encodedRepo: string
+
   get platform () {
     return 'gitlab'
+  }
+
+  get version () {
+    return 'v4'
   }
 
   constructor ({
@@ -55,6 +66,8 @@ export default class GitlabV4 implements VssueAPI {
     this.clientId = clientId
     this.clientSecret = clientSecret
     this.state = state
+
+    this._encodedRepo = encodeURIComponent(`${this.owner}/${this.repo}`)
 
     this.$http = axios.create({
       baseURL,
@@ -111,7 +124,7 @@ export default class GitlabV4 implements VssueAPI {
   }
 
   async getIssues ({ accessToken }) {
-    const response = await this.$http.get(`api/v4/projects/${this.repo}/issues`, {
+    const response = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues`, {
       params: {
         labels: this.labels,
       },
@@ -125,16 +138,46 @@ export default class GitlabV4 implements VssueAPI {
     issueId,
     accessToken,
   }) {
-    const response = await this.$http.get(`api/v4/projects/${this.repo}/issues/${issueId}/notes`, {
+    const response = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes`, {
       params: {
       },
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
     const comments = response.data
+
+    const getCommentsMeta: Array<Promise<void>> = []
+
     for (const comment of comments) {
-      comment.body_html = await this.getMarkdownContent({ contentRaw: comment.body })
+      getCommentsMeta.push((async () => {
+        comment.body_html = await this.getMarkdownContent({
+          contentRaw: comment.body,
+        })
+      })())
+      getCommentsMeta.push((async () => {
+        comment.reactions = await this.getCommentReactions({
+          issueId: issueId,
+          commentId: comment.id,
+          accessToken: accessToken,
+        })
+      })())
     }
+    await Promise.all(getCommentsMeta)
     return comments.map(normalizeComment)
+  }
+
+  async getCommentReactions ({
+    issueId,
+    commentId,
+    accessToken,
+  }): Promise<Reactions> {
+    const response = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji`, {
+      params: {
+      },
+      headers: { 'Authorization': `Bearer ${accessToken}` },
+    })
+
+    const reactions = response.data
+    return normalizeReactions(reactions)
   }
 
   async createIssue ({
@@ -142,7 +185,7 @@ export default class GitlabV4 implements VssueAPI {
     content,
     accessToken,
   }) {
-    const response = await this.$http.post(`api/v4/projects/${this.repo}/issues`, {
+    const response = await this.$http.post(`api/v4/projects/${this._encodedRepo}/issues`, {
       title,
       description: content,
       labels: this.labels,
@@ -158,7 +201,7 @@ export default class GitlabV4 implements VssueAPI {
     content,
     accessToken,
   }) {
-    const response = await this.$http.post(`api/v4/projects/${this.repo}/issues/${issueId}/notes`, {
+    const response = await this.$http.post(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes`, {
       body: content,
     }, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
@@ -173,8 +216,8 @@ export default class GitlabV4 implements VssueAPI {
     accessToken,
   }) {
     try {
-      await this.$http.post(`api/v4/projects/${this.repo}/issues/${issueId}/award_emoji`, {
-        name: normalizeReaction(reaction),
+      await this.$http.post(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/award_emoji`, {
+        name: mapReactionName(reaction),
       }, {
         headers: { 'Authorization': `Bearer ${accessToken}` },
       })
@@ -191,8 +234,8 @@ export default class GitlabV4 implements VssueAPI {
     accessToken,
   }) {
     try {
-      await this.$http.post(`api/v4/projects/${this.repo}/issues/${issueId}/notes/${commentId}/award_emoji`, {
-        name: normalizeReaction(reaction),
+      await this.$http.post(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji`, {
+        name: mapReactionName(reaction),
       }, {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -204,46 +247,12 @@ export default class GitlabV4 implements VssueAPI {
     }
   }
 
-  async getMarkdownContent ({ contentRaw }) {
+  async getMarkdownContent ({ contentRaw }): Promise<string> {
     const response = await this.$http.post(`api/v4/markdown`, {
       text: contentRaw,
+      gfm: true,
     })
     const content = response.data.html
     return content
   }
-}
-
-function normalizeUser (user: any): User {
-  return {
-    username: user.username,
-    avatar: user.avatar_url,
-    homepage: user.web_url,
-  }
-}
-
-function normalizeIssue (issue: any): Issue {
-  return {
-    id: issue.iid,
-    title: issue.title,
-    content: issue.description,
-    commentsCount: issue.user_notes_count,
-  }
-}
-
-function normalizeComment (comment: any): Comment {
-  return {
-    id: comment.id,
-    content: comment.body_html,
-    contentRaw: comment.body,
-    author: normalizeUser(comment.author),
-    createdAt: comment.created_at,
-    updatedAt: comment.updated_at,
-    reactions: null,
-  }
-}
-
-function normalizeReaction (reaction: any) {
-  if (reaction === '+1') return 'thumbsup'
-  if (reaction === '-1') return 'thumbsdown'
-  return reaction
 }

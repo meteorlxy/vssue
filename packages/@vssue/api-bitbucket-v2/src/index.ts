@@ -1,11 +1,11 @@
-import Vssue, {
-  User,
-  Issue,
-  Comment,
-  Reactions,
+import {
   VssueAPI,
   VssueAPIOptions,
 } from 'vssue'
+
+import axios, {
+  AxiosInstance,
+} from 'axios'
 
 import {
   buildQuery,
@@ -14,9 +14,11 @@ import {
   parseQuery,
 } from '@vssue/utils'
 
-import axios, {
-  AxiosInstance,
-} from 'axios'
+import {
+  normalizeUser,
+  normalizeIssue,
+  normalizeComment,
+} from './utils'
 
 /**
  * @see https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html
@@ -36,6 +38,10 @@ export default class BitbucketV2 implements VssueAPI {
 
   get platform () {
     return 'bitbucket'
+  }
+
+  get version () {
+    return 'v2'
   }
 
   constructor ({
@@ -179,34 +185,5 @@ export default class BitbucketV2 implements VssueAPI {
 
   async createCommentReaction () {
     // no support
-  }
-}
-
-function normalizeUser (user): User {
-  return {
-    username: user.username,
-    avatar: user.links.avatar.href,
-    homepage: user.links.html.href,
-  }
-}
-
-function normalizeIssue (issue): Issue {
-  return {
-    id: issue.id,
-    title: issue.title,
-    content: issue.content.raw,
-    commentsCount: null,
-  }
-}
-
-function normalizeComment (comment: any): Comment {
-  return {
-    id: comment.id,
-    content: comment.content.html,
-    contentRaw: comment.content.raw,
-    author: normalizeUser(comment.user),
-    createdAt: comment.created_on,
-    updatedAt: comment.updated_on,
-    reactions: null,
   }
 }
