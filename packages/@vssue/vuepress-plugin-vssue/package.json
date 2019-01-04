@@ -23,7 +23,7 @@
     "url": "https://github.com/meteorlxy/vssue/issues"
   },
   "scripts": {
-    "build": "rimraf ./lib && tsc -p tsconfig.json"
+    "build": "rimraf lib types && tsc -p tsconfig.json"
   },
   "dependencies": {
     "@vssue/api-bitbucket-v2": "^0.1.1",
