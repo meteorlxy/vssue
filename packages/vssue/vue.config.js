@@ -13,6 +13,10 @@ module.exports = {
       .set('@vssue/api$', `@vssue/api-${process.env.VSSUE_API}`)
 
     if (process.env.NODE_ENV === 'development') {
+      config.resolve.alias
+        .set('@vssue/api$', `@vssue/api-${process.env.VSSUE_API}/src/index.ts`)
+        .set('@vssue/utils', `@vssue/utils/src/index.ts`)
+
       config.module
         .rule('eslint')
         .use('eslint-loader')
