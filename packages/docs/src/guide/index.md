@@ -6,9 +6,36 @@ As your pages are "static", you don't have database nor backend APIs, but you st
 
 This is how __Vssue__ get its name : __Vue__-powered and __Issue__-based.
 
-## How it works
+## How Vssue works
 
-> TODO
+Following the [OAuth 2 spec](https://tools.ietf.org/html/rfc6749), platforms provide OAuth API. With the help of them, users can login to Vssue with accounts of the platform and access comments.
+
+Here is the brief process about how Vssue works:
+
+```
+           Vssue                                             Platform
+  ┌──────────────────────┐                            ┌────────────────────┐
+  │     Click Login      ├───────── redirect ────────>│ Authorization Page │
+  └──────────────────────┘                            └──────────┬─────────┘
+  ┌──────────────────────┐                                       │
+  │                      │<─── redirect with code ───────────────┘
+  │ Handle Authorization │                            ┌────────────────────┐
+  │                      │<───── request token ──────>│                    │
+  └──────────────────────┘                            │                    │
+  ┌──────────────────────┐                            │                    │
+  │     Get Comments     │<─── request with token ───>│    Platform  API   │
+  └──────────────────────┘                            │                    │
+  ┌──────────────────────┐                            │                    │
+  │     Post Comments    ├──── request with token ───>│                    │
+  └──────────────────────┘                            └────────────────────┘
+          ......
+```
+
+After Vssue is authorized by users for the platform in the Authorization Page, the platform will redirect back to Vssue with `code`.
+
+Vssue will request the platform for users' `token` with `code`, and store `token` in localstorage, which means that users have "logined" to Vssue with the account of the platform.
+
+Then Vssue could get the user's info and get the comments of this page. And users could post comments, too.
 
 ## Comparation with similar projects
 
