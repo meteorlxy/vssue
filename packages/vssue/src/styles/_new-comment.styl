@@ -1,0 +1,64 @@
+.vssue-new-comment
+  border-bottom 1px solid $borderColor
+  margin-top 10px
+  margin-bottom 10px
+  .vssue-comment-avatar
+    float left
+    width 50px
+    height 50px
+    img
+      width 50px
+      height 50px
+  .vssue-new-comment-body
+    position relative
+    @media screen and (max-width $breakpointMobile)
+      margin-left 60px
+    @media screen and (min-width $breakpointMobile + 1px)
+      margin-left 70px
+    .vssue-new-comment-loading
+      position absolute
+      top 50%
+      left 50%
+      transform translate(-50%, -50%)
+  .vssue-new-comment-footer
+    @extend .clearfix
+
+    margin-top 10px
+    margin-bottom 10px
+
+    .vssue-current-user
+      color $textLightColor
+      .vssue-logout
+        cursor pointer
+        text-decoration underline
+        color $textLightColor
+        font-weight normal
+
+    @media screen and (max-width $breakpointMobile)
+      text-align center
+      .vssue-new-comment-operations
+        margin-top 10px
+    @media screen and (min-width $breakpointMobile + 1px)
+      margin-left 70px
+      text-align right
+      .vssue-current-user
+        float left
+
+  .vssue-new-comment-input
+    resize none
+    outline none
+    width 100%
+    padding 15px
+    font-size 16px
+    font-family $fontFamily
+    background-color #fafbfc
+    border 1px solid $borderColor
+    border-radius 5px
+    &:disabled
+      cursor not-allowed
+      background-color lighten($borderColor, 30%)
+    &:focus
+      background-color #ffffff
+      box-shadow 0 0 1px 1px lighten($themeColor, 50%)
+    &::placeholder
+      color $textLightColor

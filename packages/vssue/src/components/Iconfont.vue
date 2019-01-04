@@ -1,4 +1,4 @@
-<template>
+VssueIconfont<template>
   <svg v-show="false">
     <symbol
       id="icon-bitbucket"

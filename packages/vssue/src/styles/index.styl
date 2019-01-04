@@ -4,9 +4,12 @@
 .vssue
   @import '_button'
   @import '_icon'
-  @import '_new-comment-input'
+  @import '_transitions'
+
   @import '_status'
-  @import '_transition'
+  @import '_header'
+  @import '_new-comment'
+  @import '_comments'
 
   width 100%
   color $textColor
@@ -27,103 +30,3 @@
       border-top 1px solid $borderColor
       margin 1.2rem 0
       padding 0
-
-  .vssue-header
-    padding-bottom 10px
-    border-bottom 1px solid $borderColor
-    margin-bottom 10px
-    overflow hidden
-    .vssue-powered-by
-      float right
-
-  .vssue-body
-    margin 10px 0
-    border-top 1px solid $borderColor
-
-  .vssue-footer
-    padding-top 10px
-    border-top 1px solid $borderColor
-
-  .vssue-comment
-    margin 15px 0
-    .vssue-comment-avatar
-      float left
-      width 50px
-      height 50px
-      img
-        width 50px
-        height 50px
-    .vssue-comment-body
-      @media screen and (max-width $breakpointMobile)
-        margin-left 60px
-      @media screen and (min-width $breakpointMobile + 1px)
-        margin-left 70px
-      border 1px solid $borderColor
-      border-radius 5px
-      .vssue-comment-header
-        padding 10px 15px
-        border-bottom 1px solid $borderColor
-        overflow hidden
-        .vssue-comment-created-at
-          float right
-          color $textLightColor
-      .vssue-comment-main
-        padding 15px
-      .vssue-comment-footer
-        padding 10px 15px
-        border-top 1px solid $borderColor
-        overflow hidden
-        .vssue-comment-reactions
-          .vssue-comment-reaction
-            cursor pointer
-            display inline-block
-            margin-right 8px
-            color $themeColor
-        .vssue-comment-reply
-          cursor pointer
-          display inline-block
-          float right
-          color $themeColor
-
-  .vssue-new-comment
-    margin-top 10px
-    margin-bottom 10px
-    .vssue-comment-avatar
-      float left
-      width 50px
-      height 50px
-      img
-        width 50px
-        height 50px
-    .vssue-new-comment-body
-      position relative
-      @media screen and (max-width $breakpointMobile)
-        margin-left 60px
-      @media screen and (min-width $breakpointMobile + 1px)
-        margin-left 70px
-      .vssue-new-comment-loading
-        position absolute
-        top 50%
-        left 50%
-        transform translate(-50%, -50%)
-    .vssue-new-comment-footer
-      @extend .clearfix
-      margin-top 10px
-      margin-bottom 10px
-      @media screen and (max-width $breakpointMobile)
-        text-align center
-        .vssue-new-comment-operations
-          margin-top 10px
-      @media screen and (min-width $breakpointMobile + 1px)
-        margin-left 70px
-        text-align right
-        .vssue-current-user
-          float left
-
-  .vssue-current-user
-    color $textLightColor
-    .vssue-logout
-      cursor pointer
-      text-decoration underline
-      color $textLightColor
-      font-weight normal

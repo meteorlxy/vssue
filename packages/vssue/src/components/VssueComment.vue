@@ -41,35 +41,15 @@
             class="vssue-comment-reactions"
           >
             <span
+              v-for="reaction in ['heart', 'like', 'unlike']"
+              :key="reaction"
               class="vssue-comment-reaction"
-              @click="$emit('create-reaction', { commentId: comment.id, reaction: 'heart' })"
+              @click="$emit('create-reaction', { commentId: comment.id, reaction: reaction })"
             >
-              <VssueIcon name="heart" />
+              <VssueIcon :name="reaction" />
 
               <span class="vssue-comment-reaction-number">
-                {{ comment.reactions.heart }}
-              </span>
-            </span>
-
-            <span
-              class="vssue-comment-reaction"
-              @click="$emit('create-reaction', { commentId: comment.id, reaction: '+1' })"
-            >
-              <VssueIcon name="like" />
-
-              <span class="vssue-comment-reaction-number">
-                {{ comment.reactions['+1'] }}
-              </span>
-            </span>
-
-            <span
-              class="vssue-comment-reaction"
-              @click="$emit('create-reaction', { commentId: comment.id, reaction: '-1' })"
-            >
-              <VssueIcon name="unlike" />
-
-              <span class="vssue-comment-reaction-number">
-                {{ comment.reactions['-1'] }}
+                {{ comment.reactions[reaction] }}
               </span>
             </span>
           </span>

@@ -2,145 +2,75 @@
   <div class="vssue">
     <Iconfont />
 
-    <TransitionFade>
-      <VssueStatus
-        v-if="vssueStatus"
-        :status="vssueStatus"
-        @login="handleLogin"
+    <!-- header -->
+    <div class="vssue-header">
+      <span class="vssue-comments-count">
+        <span v-show="hasLoadedComments">
+          {{ comments.length }}
+        </span>
+
+        <span>
+          Comments
+        </span>
+      </span>
+
+      <VssuePoweredBy
+        :platform="vssueAPI.platform"
+        :version="vssueAPI.version"
       />
+    </div>
 
-      <div v-else>
-        <!-- header -->
-        <div class="vssue-header">
-          <span class="vssue-comments-count">
-            {{ vssue.commentsCount }} Comments
-          </span>
+    <!-- main -->
+    <TransitionFade>
+      <!-- initializing -->
+      <VssueStatus
+        v-if="!hasInitialized"
+        key="initializing"
+        icon-name="loading"
+      >
+        Initializing...
+      </VssueStatus>
 
-          <VssuePoweredBy />
-        </div>
-        <!-- ./ header -->
+      <!-- initialized -->
+      <div
+        v-else
+        key="initialized"
+      >
+        <VssueNewComment
+          :loading="isCreatingComment"
+          :platform="vssueAPI.platform"
+          :user="user"
+          @login="handleLogin"
+          @logout="handleLogout"
+          @create-comment="createComment"
+        />
 
-        <!-- new-comment -->
-        <div class="vssue-new-comment">
-          <!-- new-comment-avatar -->
-          <div class="vssue-comment-avatar">
-            <a
-              v-if="isLogined"
-              :href="user.homepage"
-              :title="user.username"
-              target="_blank"
-            >
-              <img :src="user.avatar">
-            </a>
-
-            <VssueIcon
-              v-else
-              :name="config.platform"
-              :title="`Login with ${config.platform}`"
-              size="50px"
-              color="grey"
-              style="padding: 5px; cursor: pointer;"
-              @click.native="handleLogin()"
-            />
-          </div>
-          <!-- ./ new-comment-avatar -->
-
-          <!-- new-comment-body -->
-          <div class="vssue-new-comment-body">
-            <VssueNewCommentInput
-              ref="newCommentInput"
-              :disabled="!isLogined"
-              v-model="newComment"
-            />
-          </div>
-          <!-- ./ new-comment-body -->
-
-          <!-- new-comment-footer -->
-          <div class="vssue-new-comment-footer">
-            <span
-              v-if="isLogined"
-              class="vssue-current-user"
-            >
-              <span>Current user - {{ user.username }} - </span>
-
-              <a
-                class="vssue-logout"
-                @click="handleLogout()"
-              >
-                Logout
-              </a>
-            </span>
-
-            <span
-              v-else
-              class="vssue-current-user"
-            >
-              Login with {{ config.platform }} account to leave a comment
-            </span>
-
-            <div class="vssue-new-comment-operations">
-              <VssueButton
-                v-if="isLogined"
-                class="vssue-button-submit-comment"
-                type="primary"
-                :disabled="newComment === '' || isSubmitting"
-                @click.native="createComment({ content: newComment })"
-              >
-                <VssueIcon
-                  v-show="isSubmitting"
-                  name="loading"
-                  color="grey"
-                />
-
-                {{ isSubmitting ? `Submitting` : `Submit Comment` }}
-              </VssueButton>
-
-              <VssueButton
-                v-else
-                class="vssue-button-login"
-                type="primary"
-                :title="`Click to Login with ${config.platform}`"
-                @click.native="handleLogin()"
-              >
-                Login
-              </VssueButton>
-            </div>
-          </div>
-          <!-- ./ new-comment-footer -->
-        </div>
-        <!-- ./ new-comment -->
-
-        <!-- body -->
         <div class="vssue-body">
-          <!-- comments list -->
-          <div class="vssue-comments">
-            <TransitionFade group>
-              <VssueComment
-                v-for="comment in comments"
-                :key="comment.id"
-                :comment="comment"
-                @reply="replyToComment"
-                @create-reaction="createCommentReaction"
-              />
-            </TransitionFade>
-          </div>
+          <VssueComments
+            :comments="comments"
+            :loading="!hasLoadedComments"
+            :failed="isFailed"
+            :require-login="isLoginRequired"
+            @reply="replyToComment"
+            @create-reaction="createCommentReaction"
+          />
         </div>
-        <!-- ./ body -->
       </div>
     </TransitionFade>
   </div>
 </template>
 
 <script>
-import Iconfont from './components/Iconfont.vue'
 import TransitionFade from './components/TransitionFade.vue'
-import VssueButton from './components/VssueButton.vue'
-import VssueComment from './components/VssueComment.vue'
-import VssueIcon from './components/VssueIcon.vue'
-import VssueNewCommentInput from './components/VssueNewCommentInput.vue'
+import Iconfont from './components/Iconfont.vue'
+import VssueComments from './components/VssueComments.vue'
+import VssueNewComment from './components/VssueNewComment.vue'
 import VssuePoweredBy from './components/VssuePoweredBy.vue'
 import VssueStatus from './components/VssueStatus.vue'
-import { getCleanURL } from '@vssue/utils'
+import {
+  getCleanURL,
+  compareDateDesc,
+} from '@vssue/utils'
 
 export default {
   name: 'Vssue',
@@ -148,10 +78,8 @@ export default {
   components: {
     Iconfont,
     TransitionFade,
-    VssueButton,
-    VssueComment,
-    VssueIcon,
-    VssueNewCommentInput,
+    VssueComments,
+    VssueNewComment,
     VssuePoweredBy,
     VssueStatus,
   },
@@ -185,10 +113,7 @@ export default {
       vssue: null,
 
       // the comments of this issue that fetched from the platform
-      comments: null,
-
-      // the content of new comment that the user input
-      newComment: '',
+      comments: [],
 
       // the user that logined
       user: null,
@@ -198,28 +123,24 @@ export default {
 
       // status flags
       isFailed: false,
-      isInitializing: false,
       isLoginRequired: false,
-      isSubmitting: false,
+      isCreatingComment: false,
+
+      hasInitialized: false,
+      hasLoadedComments: false,
     }
   },
 
   computed: {
-    config () {
-      return {
-        platform: this.vssueAPI.platform,
-        owner: this.vssueOptions.owner,
-        labels: this.vssueOptions.labels || 'Vssue',
-        state: this.vssueOptions.stata || 'Vssue',
-        prefix: this.vssueOptions.prefix || '[Vssue]',
-      }
-    },
-
     /**
      * the actual options used by this vssue component
      */
     vssueOptions () {
-      return Object.assign({}, this.$vssue.options, this.options)
+      return Object.assign({
+        labels: 'Vssue',
+        state: 'Vssue',
+        prefix: '[Vssue]',
+      }, this.$vssue.options, this.options)
     },
 
     /**
@@ -229,7 +150,7 @@ export default {
       if (typeof this.title === 'function') {
         return this.title(this.vssueOptions)
       }
-      return this.config.prefix + this.title
+      return this.vssueOptions.prefix + this.title
     },
 
     /**
@@ -240,24 +161,11 @@ export default {
     },
 
     /**
-     * current status
-     */
-    vssueStatus () {
-      return this.isInitializing
-        ? 'initializing'
-        : this.isLoginRequired
-          ? 'required-login'
-          : this.isFailed
-            ? 'failed'
-            : null
-    },
-
-    /**
      * the key of access token for local storage
      */
     accessTokenKey: {
       get () {
-        return `Vssue.${this.config.platform}.access_token`
+        return `Vssue.${this.vssueAPI.platform}.access_token`
       },
     },
 
@@ -272,7 +180,7 @@ export default {
      * flag that if the logined user is admin
      */
     isAdmin () {
-      return this.isLogined && (this.user.username === this.config.owner || this.config.admins.contains(this.user.username))
+      return this.isLogined && (this.user.username === this.vssueOptions.owner || this.vssueOptions.admins.contains(this.user.username))
     },
   },
 
@@ -292,31 +200,29 @@ export default {
         })
       }
 
-      // set the isInitializing flag
-      this.isInitializing = true
-
       // get user
-      this.accessToken = this.getAccessToken()
       await this.handleAuthorize()
+
+      this.hasInitialized = true
 
       // get vssue
       await this.getVssue()
 
       // get comments of vssue
       await this.getComments()
+
+      this.hasLoadedComments = true
     } catch (e) {
       // login is required for some platform
       if (e.response) {
         if ([401, 403].includes(e.response.status)) {
           this.isLoginRequired = true
         }
+      } else {
+        this.isFailed = true
       }
-      console.error(e)
-      // set the isFailed flag
-      this.isFailed = true
     } finally {
-      // unset the isInitializing flag
-      this.isInitializing = false
+      this.hasInitialized = true
     }
   },
 
@@ -363,7 +269,7 @@ export default {
           issueId: this.vssue.id,
           accessToken: this.accessToken,
         })
-        this.comments.reverse()
+        this.comments.sort((a, b) => compareDateDesc(a.createdAt, b.createdAt))
       } catch (e) {
         console.error(e)
         throw Error('Failed to get comments')
@@ -375,8 +281,7 @@ export default {
      */
     async createComment ({ content }) {
       try {
-        // set the isSubmitting flag
-        this.isSubmitting = true
+        this.isCreatingComment = true
 
         // create comment
         await this.vssueAPI.createIssueComment({
@@ -394,8 +299,7 @@ export default {
         console.error(e)
         throw Error('Failed to create comment')
       } finally {
-        // unset the isSubmitting flag
-        this.isSubmitting = false
+        this.isCreatingComment = false
       }
     },
 
@@ -426,7 +330,12 @@ export default {
      * handle authorization if `code` and `state` exist in the query parameters
      */
     async handleAuthorize () {
+      // get access_token from storage
+      this.accessToken = this.getAccessToken()
+
+      // handle authorize if query has `code`
       const accessToken = await this.vssueAPI.handleAuthorize()
+
       if (accessToken) {
         // new access_token
         this.setAccessToken(accessToken)

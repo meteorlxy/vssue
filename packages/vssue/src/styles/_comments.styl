@@ -1,0 +1,42 @@
+.vssue-comments
+  .vssue-comments-list
+    .vssue-comment
+      margin 15px 0
+      .vssue-comment-avatar
+        float left
+        width 50px
+        height 50px
+        img
+          width 50px
+          height 50px
+      .vssue-comment-body
+        @media screen and (max-width $breakpointMobile)
+          margin-left 60px
+        @media screen and (min-width $breakpointMobile + 1px)
+          margin-left 70px
+        border 1px solid $borderColor
+        border-radius 5px
+        .vssue-comment-header
+          padding 10px 15px
+          border-bottom 1px solid $borderColor
+          overflow hidden
+          .vssue-comment-created-at
+            float right
+            color $textLightColor
+        .vssue-comment-main
+          padding 15px
+        .vssue-comment-footer
+          padding 10px 15px
+          border-top 1px solid $borderColor
+          overflow hidden
+          .vssue-comment-reactions
+            .vssue-comment-reaction
+              cursor pointer
+              display inline-block
+              margin-right 8px
+              color $themeColor
+          .vssue-comment-reply
+            cursor pointer
+            display inline-block
+            float right
+            color $themeColor
