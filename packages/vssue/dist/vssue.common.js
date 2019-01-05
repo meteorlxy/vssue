@@ -3848,7 +3848,8 @@ var script$a = {
       return Object.assign({
         labels: 'Vssue',
         state: 'Vssue',
-        prefix: '[Vssue]'
+        prefix: '[Vssue]',
+        admins: []
       }, this.$vssue.options, this.options);
     },
 
@@ -4410,7 +4411,7 @@ var VssueComponent = __vue_normalize__$a({
   staticRenderFns: __vue_staticRenderFns__$9
 }, __vue_inject_styles__$a, __vue_script__$a, __vue_scope_id__$a, __vue_is_functional_template__$a, __vue_module_identifier__$a, undefined, undefined);
 
-var version = "0.1.3";
+var version = "0.1.4";
 var Vssue = {
     get version() {
         return version;
