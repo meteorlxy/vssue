@@ -2,10 +2,7 @@ const path = require('path')
 
 module.exports = ({
   platform = 'github',
-  clientId,
-  clientSecret,
-  owner,
-  repo,
+  ...options
 }) => {
   const platformAPI = {
     'github': '@vssue/api-github-v3',
@@ -33,10 +30,7 @@ module.exports = ({
     ],
 
     define: {
-      'VSSUE_CLIENT_ID': clientId,
-      'VSSUE_CLIENT_SECRET': clientSecret,
-      'VSSUE_OWNER': owner,
-      'VSSUE_REPO': repo,
+      'VSSUE_OPTIONS': JSON.stringify(options),
     },
 
     alias: {
