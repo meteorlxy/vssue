@@ -13,6 +13,4 @@ features:
 footer: MIT Licensed | Vssue
 ---
 
-<ClientOnly>
-  <VssueDemo/>
-</ClientOnly>
+<VssueDemo text="选择平台" />
