@@ -13,11 +13,6 @@ const Vssue: VssuePlugin = {
   },
 
   install (Vue, options?: VssueUseOptions) {
-    if (typeof options === 'undefined' || !options.api
-    ) {
-      throw new Error('[Vssue] options of vssue is not valid')
-    }
-
     if (Vue.prototype.$vssue) {
       return false
     }
