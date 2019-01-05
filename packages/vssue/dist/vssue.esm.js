@@ -3009,14 +3009,14 @@ var __vue_render__$4 = function __vue_render__() {
       "icon-name": "error",
       "icon-size": "25px"
     }
-  }, [_vm._v("\n      Failed to load comments\n    ")]) : _vm.loading ? _c('VssueStatus', {
+  }, [_vm._v("\n      Failed to load comments\n    ")]) : _vm.requireLogin ? _c('VssueStatus', {
+    key: "requie-login"
+  }, [_vm._v("\n      Login to view comments\n    ")]) : _vm.loading ? _c('VssueStatus', {
     key: "loading",
     attrs: {
       "icon-name": "loading"
     }
-  }, [_vm._v("\n      Loading comments...\n    ")]) : _vm.requireLogin ? _c('VssueStatus', {
-    key: "requie-login"
-  }, [_vm._v("\n      Login to view comments\n    ")]) : _c('div', {
+  }, [_vm._v("\n      Loading comments...\n    ")]) : _c('div', {
     key: "comments-list",
     staticClass: "vssue-comments-list"
   }, [_c('TransitionFade', {
@@ -3469,6 +3469,17 @@ var script$8 = {
     return {
       newComment: ''
     };
+  },
+  methods: {
+    add: function add(str) {
+      this.newComment = this.newComment.concat(str);
+    },
+    focus: function focus() {
+      this.$refs.newCommentInput.focus();
+    },
+    reset: function reset() {
+      this.newComment = '';
+    }
   }
 };
 
@@ -3928,11 +3939,9 @@ var script$a = {
               _context.prev = 12;
               _context.t0 = _context["catch"](0);
 
-              // login is required for some platform
-              if (_context.t0.response) {
-                if ([401, 403].includes(_context.t0.response.status)) {
-                  this.isLoginRequired = true;
-                }
+              if (_context.t0.response && [401, 403].includes(_context.t0.response.status)) {
+                // in some cases, require login to load comments
+                this.isLoginRequired = true;
               } else {
                 this.isFailed = true;
               }
@@ -4103,7 +4112,7 @@ var script$a = {
 
               case 7:
                 // reset the input comment
-                this.newComment = '';
+                this.$refs.newComment.reset();
                 _context4.next = 14;
                 break;
 
@@ -4179,8 +4188,8 @@ var script$a = {
     replyToComment: function replyToComment(comment) {
       var quotedComment = comment.contentRaw.replace(/\n/g, '\n> ');
       var replyContent = "@".concat(comment.author.username, "\n\n> ").concat(quotedComment, "\n\n");
-      this.newComment = this.newComment.concat(replyContent);
-      this.$refs.newCommentInput.focus();
+      this.$refs.newComment.add(replyContent);
+      this.$refs.newComment.focus();
     },
 
     /**
@@ -4331,6 +4340,7 @@ var __vue_render__$9 = function __vue_render__() {
   }, [_vm._v("\n      Initializing...\n    ")]) : _c('div', {
     key: "initialized"
   }, [_c('VssueNewComment', {
+    ref: "newComment",
     attrs: {
       "loading": _vm.isCreatingComment,
       "platform": _vm.vssueAPI.platform,
@@ -4398,7 +4408,7 @@ var VssueComponent = __vue_normalize__$a({
   staticRenderFns: __vue_staticRenderFns__$9
 }, __vue_inject_styles__$a, __vue_script__$a, __vue_scope_id__$a, __vue_is_functional_template__$a, __vue_module_identifier__$a, undefined, undefined);
 
-var version = "0.1.1";
+var version = "0.1.2";
 var Vssue = {
     get version() {
         return version;
