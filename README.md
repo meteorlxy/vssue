@@ -17,7 +17,7 @@ Vssue is still a WIP, with some possible enhancement todo:
 - [ ] Comments Editable
 - [ ] Comments Deletable
 - [ ] Comments Pagination
-- [ ] Comments Reactions
+- [x] Comments Reactions
 
 ## LICENSE
 
