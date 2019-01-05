@@ -6,6 +6,7 @@ import {
 
 import axios, {
   AxiosInstance,
+  AxiosRequestConfig,
 } from 'axios'
 
 import {
@@ -124,12 +125,19 @@ export default class GitlabV4 implements VssueAPI {
   }
 
   async getIssues ({ accessToken }) {
-    const response = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues`, {
+    const options: AxiosRequestConfig = {
       params: {
         labels: this.labels,
+        // to avoid caching
+        timestamp: Date.now(),
       },
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-    })
+    }
+    if (accessToken) {
+      options.headers = {
+        'Authorization': `Bearer ${accessToken}`,
+      }
+    }
+    const response = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues`, options)
     const issues = response.data
     return issues.map(normalizeIssue)
   }
@@ -138,11 +146,18 @@ export default class GitlabV4 implements VssueAPI {
     issueId,
     accessToken,
   }) {
-    const response = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes`, {
+    const options: AxiosRequestConfig = {
       params: {
+        // to avoid caching
+        timestamp: Date.now(),
       },
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-    })
+    }
+    if (accessToken) {
+      options.headers = {
+        'Authorization': `Bearer ${accessToken}`,
+      }
+    }
+    const response = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes`, options)
     const comments = response.data
 
     const getCommentsMeta: Array<Promise<void>> = []
