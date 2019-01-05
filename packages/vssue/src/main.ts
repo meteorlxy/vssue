@@ -1,6 +1,6 @@
 import {
   Vssue as VssuePlugin,
-  VssueUseOptions,
+  VssueOptions,
 } from 'vssue'
 
 import VssueComponent from './Vssue.vue'
@@ -12,7 +12,7 @@ const Vssue: VssuePlugin = {
     return version
   },
 
-  install (Vue, options?: VssueUseOptions) {
+  install (Vue, options?: VssueOptions) {
     if (Vue.prototype.$vssue) {
       return false
     }

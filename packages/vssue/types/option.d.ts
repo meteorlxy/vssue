@@ -1,24 +1,26 @@
 import { VssueAPIContructor } from './api'
 
 export interface VssueOptions {
-  baseURL?: string
-  labels?: string
-  state?: string
+  api?: VssueAPIContructor
   owner?: string
   repo?: string
   clientId?: string
   clientSecret?: string
+
+  baseURL?: string
+  state?: string
+  labels?: string
+  prefix?: string
+  admins?: Array<string>
 }
 
-export interface VssueAPIOptions extends VssueOptions {
+export interface VssueAPIOptions {
   owner: string
   repo: string
   clientId: string
   clientSecret: string
-  labels: string
-  state: string
-}
 
-export interface VssueUseOptions extends VssueOptions {
-  api: VssueAPIContructor
+  baseURL?: string
+  state: string
+  labels: string
 }

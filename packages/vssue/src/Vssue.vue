@@ -141,6 +141,7 @@ export default {
         labels: 'Vssue',
         state: 'Vssue',
         prefix: '[Vssue]',
+        admins: [],
       }, this.$vssue.options, this.options)
     },
 

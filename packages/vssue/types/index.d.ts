@@ -9,7 +9,6 @@ export {
 export {
   VssueOptions,
   VssueAPIOptions,
-  VssueUseOptions,
 } from './option'
 
 export {
