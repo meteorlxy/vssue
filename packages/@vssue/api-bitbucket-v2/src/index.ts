@@ -5,6 +5,7 @@ import {
 
 import axios, {
   AxiosInstance,
+  AxiosRequestConfig,
 } from 'axios'
 
 import {
@@ -115,31 +116,39 @@ export default class BitbucketV2 implements VssueAPI {
     return normalizeUser(user)
   }
 
-  async getIssues () {
-    const response = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues`, {
+  async getIssues ({ accessToken }) {
+    const options: AxiosRequestConfig = {
       params: {
         // to avoid caching
         timestamp: Date.now(),
       },
-    })
+    }
+    if (accessToken) {
+      options.headers = {
+        'Authorization': `Bearer ${accessToken}`,
+      }
+    }
+    const response = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues`, options)
     const issues = response.data.values
     return issues.map(normalizeIssue)
   }
 
-  async getComments ({ issueId }) {
-    const response = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
+  async getComments ({
+    issueId,
+    accessToken,
+  }) {
+    const options: AxiosRequestConfig = {
       params: {
         // to avoid caching
         timestamp: Date.now(),
       },
-      headers: {
-        'Accept': [
-          'application/vnd.github.v3.raw+json',
-          'application/vnd.github.v3.html+json',
-          'application/vnd.github.squirrel-girl-preview',
-        ],
-      },
-    })
+    }
+    if (accessToken) {
+      options.headers = {
+        'Authorization': `Bearer ${accessToken}`,
+      }
+    }
+    const response = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
     const comments = response.data.values
     return comments.map(normalizeComment)
   }
