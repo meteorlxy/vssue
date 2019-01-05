@@ -1603,10 +1603,10 @@
   dependencies:
     cross-spawn "^6.0.5"
 
-"@vuepress/plugin-medium-zoom@^1.0.0-alpha.0":
-  version "1.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@vuepress/plugin-medium-zoom/-/plugin-medium-zoom-1.0.0-alpha.0.tgz#efb6bd10d41c64161e3e25d6108fe527ebd4abad"
-  integrity sha512-yAvRhoMRH0OSKqYna/fvfxgFQ6kp/8AmdrPiZRB2POGbHcP+I6igoqAlxGO+5h9l25e94XGwoCTFTJu8m2uuCw==
+"@vuepress/plugin-medium-zoom@^1.0.0-alpha.30":
+  version "1.0.0-alpha.30"
+  resolved "https://registry.yarnpkg.com/@vuepress/plugin-medium-zoom/-/plugin-medium-zoom-1.0.0-alpha.30.tgz#b72c6d488d3429be1d4c88b3cbbe5335e62acac0"
+  integrity sha512-chNsKbmWe/AHciFnN8Qd2S/8DoRayjqg98xkT22qaN4y6WEWT8SZKHX5LpLV1DKw2S74FR4RGOEPQUwN/FjCjg==
   dependencies:
     medium-zoom "^0.4.0"
 
@@ -8326,6 +8326,11 @@ markdown-it-anchor@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/markdown-it-anchor/-/markdown-it-anchor-5.0.2.tgz#cdd917a05b7bf92fb736a6dae3385c6d0d0fa552"
   integrity sha512-AFM/woBI8QDJMS/9+MmsBMT5/AR+ImfOsunQZTZhzcTmna3rIzAzbOh5E0l6mlFM/i9666BpUtkqQ9bS7WApCg==
+
+markdown-it-center-text@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/markdown-it-center-text/-/markdown-it-center-text-1.0.4.tgz#4e7f907b6539b62a6200fead50aebed587734b3c"
+  integrity sha512-7AA0gek4FYJ6gWB2kdGNx06k3GrlO97nEMY7uovQ70/6MtfqPznrgnKoWO3V4p36m3RT5GeQIFXqBH9Wr4iL/g==
 
 markdown-it-chain@^1.3.0:
   version "1.3.0"

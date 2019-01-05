@@ -16,6 +16,10 @@ module.exports = {
     ['link', { rel: 'icon', href: `/logo.png` }],
   ],
 
+  markdown: {
+    extendMarkdown: md => md.use(require('markdown-it-center-text')),
+  },
+
   themeConfig: {
     repo: 'meteorlxy/vssue',
 
@@ -65,21 +69,21 @@ module.exports = {
     },
   },
 
-  plugins: {
-    '@vuepress/plugin-back-to-top': true,
-    '@vuepress/medium-zoom': true,
-    '@vuepress/plugin-pwa': {
+  plugins: [
+    '@vuepress/plugin-back-to-top',
+    '@vuepress/medium-zoom',
+    ['@vuepress/plugin-pwa', {
       serviceWorker: true,
       updatePopup: true,
-    },
-    '@vssue/vuepress-plugin-vssue': {
+    }],
+    ['@vssue/vuepress-plugin-vssue', {
       platform: 'github',
       owner: 'meteorlxy',
       repo: 'vssue',
       clientId: 'a1097b7751127c6d1194',
       clientSecret: '5c95e2f890b6a2b80dbda17656e9b1db9e87a07b',
-    },
-  },
+    }],
+  ],
 }
 
 function sidebarGuide (titleGuide, titleOAuthApp) {

@@ -10,10 +10,9 @@
     "@vssue/api-github-v3": "^0.1.2",
     "@vssue/vuepress-plugin-vssue": "^0.1.2",
     "@vuepress/plugin-back-to-top": "^1.0.0-alpha.30",
+    "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.30",
     "@vuepress/plugin-pwa": "^1.0.0-alpha.30",
+    "markdown-it-center-text": "^1.0.4",
     "vuepress": "^1.0.0-alpha.30"
-  },
-  "devDependencies": {
-    "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.0"
   }
 }
