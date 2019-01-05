@@ -2,15 +2,14 @@
 
 ## Create a new OAuth App
 
-Go to [Settings - Developer Settings - OAuth Apps](https://github.com/settings/developers), and click [New OAuth App](https://github.com/settings/applications/new)
+- Go to [Settings - Developer Settings - OAuth Apps](https://github.com/settings/developers)
+- Click [New OAuth App](https://github.com/settings/applications/new)
 
 ![Set up OAuth App - Github 01](/assets/img/oauth-app-github-01.png)
 ![Set up OAuth App - Github 02](/assets/img/oauth-app-github-02.png)
 ![Set up OAuth App - Github 03](/assets/img/oauth-app-github-03.png)
 
-Set the `Homepage URL` and `Authorization callback URL` to your website URL.
-
-Here we take `localhost:8080` for development example.
+- Set the `Homepage URL` and `Authorization callback URL` to your website URL (Here we take `localhost:8080` for example)
 
 ![Set up OAuth App - Github 04](/assets/img/oauth-app-github-04.png)
 
