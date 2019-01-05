@@ -1,6 +1,6 @@
 {
   "name": "vssue",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A vue-powered issue-based comment plugin",
   "license": "MIT",
   "main": "dist/vssue.common.js",
@@ -37,9 +37,9 @@
     "vue": "^2.5.21"
   },
   "optionalDependencies": {
-    "@vssue/api-bitbucket-v2": "^0.1.2",
-    "@vssue/api-github-v3": "^0.1.2",
-    "@vssue/api-gitlab-v4": "^0.1.2"
+    "@vssue/api-bitbucket-v2": "^0.1.5",
+    "@vssue/api-github-v3": "^0.1.5",
+    "@vssue/api-gitlab-v4": "^0.1.5"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
