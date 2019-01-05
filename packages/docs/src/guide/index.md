@@ -37,7 +37,7 @@ Vssue will request the platform for users' `token` with `code`, and store `token
 
 Then Vssue could get the user's info and get the comments of this page. And users could post comments, too.
 
-## Comparation with similar projects
+## Comparison with similar projects
 
 __Vssue__ is inspired by [__Gitment__](https://github.com/imsun/gitment) and [__Gitalk__](https://github.com/gitalk/gitalk), with some differences:
 
