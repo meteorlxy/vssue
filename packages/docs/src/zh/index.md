@@ -9,10 +9,8 @@ features:
 - title: 多平台
   details: 支持多个代码托管平台，包括 GitHub, GitLab 和 BitBucket。
 - title: 基于Vue
-  details: 可以作为 Vue 插件使用，也可以作为 Vue 组件引入。
+  details: 可以作为 Vue 插件使用，轻松集成到你的 Vue 应用中。
 footer: MIT Licensed | Vssue
 ---
 
-<ClientOnly>
-  <VssueDemo/>
-</ClientOnly>
+<Vssue title="Vssue" />

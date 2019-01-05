@@ -9,10 +9,8 @@ features:
 - title: Multi-platform
   details: Support multiple code hosting services, including GitHub, GitLab and BitBucket.
 - title: Use Vue
-  details: Use Vssue as a Vue plugin, or import it as a Vue component.
+  details: Use Vssue as a Vue plugin, and can be integrated in your Vue App easily.
 footer: MIT Licensed | Vssue
 ---
 
-<ClientOnly>
-  <VssueDemo/>
-</ClientOnly>
+<Vssue title="Vssue" />
