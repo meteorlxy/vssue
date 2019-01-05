@@ -37,6 +37,7 @@
         key="initialized"
       >
         <VssueNewComment
+          ref="newComment"
           :loading="isCreatingComment"
           :platform="vssueAPI.platform"
           :user="user"
@@ -213,11 +214,9 @@ export default {
 
       this.hasLoadedComments = true
     } catch (e) {
-      // login is required for some platform
-      if (e.response) {
-        if ([401, 403].includes(e.response.status)) {
-          this.isLoginRequired = true
-        }
+      if (e.response && [401, 403].includes(e.response.status)) {
+        // in some cases, require login to load comments
+        this.isLoginRequired = true
       } else {
         this.isFailed = true
       }
@@ -294,7 +293,7 @@ export default {
         await this.getComments()
 
         // reset the input comment
-        this.newComment = ''
+        this.$refs.newComment.reset()
       } catch (e) {
         console.error(e)
         throw Error('Failed to create comment')
@@ -322,8 +321,8 @@ export default {
     replyToComment (comment) {
       const quotedComment = comment.contentRaw.replace(/\n/g, '\n> ')
       const replyContent = `@${comment.author.username}\n\n> ${quotedComment}\n\n`
-      this.newComment = this.newComment.concat(replyContent)
-      this.$refs.newCommentInput.focus()
+      this.$refs.newComment.add(replyContent)
+      this.$refs.newComment.focus()
     },
 
     /**

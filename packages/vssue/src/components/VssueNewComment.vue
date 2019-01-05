@@ -119,5 +119,19 @@ export default {
       newComment: '',
     }
   },
+
+  methods: {
+    add (str) {
+      this.newComment = this.newComment.concat(str)
+    },
+
+    focus () {
+      this.$refs.newCommentInput.focus()
+    },
+
+    reset () {
+      this.newComment = ''
+    },
+  },
 }
 </script>

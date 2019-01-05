@@ -11,18 +11,18 @@
       </VssueStatus>
 
       <VssueStatus
+        v-else-if="requireLogin"
+        key="requie-login"
+      >
+        Login to view comments
+      </VssueStatus>
+
+      <VssueStatus
         v-else-if="loading"
         key="loading"
         icon-name="loading"
       >
         Loading comments...
-      </VssueStatus>
-
-      <VssueStatus
-        v-else-if="requireLogin"
-        key="requie-login"
-      >
-        Login to view comments
       </VssueStatus>
 
       <div
