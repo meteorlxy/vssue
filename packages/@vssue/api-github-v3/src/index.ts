@@ -120,7 +120,7 @@ export default class GithubV3 implements VssueAPI {
        * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github
        */
       // redirect_uri: window.location.href,
-      // state: this.state
+      // state: this.state,
     }, {
       headers: {
         'Accept': 'application/json',
@@ -157,7 +157,7 @@ export default class GithubV3 implements VssueAPI {
   }
 
   async getComments ({ issueId, accessToken }) {
-    const options = {
+    const options: AxiosRequestConfig = {
       params: {
         // to avoid caching
         timestamp: Date.now(),
