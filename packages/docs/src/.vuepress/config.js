@@ -76,7 +76,13 @@ module.exports = {
       serviceWorker: true,
       updatePopup: true,
     }],
-    '@vssue/vuepress-plugin-vssue',
+    ['@vssue/vuepress-plugin-vssue', {
+      platform: 'github',
+      owner: 'meteorlxy',
+      repo: 'vssue',
+      clientId: 'a1097b7751127c6d1194',
+      clientSecret: '5c95e2f890b6a2b80dbda17656e9b1db9e87a07b',
+    }],
   ],
 }
 
