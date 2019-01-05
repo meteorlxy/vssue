@@ -94,7 +94,7 @@ function sidebarGuide (titleGuide, titleOAuthApp) {
       children: [
         '',
         'getting-started',
-        'integration-with-vuepress',
+        'vuepress',
       ],
     },
     {
