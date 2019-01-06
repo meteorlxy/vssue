@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <svg v-show="false">
     <symbol
       id="icon-bitbucket"

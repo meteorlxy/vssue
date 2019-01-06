@@ -1,17 +1,22 @@
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import Vue, { VueConstructor } from 'vue'
 
-@Component
-export default class TransitionFade extends Vue {
-  @Prop({
-    type: Boolean,
-    required: false,
-    default: false,
-  }) group!: boolean
+export default Vue.extend({
+  name: 'TransitionFade',
 
-  render (h) {
+  functional: true,
+
+  props: {
+    group: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
+
+  render (h, { props, children }) {
     return h(
-      this.group ? 'TransitionGroup' : 'Transition',
+      props.group ? 'TransitionGroup' : 'Transition',
       {
         props: {
           name: 'fade',
@@ -19,8 +24,8 @@ export default class TransitionFade extends Vue {
           appear: true,
         },
       },
-      this.$slots.default,
+      children,
     )
-  }
-}
+  },
+})
 </script>
