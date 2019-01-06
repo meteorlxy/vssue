@@ -34,7 +34,7 @@ module.exports = [
     format: 'umd',
   },
   {
-    input: 'main.ts',
+    input: 'main.common.ts',
     output: 'vssue.common.js',
     format: 'cjs',
   },
