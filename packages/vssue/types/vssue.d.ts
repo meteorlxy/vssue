@@ -1,23 +1,20 @@
-import Vue, { PluginObject, Component } from 'vue'
+import Vue, { PluginObject } from 'vue'
 import { VssueAPI } from './api'
 import { VssueOptions } from './option'
 
-export interface Vssue extends PluginObject<VssueOptions> {
+export interface VssuePlugin extends PluginObject<VssueOptions> {
   readonly version: string
-  VssueComponent: Component
+  Vssue: typeof Vue
 }
 
-export interface VssueObject extends Vue {
-  readonly version: string
-  options: VssueOptions
+export interface VssueStore extends Vue {
+  options: Partial<VssueOptions>
 }
 
-declare module 'vue/type/vue' {
-  interface Vue {
-    $vssue: VssueObject
+declare module 'vue/types/vue' {
+  export interface Vue {
+    $vssue?: VssueStore
   }
 }
 
-declare const Vssue: Vssue
-
-export default Vssue
+export default VssuePlugin

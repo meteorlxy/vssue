@@ -34,48 +34,48 @@ export interface VssueAPI {
 
   redirectAuthorize (): void
 
-  handleAuthorize (): void
+  handleAuthorize (): Promise<string | null>
 
   getAccessToken (options: {
     code: string
   }): Promise<string>
 
   getUser (options: {
-    accessToken: string
+    accessToken: string | null
   }): Promise<User>
 
   getIssues (options?: {
-    accessToken: string
+    accessToken?: string | null
   }): Promise<Array<Issue>>
 
   getComments (options: {
     issueId: string
-    accessToken?: string
+    accessToken?: string | null
   }): Promise<Array<Comment>>
 
   createIssue (options: {
     title: string
     content: string
-    accessToken: string
+    accessToken: string | null
   }): any
 
   createIssueComment (options: {
     issueId: string
     content: string
-    accessToken: string
+    accessToken: string | null
   }): any
 
   createIssueReaction (options: {
     issueId: string
     reaction: string
-    accessToken: string
+    accessToken: string | null
   }): any
 
   createCommentReaction (options: {
     issueId: string
     commentId: string
     reaction: string
-    accessToken: string
+    accessToken: string | null
   }): any
 }
 

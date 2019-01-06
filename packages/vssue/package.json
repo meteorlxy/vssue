@@ -34,7 +34,8 @@
   "dependencies": {
     "@vssue/utils": "^0.1.2",
     "github-markdown-css": "^2.10.0",
-    "vue": "^2.5.21"
+    "vue": "^2.5.21",
+    "vue-property-decorator": "^7.2.0"
   },
   "optionalDependencies": {
     "@vssue/api-bitbucket-v2": "^0.1.5",

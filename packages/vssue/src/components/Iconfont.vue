@@ -1,4 +1,4 @@
-VssueIconfont<template>
+<template>
   <svg v-show="false">
     <symbol
       id="icon-bitbucket"
@@ -66,8 +66,10 @@ VssueIconfont<template>
   </svg>
 </template>
 
-<script>
-export default {
-  name: 'Iconfont',
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator'
+
+@Component
+export default class Iconfont extends Vue {
 }
 </script>

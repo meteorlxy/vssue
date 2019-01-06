@@ -66,48 +66,45 @@
   </div>
 </template>
 
-<script>
-import VssueIcon from './VssueIcon.vue'
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Comment, User } from 'vssue'
 import { formatDateTime } from '@vssue/utils'
+import VssueIcon from './VssueIcon.vue'
 
-export default {
-  name: 'VssueComment',
-
+@Component({
   components: {
     VssueIcon,
   },
+})
+export default class VssueComment extends Vue {
+  @Prop({
+    type: Object,
+    required: true,
+  }) comment!: Comment
 
-  props: {
-    comment: {
-      type: Object,
-      required: true,
-    },
-  },
+  get content (): string {
+    return this.comment.content
+  }
 
-  computed: {
-    content () {
-      return this.comment.content
-    },
+  get contentRaw (): string {
+    return this.comment.contentRaw
+  }
 
-    contentRaw () {
-      return this.comment.contentRaw
-    },
+  get author (): User {
+    return this.comment.author
+  }
 
-    author () {
-      return this.comment.author
-    },
+  get createdAt (): string {
+    return formatDateTime(this.comment.createdAt)
+  }
 
-    createdAt () {
-      return formatDateTime(this.comment.createdAt)
-    },
+  get updatedAt (): string {
+    return formatDateTime(this.comment.updatedAt)
+  }
 
-    updatedAt () {
-      return formatDateTime(this.comment.updatedAt)
-    },
-
-    showReactions () {
-      return Boolean(this.comment.reactions)
-    },
-  },
+  get showReactions (): boolean {
+    return Boolean(this.comment.reactions)
+  }
 }
 </script>

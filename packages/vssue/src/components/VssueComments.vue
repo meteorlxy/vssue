@@ -44,40 +44,39 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Comment } from 'vssue'
 import TransitionFade from './TransitionFade.vue'
 import VssueComment from './VssueComment.vue'
 import VssueStatus from './VssueStatus.vue'
 
-export default {
-  name: 'VssueComments',
-
+@Component({
   components: {
     TransitionFade,
     VssueComment,
     VssueStatus,
   },
+})
+export default class VssueComments extends Vue {
+  @Prop({
+    type: Array,
+    required: true,
+  }) comments!: Array<Comment>
 
-  props: {
-    comments: {
-      type: Array,
-      required: true,
-    },
+  @Prop({
+    type: Boolean,
+    required: true,
+  }) failed!: boolean
 
-    failed: {
-      type: Boolean,
-      required: true,
-    },
+  @Prop({
+    type: Boolean,
+    required: true,
+  }) loading!: boolean
 
-    loading: {
-      type: Boolean,
-      required: true,
-    },
-
-    requireLogin: {
-      type: Boolean,
-      required: true,
-    },
-  },
+  @Prop({
+    type: Boolean,
+    required: true,
+  }) requireLogin!: boolean
 }
 </script>

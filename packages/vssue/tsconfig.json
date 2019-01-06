@@ -3,11 +3,10 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "declaration": false,
-    "allowJs": true,
-    "checkJs": false
+    "declaration": false
   },
   "include": [
-    "./src"
+    "src/**/*.ts",
+    "src/**/*.vue",
   ],
 }

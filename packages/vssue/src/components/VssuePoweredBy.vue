@@ -17,14 +17,16 @@
     <a
       href="https://vssue.js.org"
       target="_blank"
-      :title="`Vssue v${$vssue.version}`"
+      :title="`Vssue v${vssueVersion}`"
     >
       Vssue
     </a>
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+
 const platforms = {
   'github': {
     name: 'GitHub',
@@ -40,27 +42,26 @@ const platforms = {
   },
 }
 
-export default {
-  name: 'VssuePoweredBy',
+@Component
+export default class VssuePoweredBy extends Vue {
+  @Prop({
+    type: String,
+    required: false,
+    default: null,
+  }) platform!: string | null
 
-  props: {
-    platform: {
-      type: String,
-      required: false,
-      default: null,
-    },
+  @Prop({
+    type: String,
+    required: false,
+    default: null,
+  }) version!: string | null
 
-    version: {
-      type: String,
-      required: false,
-      default: null,
-    },
-  },
+  get platformInfo (): any {
+    return this.platform ? platforms[this.platform] : {}
+  }
 
-  computed: {
-    platformInfo () {
-      return this.platform ? platforms[this.platform] : {}
-    },
-  },
+  get vssueVersion (): string {
+    return <string>process.env.VUE_APP_VERSION
+  }
 }
 </script>

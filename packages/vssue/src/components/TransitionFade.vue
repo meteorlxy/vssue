@@ -1,14 +1,13 @@
-<script>
-export default {
-  name: 'TransitionFade',
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
-  props: {
-    group: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-  },
+@Component
+export default class TransitionFade extends Vue {
+  @Prop({
+    type: Boolean,
+    required: false,
+    default: false,
+  }) group!: boolean
 
   render (h) {
     return h(
@@ -22,6 +21,6 @@ export default {
       },
       this.$slots.default,
     )
-  },
+  }
 }
 </script>

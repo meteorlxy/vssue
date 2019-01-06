@@ -82,56 +82,49 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { User } from 'vssue'
 import VssueButton from './VssueButton.vue'
 import VssueIcon from './VssueIcon.vue'
 import VssueNewCommentInput from './VssueNewCommentInput.vue'
 
-export default {
-  name: 'VssueNewComment',
-
+@Component({
   components: {
     VssueButton,
     VssueIcon,
     VssueNewCommentInput,
   },
+})
+export default class VssueNewComment extends Vue {
+  @Prop({
+    type: Boolean,
+    required: true,
+  }) loading!: boolean
 
-  props: {
-    loading: {
-      type: Boolean,
-      required: true,
-    },
+  @Prop({
+    type: String,
+    required: true,
+  }) platform!: string
 
-    platform: {
-      type: String,
-      required: true,
-    },
+  @Prop({
+    type: Object,
+    required: false,
+    default: null,
+  }) user!: User | null
 
-    user: {
-      type: Object,
-      required: false,
-      default: null,
-    },
-  },
+  newComment: string = ''
 
-  data () {
-    return {
-      newComment: '',
-    }
-  },
+  add (str: string): void {
+    this.newComment = this.newComment.concat(str)
+  }
 
-  methods: {
-    add (str) {
-      this.newComment = this.newComment.concat(str)
-    },
+  focus (this: any): void {
+    this.$refs.newCommentInput.focus()
+  }
 
-    focus () {
-      this.$refs.newCommentInput.focus()
-    },
-
-    reset () {
-      this.newComment = ''
-    },
-  },
+  reset (): void {
+    this.newComment = ''
+  }
 }
 </script>

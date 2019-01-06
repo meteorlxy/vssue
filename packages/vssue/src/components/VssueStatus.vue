@@ -12,28 +12,26 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
 import VssueIcon from './VssueIcon.vue'
 
-export default {
-  name: 'VssueStatus',
-
+@Component({
   components: {
     VssueIcon,
   },
+})
+export default class VssueStatus extends Vue {
+  @Prop({
+    type: String,
+    required: false,
+    default: null,
+  }) iconName!: string | null
 
-  props: {
-    iconName: {
-      type: String,
-      required: false,
-      default: null,
-    },
-
-    iconSize: {
-      type: String,
-      required: false,
-      default: '20px',
-    },
-  },
+  @Prop({
+    type: String,
+    required: false,
+    default: '20px',
+  }) iconSize!: string
 }
 </script>

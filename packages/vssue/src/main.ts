@@ -1,34 +1,35 @@
 import {
-  Vssue as VssuePlugin,
+  VssuePlugin,
   VssueOptions,
+  VssueStore,
 } from 'vssue'
 
 import VssueComponent from './Vssue.vue'
 
-const version = <string>process.env.VUE_APP_VERSION
-
 const Vssue: VssuePlugin = {
   get version () {
-    return version
+    return <string>process.env.VUE_APP_VERSION
   },
 
-  install (Vue, options?: VssueOptions) {
+  install (Vue, options?: Partial<VssueOptions>) {
     if (Vue.prototype.$vssue) {
       return false
     }
 
-    const vssue = new Vue({
+    const store: VssueStore = new Vue({
       data: {
-        version,
         options,
       },
     })
 
-    Vue.prototype.$vssue = vssue
+    Vue.prototype.$vssue = store
     Vue.component('Vssue', VssueComponent)
   },
 
-  VssueComponent,
+  Vssue: VssueComponent,
 }
 
-export default Vssue
+export {
+  Vssue as default,
+  VssueComponent as Vssue,
+}

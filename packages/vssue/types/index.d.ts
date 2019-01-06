@@ -1,9 +1,9 @@
-import Vssue from './vssue'
-export default Vssue
+import Vue from 'vue'
+import VssuePlugin from './vssue'
 
 export {
-  Vssue,
-  VssueObject,
+  VssuePlugin,
+  VssueStore,
 } from './vssue'
 
 export {
@@ -19,3 +19,9 @@ export {
   VssueAPI,
   VssueAPIContructor,
 } from './api'
+
+declare const Vssue: typeof Vue
+declare const VssuePluginInstance: VssuePlugin
+
+export { Vssue }
+export default VssuePluginInstance

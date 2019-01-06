@@ -8,28 +8,25 @@
   </button>
 </template>
 
-<script>
-export default {
-  name: 'VssueButton',
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
-  props: {
-    disabled: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
+@Component
+export default class VssueButton extends Vue {
+  @Prop({
+    type: Boolean,
+    required: false,
+    default: false,
+  }) disabled!: boolean
 
-    type: {
-      type: String,
-      required: false,
-      default: 'default',
-    },
-  },
+  @Prop({
+    type: String,
+    required: false,
+    default: 'default',
+  }) type!: string
 
-  computed: {
-    buttonClass () {
-      return `vssue-button-${this.type}`
-    },
-  },
+  get buttonClass (): string {
+    return `vssue-button-${this.type}`
+  }
 }
 </script>

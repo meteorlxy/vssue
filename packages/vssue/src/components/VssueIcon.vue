@@ -11,50 +11,47 @@
   </svg>
 </template>
 
-<script>
-export default {
-  name: 'VssueIcon',
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
 
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
+@Component
+export default class VssueIcon extends Vue {
+  @Prop({
+    type: String,
+    required: true,
+  }) name!: string
 
-    size: {
-      type: String,
-      required: false,
-      default: '1em',
-    },
+  @Prop({
+    type: String,
+    required: false,
+    default: '1em',
+  }) size!: string
 
-    color: {
-      type: String,
-      required: false,
-      default: null,
-    },
+  @Prop({
+    type: String,
+    required: false,
+    default: null,
+  }) color!: string | null
 
-    title: {
-      type: String,
-      required: false,
-      default: null,
-    },
-  },
+  @Prop({
+    type: String,
+    required: false,
+    default: null,
+  }) title!: string | null
 
-  computed: {
-    iconClass () {
-      return `icon-${this.name}`
-    },
+  get iconClass (): string {
+    return `icon-${this.name}`
+  }
 
-    xlinkHref () {
-      return `#${this.iconClass}`
-    },
+  get xlinkHref (): string {
+    return `#${this.iconClass}`
+  }
 
-    iconStyle () {
-      return {
-        'font-size': this.size,
-        'fill': this.color,
-      }
-    },
-  },
+  get iconStyle (): any {
+    return {
+      'font-size': this.size,
+      'fill': this.color,
+    }
+  }
 }
 </script>
