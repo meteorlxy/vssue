@@ -13,15 +13,15 @@
 
 ->![Set up OAuth App - Github 04](/assets/img/oauth-app-github-04.png)<-
 
-## Get the Client ID and Secrect
+## Get the Client ID and Secret
 
-Then you've created a new OAuth App, and here is your `Client ID` and `Client Secrect`.
+Then you've created a new OAuth App, and here is your `Client ID` and `Client Secret`.
 
 ->![Set up OAuth App - Github 05](/assets/img/oauth-app-github-05.png)<-
 
 ## Config and start your Vssue
 
-Copy the `Client ID` and `Client Secrect`, and set `owner` and `repo`.
+Copy the `Client ID` and `Client Secret`, and set `owner` and `repo`.
 
 > The URL pattern of github repo is `https://github.com/${owner}/${repo}`
 

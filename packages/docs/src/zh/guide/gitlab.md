@@ -16,15 +16,15 @@
 
 ->![配置 OAuth App - Gitlab 03](/assets/img/oauth-app-gitlab-03.png)<-
 
-## 获取 Client ID 和 Secrect
+## 获取 Client ID 和 Secret
 
-现在你已经创建了一个新的 Application，并得到了相应的 __Application ID__ (`Client ID`) 和 __Secrect__ (`Client Secrect`)。
+现在你已经创建了一个新的 Application，并得到了相应的 __Application ID__ (`Client ID`) 和 __Secret__ (`Client Secret`)。
 
 ->![配置 OAuth App - Gitlab 04](/assets/img/oauth-app-gitlab-04.png)<-
 
 ## 配置并启动你的 Vssue
 
-复制 `Client ID` 和 `Client Secrect`，并设置 `owner` 和 `repo`。
+复制 `Client ID` 和 `Client Secret`，并设置 `owner` 和 `repo`。
 
 > Gitlab repository 的 URL 模式为 `https://gitlab.com/${owner}/${repo}`
 

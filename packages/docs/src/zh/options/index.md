@@ -104,7 +104,7 @@ Vue.use(Vssue, {
 - __类型__: `string`
 - __详细__:
 
-  在 [OAuth2 spec](https://tools.ietf.org/html/rfc6749#section-2.3.1) 中介绍的 `client_secrect`。
+  在 [OAuth2 spec](https://tools.ietf.org/html/rfc6749#section-2.3.1) 中介绍的 `client_secret`。
 
   它是由平台生成的 client 密钥。你在创建 OAuth App 之后就可以得到它。
 

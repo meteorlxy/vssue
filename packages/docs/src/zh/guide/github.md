@@ -13,15 +13,15 @@
 
 ->![配置 OAuth App - Github 04](/assets/img/oauth-app-github-04.png)<-
 
-## 获取 Client ID 和 Secrect
+## 获取 Client ID 和 Secret
 
-现在你已经创建了一个新的 OAuth App，并得到了相应的 `Client ID` 和 `Client Secrect`。
+现在你已经创建了一个新的 OAuth App，并得到了相应的 `Client ID` 和 `Client Secret`。
 
 ->![配置 OAuth App - Github 05](/assets/img/oauth-app-github-05.png)<-
 
 ## 配置并启动你的 Vssue
 
-复制 `Client ID` 和 `Client Secrect`, 并设置 `owner` 和 `repo`。
+复制 `Client ID` 和 `Client Secret`, 并设置 `owner` 和 `repo`。
 
 > Github repository 的 URL 模式为 `https://github.com/${owner}/${repo}`
 

@@ -16,15 +16,15 @@
 
 ->![Set up OAuth App - Gitlab 03](/assets/img/oauth-app-gitlab-03.png)<-
 
-## Get the Client ID and Secrect
+## Get the Client ID and Secret
 
-Then you've created a new Application, and here is your __Application ID__ (`Client ID`) and __Secrect__ (`Client Secrect`).
+Then you've created a new Application, and here is your __Application ID__ (`Client ID`) and __Secret__ (`Client Secret`).
 
 ->![Set up OAuth App - Gitlab 04](/assets/img/oauth-app-gitlab-04.png)<-
 
 ## Config and start your Vssue
 
-Copy the `Client ID` and `Client Secrect`, and set `owner` and `repo`.
+Copy the `Client ID` and `Client Secret`, and set `owner` and `repo`.
 
 > The URL pattern of gitlab repo is `https://gitlab.com/${owner}/${repo}`
 
