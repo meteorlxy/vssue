@@ -22,10 +22,14 @@
     </div><!-- .vssue-new-comment-avatar -->
 
     <div class="vssue-new-comment-body">
-      <VssueNewCommentInput
-        ref="newCommentInput"
+      <textarea
+        ref="input"
+        class="vssue-new-comment-input"
+        :rows="inputRows"
         :disabled="!user"
-        v-model="newComment"
+        :placeholder="user ? 'Leave a comment. Styling with Markdown is supported' : 'Login to leave a comment'"
+        :spellcheck="false"
+        v-model="content"
       />
     </div><!-- .vssue-new-comment-body -->
 
@@ -56,8 +60,8 @@
           v-if="user"
           class="vssue-button-submit-comment"
           type="primary"
-          :disabled="newComment === '' || loading"
-          @click="$emit('create-comment', { content: newComment })"
+          :disabled="content === '' || loading"
+          @click="$emit('create-comment', { content: content })"
         >
           <VssueIcon
             v-show="loading"
@@ -87,13 +91,11 @@ import { Vue, Component, Prop } from 'vue-property-decorator'
 import { User } from 'vssue'
 import VssueButton from './VssueButton.vue'
 import VssueIcon from './VssueIcon.vue'
-import VssueNewCommentInput from './VssueNewCommentInput.vue'
 
 @Component({
   components: {
     VssueButton,
     VssueIcon,
-    VssueNewCommentInput,
   },
 })
 export default class VssueNewComment extends Vue {
@@ -113,18 +115,26 @@ export default class VssueNewComment extends Vue {
     default: null,
   }) user!: User | null
 
-  newComment: string = ''
+  content: string = ''
+
+  get contentRows (): number {
+    return this.content.split('\n').length - 1
+  }
+
+  get inputRows (): number {
+    return this.contentRows < 3 ? 5 : this.contentRows + 2
+  }
 
   add (str: string): void {
-    this.newComment = this.newComment.concat(str)
+    this.content = this.content.concat(str)
   }
 
   focus (this: any): void {
-    this.$refs.newCommentInput.focus()
+    this.$refs.input.focus()
   }
 
   reset (): void {
-    this.newComment = ''
+    this.content = ''
   }
 }
 </script>
