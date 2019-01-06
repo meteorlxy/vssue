@@ -1,32 +1,31 @@
-<template>
-  <button
-    class="vssue-button"
-    :class="buttonClass"
-    :disabled="disabled"
-  >
-    <slot />
-  </button>
-</template>
-
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import Vue, { VueConstructor } from 'vue'
 
-@Component
-export default class VssueButton extends Vue {
-  @Prop({
-    type: Boolean,
-    required: false,
-    default: false,
-  }) disabled!: boolean
+export default Vue.extend({
+  name: 'VssueIcon',
 
-  @Prop({
-    type: String,
-    required: false,
-    default: 'default',
-  }) type!: string
+  functional: true,
 
-  get buttonClass (): string {
-    return `vssue-button-${this.type}`
-  }
-}
+  props: {
+    type: {
+      type: String,
+      required: false,
+      default: 'default',
+    },
+  },
+
+  render (h, { props, data, children }) {
+    return h(
+      'button',
+      {
+        ...data,
+        'class': [
+          'vssue-button',
+          `vssue-button-${props.type}`,
+        ],
+      },
+      children,
+    )
+  },
+})
 </script>

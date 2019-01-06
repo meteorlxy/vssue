@@ -1,57 +1,62 @@
-<template>
-  <svg
-    class="vssue-icon"
-    :class="iconClass"
-    :style="iconStyle"
-    aria-hidden="true"
-  >
-    <title v-text="title" />
-
-    <use :xlink:href="xlinkHref" />
-  </svg>
-</template>
-
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import Vue, { VueConstructor } from 'vue'
 
-@Component
-export default class VssueIcon extends Vue {
-  @Prop({
-    type: String,
-    required: true,
-  }) name!: string
+export default Vue.extend({
+  name: 'VssueIcon',
 
-  @Prop({
-    type: String,
-    required: false,
-    default: '1em',
-  }) size!: string
+  functional: true,
 
-  @Prop({
-    type: String,
-    required: false,
-    default: null,
-  }) color!: string | null
+  props: {
+    name: {
+      type: String,
+      required: true,
+    },
 
-  @Prop({
-    type: String,
-    required: false,
-    default: null,
-  }) title!: string | null
+    size: {
+      type: String,
+      required: false,
+      default: '1em',
+    },
 
-  get iconClass (): string {
-    return `icon-${this.name}`
-  }
+    color: {
+      type: String,
+      required: false,
+      default: null,
+    },
 
-  get xlinkHref (): string {
-    return `#${this.iconClass}`
-  }
+    title: {
+      type: String,
+      required: false,
+      default: null,
+    },
+  },
 
-  get iconStyle (): any {
-    return {
-      'font-size': this.size,
-      'fill': this.color,
-    }
-  }
-}
+  render (h, { props, data }) {
+    return h(
+      'svg',
+      {
+        ...data,
+        'class': [
+          'vssue-icon',
+          `icon-${props.name}`,
+        ],
+        style: {
+          'font-size': props.size,
+          'fill': props.color,
+        },
+        attrs: {
+          'aria-hidden': 'true',
+        },
+      },
+      [
+        h('title', props.title),
+        h('use', {
+          attrs: {
+            'xlink:href': `#icon-${props.name}`,
+          },
+        }),
+      ],
+    )
+  },
+})
 </script>

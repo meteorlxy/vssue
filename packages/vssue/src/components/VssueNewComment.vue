@@ -17,7 +17,7 @@
         size="50px"
         color="grey"
         style="padding: 5px; cursor: pointer;"
-        @click.native="$emit('login')"
+        @click="$emit('login')"
       />
     </div><!-- .vssue-new-comment-avatar -->
 
@@ -57,7 +57,7 @@
           class="vssue-button-submit-comment"
           type="primary"
           :disabled="newComment === '' || loading"
-          @click.native="$emit('create-comment', { content: newComment })"
+          @click="$emit('create-comment', { content: newComment })"
         >
           <VssueIcon
             v-show="loading"
@@ -73,7 +73,7 @@
           class="vssue-button-login"
           type="primary"
           :title="`Click to Login with ${platform}`"
-          @click.native="$emit('login')"
+          @click="$emit('login')"
         >
           Login
         </VssueButton>
