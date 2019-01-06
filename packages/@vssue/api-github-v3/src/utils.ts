@@ -36,7 +36,7 @@ export function normalizeComment (comment: any): Comment {
 export function normalizeReactions (reactions: any): Reactions {
   return {
     like: reactions['+1'],
-    unlike: reactions['+1'],
+    unlike: reactions['-1'],
     heart: reactions['heart'],
   }
 }
