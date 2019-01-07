@@ -2979,7 +2979,7 @@ var VssuePoweredBy = /** @class */ (function (_super) {
     });
     Object.defineProperty(VssuePoweredBy.prototype, "vssueVersion", {
         get: function () {
-            return "0.1.6";
+            return "0.1.8";
         },
         enumerable: true,
         configurable: true
@@ -3604,7 +3604,7 @@ var VssueComponent = __vue_normalize__$9({
 
 var Vssue$1 = {
     get version() {
-        return "0.1.6";
+        return "0.1.8";
     },
     install: function (Vue$$1, options) {
         if (Vue$$1.prototype.$vssue) {
