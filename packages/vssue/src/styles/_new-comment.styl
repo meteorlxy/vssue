@@ -1,5 +1,5 @@
 .vssue-new-comment
-  border-bottom 1px solid $borderColor
+  border-bottom 1px solid $vssue-border-color
   margin-top 10px
   margin-bottom 10px
   .vssue-comment-avatar
@@ -11,9 +11,9 @@
       height 50px
   .vssue-new-comment-body
     position relative
-    @media screen and (max-width $breakpointMobile)
+    @media screen and (max-width $vssue-breakpoint-mobile)
       margin-left 60px
-    @media screen and (min-width $breakpointMobile + 1px)
+    @media screen and (min-width $vssue-breakpoint-mobile + 1px)
       margin-left 70px
     .vssue-new-comment-loading
       position absolute
@@ -27,18 +27,18 @@
     margin-bottom 10px
 
     .vssue-current-user
-      color $textLightColor
+      color $vssue-text-light-color
       .vssue-logout
         cursor pointer
         text-decoration underline
-        color $textLightColor
+        color $vssue-text-light-color
         font-weight normal
 
-    @media screen and (max-width $breakpointMobile)
+    @media screen and (max-width $vssue-breakpoint-mobile)
       text-align center
       .vssue-new-comment-operations
         margin-top 10px
-    @media screen and (min-width $breakpointMobile + 1px)
+    @media screen and (min-width $vssue-breakpoint-mobile + 1px)
       margin-left 70px
       text-align right
       .vssue-current-user
@@ -50,15 +50,15 @@
     width 100%
     padding 15px
     font-size 16px
-    font-family $fontFamily
+    font-family $vssue-font-family
     background-color #fafbfc
-    border 1px solid $borderColor
+    border 1px solid $vssue-border-color
     border-radius 5px
     &:disabled
       cursor not-allowed
-      background-color lighten($borderColor, 30%)
+      background-color lighten($vssue-border-color, 30%)
     &:focus
       background-color #ffffff
-      box-shadow 0 0 1px 1px lighten($themeColor, 50%)
+      box-shadow 0 0 1px 1px lighten($vssue-theme-color, 50%)
     &::placeholder
-      color $textLightColor
+      color $vssue-text-light-color
