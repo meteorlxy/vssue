@@ -2,7 +2,7 @@ import Vssue, { Vssue as VssueComponent } from 'vssue'
 // @ts-ignore
 import VssueAPI from '@vssue/api'
 
-import '../styles/variables.styl'
+import '../styles/index.styl'
 
 import { VueConstructor } from 'vue'
 
