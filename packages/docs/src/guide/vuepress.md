@@ -68,3 +68,26 @@ The only difference is that, you should set `platform` rather than the `api` pac
 ::: tip
 You can go to the repo [meteorlxy/vssue-demo](https://github.com/meteorlxy/vssue-demo) to get the demo code.
 :::
+
+## Custom Style Variables
+
+With the power of [palette.styl](https://vuepress.vuejs.org/config/#palette-styl) of Vuepress, you can set the [Variables of Vssue Style](./styles.md#use-variables-to-customize-vssue) easily.
+
+By default, those Vssue variables are set to Vuepress variables:
+
+```stylus
+// @vssue/vuepress-plugin-vssue/styles/index.styl
+
+$vssue-theme-color ?= $accentColor
+$vssue-text-color ?= $textColor
+$vssue-border-color ?= $borderColor
+$vssue-breakpoint-mobile ?= $MQMobile
+```
+
+If you want to override them, just set them in your `palette.styl`:
+
+```stylus
+// .vuepress/styles/palette.styl
+
+$vssue-theme-color = red
+```

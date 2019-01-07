@@ -68,3 +68,29 @@ module.exports = {
 ::: tip
 你可以前往 [meteorlxy/vssue-demo](https://github.com/meteorlxy/vssue-demo) 来获取 demo 代码。
 :::
+
+## 自定义样式变量
+
+通过 Vuepress 的 [palette.styl](https://vuepress.vuejs.org/zh/config/#palette-styl)，你可以很轻松地修改 [Vssue 的样式变量](./styles.md#使用样式变量来自定义-vssue)。
+
+默认情况下，下面这些 Vssue 的样式变量与 Vuepress 的样式变量相等：
+
+```stylus
+// @vssue/vuepress-plugin-vssue/styles/index.styl
+
+$vssue-theme-color ?= $accentColor
+$vssue-text-color ?= $textColor
+$vssue-border-color ?= $borderColor
+$vssue-breakpoint-mobile ?= $MQMobile
+```
+
+如果你想要覆盖它们，在你的 `palette.styl` 中设置即可：
+
+```stylus
+// .vuepress/styles/palette.styl
+
+$accentColor = blue
+
+$vssue-theme-color = red
+```
+

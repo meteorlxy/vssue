@@ -94,6 +94,7 @@ function sidebarGuide (titleGuide, titleOAuthApp) {
       children: [
         '',
         'getting-started',
+        'styles',
         'vuepress',
       ],
     },
