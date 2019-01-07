@@ -1,6 +1,6 @@
 {
   "name": "@vssue/vuepress-plugin-vssue",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Vuepress plugin for vssue",
   "license": "MIT",
   "main": "lib/index.js",
@@ -27,9 +27,9 @@
   },
   "dependencies": {
     "@vssue/api-bitbucket-v2": "^0.1.5",
-    "@vssue/api-github-v3": "^0.1.5",
+    "@vssue/api-github-v3": "^0.1.7",
     "@vssue/api-gitlab-v4": "^0.1.5",
-    "vssue": "^0.1.6"
+    "vssue": "^0.1.7"
   },
   "peerDependencies": {
     "vuepress": "^1.0.0-alpha.30"
