@@ -131,7 +131,7 @@ import Vssue from 'vssue'
 // import the api package for specific platform
 import GithubV3 from '@vssue/api-github-v3'
 // import the stylesheet of vssue
-import 'vssue/dist/vssue.min.css'
+import 'vssue/dist/vssue.css'
 
 Vue.use(Vssue, {
   // set the platform api
@@ -245,7 +245,7 @@ Notice that if you only import the Vssue component, there is no "global" options
 <script>
 import { Vssue } from 'vssue'
 import GithubV3 from '@vssue/api-github-v3'
-import 'vssue/dist/vssue.min.css'
+import 'vssue/dist/vssue.css'
 
 export default {
   name: 'VssueDemo',

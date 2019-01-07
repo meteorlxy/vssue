@@ -131,7 +131,7 @@ import Vssue from 'vssue'
 // 引入对应平台的 api 包
 import GithubV3 from '@vssue/api-github-v3'
 // 引入 vssue 的样式文件
-import 'vssue/dist/vssue.min.css'
+import 'vssue/dist/vssue.css'
 
 Vue.use(Vssue, {
   // 设置要使用的平台 api
@@ -245,7 +245,7 @@ export default {
 <script>
 import { Vssue } from 'vssue'
 import GithubV3 from '@vssue/api-github-v3'
-import 'vssue/dist/vssue.min.css'
+import 'vssue/dist/vssue.css'
 
 export default {
   name: 'VssueDemo',
