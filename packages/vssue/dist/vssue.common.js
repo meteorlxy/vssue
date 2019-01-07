@@ -1117,6 +1117,22 @@ function __extends(d, b) {
 
   d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 }
+
+var _assign = function __assign() {
+  _assign = Object.assign || function __assign(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) {
+        if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+      }
+    }
+
+    return t;
+  };
+
+  return _assign.apply(this, arguments);
+};
 function __decorate(decorators, target, key, desc) {
   var c = arguments.length,
       r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
@@ -1925,35 +1941,30 @@ function Prop(options) {
   });
 }
 
-var TransitionFade = /** @class */ (function (_super) {
-    __extends(TransitionFade, _super);
-    function TransitionFade() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    TransitionFade.prototype.render = function (h) {
-        return h(this.group ? 'TransitionGroup' : 'Transition', {
+var script = Vue.extend({
+    name: 'TransitionFade',
+    functional: true,
+    props: {
+        group: {
+            type: Boolean,
+            required: false,
+            "default": false
+        }
+    },
+    render: function (h, _a) {
+        var props = _a.props, children = _a.children;
+        return h(props.group ? 'TransitionGroup' : 'Transition', {
             props: {
                 name: 'fade',
                 mode: 'out-in',
                 appear: true
             }
-        }, this.$slots["default"]);
-    };
-    __decorate([
-        Prop({
-            type: Boolean,
-            required: false,
-            "default": false
-        })
-    ], TransitionFade.prototype, "group");
-    TransitionFade = __decorate([
-        Component
-    ], TransitionFade);
-    return TransitionFade;
-}(Vue));
+        }, children);
+    }
+});
 
 /* script */
-var __vue_script__ = TransitionFade;
+var __vue_script__ = script;
 /* template */
 
 /* style */
@@ -1970,8 +1981,8 @@ var __vue_module_identifier__ = undefined;
 var __vue_is_functional_template__ = undefined;
 /* component normalizer */
 
-function __vue_normalize__(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
-  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
+function __vue_normalize__(template, style, script$$1, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+  var component = (typeof script$$1 === 'function' ? script$$1.options : script$$1) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "TransitionFade.vue";
 
@@ -1991,7 +2002,7 @@ function __vue_normalize__(template, style, script, scope, functional, moduleIde
 /* style inject SSR */
 
 
-var TransitionFade$1 = __vue_normalize__({}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, undefined, undefined);
+var TransitionFade = __vue_normalize__({}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, undefined, undefined);
 
 var Iconfont = /** @class */ (function (_super) {
     __extends(Iconfont, _super);
@@ -2008,13 +2019,8 @@ var Iconfont = /** @class */ (function (_super) {
 var __vue_script__$1 = Iconfont;
 /* template */
 
-var __vue_render__ = function __vue_render__() {
-  var _vm = this;
-
-  var _h = _vm.$createElement;
-
-  var _c = _vm._self._c || _h;
-
+var __vue_render__ = function __vue_render__(_h, _vm) {
+  var _c = _vm._c;
   return _c('svg', {
     directives: [{
       name: "show",
@@ -2119,7 +2125,7 @@ var __vue_scope_id__$1 = undefined;
 var __vue_module_identifier__$1 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$1 = false;
+var __vue_is_functional_template__$1 = true;
 /* component normalizer */
 
 function __vue_normalize__$1(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
@@ -2148,98 +2154,55 @@ var Iconfont$1 = __vue_normalize__$1({
   staticRenderFns: __vue_staticRenderFns__
 }, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, undefined, undefined);
 
-var VssueIcon = /** @class */ (function (_super) {
-    __extends(VssueIcon, _super);
-    function VssueIcon() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(VssueIcon.prototype, "iconClass", {
-        get: function () {
-            return "icon-" + this.name;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(VssueIcon.prototype, "xlinkHref", {
-        get: function () {
-            return "#" + this.iconClass;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(VssueIcon.prototype, "iconStyle", {
-        get: function () {
-            return {
-                'font-size': this.size,
-                'fill': this.color
-            };
-        },
-        enumerable: true,
-        configurable: true
-    });
-    __decorate([
-        Prop({
+var script$1 = Vue.extend({
+    name: 'VssueIcon',
+    functional: true,
+    props: {
+        name: {
             type: String,
             required: true
-        })
-    ], VssueIcon.prototype, "name");
-    __decorate([
-        Prop({
+        },
+        size: {
             type: String,
             required: false,
             "default": '1em'
-        })
-    ], VssueIcon.prototype, "size");
-    __decorate([
-        Prop({
+        },
+        color: {
             type: String,
             required: false,
             "default": null
-        })
-    ], VssueIcon.prototype, "color");
-    __decorate([
-        Prop({
+        },
+        title: {
             type: String,
             required: false,
             "default": null
-        })
-    ], VssueIcon.prototype, "title");
-    VssueIcon = __decorate([
-        Component
-    ], VssueIcon);
-    return VssueIcon;
-}(Vue));
+        }
+    },
+    render: function (h, _a) {
+        var props = _a.props, data = _a.data;
+        return h('svg', _assign({}, data, { 'class': [
+                'vssue-icon',
+                "icon-" + props.name,
+            ], style: {
+                'font-size': props.size,
+                'fill': props.color
+            }, attrs: {
+                'aria-hidden': 'true'
+            } }), [
+            h('title', props.title),
+            h('use', {
+                attrs: {
+                    'xlink:href': "#icon-" + props.name
+                }
+            }),
+        ]);
+    }
+});
 
 /* script */
-var __vue_script__$2 = VssueIcon;
+var __vue_script__$2 = script$1;
 /* template */
 
-var __vue_render__$1 = function __vue_render__() {
-  var _vm = this;
-
-  var _h = _vm.$createElement;
-
-  var _c = _vm._self._c || _h;
-
-  return _c('svg', {
-    staticClass: "vssue-icon",
-    class: _vm.iconClass,
-    style: _vm.iconStyle,
-    attrs: {
-      "aria-hidden": "true"
-    }
-  }, [_c('title', {
-    domProps: {
-      "textContent": _vm._s(_vm.title)
-    }
-  }), _vm._v(" "), _c('use', {
-    attrs: {
-      "xlink:href": _vm.xlinkHref
-    }
-  })]);
-};
-
-var __vue_staticRenderFns__$1 = [];
 /* style */
 
 var __vue_inject_styles__$2 = undefined;
@@ -2251,7 +2214,7 @@ var __vue_scope_id__$2 = undefined;
 var __vue_module_identifier__$2 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$2 = false;
+var __vue_is_functional_template__$2 = undefined;
 /* component normalizer */
 
 function __vue_normalize__$2(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
@@ -2275,10 +2238,7 @@ function __vue_normalize__$2(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssueIcon$1 = __vue_normalize__$2({
-  render: __vue_render__$1,
-  staticRenderFns: __vue_staticRenderFns__$1
-}, __vue_inject_styles__$2, __vue_script__$2, __vue_scope_id__$2, __vue_is_functional_template__$2, __vue_module_identifier__$2, undefined, undefined);
+var VssueIcon = __vue_normalize__$2({}, __vue_inject_styles__$2, __vue_script__$2, __vue_scope_id__$2, __vue_is_functional_template__$2, __vue_module_identifier__$2, undefined, undefined);
 
 var VssueComment = /** @class */ (function (_super) {
     __extends(VssueComment, _super);
@@ -2336,7 +2296,7 @@ var VssueComment = /** @class */ (function (_super) {
     VssueComment = __decorate([
         Component({
             components: {
-                VssueIcon: VssueIcon$1
+                VssueIcon: VssueIcon
             }
         })
     ], VssueComment);
@@ -2347,7 +2307,7 @@ var VssueComment = /** @class */ (function (_super) {
 var __vue_script__$3 = VssueComment;
 /* template */
 
-var __vue_render__$2 = function __vue_render__() {
+var __vue_render__$1 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -2422,7 +2382,7 @@ var __vue_render__$2 = function __vue_render__() {
   }, [_vm._v("\n          Reply\n        ")])])])], 2)]);
 };
 
-var __vue_staticRenderFns__$2 = [];
+var __vue_staticRenderFns__$1 = [];
 /* style */
 
 var __vue_inject_styles__$3 = undefined;
@@ -2459,8 +2419,8 @@ function __vue_normalize__$3(template, style, script, scope, functional, moduleI
 
 
 var VssueComment$1 = __vue_normalize__$3({
-  render: __vue_render__$2,
-  staticRenderFns: __vue_staticRenderFns__$2
+  render: __vue_render__$1,
+  staticRenderFns: __vue_staticRenderFns__$1
 }, __vue_inject_styles__$3, __vue_script__$3, __vue_scope_id__$3, __vue_is_functional_template__$3, __vue_module_identifier__$3, undefined, undefined);
 
 var VssueStatus = /** @class */ (function (_super) {
@@ -2485,7 +2445,7 @@ var VssueStatus = /** @class */ (function (_super) {
     VssueStatus = __decorate([
         Component({
             components: {
-                VssueIcon: VssueIcon$1
+                VssueIcon: VssueIcon
             }
         })
     ], VssueStatus);
@@ -2496,7 +2456,7 @@ var VssueStatus = /** @class */ (function (_super) {
 var __vue_script__$4 = VssueStatus;
 /* template */
 
-var __vue_render__$3 = function __vue_render__() {
+var __vue_render__$2 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -2513,7 +2473,7 @@ var __vue_render__$3 = function __vue_render__() {
   }) : _vm._e(), _vm._v(" "), _c('p', [_vm._t("default")], 2)], 1);
 };
 
-var __vue_staticRenderFns__$3 = [];
+var __vue_staticRenderFns__$2 = [];
 /* style */
 
 var __vue_inject_styles__$4 = undefined;
@@ -2550,8 +2510,8 @@ function __vue_normalize__$4(template, style, script, scope, functional, moduleI
 
 
 var VssueStatus$1 = __vue_normalize__$4({
-  render: __vue_render__$3,
-  staticRenderFns: __vue_staticRenderFns__$3
+  render: __vue_render__$2,
+  staticRenderFns: __vue_staticRenderFns__$2
 }, __vue_inject_styles__$4, __vue_script__$4, __vue_scope_id__$4, __vue_is_functional_template__$4, __vue_module_identifier__$4, undefined, undefined);
 
 var VssueComments = /** @class */ (function (_super) {
@@ -2586,7 +2546,7 @@ var VssueComments = /** @class */ (function (_super) {
     VssueComments = __decorate([
         Component({
             components: {
-                TransitionFade: TransitionFade$1,
+                TransitionFade: TransitionFade,
                 VssueComment: VssueComment$1,
                 VssueStatus: VssueStatus$1
             }
@@ -2599,7 +2559,7 @@ var VssueComments = /** @class */ (function (_super) {
 var __vue_script__$5 = VssueComments;
 /* template */
 
-var __vue_render__$4 = function __vue_render__() {
+var __vue_render__$3 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -2646,7 +2606,7 @@ var __vue_render__$4 = function __vue_render__() {
   }), 1)], 1)], 1)], 1);
 };
 
-var __vue_staticRenderFns__$4 = [];
+var __vue_staticRenderFns__$3 = [];
 /* style */
 
 var __vue_inject_styles__$5 = undefined;
@@ -2683,63 +2643,33 @@ function __vue_normalize__$5(template, style, script, scope, functional, moduleI
 
 
 var VssueComments$1 = __vue_normalize__$5({
-  render: __vue_render__$4,
-  staticRenderFns: __vue_staticRenderFns__$4
+  render: __vue_render__$3,
+  staticRenderFns: __vue_staticRenderFns__$3
 }, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
 
-var VssueButton = /** @class */ (function (_super) {
-    __extends(VssueButton, _super);
-    function VssueButton() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(VssueButton.prototype, "buttonClass", {
-        get: function () {
-            return "vssue-button-" + this.type;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    __decorate([
-        Prop({
-            type: Boolean,
-            required: false,
-            "default": false
-        })
-    ], VssueButton.prototype, "disabled");
-    __decorate([
-        Prop({
+var script$2 = Vue.extend({
+    name: 'VssueIcon',
+    functional: true,
+    props: {
+        type: {
             type: String,
             required: false,
             "default": 'default'
-        })
-    ], VssueButton.prototype, "type");
-    VssueButton = __decorate([
-        Component
-    ], VssueButton);
-    return VssueButton;
-}(Vue));
+        }
+    },
+    render: function (h, _a) {
+        var props = _a.props, data = _a.data, children = _a.children;
+        return h('button', _assign({}, data, { 'class': [
+                'vssue-button',
+                "vssue-button-" + props.type,
+            ] }), children);
+    }
+});
 
 /* script */
-var __vue_script__$6 = VssueButton;
+var __vue_script__$6 = script$2;
 /* template */
 
-var __vue_render__$5 = function __vue_render__() {
-  var _vm = this;
-
-  var _h = _vm.$createElement;
-
-  var _c = _vm._self._c || _h;
-
-  return _c('button', {
-    staticClass: "vssue-button",
-    class: _vm.buttonClass,
-    attrs: {
-      "disabled": _vm.disabled
-    }
-  }, [_vm._t("default")], 2);
-};
-
-var __vue_staticRenderFns__$5 = [];
 /* style */
 
 var __vue_inject_styles__$6 = undefined;
@@ -2751,7 +2681,7 @@ var __vue_scope_id__$6 = undefined;
 var __vue_module_identifier__$6 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$6 = false;
+var __vue_is_functional_template__$6 = undefined;
 /* component normalizer */
 
 function __vue_normalize__$6(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
@@ -2775,167 +2705,37 @@ function __vue_normalize__$6(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssueButton$1 = __vue_normalize__$6({
-  render: __vue_render__$5,
-  staticRenderFns: __vue_staticRenderFns__$5
-}, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
+var VssueButton = __vue_normalize__$6({}, __vue_inject_styles__$6, __vue_script__$6, __vue_scope_id__$6, __vue_is_functional_template__$6, __vue_module_identifier__$6, undefined, undefined);
 
-var VssueNewCommentInput = /** @class */ (function (_super) {
-    __extends(VssueNewCommentInput, _super);
-    function VssueNewCommentInput() {
-        return _super !== null && _super.apply(this, arguments) || this;
+var VssueNewComment = /** @class */ (function (_super) {
+    __extends(VssueNewComment, _super);
+    function VssueNewComment() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.content = '';
+        return _this;
     }
-    Object.defineProperty(VssueNewCommentInput.prototype, "content", {
-        get: function () {
-            return this.value;
-        },
-        set: function (text) {
-            this.$emit('input', text);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(VssueNewCommentInput.prototype, "contentRows", {
+    Object.defineProperty(VssueNewComment.prototype, "contentRows", {
         get: function () {
             return this.content.split('\n').length - 1;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(VssueNewCommentInput.prototype, "rows", {
+    Object.defineProperty(VssueNewComment.prototype, "inputRows", {
         get: function () {
             return this.contentRows < 3 ? 5 : this.contentRows + 2;
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(VssueNewCommentInput.prototype, "placeholder", {
-        get: function () {
-            return this.disabled ? 'Login to leave a comment' : 'Leave a comment. Styling with Markdown is supported';
-        },
-        enumerable: true,
-        configurable: true
-    });
-    VssueNewCommentInput.prototype.focus = function () {
-        this.$refs.input.focus();
-    };
-    __decorate([
-        Prop({
-            type: Boolean,
-            required: false,
-            "default": true
-        })
-    ], VssueNewCommentInput.prototype, "disabled");
-    __decorate([
-        Prop({
-            type: String,
-            required: false,
-            "default": ''
-        })
-    ], VssueNewCommentInput.prototype, "value");
-    VssueNewCommentInput = __decorate([
-        Component
-    ], VssueNewCommentInput);
-    return VssueNewCommentInput;
-}(Vue));
-
-/* script */
-var __vue_script__$7 = VssueNewCommentInput;
-/* template */
-
-var __vue_render__$6 = function __vue_render__() {
-  var _vm = this;
-
-  var _h = _vm.$createElement;
-
-  var _c = _vm._self._c || _h;
-
-  return _c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.content,
-      expression: "content"
-    }],
-    ref: "input",
-    staticClass: "vssue-new-comment-input",
-    attrs: {
-      "rows": _vm.rows,
-      "disabled": _vm.disabled,
-      "placeholder": _vm.placeholder,
-      "spellcheck": false
-    },
-    domProps: {
-      "value": _vm.content
-    },
-    on: {
-      "input": function input($event) {
-        if ($event.target.composing) {
-          return;
-        }
-
-        _vm.content = $event.target.value;
-      }
-    }
-  });
-};
-
-var __vue_staticRenderFns__$6 = [];
-/* style */
-
-var __vue_inject_styles__$7 = undefined;
-/* scoped */
-
-var __vue_scope_id__$7 = undefined;
-/* module identifier */
-
-var __vue_module_identifier__$7 = undefined;
-/* functional template */
-
-var __vue_is_functional_template__$7 = false;
-/* component normalizer */
-
-function __vue_normalize__$7(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
-  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
-
-  component.__file = "VssueNewCommentInput.vue";
-
-  if (!component.render) {
-    component.render = template.render;
-    component.staticRenderFns = template.staticRenderFns;
-    component._compiled = true;
-    if (functional) component.functional = true;
-  }
-
-  component._scopeId = scope;
-
-  return component;
-}
-/* style inject */
-
-/* style inject SSR */
-
-
-var VssueNewCommentInput$1 = __vue_normalize__$7({
-  render: __vue_render__$6,
-  staticRenderFns: __vue_staticRenderFns__$6
-}, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
-
-var VssueNewComment = /** @class */ (function (_super) {
-    __extends(VssueNewComment, _super);
-    function VssueNewComment() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.newComment = '';
-        return _this;
-    }
     VssueNewComment.prototype.add = function (str) {
-        this.newComment = this.newComment.concat(str);
+        this.content = this.content.concat(str);
     };
     VssueNewComment.prototype.focus = function () {
-        this.$refs.newCommentInput.focus();
+        this.$refs.input.focus();
     };
     VssueNewComment.prototype.reset = function () {
-        this.newComment = '';
+        this.content = '';
     };
     __decorate([
         Prop({
@@ -2959,9 +2759,8 @@ var VssueNewComment = /** @class */ (function (_super) {
     VssueNewComment = __decorate([
         Component({
             components: {
-                VssueButton: VssueButton$1,
-                VssueIcon: VssueIcon$1,
-                VssueNewCommentInput: VssueNewCommentInput$1
+                VssueButton: VssueButton,
+                VssueIcon: VssueIcon
             }
         })
     ], VssueNewComment);
@@ -2969,10 +2768,10 @@ var VssueNewComment = /** @class */ (function (_super) {
 }(Vue));
 
 /* script */
-var __vue_script__$8 = VssueNewComment;
+var __vue_script__$7 = VssueNewComment;
 /* template */
 
-var __vue_render__$7 = function __vue_render__() {
+var __vue_render__$4 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -3004,26 +2803,41 @@ var __vue_render__$7 = function __vue_render__() {
       "size": "50px",
       "color": "grey"
     },
-    nativeOn: {
+    on: {
       "click": function click($event) {
         _vm.$emit('login');
       }
     }
   })], 1), _vm._v(" "), _c('div', {
     staticClass: "vssue-new-comment-body"
-  }, [_c('VssueNewCommentInput', {
-    ref: "newCommentInput",
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.content,
+      expression: "content"
+    }],
+    ref: "input",
+    staticClass: "vssue-new-comment-input",
     attrs: {
-      "disabled": !_vm.user
+      "rows": _vm.inputRows,
+      "disabled": !_vm.user,
+      "placeholder": _vm.user ? 'Leave a comment. Styling with Markdown is supported' : 'Login to leave a comment',
+      "spellcheck": false
     },
-    model: {
-      value: _vm.newComment,
-      callback: function callback($$v) {
-        _vm.newComment = $$v;
-      },
-      expression: "newComment"
+    domProps: {
+      "value": _vm.content
+    },
+    on: {
+      "input": function input($event) {
+        if ($event.target.composing) {
+          return;
+        }
+
+        _vm.content = $event.target.value;
+      }
     }
-  })], 1), _vm._v(" "), _c('div', {
+  })]), _vm._v(" "), _c('div', {
     staticClass: "vssue-new-comment-footer"
   }, [_vm.user ? _c('span', {
     staticClass: "vssue-current-user"
@@ -3042,12 +2856,12 @@ var __vue_render__$7 = function __vue_render__() {
     staticClass: "vssue-button-submit-comment",
     attrs: {
       "type": "primary",
-      "disabled": _vm.newComment === '' || _vm.loading
+      "disabled": _vm.content === '' || _vm.loading
     },
-    nativeOn: {
+    on: {
       "click": function click($event) {
         _vm.$emit('create-comment', {
-          content: _vm.newComment
+          content: _vm.content
         });
       }
     }
@@ -3068,7 +2882,7 @@ var __vue_render__$7 = function __vue_render__() {
       "type": "primary",
       "title": "Click to Login with " + _vm.platform
     },
-    nativeOn: {
+    on: {
       "click": function click($event) {
         _vm.$emit('login');
       }
@@ -3076,22 +2890,22 @@ var __vue_render__$7 = function __vue_render__() {
   }, [_vm._v("\n        Login\n      ")])], 1)])]);
 };
 
-var __vue_staticRenderFns__$7 = [];
+var __vue_staticRenderFns__$4 = [];
 /* style */
 
-var __vue_inject_styles__$8 = undefined;
+var __vue_inject_styles__$7 = undefined;
 /* scoped */
 
-var __vue_scope_id__$8 = undefined;
+var __vue_scope_id__$7 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$8 = undefined;
+var __vue_module_identifier__$7 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$8 = false;
+var __vue_is_functional_template__$7 = false;
 /* component normalizer */
 
-function __vue_normalize__$8(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+function __vue_normalize__$7(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
   var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "VssueNewComment.vue";
@@ -3112,10 +2926,10 @@ function __vue_normalize__$8(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssueNewComment$1 = __vue_normalize__$8({
-  render: __vue_render__$7,
-  staticRenderFns: __vue_staticRenderFns__$7
-}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
+var VssueNewComment$1 = __vue_normalize__$7({
+  render: __vue_render__$4,
+  staticRenderFns: __vue_staticRenderFns__$4
+}, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
 
 var quot = /"/g;
 // B.2.3.2.1 CreateHTML(string, tag, attribute, value)
@@ -3169,7 +2983,7 @@ var VssuePoweredBy = /** @class */ (function (_super) {
     });
     Object.defineProperty(VssuePoweredBy.prototype, "vssueVersion", {
         get: function () {
-            return "0.1.5";
+            return "0.1.6";
         },
         enumerable: true,
         configurable: true
@@ -3194,10 +3008,10 @@ var VssuePoweredBy = /** @class */ (function (_super) {
     return VssuePoweredBy;
 }(Vue));
 
-var __vue_script__$9 = VssuePoweredBy;
+var __vue_script__$8 = VssuePoweredBy;
 /* template */
 
-var __vue_render__$8 = function __vue_render__() {
+var __vue_render__$5 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -3221,22 +3035,22 @@ var __vue_render__$8 = function __vue_render__() {
   }, [_vm._v("\n    Vssue\n  ")])]);
 };
 
-var __vue_staticRenderFns__$8 = [];
+var __vue_staticRenderFns__$5 = [];
 /* style */
 
-var __vue_inject_styles__$9 = undefined;
+var __vue_inject_styles__$8 = undefined;
 /* scoped */
 
-var __vue_scope_id__$9 = undefined;
+var __vue_scope_id__$8 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$9 = undefined;
+var __vue_module_identifier__$8 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$9 = false;
+var __vue_is_functional_template__$8 = false;
 /* component normalizer */
 
-function __vue_normalize__$9(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+function __vue_normalize__$8(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
   var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "VssuePoweredBy.vue";
@@ -3257,10 +3071,10 @@ function __vue_normalize__$9(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssuePoweredBy$1 = __vue_normalize__$9({
-  render: __vue_render__$8,
-  staticRenderFns: __vue_staticRenderFns__$8
-}, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
+var VssuePoweredBy$1 = __vue_normalize__$8({
+  render: __vue_render__$5,
+  staticRenderFns: __vue_staticRenderFns__$5
+}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
 
 var Vssue = /** @class */ (function (_super) {
     __extends(Vssue, _super);
@@ -3370,7 +3184,7 @@ var Vssue = /** @class */ (function (_super) {
                         for (_i = 0, requiredOptions_1 = requiredOptions; _i < requiredOptions_1.length; _i++) {
                             opt = requiredOptions_1[_i];
                             if (!this.vssueOptions[opt]) {
-                                throw new Error("[Vssue] the option '" + opt + "' is required");
+                                console.warn("[Vssue] the option '" + opt + "' is required");
                             }
                         }
                         APIConstructor = this.vssueOptions.api;
@@ -3412,7 +3226,7 @@ var Vssue = /** @class */ (function (_super) {
                         else {
                             this.isFailed = true;
                         }
-                        throw e_1;
+                        return [3 /*break*/, 6];
                     case 5:
                         this.hasInitialized = true;
                         return [7 /*endfinally*/];
@@ -3676,7 +3490,7 @@ var Vssue = /** @class */ (function (_super) {
         Component({
             components: {
                 Iconfont: Iconfont$1,
-                TransitionFade: TransitionFade$1,
+                TransitionFade: TransitionFade,
                 VssueComments: VssueComments$1,
                 VssueNewComment: VssueNewComment$1,
                 VssuePoweredBy: VssuePoweredBy$1,
@@ -3688,10 +3502,10 @@ var Vssue = /** @class */ (function (_super) {
 }(Vue));
 
 /* script */
-var __vue_script__$a = Vssue;
+var __vue_script__$9 = Vssue;
 /* template */
 
-var __vue_render__$9 = function __vue_render__() {
+var __vue_render__$6 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -3751,22 +3565,22 @@ var __vue_render__$9 = function __vue_render__() {
   })], 1)], 1)], 1)], 1);
 };
 
-var __vue_staticRenderFns__$9 = [];
+var __vue_staticRenderFns__$6 = [];
 /* style */
 
-var __vue_inject_styles__$a = undefined;
+var __vue_inject_styles__$9 = undefined;
 /* scoped */
 
-var __vue_scope_id__$a = undefined;
+var __vue_scope_id__$9 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$a = undefined;
+var __vue_module_identifier__$9 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$a = false;
+var __vue_is_functional_template__$9 = false;
 /* component normalizer */
 
-function __vue_normalize__$a(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+function __vue_normalize__$9(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
   var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "Vssue.vue";
@@ -3787,14 +3601,14 @@ function __vue_normalize__$a(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssueComponent = __vue_normalize__$a({
-  render: __vue_render__$9,
-  staticRenderFns: __vue_staticRenderFns__$9
-}, __vue_inject_styles__$a, __vue_script__$a, __vue_scope_id__$a, __vue_is_functional_template__$a, __vue_module_identifier__$a, undefined, undefined);
+var VssueComponent = __vue_normalize__$9({
+  render: __vue_render__$6,
+  staticRenderFns: __vue_staticRenderFns__$6
+}, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
 
 var Vssue$1 = {
     get version() {
-        return "0.1.5";
+        return "0.1.6";
     },
     install: function (Vue$$1, options) {
         if (Vue$$1.prototype.$vssue) {
