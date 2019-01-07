@@ -119,6 +119,10 @@ npm install @vssue/api-bitbucket-v2
 
 ### 作为 Vue 插件使用
 
+通过 `import Vssue from 'vssue'` 你会得到一个 Vue 插件。调用 `Vue.use()` 来使用它并进行配置。这会注册一个名称为 `Vssue` 的全局组件。
+
+> 关于配置的详情，可以查看 [配置参考 - Vssue 配置](../options/index.md#vssue-配置)
+
 ```js
 // 引入 vue
 import Vue from 'vue'
@@ -130,14 +134,14 @@ import GithubV3 from '@vssue/api-github-v3'
 import 'vssue/dist/vssue.min.css'
 
 Vue.use(Vssue, {
+  // 设置要使用的平台 api
+  api: GithubV3,
+
   // 在这里设置你使用的平台的 OAuth App 配置
   owner: 'OWNER_OF_REPO',
   repo: 'NAME_OF_REPO',
   clientId: 'YOUR_CLIENT_ID',
   clientSecret: 'YOUR_CLIENT_SECRET',
-
-  // 设置默认使用的 api
-  api: GithubV3,
 })
 ```
 
@@ -183,7 +187,9 @@ Vue.use(Vssue, {
   ```
 :::
 
-### 在你的单文件组件中使用
+然后你就可以在 [SFC](https://cn.vuejs.org/v2/guide/single-file-components.html) 中使用 Vssue 组件了：
+
+> 关于组件 Props 的详情，可以查看 [配置参考 - 组件 Props](../options/index.md#组件-props)
 
 ```vue
 <template>
@@ -209,6 +215,54 @@ export default {
         // repo: 'NAME_OF_REPO',
         // clientId: 'YOUR_CLIENT_ID',
         // clientSecret: 'YOUR_CLIENT_SECRET',
+      },
+    }
+  },
+}
+</script>
+```
+
+### 作为 Vue 组件使用
+
+通过 `import { Vssue } from 'vssue'` 你会得到一个 Vue 组件。
+
+::: tip
+当你通过 `Vue.use()` 把 Vssue 作为插件使用时，这个组件就已经通过 `Vue.component()` 注册为全局组件了。
+
+如果你不想把它注册为全局组件，你可以通过这种方式引入它。
+
+需要注意的是，如果你只作为组件引入 Vssue，就没有通过 `Vue.use()` 设置的“全局”配置了，你必须通过 Prop `options` 传入所有必需的 Vssue 配置。参考 [组件 Props - options](../options/index.md#options)。
+:::
+
+```vue
+<template>
+  <Vssue
+    :title="title"
+    :options="options"
+  />
+</template>
+
+<script>
+import { Vssue } from 'vssue'
+import GithubV3 from '@vssue/api-github-v3'
+import 'vssue/dist/vssue.min.css'
+
+export default {
+  name: 'VssueDemo',
+
+  components: {
+    Vssue,
+  },
+
+  data () {
+    return {
+      title: 'Vssue Demo',
+      options: {
+        api: GithubV3,
+        owner: 'OWNER_OF_REPO',
+        repo: 'NAME_OF_REPO',
+        clientId: 'YOUR_CLIENT_ID',
+        clientSecret: 'YOUR_CLIENT_SECRET',
       },
     }
   },
