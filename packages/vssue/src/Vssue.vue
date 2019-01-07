@@ -191,7 +191,7 @@ export default class Vssue extends Vue {
       ]
       for (const opt of requiredOptions) {
         if (!this.vssueOptions[opt]) {
-          throw new Error(`[Vssue] the option '${opt}' is required`)
+          console.warn(`[Vssue] the option '${opt}' is required`)
         }
       }
       // get the VssueAPI instance according to the options.api
@@ -225,7 +225,6 @@ export default class Vssue extends Vue {
       } else {
         this.isFailed = true
       }
-      throw e
     } finally {
       this.hasInitialized = true
     }
