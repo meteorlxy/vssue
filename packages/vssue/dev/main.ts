@@ -6,7 +6,7 @@ import VssuePlguin, {
 // @ts-ignore
 import GithubV3 from '@vssue/api'
 
-import 'vssue/dist/vssue.min.css'
+import 'vssue/dist/vssue.css'
 import 'github-markdown-css'
 
 const onlyComponent: boolean = process.env.VUE_APP_ONLY_COMPONENT === 'true'
