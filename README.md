@@ -13,12 +13,12 @@
 
 Vssue is still a WIP, with some possible enhancement todo:
 
-- [ ] Styles Enhancement
-- [ ] Comments Editable
-- [ ] Comments Deletable
+- [x] Styles Enhancement
 - [ ] Comments Pagination
 - [x] Comments Reactions
 - [ ] Tests
+- [ ] Comments Editable
+- [ ] Comments Deletable
 
 ## LICENSE
 
