@@ -5,17 +5,14 @@ const json = require('rollup-plugin-json')
 const vue = require('rollup-plugin-vue').default
 const typescript = require('rollup-plugin-typescript')
 const babel = require('rollup-plugin-babel')
-const { uglify } = require('rollup-plugin-uglify')
+const { terser } = require('rollup-plugin-terser')
 
-const autoprefixer = require('autoprefixer')
-const cssnano = require('cssnano')
-
-const path = require('path')
-
-const { version } = require('./package.json')
-
-const pathSrc = (...args) => path.resolve(__dirname, 'src', ...args)
-const pathDist = (...args) => path.resolve(__dirname, 'dist', ...args)
+const {
+  pkg: { version },
+  pathSrc,
+  pathDist,
+  banner,
+} = require('./util')
 
 module.exports = [
   {
@@ -54,6 +51,7 @@ module.exports = [
       format: opts.format,
       dir: pathDist(),
       name: 'Vssue',
+      banner,
       globals: {
         'vue': 'Vue',
       },
@@ -61,8 +59,12 @@ module.exports = [
 
     external: [
       'vue',
-      ...(opts.format === 'es' || opts.format === 'cjs' ? [
+      ...(opts.format === 'cjs' ? [
         '@vssue/utils',
+      ] : []),
+      ...(opts.format === 'es' ? [
+        '@vssue/utils',
+        'vue-property-decorator',
       ] : []),
     ],
 
@@ -86,7 +88,11 @@ module.exports = [
         extensions: ['.js', '.vue'],
         exclude: [/\/core-js\//, /@babel\/runtime/],
       }),
-      ...(minify ? [uglify()] : []),
+      ...(minify ? [terser({
+        output: {
+          comments: /^!/,
+        },
+      })] : []),
     ],
   }
   return config
