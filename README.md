@@ -16,6 +16,7 @@ Vssue is still a WIP, with some possible enhancement todo:
 - [x] Styles Enhancement
 - [ ] Comments Pagination
 - [x] Comments Reactions
+- [ ] I18N
 - [ ] Tests
 - [ ] Comments Editable
 - [ ] Comments Deletable
