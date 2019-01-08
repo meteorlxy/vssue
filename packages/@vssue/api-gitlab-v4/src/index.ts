@@ -43,11 +43,11 @@ export default class GitlabV4 implements VssueAPI {
   private _encodedRepo: string
 
   get platform () {
-    return 'gitlab'
-  }
-
-  get version () {
-    return 'v4'
+    return {
+      name: 'GitLab',
+      link: this.baseURL,
+      version: 'v4',
+    }
   }
 
   constructor ({

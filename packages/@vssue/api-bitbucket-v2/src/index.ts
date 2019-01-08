@@ -38,11 +38,11 @@ export default class BitbucketV2 implements VssueAPI {
   $http: AxiosInstance
 
   get platform () {
-    return 'bitbucket'
-  }
-
-  get version () {
-    return 'v2'
+    return {
+      name: 'Bitbucket',
+      link: 'https://bitbucket.org',
+      version: 'v2',
+    }
   }
 
   constructor ({

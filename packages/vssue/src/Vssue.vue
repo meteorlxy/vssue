@@ -14,10 +14,29 @@
         </span>
       </span>
 
-      <VssuePoweredBy
-        :platform="vssueAPI.platform"
-        :version="vssueAPI.version"
-      />
+      <span class="vssue-powered-by">
+        <span>Powered by</span>
+
+        <span v-if="vssueAPI">
+          <a
+            :href="vssueAPI.platform.link"
+            target="_blank"
+            :title="`${vssueAPI.platform.name} API ${vssueAPI.platform.version}`"
+          >
+            {{ vssueAPI.platform.name }}
+          </a>
+
+          <span>&</span>
+        </span>
+
+        <a
+          href="https://vssue.js.org"
+          target="_blank"
+          :title="`Vssue v${vssueVersion}`"
+        >
+          Vssue
+        </a>
+      </span>
     </div>
 
     <!-- main -->
@@ -39,7 +58,7 @@
         <VssueNewComment
           ref="newComment"
           :loading="isCreatingComment"
-          :platform="vssueAPI.platform"
+          :platform="vssueAPI.platform.name"
           :user="user"
           @login="handleLogin"
           @logout="handleLogout"
@@ -76,7 +95,6 @@ import TransitionFade from './components/TransitionFade.vue'
 import Iconfont from './components/Iconfont.vue'
 import VssueComments from './components/VssueComments.vue'
 import VssueNewComment from './components/VssueNewComment.vue'
-import VssuePoweredBy from './components/VssuePoweredBy.vue'
 import VssueStatus from './components/VssueStatus.vue'
 import {
   getCleanURL,
@@ -89,7 +107,6 @@ import {
     TransitionFade,
     VssueComments,
     VssueNewComment,
-    VssuePoweredBy,
     VssueStatus,
   },
 })
@@ -141,6 +158,13 @@ export default class Vssue extends Vue {
   }
 
   /**
+   * current version of vssue
+   */
+  get vssueVersion (): string {
+    return <string>process.env.VUE_APP_VERSION
+  }
+
+  /**
    * the actual title of this issue
    */
   get issueTitle (): string {
@@ -161,7 +185,7 @@ export default class Vssue extends Vue {
    * the key of access token for local storage
    */
   get accessTokenKey (): string {
-    return this.vssueAPI ? `Vssue.${this.vssueAPI.platform}.access_token` : ''
+    return this.vssueAPI ? `Vssue.${this.vssueAPI.platform.name.toLowerCase()}.access_token` : ''
   }
   /**
    * flag that if the user is logined

@@ -1,36 +1,39 @@
 import { VssueAPIOptions } from './option'
 
-export interface User {
-  username: string,
-  avatar?: string,
-  homepage?: string,
+export type User = {
+  username: string
+  avatar?: string
+  homepage?: string
 }
 
-export interface Issue {
-  id: string,
-  title: string,
-  content: string,
+export type Issue = {
+  id: string
+  title: string
+  content: string
 }
 
-export interface Comment {
-  id: string,
-  content: string,
-  contentRaw: string,
-  author: User,
-  createdAt: string,
-  updatedAt: string,
+export type Comment = {
+  id: string
+  content: string
+  contentRaw: string
+  author: User
+  createdAt: string
+  updatedAt: string
   reactions?: Reactions | null
 }
 
-export interface Reactions {
-  like?: number,
-  unlike?: number,
+export type Reactions = {
+  like?: number
+  unlike?: number
   heart?: number
 }
 
 export interface VssueAPI {
-  readonly platform: string
-  readonly version: string
+  readonly platform: {
+    name: string
+    link: string
+    version: string
+  }
 
   redirectAuthorize (): void
 

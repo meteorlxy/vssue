@@ -40,11 +40,11 @@ export default class GithubV3 implements VssueAPI {
   $http: AxiosInstance
 
   get platform () {
-    return 'github'
-  }
-
-  get version () {
-    return 'v3'
+    return {
+      name: 'GitHub',
+      link: 'https://github.com',
+      version: 'v3',
+    }
   }
 
   constructor ({
