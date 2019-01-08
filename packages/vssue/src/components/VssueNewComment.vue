@@ -12,11 +12,8 @@
 
       <VssueIcon
         v-else
-        :name="platform"
+        :name="platform.toLowerCase()"
         :title="`Login with ${platform}`"
-        size="50px"
-        color="grey"
-        style="padding: 5px; cursor: pointer;"
         @click="$emit('login')"
       />
     </div><!-- .vssue-new-comment-avatar -->
@@ -66,7 +63,6 @@
           <VssueIcon
             v-show="loading"
             name="loading"
-            color="grey"
           />
 
           {{ loading ? `Submitting` : `Submit Comment` }}

@@ -5,7 +5,6 @@
         v-if="failed"
         key="failed"
         icon-name="error"
-        icon-size="25px"
       >
         Failed to load comments
       </VssueStatus>

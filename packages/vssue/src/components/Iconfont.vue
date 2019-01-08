@@ -67,9 +67,9 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
+import Vue, { VueConstructor } from 'vue'
 
-@Component
-export default class Iconfont extends Vue {
-}
+export default Vue.extend({
+  name: 'Iconfont',
+})
 </script>

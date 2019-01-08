@@ -12,18 +12,6 @@ export default Vue.extend({
       required: true,
     },
 
-    size: {
-      type: String,
-      required: false,
-      default: '1em',
-    },
-
-    color: {
-      type: String,
-      required: false,
-      default: null,
-    },
-
     title: {
       type: String,
       required: false,
@@ -40,10 +28,6 @@ export default Vue.extend({
           'vssue-icon',
           `icon-${props.name}`,
         ],
-        style: {
-          'font-size': props.size,
-          'fill': props.color,
-        },
         attrs: {
           'aria-hidden': 'true',
         },
