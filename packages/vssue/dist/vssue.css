@@ -1,3 +1,11 @@
+/*!
+ * vssue - A vue-powered issue-based comment plugin
+ *
+ * @version v0.1.9
+ * @link https://vssue.js.org
+ * @license MIT
+ * @copyright 2018-2019 meteorlxy
+ */
 .clearfix::after,
 .vssue .vssue-new-comment .vssue-new-comment-footer::after {
   display: block;
@@ -27,6 +35,9 @@
   color: #eaecef;
   border-color: #eaecef;
 }
+.vssue .vssue-button:disabled .vssue-icon {
+  fill: #eaecef;
+}
 .vssue .vssue-button:not(:disabled).vssue-button-default {
   color: #a3aab1;
   border-color: #a3aab1;
@@ -43,10 +54,10 @@
   overflow: hidden;
 }
 .vssue .icon-loading {
-  -webkit-animation: rotation 1s linear infinite;
-          animation: rotation 1s linear infinite;
+  -webkit-animation: vssue-keyframe-rotation 1s linear infinite;
+          animation: vssue-keyframe-rotation 1s linear infinite;
 }
-@-webkit-keyframes rotation {
+@-webkit-keyframes vssue-keyframe-rotation {
   from {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
@@ -56,7 +67,7 @@
             transform: rotate(360deg);
   }
 }
-@keyframes rotation {
+@keyframes vssue-keyframe-rotation {
   from {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
@@ -83,7 +94,15 @@
 .vssue .vssue-status {
   text-align: center;
   padding-top: 20px;
+  padding-bottom: 10px;
   color: #3eaf7c;
+}
+.vssue .vssue-status .vssue-icon {
+  font-size: 1.4em;
+}
+.vssue .vssue-status .vssue-status-info {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .vssue .vssue-header {
   padding-bottom: 10px;
@@ -107,6 +126,12 @@
 .vssue .vssue-new-comment .vssue-comment-avatar img {
   width: 50px;
   height: 50px;
+}
+.vssue .vssue-new-comment .vssue-comment-avatar .vssue-icon {
+  cursor: pointer;
+  padding: 5px;
+  font-size: 50px;
+  fill: #757f8a;
 }
 .vssue .vssue-new-comment .vssue-new-comment-body {
   position: relative;

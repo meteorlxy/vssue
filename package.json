@@ -12,7 +12,7 @@
     "dev-docs": "yarn workspace docs dev",
     "build-docs": "yarn workspace docs build",
     "lint": "eslint --ext .js,.ts,.vue packages/",
-    "release:version": "lerna version --no-git-tag-version",
+    "release:version": "lerna version --no-git-tag-version && yarn build",
     "release:publish": "lerna publish from-package",
     "postinstall": "lerna run build --stream --ignore docs --ignore vssue",
     "prepublishOnly": "lerna run build --stream --ignore docs --ignore vssue"

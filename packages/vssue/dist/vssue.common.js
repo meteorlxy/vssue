@@ -1,67 +1,18 @@
+/*!
+ * vssue - A vue-powered issue-based comment plugin
+ *
+ * @version v0.1.9
+ * @link https://vssue.js.org
+ * @license MIT
+ * @copyright 2018-2019 meteorlxy
+ */
+
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var Vue = _interopDefault(require('vue'));
 var utils = require('@vssue/utils');
-
-function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
-}
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var _core = createCommonjsModule(function (module) {
-var core = module.exports = { version: '2.6.1' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-});
-var _core_1 = _core.version;
-
-var _global = createCommonjsModule(function (module) {
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-});
-
-var _library = false;
-
-var _shared = createCommonjsModule(function (module) {
-var SHARED = '__core-js_shared__';
-var store = _global[SHARED] || (_global[SHARED] = {});
-
-(module.exports = function (key, value) {
-  return store[key] || (store[key] = value !== undefined ? value : {});
-})('versions', []).push({
-  version: _core.version,
-  mode: _library ? 'pure' : 'global',
-  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
-});
-});
-
-var id = 0;
-var px = Math.random();
-var _uid = function (key) {
-  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
-};
-
-var _wks = createCommonjsModule(function (module) {
-var store = _shared('wks');
-
-var Symbol = _global.Symbol;
-var USE_SYMBOL = typeof Symbol == 'function';
-
-var $exports = module.exports = function (name) {
-  return store[name] || (store[name] =
-    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : _uid)('Symbol.' + name));
-};
-
-$exports.store = store;
-});
 
 var _isObject = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
@@ -83,6 +34,23 @@ var _fails = function (exec) {
 // Thank's IE8 for his funny defineProperty
 var _descriptors = !_fails(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+});
+
+function unwrapExports (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+}
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var _global = createCommonjsModule(function (module) {
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+var global = module.exports = typeof window != 'undefined' && window.Math == Math
+  ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
+if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
 var document$1 = _global.document;
@@ -127,6 +95,29 @@ var _objectDp = {
 	f: f
 };
 
+var dP$1 = _objectDp.f;
+var FProto = Function.prototype;
+var nameRE = /^\s*function ([^ (]*)/;
+var NAME = 'name';
+
+// 19.2.4.2 name
+NAME in FProto || _descriptors && dP$1(FProto, NAME, {
+  configurable: true,
+  get: function () {
+    try {
+      return ('' + this).match(nameRE)[1];
+    } catch (e) {
+      return '';
+    }
+  }
+});
+
+var _core = createCommonjsModule(function (module) {
+var core = module.exports = { version: '2.6.1' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+});
+var _core_1 = _core.version;
+
 var _propertyDesc = function (bitmap, value) {
   return {
     enumerable: !(bitmap & 1),
@@ -143,49 +134,15 @@ var _hide = _descriptors ? function (object, key, value) {
   return object;
 };
 
-// 22.1.3.31 Array.prototype[@@unscopables]
-var UNSCOPABLES = _wks('unscopables');
-var ArrayProto = Array.prototype;
-if (ArrayProto[UNSCOPABLES] == undefined) _hide(ArrayProto, UNSCOPABLES, {});
-var _addToUnscopables = function (key) {
-  ArrayProto[UNSCOPABLES][key] = true;
-};
-
-var _iterStep = function (done, value) {
-  return { value: value, done: !!done };
-};
-
-var _iterators = {};
-
-var toString = {}.toString;
-
-var _cof = function (it) {
-  return toString.call(it).slice(8, -1);
-};
-
-// fallback for non-array-like ES3 and non-enumerable old V8 strings
-
-// eslint-disable-next-line no-prototype-builtins
-var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
-  return _cof(it) == 'String' ? it.split('') : Object(it);
-};
-
-// 7.2.1 RequireObjectCoercible(argument)
-var _defined = function (it) {
-  if (it == undefined) throw TypeError("Can't call method on  " + it);
-  return it;
-};
-
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-
-
-var _toIobject = function (it) {
-  return _iobject(_defined(it));
-};
-
 var hasOwnProperty = {}.hasOwnProperty;
 var _has = function (it, key) {
   return hasOwnProperty.call(it, key);
+};
+
+var id = 0;
+var px = Math.random();
+var _uid = function (key) {
+  return 'Symbol('.concat(key === undefined ? '' : key, ')_', (++id + px).toString(36));
 };
 
 var _redefine = createCommonjsModule(function (module) {
@@ -283,6 +240,99 @@ $export.W = 32;  // wrap
 $export.U = 64;  // safe
 $export.R = 128; // real proto method for `library`
 var _export = $export;
+
+// 7.2.1 RequireObjectCoercible(argument)
+var _defined = function (it) {
+  if (it == undefined) throw TypeError("Can't call method on  " + it);
+  return it;
+};
+
+var quot = /"/g;
+// B.2.3.2.1 CreateHTML(string, tag, attribute, value)
+var createHTML = function (string, tag, attribute, value) {
+  var S = String(_defined(string));
+  var p1 = '<' + tag;
+  if (attribute !== '') p1 += ' ' + attribute + '="' + String(value).replace(quot, '&quot;') + '"';
+  return p1 + '>' + S + '</' + tag + '>';
+};
+var _stringHtml = function (NAME, exec) {
+  var O = {};
+  O[NAME] = exec(createHTML);
+  _export(_export.P + _export.F * _fails(function () {
+    var test = ''[NAME]('"');
+    return test !== test.toLowerCase() || test.split('"').length > 3;
+  }), 'String', O);
+};
+
+// B.2.3.10 String.prototype.link(url)
+_stringHtml('link', function (createHTML) {
+  return function link(url) {
+    return createHTML(this, 'a', 'href', url);
+  };
+});
+
+var _library = false;
+
+var _shared = createCommonjsModule(function (module) {
+var SHARED = '__core-js_shared__';
+var store = _global[SHARED] || (_global[SHARED] = {});
+
+(module.exports = function (key, value) {
+  return store[key] || (store[key] = value !== undefined ? value : {});
+})('versions', []).push({
+  version: _core.version,
+  mode: _library ? 'pure' : 'global',
+  copyright: '© 2018 Denis Pushkarev (zloirock.ru)'
+});
+});
+
+var _wks = createCommonjsModule(function (module) {
+var store = _shared('wks');
+
+var Symbol = _global.Symbol;
+var USE_SYMBOL = typeof Symbol == 'function';
+
+var $exports = module.exports = function (name) {
+  return store[name] || (store[name] =
+    USE_SYMBOL && Symbol[name] || (USE_SYMBOL ? Symbol : _uid)('Symbol.' + name));
+};
+
+$exports.store = store;
+});
+
+// 22.1.3.31 Array.prototype[@@unscopables]
+var UNSCOPABLES = _wks('unscopables');
+var ArrayProto = Array.prototype;
+if (ArrayProto[UNSCOPABLES] == undefined) _hide(ArrayProto, UNSCOPABLES, {});
+var _addToUnscopables = function (key) {
+  ArrayProto[UNSCOPABLES][key] = true;
+};
+
+var _iterStep = function (done, value) {
+  return { value: value, done: !!done };
+};
+
+var _iterators = {};
+
+var toString = {}.toString;
+
+var _cof = function (it) {
+  return toString.call(it).slice(8, -1);
+};
+
+// fallback for non-array-like ES3 and non-enumerable old V8 strings
+
+// eslint-disable-next-line no-prototype-builtins
+var _iobject = Object('z').propertyIsEnumerable(0) ? Object : function (it) {
+  return _cof(it) == 'String' ? it.split('') : Object(it);
+};
+
+// to indexed object, toObject with fallback for non-array-like ES3 strings
+
+
+var _toIobject = function (it) {
+  return _iobject(_defined(it));
+};
 
 // 7.1.4 ToInteger
 var ceil = Math.ceil;
@@ -586,15 +636,15 @@ var DOMIterables = {
 };
 
 for (var collections = _objectKeys(DOMIterables), i = 0; i < collections.length; i++) {
-  var NAME = collections[i];
-  var explicit = DOMIterables[NAME];
-  var Collection = _global[NAME];
+  var NAME$1 = collections[i];
+  var explicit = DOMIterables[NAME$1];
+  var Collection = _global[NAME$1];
   var proto = Collection && Collection.prototype;
   var key;
   if (proto) {
     if (!proto[ITERATOR$1]) _hide(proto, ITERATOR$1, ArrayValues);
-    if (!proto[TO_STRING_TAG]) _hide(proto, TO_STRING_TAG, NAME);
-    _iterators[NAME] = ArrayValues;
+    if (!proto[TO_STRING_TAG]) _hide(proto, TO_STRING_TAG, NAME$1);
+    _iterators[NAME$1] = ArrayValues;
     if (explicit) for (key in es6_array_iterator) if (!proto[key]) _redefine(proto, key, es6_array_iterator[key], true);
   }
 }
@@ -786,7 +836,7 @@ var META = _meta.KEY;
 
 
 var gOPD$1 = _objectGopd.f;
-var dP$1 = _objectDp.f;
+var dP$2 = _objectDp.f;
 var gOPN$1 = _objectGopnExt.f;
 var $Symbol = _global.Symbol;
 var $JSON = _global.JSON;
@@ -806,15 +856,15 @@ var setter = !QObject || !QObject[PROTOTYPE$2] || !QObject[PROTOTYPE$2].findChil
 
 // fallback for old Android, https://code.google.com/p/v8/issues/detail?id=687
 var setSymbolDesc = _descriptors && _fails(function () {
-  return _objectCreate(dP$1({}, 'a', {
-    get: function () { return dP$1(this, 'a', { value: 7 }).a; }
+  return _objectCreate(dP$2({}, 'a', {
+    get: function () { return dP$2(this, 'a', { value: 7 }).a; }
   })).a != 7;
 }) ? function (it, key, D) {
   var protoDesc = gOPD$1(ObjectProto$1, key);
   if (protoDesc) delete ObjectProto$1[key];
-  dP$1(it, key, D);
-  if (protoDesc && it !== ObjectProto$1) dP$1(ObjectProto$1, key, protoDesc);
-} : dP$1;
+  dP$2(it, key, D);
+  if (protoDesc && it !== ObjectProto$1) dP$2(ObjectProto$1, key, protoDesc);
+} : dP$2;
 
 var wrap = function (tag) {
   var sym = AllSymbols[tag] = _objectCreate($Symbol[PROTOTYPE$2]);
@@ -835,13 +885,13 @@ var $defineProperty = function defineProperty(it, key, D) {
   _anObject(D);
   if (_has(AllSymbols, key)) {
     if (!D.enumerable) {
-      if (!_has(it, HIDDEN)) dP$1(it, HIDDEN, _propertyDesc(1, {}));
+      if (!_has(it, HIDDEN)) dP$2(it, HIDDEN, _propertyDesc(1, {}));
       it[HIDDEN][key] = true;
     } else {
       if (_has(it, HIDDEN) && it[HIDDEN][key]) it[HIDDEN][key] = false;
       D = _objectCreate(D, { enumerable: _propertyDesc(0, false) });
     } return setSymbolDesc(it, key, D);
-  } return dP$1(it, key, D);
+  } return dP$2(it, key, D);
 };
 var $defineProperties = function defineProperties(it, P) {
   _anObject(it);
@@ -1622,23 +1672,6 @@ _fixReWks('replace', 2, function (defined, REPLACE, $replace, maybeCallNative) {
   }
 });
 
-var dP$2 = _objectDp.f;
-var FProto = Function.prototype;
-var nameRE = /^\s*function ([^ (]*)/;
-var NAME$1 = 'name';
-
-// 19.2.4.2 name
-NAME$1 in FProto || _descriptors && dP$2(FProto, NAME$1, {
-  configurable: true,
-  get: function () {
-    try {
-      return ('' + this).match(nameRE)[1];
-    } catch (e) {
-      return '';
-    }
-  }
-});
-
 // most Object methods by ES6 should accept primitives
 
 
@@ -2004,19 +2037,12 @@ function __vue_normalize__(template, style, script$$1, scope, functional, module
 
 var TransitionFade = __vue_normalize__({}, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, undefined, undefined);
 
-var Iconfont = /** @class */ (function (_super) {
-    __extends(Iconfont, _super);
-    function Iconfont() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Iconfont = __decorate([
-        Component
-    ], Iconfont);
-    return Iconfont;
-}(Vue));
+var script$1 = Vue.extend({
+    name: 'Iconfont'
+});
 
 /* script */
-var __vue_script__$1 = Iconfont;
+var __vue_script__$1 = script$1;
 /* template */
 
 var __vue_render__ = function __vue_render__(_h, _vm) {
@@ -2149,28 +2175,18 @@ function __vue_normalize__$1(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var Iconfont$1 = __vue_normalize__$1({
+var Iconfont = __vue_normalize__$1({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
 }, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, undefined, undefined);
 
-var script$1 = Vue.extend({
+var script$2 = Vue.extend({
     name: 'VssueIcon',
     functional: true,
     props: {
         name: {
             type: String,
             required: true
-        },
-        size: {
-            type: String,
-            required: false,
-            "default": '1em'
-        },
-        color: {
-            type: String,
-            required: false,
-            "default": null
         },
         title: {
             type: String,
@@ -2183,10 +2199,7 @@ var script$1 = Vue.extend({
         return h('svg', _assign({}, data, { 'class': [
                 'vssue-icon',
                 "icon-" + props.name,
-            ], style: {
-                'font-size': props.size,
-                'fill': props.color
-            }, attrs: {
+            ], attrs: {
                 'aria-hidden': 'true'
             } }), [
             h('title', props.title),
@@ -2200,7 +2213,7 @@ var script$1 = Vue.extend({
 });
 
 /* script */
-var __vue_script__$2 = script$1;
+var __vue_script__$2 = script$2;
 /* template */
 
 /* style */
@@ -2423,57 +2436,38 @@ var VssueComment$1 = __vue_normalize__$3({
   staticRenderFns: __vue_staticRenderFns__$1
 }, __vue_inject_styles__$3, __vue_script__$3, __vue_scope_id__$3, __vue_is_functional_template__$3, __vue_module_identifier__$3, undefined, undefined);
 
-var VssueStatus = /** @class */ (function (_super) {
-    __extends(VssueStatus, _super);
-    function VssueStatus() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    __decorate([
-        Prop({
+var script$3 = Vue.extend({
+    name: 'VssueStatus',
+    functional: true,
+    props: {
+        iconName: {
             type: String,
             required: false,
             "default": null
-        })
-    ], VssueStatus.prototype, "iconName");
-    __decorate([
-        Prop({
-            type: String,
-            required: false,
-            "default": '20px'
-        })
-    ], VssueStatus.prototype, "iconSize");
-    VssueStatus = __decorate([
-        Component({
-            components: {
-                VssueIcon: VssueIcon
-            }
-        })
-    ], VssueStatus);
-    return VssueStatus;
-}(Vue));
+        }
+    },
+    render: function (h, _a) {
+        var props = _a.props, children = _a.children;
+        var content = [h('p', {
+                "class": 'vssue-status-info'
+            }, children)];
+        if (props.iconName) {
+            content.unshift(h(VssueIcon, {
+                props: {
+                    name: props.iconName
+                }
+            }));
+        }
+        return h('div', {
+            "class": 'vssue-status'
+        }, content);
+    }
+});
 
 /* script */
-var __vue_script__$4 = VssueStatus;
+var __vue_script__$4 = script$3;
 /* template */
 
-var __vue_render__$2 = function __vue_render__() {
-  var _vm = this;
-
-  var _h = _vm.$createElement;
-
-  var _c = _vm._self._c || _h;
-
-  return _c('div', {
-    staticClass: "vssue-status"
-  }, [_vm.iconName ? _c('VssueIcon', {
-    attrs: {
-      "name": _vm.iconName,
-      "size": _vm.iconSize
-    }
-  }) : _vm._e(), _vm._v(" "), _c('p', [_vm._t("default")], 2)], 1);
-};
-
-var __vue_staticRenderFns__$2 = [];
 /* style */
 
 var __vue_inject_styles__$4 = undefined;
@@ -2485,7 +2479,7 @@ var __vue_scope_id__$4 = undefined;
 var __vue_module_identifier__$4 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$4 = false;
+var __vue_is_functional_template__$4 = undefined;
 /* component normalizer */
 
 function __vue_normalize__$4(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
@@ -2509,10 +2503,7 @@ function __vue_normalize__$4(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssueStatus$1 = __vue_normalize__$4({
-  render: __vue_render__$2,
-  staticRenderFns: __vue_staticRenderFns__$2
-}, __vue_inject_styles__$4, __vue_script__$4, __vue_scope_id__$4, __vue_is_functional_template__$4, __vue_module_identifier__$4, undefined, undefined);
+var VssueStatus = __vue_normalize__$4({}, __vue_inject_styles__$4, __vue_script__$4, __vue_scope_id__$4, __vue_is_functional_template__$4, __vue_module_identifier__$4, undefined, undefined);
 
 var VssueComments = /** @class */ (function (_super) {
     __extends(VssueComments, _super);
@@ -2548,7 +2539,7 @@ var VssueComments = /** @class */ (function (_super) {
             components: {
                 TransitionFade: TransitionFade,
                 VssueComment: VssueComment$1,
-                VssueStatus: VssueStatus$1
+                VssueStatus: VssueStatus
             }
         })
     ], VssueComments);
@@ -2559,7 +2550,7 @@ var VssueComments = /** @class */ (function (_super) {
 var __vue_script__$5 = VssueComments;
 /* template */
 
-var __vue_render__$3 = function __vue_render__() {
+var __vue_render__$2 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -2571,8 +2562,7 @@ var __vue_render__$3 = function __vue_render__() {
   }, [_c('TransitionFade', [_vm.failed ? _c('VssueStatus', {
     key: "failed",
     attrs: {
-      "icon-name": "error",
-      "icon-size": "25px"
+      "icon-name": "error"
     }
   }, [_vm._v("\n      Failed to load comments\n    ")]) : _vm.requireLogin ? _c('VssueStatus', {
     key: "requie-login"
@@ -2606,7 +2596,7 @@ var __vue_render__$3 = function __vue_render__() {
   }), 1)], 1)], 1)], 1);
 };
 
-var __vue_staticRenderFns__$3 = [];
+var __vue_staticRenderFns__$2 = [];
 /* style */
 
 var __vue_inject_styles__$5 = undefined;
@@ -2643,11 +2633,11 @@ function __vue_normalize__$5(template, style, script, scope, functional, moduleI
 
 
 var VssueComments$1 = __vue_normalize__$5({
-  render: __vue_render__$3,
-  staticRenderFns: __vue_staticRenderFns__$3
+  render: __vue_render__$2,
+  staticRenderFns: __vue_staticRenderFns__$2
 }, __vue_inject_styles__$5, __vue_script__$5, __vue_scope_id__$5, __vue_is_functional_template__$5, __vue_module_identifier__$5, undefined, undefined);
 
-var script$2 = Vue.extend({
+var script$4 = Vue.extend({
     name: 'VssueIcon',
     functional: true,
     props: {
@@ -2667,7 +2657,7 @@ var script$2 = Vue.extend({
 });
 
 /* script */
-var __vue_script__$6 = script$2;
+var __vue_script__$6 = script$4;
 /* template */
 
 /* style */
@@ -2771,7 +2761,7 @@ var VssueNewComment = /** @class */ (function (_super) {
 var __vue_script__$7 = VssueNewComment;
 /* template */
 
-var __vue_render__$4 = function __vue_render__() {
+var __vue_render__$3 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -2793,15 +2783,9 @@ var __vue_render__$4 = function __vue_render__() {
       "src": _vm.user.avatar
     }
   })]) : _c('VssueIcon', {
-    staticStyle: {
-      "padding": "5px",
-      "cursor": "pointer"
-    },
     attrs: {
-      "name": _vm.platform,
-      "title": "Login with " + _vm.platform,
-      "size": "50px",
-      "color": "grey"
+      "name": _vm.platform.toLowerCase(),
+      "title": "Login with " + _vm.platform
     },
     on: {
       "click": function click($event) {
@@ -2873,8 +2857,7 @@ var __vue_render__$4 = function __vue_render__() {
       expression: "loading"
     }],
     attrs: {
-      "name": "loading",
-      "color": "grey"
+      "name": "loading"
     }
   }), _vm._v("\n\n        " + _vm._s(_vm.loading ? "Submitting" : "Submit Comment") + "\n      ")], 1) : _c('VssueButton', {
     staticClass: "vssue-button-login",
@@ -2890,7 +2873,7 @@ var __vue_render__$4 = function __vue_render__() {
   }, [_vm._v("\n        Login\n      ")])], 1)])]);
 };
 
-var __vue_staticRenderFns__$4 = [];
+var __vue_staticRenderFns__$3 = [];
 /* style */
 
 var __vue_inject_styles__$7 = undefined;
@@ -2927,154 +2910,9 @@ function __vue_normalize__$7(template, style, script, scope, functional, moduleI
 
 
 var VssueNewComment$1 = __vue_normalize__$7({
-  render: __vue_render__$4,
-  staticRenderFns: __vue_staticRenderFns__$4
+  render: __vue_render__$3,
+  staticRenderFns: __vue_staticRenderFns__$3
 }, __vue_inject_styles__$7, __vue_script__$7, __vue_scope_id__$7, __vue_is_functional_template__$7, __vue_module_identifier__$7, undefined, undefined);
-
-var quot = /"/g;
-// B.2.3.2.1 CreateHTML(string, tag, attribute, value)
-var createHTML = function (string, tag, attribute, value) {
-  var S = String(_defined(string));
-  var p1 = '<' + tag;
-  if (attribute !== '') p1 += ' ' + attribute + '="' + String(value).replace(quot, '&quot;') + '"';
-  return p1 + '>' + S + '</' + tag + '>';
-};
-var _stringHtml = function (NAME, exec) {
-  var O = {};
-  O[NAME] = exec(createHTML);
-  _export(_export.P + _export.F * _fails(function () {
-    var test = ''[NAME]('"');
-    return test !== test.toLowerCase() || test.split('"').length > 3;
-  }), 'String', O);
-};
-
-// B.2.3.10 String.prototype.link(url)
-_stringHtml('link', function (createHTML) {
-  return function link(url) {
-    return createHTML(this, 'a', 'href', url);
-  };
-});
-
-var platforms = {
-    'github': {
-        name: 'GitHub',
-        link: 'https://github.com'
-    },
-    'gitlab': {
-        name: 'GitLab',
-        link: 'https://gitlab.com'
-    },
-    'bitbucket': {
-        name: 'BitBucket',
-        link: 'https://bitbucket.org'
-    }
-};
-var VssuePoweredBy = /** @class */ (function (_super) {
-    __extends(VssuePoweredBy, _super);
-    function VssuePoweredBy() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    Object.defineProperty(VssuePoweredBy.prototype, "platformInfo", {
-        get: function () {
-            return this.platform ? platforms[this.platform] : {};
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(VssuePoweredBy.prototype, "vssueVersion", {
-        get: function () {
-            return "0.1.8";
-        },
-        enumerable: true,
-        configurable: true
-    });
-    __decorate([
-        Prop({
-            type: String,
-            required: false,
-            "default": null
-        })
-    ], VssuePoweredBy.prototype, "platform");
-    __decorate([
-        Prop({
-            type: String,
-            required: false,
-            "default": null
-        })
-    ], VssuePoweredBy.prototype, "version");
-    VssuePoweredBy = __decorate([
-        Component
-    ], VssuePoweredBy);
-    return VssuePoweredBy;
-}(Vue));
-
-var __vue_script__$8 = VssuePoweredBy;
-/* template */
-
-var __vue_render__$5 = function __vue_render__() {
-  var _vm = this;
-
-  var _h = _vm.$createElement;
-
-  var _c = _vm._self._c || _h;
-
-  return _c('div', {
-    staticClass: "vssue-powered-by"
-  }, [_c('span', [_vm._v("Powered by")]), _vm._v(" "), _vm.platform && _vm.version ? _c('span', [_c('a', {
-    attrs: {
-      "href": _vm.platformInfo.link,
-      "target": "_blank",
-      "title": _vm.platformInfo.name + " API " + _vm.version
-    }
-  }, [_vm._v("\n      " + _vm._s(_vm.platformInfo.name) + "\n    ")]), _vm._v(" "), _c('span', [_vm._v("&")])]) : _vm._e(), _vm._v(" "), _c('a', {
-    attrs: {
-      "href": "https://vssue.js.org",
-      "target": "_blank",
-      "title": "Vssue v" + _vm.vssueVersion
-    }
-  }, [_vm._v("\n    Vssue\n  ")])]);
-};
-
-var __vue_staticRenderFns__$5 = [];
-/* style */
-
-var __vue_inject_styles__$8 = undefined;
-/* scoped */
-
-var __vue_scope_id__$8 = undefined;
-/* module identifier */
-
-var __vue_module_identifier__$8 = undefined;
-/* functional template */
-
-var __vue_is_functional_template__$8 = false;
-/* component normalizer */
-
-function __vue_normalize__$8(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
-  var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
-
-  component.__file = "VssuePoweredBy.vue";
-
-  if (!component.render) {
-    component.render = template.render;
-    component.staticRenderFns = template.staticRenderFns;
-    component._compiled = true;
-    if (functional) component.functional = true;
-  }
-
-  component._scopeId = scope;
-
-  return component;
-}
-/* style inject */
-
-/* style inject SSR */
-
-
-var VssuePoweredBy$1 = __vue_normalize__$8({
-  render: __vue_render__$5,
-  staticRenderFns: __vue_staticRenderFns__$5
-}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
 
 var Vssue = /** @class */ (function (_super) {
     __extends(Vssue, _super);
@@ -3111,6 +2949,16 @@ var Vssue = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(Vssue.prototype, "vssueVersion", {
+        /**
+         * current version of vssue
+         */
+        get: function () {
+            return "0.1.9";
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(Vssue.prototype, "issueTitle", {
         /**
          * the actual title of this issue
@@ -3139,7 +2987,7 @@ var Vssue = /** @class */ (function (_super) {
          * the key of access token for local storage
          */
         get: function () {
-            return this.vssueAPI ? "Vssue." + this.vssueAPI.platform + ".access_token" : '';
+            return this.vssueAPI ? "Vssue." + this.vssueAPI.platform.name.toLowerCase() + ".access_token" : '';
         },
         enumerable: true,
         configurable: true
@@ -3489,23 +3337,21 @@ var Vssue = /** @class */ (function (_super) {
     Vssue = __decorate([
         Component({
             components: {
-                Iconfont: Iconfont$1,
+                Iconfont: Iconfont,
                 TransitionFade: TransitionFade,
                 VssueComments: VssueComments$1,
                 VssueNewComment: VssueNewComment$1,
-                VssuePoweredBy: VssuePoweredBy$1,
-                VssueStatus: VssueStatus$1
+                VssueStatus: VssueStatus
             }
         })
     ], Vssue);
     return Vssue;
 }(Vue));
 
-/* script */
-var __vue_script__$9 = Vssue;
+var __vue_script__$8 = Vssue;
 /* template */
 
-var __vue_render__$6 = function __vue_render__() {
+var __vue_render__$4 = function __vue_render__() {
   var _vm = this;
 
   var _h = _vm.$createElement;
@@ -3525,12 +3371,21 @@ var __vue_render__$6 = function __vue_render__() {
       value: _vm.hasLoadedComments,
       expression: "hasLoadedComments"
     }]
-  }, [_vm._v("\n        " + _vm._s(_vm.comments.length) + "\n      ")]), _vm._v(" "), _c('span', [_vm._v("\n        Comments\n      ")])]), _vm._v(" "), _c('VssuePoweredBy', {
+  }, [_vm._v("\n        " + _vm._s(_vm.comments.length) + "\n      ")]), _vm._v(" "), _c('span', [_vm._v("\n        Comments\n      ")])]), _vm._v(" "), _c('span', {
+    staticClass: "vssue-powered-by"
+  }, [_c('span', [_vm._v("Powered by")]), _vm._v(" "), _vm.vssueAPI ? _c('span', [_c('a', {
     attrs: {
-      "platform": _vm.vssueAPI.platform,
-      "version": _vm.vssueAPI.version
+      "href": _vm.vssueAPI.platform.link,
+      "target": "_blank",
+      "title": _vm.vssueAPI.platform.name + " API " + _vm.vssueAPI.platform.version
     }
-  })], 1), _vm._v(" "), _c('TransitionFade', [!_vm.hasInitialized ? _c('VssueStatus', {
+  }, [_vm._v("\n          " + _vm._s(_vm.vssueAPI.platform.name) + "\n        ")]), _vm._v(" "), _c('span', [_vm._v("&")])]) : _vm._e(), _vm._v(" "), _c('a', {
+    attrs: {
+      "href": "https://vssue.js.org",
+      "target": "_blank",
+      "title": "Vssue v" + _vm.vssueVersion
+    }
+  }, [_vm._v("\n        Vssue\n      ")])])]), _vm._v(" "), _c('TransitionFade', [!_vm.hasInitialized ? _c('VssueStatus', {
     key: "initializing",
     attrs: {
       "icon-name": "loading"
@@ -3541,7 +3396,7 @@ var __vue_render__$6 = function __vue_render__() {
     ref: "newComment",
     attrs: {
       "loading": _vm.isCreatingComment,
-      "platform": _vm.vssueAPI.platform,
+      "platform": _vm.vssueAPI.platform.name,
       "user": _vm.user
     },
     on: {
@@ -3565,22 +3420,22 @@ var __vue_render__$6 = function __vue_render__() {
   })], 1)], 1)], 1)], 1);
 };
 
-var __vue_staticRenderFns__$6 = [];
+var __vue_staticRenderFns__$4 = [];
 /* style */
 
-var __vue_inject_styles__$9 = undefined;
+var __vue_inject_styles__$8 = undefined;
 /* scoped */
 
-var __vue_scope_id__$9 = undefined;
+var __vue_scope_id__$8 = undefined;
 /* module identifier */
 
-var __vue_module_identifier__$9 = undefined;
+var __vue_module_identifier__$8 = undefined;
 /* functional template */
 
-var __vue_is_functional_template__$9 = false;
+var __vue_is_functional_template__$8 = false;
 /* component normalizer */
 
-function __vue_normalize__$9(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
+function __vue_normalize__$8(template, style, script, scope, functional, moduleIdentifier, createInjector, createInjectorSSR) {
   var component = (typeof script === 'function' ? script.options : script) || {}; // For security concerns, we use only base name in production mode.
 
   component.__file = "Vssue.vue";
@@ -3601,14 +3456,14 @@ function __vue_normalize__$9(template, style, script, scope, functional, moduleI
 /* style inject SSR */
 
 
-var VssueComponent = __vue_normalize__$9({
-  render: __vue_render__$6,
-  staticRenderFns: __vue_staticRenderFns__$6
-}, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
+var VssueComponent = __vue_normalize__$8({
+  render: __vue_render__$4,
+  staticRenderFns: __vue_staticRenderFns__$4
+}, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
 
 var Vssue$1 = {
     get version() {
-        return "0.1.8";
+        return "0.1.9";
     },
     install: function (Vue$$1, options) {
         if (Vue$$1.prototype.$vssue) {
