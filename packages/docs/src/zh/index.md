@@ -13,4 +13,4 @@ features:
 footer: MIT Licensed | Vssue
 ---
 
-<Vssue title="Vssue" />
+<Vssue :issue-id="1" />
