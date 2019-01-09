@@ -19,16 +19,16 @@ Vue.use(Vssue, {
 
 ### api
 
-- __Type__: `VssueAPIContructor`
+- __Type__: `VssueAPI.Contructor`
 - __Details__:
 
-  The constructor of the API class that implements `VssueAPI` interface.
+  The constructor of the VssueAPI class that implements `VssueAPI.Instance` interface.
 
-  Vssue will use it to create an API instance, and use the API instance to send requests to platform.
+  Vssue will use it to create an VssueAPI instance, and use the VssueAPI instance to send requests to platform.
 
-  The name of Vssue's API packages format as `@vssue/api-${platform}-${version}`, for different API version of different platforms.
+  The name of VssueAPI packages format as `@vssue/api-${platform}-${version}`, for different API version of different platforms.
 
-  Currently, we provide following API packages:
+  Currently, we provide following VssueAPI packages:
 
   - Github
     - API V3: `@vssue/api-github-v3`
@@ -130,9 +130,9 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
 
   Default values for supported platforms are:
 
-  - `'https://github.com'` for Github
+  - `'https://api.github.com'` for Github
   - `'https://gitlab.com'` for Gitlab
-  - `'https://bitbucket.org'` for Bitbucket
+  - `'https://api.bitbucket.org'` for Bitbucket
 
   ::: warning ATTENSION
   Only when you choose to use __self-hosted Gitlab__ should you set this option.
@@ -155,17 +155,17 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
 ### labels
 
 - __Type__: `string`
-- __Default__: `'Vssue'`
+- __Default__: `['Vssue']`
 - __Details__:
 
-  To set the labels of issues that Vssue uses. Accepts a __comma-separated__ string.
+  To set the labels of issues that Vssue uses.
 
-  If you want to set multiple labels, separate them by comma. For example, `'Vssue,Comments'` means to have both `'Vssue'` and `'Comments'` labels.
-
-  Vssue will only request those issues with the labels and ignore others. Together with `title`, `labels` will help to identify the corresponding issue of Vssue.
+  Vssue will only request those issues with the labels and ignore others. Together with `title`, `labels` will help to identify the corresponding issue of Vssue. If you use multiple labels by setting more strings, only issues with all those labels will be requested by Vssue.
 
   ::: tip
   Bitbucket does not support issue labels for now, so this option will be ignored if you are using Bitbucket.
+
+  Github supports emoji in labels' name, e.g. `[':heart:Vssue', ':mailbox:Comments']`.
   :::
 
 - __Reference__: [title](#title)
@@ -200,13 +200,21 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
 
 - __Reference__: [owner](#owner)
 
+### perPage <Badge text="v0.2+"/>
+
+- __Type__: `number`
+- __Default__: `10`
+- __Details__:
+
+  The default value of how many comments to show per page.
+
 ## Component Props
 
 ### title
 
 - __Type__: `string | (options: VssueOptions) => string`
 - __Required__: `false`
-- __Default__: `document.title`
+- __Default__: `` options => `${options.prefix}${document.title}` ``
 - __Details__:
 
   The title of issue that used by this Vssue component.
@@ -224,9 +232,26 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
 
 - __Reference__: [prefix](#prefix), [labels](#labels)
 
+### issueId <Badge text="v0.2+"/>
+
+- __Type__: `string | number`
+- __Required__: `false`
+- __Default__: `null`
+- __Details__:
+
+  The id of issue that used by this Vssue component.
+  
+  If `issueId` is set, `labels`, `preifx` and `title` will be ignored.
+
+  ::: danger ATTENSION
+  If `issueId` is set, Vssue will use it to determine which issue to use directly, instead of requesting issues according to `labels` and `title`. This will make the initilization process of Vssue faster.
+
+  In this case, however, you have to __create issue manually__. If the corresponding issue is not found, Vssue will not try to create a new issue for you. 
+  :::
+
 ### options
 
-- __Type__: `Object` (`VssueOptions`)
+- __Type__: `Object` (`Partial<VssueOptions>`)
 - __Required__: `false`
 - __Default__: `{}`
 - __Details__:

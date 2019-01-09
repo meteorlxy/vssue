@@ -19,16 +19,16 @@ Vue.use(Vssue, {
 
 ### api
 
-- __类型__: `VssueAPIContructor`
+- __类型__: `VssueAPI.Contructor`
 - __详细__:
 
-  API 类的构造函数，而 API 类实现了 `VssueAPI` 接口。
+  VssueAPI 类的构造函数，而 VssueAPI 类实现了 `VssueAPI.Instance` 接口。
 
-  Vssue 会使用它创建 API 实例，然后通过 API 实例向平台发出请求。
+  Vssue 会使用它创建 VssueAPI 实例，然后通过 VssueAPI 实例向平台发出请求。
 
-  Vssue API 包的命名格式为 `@vssue/api-${platform}-${version}`，对应不同平台的不同 API 版本。
+  VssueAPI 包的命名格式为 `@vssue/api-${platform}-${version}`，对应不同平台的不同 API 版本。
 
-  目前，我们提供了以下 API 包：
+  目前，我们提供了以下 VssueAPI 包：
 
   - Github
     - API V3: `@vssue/api-github-v3`
@@ -154,18 +154,18 @@ Vue.use(Vssue, {
 
 ### labels
 
-- __类型__: `string`
-- __默认值__: `'Vssue'`
+- __类型__: `Array<string>`
+- __默认值__: `['Vssue']`
 - __详细__:
 
-  用来设置 Vssue 使用的 Issue 的 labels （标签）。接收一个 __逗号分隔__ 的字符串。
+  用来设置 Vssue 使用的 Issue 的 labels （标签）。
 
-  如果你想要设置多个标签，就使用逗号把它们隔开。比如，`'Vssue,Comments'` 意味着设置 `'Vssue'` 和 `'Comments'` 两个标签。
-
-  Vssue 只会请求拥有对应标签的 Issue，忽略其他的 Issue。Vssue 通过 `title` 和 `labels` 来确定用来存储评论的对应 Issue。
+  Vssue 只会请求拥有对应标签的 Issue，忽略其他的 Issue。Vssue 通过 `title` 和 `labels` 来确定用来存储评论的对应 Issue。传入多个字符串可以设置多个标签，只有同时满足这些标签的 Issue 才会被 Vssue 请求。
 
   ::: tip
   Bitbucket 目前不支持 Issue 标签功能，所以如果你使用 Bitbucket 的话，这个配置将会被忽略。
+
+  Github 支持在标签名称中加入 emoji，如 `[':heart:Vssue', ':mailbox:Comments']`。
   :::
 
 - __参考__: [title](#title)
@@ -186,9 +186,9 @@ Vue.use(Vssue, {
 
 ### admins
 
-- __Type__: `Array<string>`
-- __Default__: `[]`
-- __Details__:
+- __类型__: `Array<string>`
+- __默认值__: `[]`
+- __详细__:
 
   拥有 admin 权限的用户数组。`owner` 始终视为拥有 admin 权限。
 
@@ -200,13 +200,21 @@ Vue.use(Vssue, {
 
 - __Reference__: [owner](#owner)
 
+### perPage <Badge text="v0.2+"/>
+
+- __类型__: `number`
+- __默认值__: `10`
+- __详细__:
+
+  默认每页显示的评论数。
+
 ## 组件 Props
 
 ### title
 
 - __类型__: `string | (options: VssueOptions) => string`
 - __是否必须__: `false`
-- __默认值__: `document.title`
+- __默认值__: `` options => `${options.prefix}${document.title}` ``
 - __详细__:
 
   当前 Vssue 组件使用的 Issue 的标题。
@@ -224,9 +232,26 @@ Vue.use(Vssue, {
 
 - __参考__: [prefix](#prefix), [labels](#labels)
 
+### issueId <Badge text="v0.2+"/>
+
+- __类型__: `string | number`
+- __是否必须__: `false`
+- __默认值__: `null`
+- __详细__:
+
+  当前 Vssue 组件使用的 Issue 的 ID。
+  
+  如果设置了 `issueId`， `labels`、 `preifx` 和 `title` 都将被忽略。
+
+  ::: danger 注意
+  如果设置了 `issueId`，Vssue 将会直接使用它来确定要使用哪个 Issue，而不是根据 `labels` 和 `title` 来查找对应的 Issue。这会加快 Vssue 的初始化过程、
+
+  但是在这种情况下，你必须要 __手动创建 Issue__。如果对应的 Issue 不存在，Vssue 不会尝试为你创建一个新的 Issue。
+  :::
+
 ### options
 
-- __类型__: `Object` (`VssueOptions`)
+- __类型__: `Object` (`Partial<VssueOptions>`)
 - __是否必须__: `false`
 - __默认值__: `{}`
 - __详细__:
