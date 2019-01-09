@@ -6,6 +6,16 @@ process.env.VUE_APP_VERSION = version
 module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
 
+  css: {
+    loaderOptions: {
+      postcss: {
+        config: {
+          path: path.resolve(__dirname),
+        },
+      },
+    },
+  },
+
   chainWebpack: config => {
     config.resolve.alias
       .set('vssue$', path.resolve(__dirname, process.env.VSSUE_PATH))
