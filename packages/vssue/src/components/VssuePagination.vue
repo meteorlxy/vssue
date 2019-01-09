@@ -1,5 +1,8 @@
 <template>
-  <div class="vssue-pagination">
+  <div
+    v-if="count > perPageOptions[0]"
+    class="vssue-pagination"
+  >
     <div class="vssue-pagination-per-page">
       <select
         class="vssue-pagination-select"
