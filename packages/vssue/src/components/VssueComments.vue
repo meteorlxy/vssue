@@ -24,6 +24,13 @@
         Loading comments...
       </VssueStatus>
 
+      <VssueStatus
+        v-else-if="comments.data.length === 0"
+        key="no-comments"
+      >
+        No comments yet. Leave the first comment !
+      </VssueStatus>
+
       <div
         v-else
         key="comments-list"
