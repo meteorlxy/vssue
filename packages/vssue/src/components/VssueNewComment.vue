@@ -23,10 +23,11 @@
         ref="input"
         class="vssue-new-comment-input"
         :rows="inputRows"
-        :disabled="!user"
-        :placeholder="user ? 'Leave a comment. Styling with Markdown is supported' : 'Login to leave a comment'"
+        :disabled="!user || loading"
+        :placeholder="user ? 'Leave a comment. Styling with Markdown is supported. Ctrl + Enter to submit.' : 'Login to leave a comment'"
         :spellcheck="false"
         v-model="content"
+        @keyup.enter.ctrl="submit()"
       />
     </div><!-- .vssue-new-comment-body -->
 
@@ -58,7 +59,7 @@
           class="vssue-button-submit-comment"
           type="primary"
           :disabled="content === '' || loading"
-          @click="$emit('create-comment', { content: content })"
+          @click="submit()"
         >
           <VssueIcon
             v-show="loading"
@@ -84,7 +85,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { User } from 'vssue'
+import { VssueAPI } from 'vssue'
 import VssueButton from './VssueButton.vue'
 import VssueIcon from './VssueIcon.vue'
 
@@ -109,7 +110,7 @@ export default class VssueNewComment extends Vue {
     type: Object,
     required: false,
     default: null,
-  }) user!: User | null
+  }) user!: VssueAPI.User | null
 
   content: string = ''
 
@@ -131,6 +132,10 @@ export default class VssueNewComment extends Vue {
 
   reset (): void {
     this.content = ''
+  }
+
+  submit (): void {
+    this.$emit('create-comment', { content: this.content })
   }
 }
 </script>

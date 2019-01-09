@@ -68,7 +68,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { Comment, User } from 'vssue'
+import { VssueAPI } from 'vssue'
 import { formatDateTime } from '@vssue/utils'
 import VssueIcon from './VssueIcon.vue'
 
@@ -81,7 +81,12 @@ export default class VssueComment extends Vue {
   @Prop({
     type: Object,
     required: true,
-  }) comment!: Comment
+  }) comment!: VssueAPI.Comment
+
+  @Prop({
+    type: Boolean,
+    required: true,
+  }) reactable!: boolean
 
   get content (): string {
     return this.comment.content
@@ -91,7 +96,7 @@ export default class VssueComment extends Vue {
     return this.comment.contentRaw
   }
 
-  get author (): User {
+  get author (): VssueAPI.User {
     return this.comment.author
   }
 
@@ -104,7 +109,7 @@ export default class VssueComment extends Vue {
   }
 
   get showReactions (): boolean {
-    return Boolean(this.comment.reactions)
+    return this.reactable && Boolean(this.comment.reactions)
   }
 }
 </script>

@@ -12,15 +12,16 @@ import 'github-markdown-css'
 const onlyComponent: boolean = process.env.VUE_APP_ONLY_COMPONENT === 'true'
 
 const options: VssueOptions = {
-  state: 'Vssue',
-  labels: 'Vssue',
-  prefix: '[Vssue]',
-  admins: [],
+  api: GithubV3,
   owner: process.env.VUE_APP_OWNER,
   repo: process.env.VUE_APP_REPO,
   clientId: process.env.VUE_APP_CLIENT_ID,
   clientSecret: process.env.VUE_APP_CLIENT_SECRET,
-  api: GithubV3,
+  state: 'Vssue',
+  labels: ['Vssue'],
+  prefix: '[Vssue]',
+  admins: [],
+  perPage: 5,
 }
 
 if (!onlyComponent) {
@@ -35,6 +36,7 @@ new Vue({
   render: h => h('Vssue', {
     props: {
       title: 'Vssue Dev',
+      // issueId: 1,
       options,
     },
   }),

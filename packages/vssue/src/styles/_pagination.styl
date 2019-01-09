@@ -1,0 +1,40 @@
+.vssue-pagination
+  cursor default
+  display flex
+  padding 5px
+  color $vssue-text-light-color
+  @media screen and (max-width $vssue-breakpoint-mobile)
+    flex-direction column
+    justify-content center
+    text-align center
+  .vssue-pagination-per-page
+    flex 1
+  .vssue-pagination-loading
+    flex 1
+  .vssue-pagination-page
+    flex 1
+    @media screen and (max-width $vssue-breakpoint-mobile)
+      margin-top 10px
+    @media screen and (min-width $vssue-breakpoint-mobile + 1px)
+      text-align right
+
+  .vssue-pagination-select
+    outline none
+    background-color #ffffff
+    border 1px solid lighten($vssue-theme-color, 50%)
+    &:disabled
+      cursor not-allowed
+    &:focus
+      background-color #ffffff
+      box-shadow 0 0 0.2px 0.2px lighten($vssue-theme-color, 50%)
+
+  .vssue-pagination-link
+    display inline-block
+    min-width 1em
+    text-align center
+    &.disabled
+      pointer-events none
+    &:not(.disabled)
+      color $vssue-theme-color
+      font-weight 500
+      cursor pointer
