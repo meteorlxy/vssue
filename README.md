@@ -10,17 +10,9 @@
 
 [**Live Demo and Docs here**](https://vssue.js.org)
 
-## TODOS
+## Contributing
 
-Vssue is still a WIP, with some possible enhancement todo:
-
-- [x] Styles Enhancement
-- [x] Comments Pagination
-- [x] Comments Reactions
-- [ ] I18N
-- [ ] Tests
-- [ ] Comments Editable
-- [ ] Comments Deletable
+Vssue is still a WIP, feel free to open issues and contributions welcome !
 
 ## LICENSE
 
