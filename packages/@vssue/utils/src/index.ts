@@ -1,5 +1,4 @@
 import format from 'date-fns/format'
-import compareDesc from 'date-fns/compare_desc'
 import {
   parse,
   stringify,
@@ -30,10 +29,6 @@ export const formatDateTime = (str: string): string => {
   return dateTime
 }
 
-export const compareDateDesc = (dateA: any, dateB: any): Number => {
-  return compareDesc(dateA, dateB)
-}
-
 export const noop = () => {}
 
 export default {
@@ -43,6 +38,5 @@ export default {
   parseQuery,
   buildQuery,
   formatDateTime,
-  compareDateDesc,
   noop,
 }
