@@ -61,10 +61,12 @@ module.exports = [
       'vue',
       ...(opts.format === 'cjs' ? [
         '@vssue/utils',
+        'nprogress',
       ] : []),
       ...(opts.format === 'es' ? [
         '@vssue/utils',
         'vue-property-decorator',
+        'nprogress',
       ] : []),
     ],
 
