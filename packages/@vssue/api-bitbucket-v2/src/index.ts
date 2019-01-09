@@ -26,9 +26,8 @@ import {
  * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication
  * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues
  * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments
- * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments
  */
-export default class BitbucketV2 implements VssueAPI {
+export default class BitbucketV2 implements VssueAPI.Instance {
   baseURL: string
   owner: string
   repo: string
@@ -37,16 +36,8 @@ export default class BitbucketV2 implements VssueAPI {
   state: string
   $http: AxiosInstance
 
-  get platform () {
-    return {
-      name: 'Bitbucket',
-      link: 'https://bitbucket.org',
-      version: 'v2',
-    }
-  }
-
   constructor ({
-    baseURL = 'https://api.bitbucket.org/2.0/',
+    baseURL = 'https://api.bitbucket.org',
     owner,
     repo,
     clientId,
@@ -69,7 +60,25 @@ export default class BitbucketV2 implements VssueAPI {
     })
   }
 
-  redirectAuthorize () {
+  /**
+   * The platform api info
+   */
+  get platform (): VssueAPI.Platform {
+    return {
+      name: 'Bitbucket',
+      link: 'https://bitbucket.org',
+      version: 'v2',
+      meta: {
+        reactable: false,
+        sortable: true,
+      },
+    }
+  }
+
+  /**
+   * Redirect to the authorization page of platform.
+   */
+  redirectAuth (): void {
     window.location.href = buildURL('https://bitbucket.org/site/oauth2/authorize', {
       client_id: this.clientId,
       redirect_uri: window.location.href,
@@ -77,7 +86,15 @@ export default class BitbucketV2 implements VssueAPI {
     })
   }
 
-  async handleAuthorize () {
+  /**
+   * Handle authorization.
+   *
+   * @remarks
+   * If the `code` exists in the query, remove them from query, and try to get the access token.
+   *
+   * @return A string for access token, `null` for no authorization code
+   */
+  async handleAuth (): Promise<string | null> {
     const query = parseQuery(window.location.search)
     if (query.code) {
       const code = query.code
@@ -90,8 +107,15 @@ export default class BitbucketV2 implements VssueAPI {
     return null
   }
 
-  async getAccessToken ({ code }) {
-    const response = await this.$http.post(`https://cors-anywhere.herokuapp.com/${'https://bitbucket.org/site/oauth2/access_token'}`, buildQuery({
+  /**
+   * Get user access token via `code`
+   *
+   * @param options.code - The code from the query
+   *
+   * @return User access token
+   */
+  async getAccessToken ({ code }: { code: string }): Promise<string> {
+    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${'https://bitbucket.org/site/oauth2/access_token'}`, buildQuery({
       grant_type: 'authorization_code',
       redirect_uri: window.location.href,
       code,
@@ -104,43 +128,90 @@ export default class BitbucketV2 implements VssueAPI {
         password: this.clientSecret,
       },
     })
-    const accessToken = response.data.access_token
-    return accessToken
+    return data.access_token
   }
 
-  async getUser ({ accessToken }) {
-    const response = await this.$http.get('/user', {
+  /**
+   * Get the logined user with access token.
+   *
+   * @param options.accessToken - User access token
+   *
+   * @return The user
+   */
+  async getUser ({ accessToken }): Promise<VssueAPI.User> {
+    const { data } = await this.$http.get('2.0/user', {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
-    const user = response.data
-    return normalizeUser(user)
+    return normalizeUser(data)
   }
 
-  async getIssues ({ accessToken }) {
-    const options: AxiosRequestConfig = {
-      params: {
-        // to avoid caching
-        timestamp: Date.now(),
-      },
-    }
-    if (accessToken) {
-      options.headers = {
-        'Authorization': `Bearer ${accessToken}`,
-      }
-    }
-    const response = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues`, options)
-    const issues = response.data.values
-    return issues.map(normalizeIssue)
-  }
-
-  async getComments ({
-    issueId,
+  /**
+   * Get issue of this page according to the issue id or the issue title
+   *
+   * @param options.accessToken - User access token
+   * @param options.issueId - The id of issue
+   * @param options.issueTitle - The title of issue
+   *
+   * @return The raw response of issue
+   */
+  async getIssue ({
     accessToken,
-  }) {
+    issueId,
+    issueTitle,
+  }): Promise<VssueAPI.Issue | null> {
+    const options: AxiosRequestConfig = {}
+
+    if (accessToken) {
+      options.headers = {
+        'Authorization': `Bearer ${accessToken}`,
+      }
+    }
+
+    if (issueId) {
+      try {
+        const { data } = await this.$http.get(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}`, options)
+        return normalizeIssue(data)
+      } catch (e) {
+        if (e.response && e.response.status === 404) {
+          return null
+        } else {
+          throw e
+        }
+      }
+    } else {
+      options.params = {
+        sort: 'created_on',
+        q: `title="${issueTitle}"`,
+      }
+      const { data } = await this.$http.get(`2.0/repositories/${this.owner}/${this.repo}/issues`, options)
+      return data.size > 0 ? normalizeIssue(data.values[0]) : null
+    }
+  }
+
+  /**
+   * Get comments of this page according to the issue id or the issue title
+   *
+   * @param options.accessToken - User access token
+   * @param options.issueId - The id of issue
+   * @param options.query - The query parameters
+   *
+   * @return The comments
+   */
+  async getComments ({
+    accessToken,
+    issueId,
+    query: {
+      page = 1,
+      perPage = 10,
+      sort = 'desc',
+    } = {},
+  }): Promise<VssueAPI.Comments> {
     const options: AxiosRequestConfig = {
       params: {
-        // to avoid caching
-        timestamp: Date.now(),
+        // pagination
+        'page': page,
+        'pagelen': perPage,
+        'sort': sort === 'desc' ? '-created_on' : 'created_on',
       },
     }
     if (accessToken) {
@@ -148,17 +219,30 @@ export default class BitbucketV2 implements VssueAPI {
         'Authorization': `Bearer ${accessToken}`,
       }
     }
-    const response = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
-    const comments = response.data.values
-    return comments.map(normalizeComment)
+    const { data } = await this.$http.get(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
+    return {
+      count: data.size,
+      page: data.page,
+      perPage: data.pagelen,
+      data: data.values.map(normalizeComment),
+    }
   }
 
+  /**
+   * Create a new issue
+   *
+   * @param options.accessToken - User access token
+   * @param options.title - The title of issue
+   * @param options.content - The content of issue
+   *
+   * @return The created issue
+   */
   async createIssue ({
+    accessToken,
     title,
     content,
-    accessToken,
-  }) {
-    const response = await this.$http.post(`repositories/${this.owner}/${this.repo}/issues`, {
+  }): Promise<VssueAPI.Issue> {
+    const { data } = await this.$http.post(`2.0/repositories/${this.owner}/${this.repo}/issues`, {
       title,
       content: {
         raw: content,
@@ -168,31 +252,35 @@ export default class BitbucketV2 implements VssueAPI {
     }, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
-    const issue = response.data
-    return normalizeIssue(issue)
+    return normalizeIssue(data)
   }
 
-  async createIssueComment ({
+  async createComment ({
+    accessToken,
     issueId,
     content,
-    accessToken,
-  }) {
-    const response = await this.$http.post(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
+  }): Promise<VssueAPI.Comment> {
+    const { data } = await this.$http.post(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
       content: {
         raw: content,
       },
     }, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
-    const comment = response.data
-    return normalizeComment(comment)
+    return normalizeComment(data)
   }
 
-  async createIssueReaction () {
-    // no support
+  /**
+   * Bitbucket does not support reactions now
+   */
+  async createIssueReaction (): Promise<boolean> {
+    throw new Error('Reactions Not Implemented')
   }
 
-  async createCommentReaction () {
-    // no support
+  /**
+   * Bitbucket does not support reactions now
+   */
+  async createCommentReaction (): Promise<boolean> {
+    throw new Error('Reactions Not Implemented')
   }
 }

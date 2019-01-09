@@ -29,7 +29,7 @@ import {
  * @see https://developer.github.com/v3/issues/comments/
  * @see https://developer.github.com/v3/reactions/
  */
-export default class GithubV3 implements VssueAPI {
+export default class GithubV3 implements VssueAPI.Instance {
   baseURL: string
   owner: string
   repo: string
@@ -38,14 +38,6 @@ export default class GithubV3 implements VssueAPI {
   clientSecret: string
   state: string
   $http: AxiosInstance
-
-  get platform () {
-    return {
-      name: 'GitHub',
-      link: 'https://github.com',
-      version: 'v3',
-    }
-  }
 
   constructor ({
     baseURL = 'https://api.github.com',
@@ -59,7 +51,7 @@ export default class GithubV3 implements VssueAPI {
     this.baseURL = baseURL
     this.owner = owner
     this.repo = repo
-    this.labels = labels
+    this.labels = labels.join(',')
 
     this.clientId = clientId
     this.clientSecret = clientSecret
@@ -80,7 +72,25 @@ export default class GithubV3 implements VssueAPI {
     })
   }
 
-  redirectAuthorize () {
+  /**
+   * The platform api info
+   */
+  get platform (): VssueAPI.Platform {
+    return {
+      name: 'GitHub',
+      link: 'https://github.com',
+      version: 'v3',
+      meta: {
+        reactable: true,
+        sortable: false,
+      },
+    }
+  }
+
+  /**
+   * Redirect to the authorization page of platform.
+   */
+  redirectAuth (): void {
     window.location.href = buildURL('https://github.com/login/oauth/authorize', {
       client_id: this.clientId,
       redirect_uri: window.location.href,
@@ -89,7 +99,15 @@ export default class GithubV3 implements VssueAPI {
     })
   }
 
-  async handleAuthorize () {
+  /**
+   * Handle authorization.
+   *
+   * @remarks
+   * If the `code` and `state` exist in the query, and the `state` matches, remove them from query, and try to get the access token.
+   *
+   * @return A string for access token, `null` for no authorization code
+   */
+  async handleAuth (): Promise<string | null> {
     const query = parseQuery(window.location.search)
     if (query.code) {
       if (query.state !== this.state) {
@@ -106,12 +124,19 @@ export default class GithubV3 implements VssueAPI {
     return null
   }
 
-  async getAccessToken ({ code }) {
+  /**
+   * Get user access token via `code`
+   *
+   * @param options.code - The code from the query
+   *
+   * @return User access token
+   */
+  async getAccessToken ({ code }: { code: string }): Promise<string> {
     /**
      * access_token api does not support cors
      * @see https://github.com/isaacs/github/issues/330
      */
-    const response = await this.$http.post(`https://cors-anywhere.herokuapp.com/${'https://github.com/login/oauth/access_token'}`, {
+    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${'https://github.com/login/oauth/access_token'}`, {
       client_id: this.clientId,
       client_secret: this.clientSecret,
       code,
@@ -126,41 +151,111 @@ export default class GithubV3 implements VssueAPI {
         'Accept': 'application/json',
       },
     })
-    const accessToken = response.data.access_token
-    return accessToken
+    return data.access_token
   }
 
-  async getUser ({ accessToken }) {
-    const response = await this.$http.get('/user', {
+  /**
+   * Get the logined user with access token.
+   *
+   * @param options.accessToken - User access token
+   *
+   * @return The user
+   */
+  async getUser ({ accessToken }): Promise<VssueAPI.User> {
+    const { data } = await this.$http.get('/user', {
       headers: { 'Authorization': `token ${accessToken}` },
     })
-    const user = response.data
-    return normalizeUser(user)
+    return normalizeUser(data)
   }
 
-  async getIssues ({ accessToken }) {
-    const options: AxiosRequestConfig = {
-      params: {
-        labels: this.labels,
-        // to avoid caching
-        timestamp: Date.now(),
-      },
-    }
+  /**
+   * Get issue of this page according to the issue id or the issue title
+   *
+   * @param options.accessToken - User access token
+   * @param options.issueId - The id of issue
+   * @param options.issueTitle - The title of issue
+   *
+   * @return The raw response of issue
+   */
+  async getIssue ({
+    accessToken,
+    issueId,
+    issueTitle,
+  }): Promise<VssueAPI.Issue | null> {
+    const options: AxiosRequestConfig = {}
+
     if (accessToken) {
       options.headers = {
         'Authorization': `token ${accessToken}`,
       }
     }
-    const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues`, options)
-    const issues = response.data
-    return issues.map(normalizeIssue)
+
+    if (issueId) {
+      try {
+        options.params = {
+          // to avoid caching
+          timestamp: Date.now(),
+        }
+        const { data } = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}`, options)
+        return normalizeIssue(data)
+      } catch (e) {
+        if (e.response && e.response.status === 404) {
+          return null
+        } else {
+          throw e
+        }
+      }
+    } else {
+      options.params = {
+        labels: this.labels,
+        sort: 'created',
+        direction: 'asc',
+        // to avoid caching
+        timestamp: Date.now(),
+      }
+      const { data } = await this.$http.get(`repos/${this.owner}/${this.repo}/issues`, options)
+      const issue = data.map(normalizeIssue).find(item => item.title === issueTitle)
+      return issue || null
+    }
   }
 
-  async getComments ({ issueId, accessToken }) {
-    const options: AxiosRequestConfig = {
+  /**
+   * Get comments of this page according to the issue id or the issue title
+   *
+   * @param options.accessToken - User access token
+   * @param options.issueId - The id of issue
+   * @param options.query - The query parameters
+   *
+   * @return The comments
+   */
+  async getComments ({
+    accessToken,
+    issueId,
+    query: {
+      page = 1,
+      perPage = 10,
+      sort = 'desc',
+    } = {},
+  }): Promise<VssueAPI.Comments> {
+    const issueOptions: AxiosRequestConfig = {
       params: {
         // to avoid caching
         timestamp: Date.now(),
+      },
+    }
+    const commentsOptions: AxiosRequestConfig = {
+      params: {
+        // pagination
+        'page': page,
+        'per_page': perPage,
+        /**
+         * github v3 api does not support sort for issue comments
+         * have sent feedback to github support
+         */
+        // 'sort': 'created',
+        // 'direction': sort,
+        // to avoid caching
+        'timestamp': Date.now(),
       },
       headers: {
         'Accept': [
@@ -171,35 +266,68 @@ export default class GithubV3 implements VssueAPI {
       },
     }
     if (accessToken) {
-      options.headers['Authorization'] = `token ${accessToken}`
+      issueOptions.headers = {
+        'Authorization': `token ${accessToken}`,
+      }
+      commentsOptions.headers['Authorization'] = `token ${accessToken}`
     }
-    const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
-    const comments = response.data
-    return comments.map(normalizeComment)
+
+    // github v3 have to get the total count of comments by requesting the issue
+    const [issueRes, commentsRes] = await Promise.all([
+      this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}`, issueOptions),
+      this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, commentsOptions),
+    ])
+
+    // it's annoying that have to get the page and per_page from the `Link` header
+    const linkHeader = commentsRes.headers['link'] || null
+
+    return {
+      count: Number(issueRes.data.comments),
+      page: page,
+      perPage: linkHeader ? Number(linkHeader.replace(/^.*per_page=(\d*).*$/, '$1')) : perPage,
+      data: commentsRes.data.map(normalizeComment),
+    }
   }
 
+  /**
+   * Create a new issue
+   *
+   * @param options.accessToken - User access token
+   * @param options.title - The title of issue
+   * @param options.content - The content of issue
+   *
+   * @return The created issue
+   */
   async createIssue ({
+    accessToken,
     title,
     content,
-    accessToken,
-  }) {
-    const response = await this.$http.post(`repos/${this.owner}/${this.repo}/issues`, {
+  }): Promise<VssueAPI.Issue> {
+    const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues`, {
       title,
       body: content,
       labels: this.labels.split(','),
     }, {
       headers: { 'Authorization': `token ${accessToken}` },
     })
-    const issue = response.data
-    return normalizeIssue(issue)
+    return normalizeIssue(data)
   }
 
-  async createIssueComment ({
+  /**
+   * Create a new comment
+   *
+   * @param options.accessToken - User access token
+   * @param options.issueId - The id of issue
+   * @param options.content - The content of comment
+   *
+   * @return The created comment
+   */
+  async createComment ({
+    accessToken,
     issueId,
     content,
-    accessToken,
-  }) {
-    const response = await this.$http.post(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
+  }): Promise<VssueAPI.Comment> {
+    const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
       body: content,
     }, {
       headers: {
@@ -211,44 +339,55 @@ export default class GithubV3 implements VssueAPI {
         ],
       },
     })
-    const comment = response.data
-    return normalizeComment(comment)
+    return normalizeComment(data)
   }
 
+  /**
+   * Create a new reaction of issue
+   *
+   * @param options.accessToken - User access token
+   * @param options.issueId - The id of issue
+   * @param options.reaction - The reaction
+   *
+   * @return `true` if succeed, `false` if already token
+   */
   async createIssueReaction ({
+    accessToken,
     issueId,
     reaction,
-    accessToken,
-  }) {
-    try {
-      await this.$http.post(`repos/${this.owner}/${this.repo}/issues/${issueId}/reactions`, {
-        content: mapReactionName(reaction),
-      }, {
-        headers: { 'Authorization': `token ${accessToken}` },
-      })
-      return true
-    } catch (e) {
-      return false
-    }
+  }): Promise<boolean> {
+    const response = await this.$http.post(`repos/${this.owner}/${this.repo}/issues/${issueId}/reactions`, {
+      content: mapReactionName(reaction),
+    }, {
+      headers: { 'Authorization': `token ${accessToken}` },
+    })
+    return response.status === 201
   }
 
+  /**
+   * Create a new reaction of comment
+   *
+   * @param options.accessToken - User access token
+   * @param options.issueId - The id of issue
+   * @param options.commentId - The id of comment
+   * @param options.reaction - The reaction
+   *
+   * @return `true` if succeed, `false` if already token
+   */
   async createCommentReaction ({
+    accessToken,
+    issueId,
     commentId,
     reaction,
-    accessToken,
-  }) {
-    try {
-      await this.$http.post(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}/reactions`, {
-        content: mapReactionName(reaction),
-      }, {
-        headers: {
-          'Authorization': `token ${accessToken}`,
-          'Accept': 'application/vnd.github.squirrel-girl-preview',
-        },
-      })
-      return true
-    } catch (e) {
-      return false
-    }
+  }): Promise<boolean> {
+    const response = await this.$http.post(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}/reactions`, {
+      content: mapReactionName(reaction),
+    }, {
+      headers: {
+        'Authorization': `token ${accessToken}`,
+        'Accept': 'application/vnd.github.squirrel-girl-preview',
+      },
+    })
+    return response.status === 201
   }
 }

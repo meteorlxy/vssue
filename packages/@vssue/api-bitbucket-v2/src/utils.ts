@@ -1,10 +1,6 @@
-import {
-  User,
-  Issue,
-  Comment,
-} from 'vssue'
+import { VssueAPI } from 'vssue'
 
-export function normalizeUser (user): User {
+export function normalizeUser (user): VssueAPI.User {
   return {
     username: user.username,
     avatar: user.links.avatar.href,
@@ -12,15 +8,16 @@ export function normalizeUser (user): User {
   }
 }
 
-export function normalizeIssue (issue): Issue {
+export function normalizeIssue (issue): VssueAPI.Issue {
   return {
     id: issue.id,
     title: issue.title,
     content: issue.content.raw,
+    link: issue.links.html.href,
   }
 }
 
-export function normalizeComment (comment: any): Comment {
+export function normalizeComment (comment: any): VssueAPI.Comment {
   return {
     id: comment.id,
     content: comment.content.html,

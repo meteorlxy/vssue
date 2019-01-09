@@ -1,11 +1,6 @@
-import {
-  User,
-  Issue,
-  Comment,
-  Reactions,
-} from 'vssue'
+import { VssueAPI } from 'vssue'
 
-export function normalizeUser (user: any): User {
+export function normalizeUser (user: any): VssueAPI.User {
   return {
     username: user.username,
     avatar: user.avatar_url,
@@ -13,15 +8,16 @@ export function normalizeUser (user: any): User {
   }
 }
 
-export function normalizeIssue (issue: any): Issue {
+export function normalizeIssue (issue: any): VssueAPI.Issue {
   return {
     id: issue.iid,
     title: issue.title,
     content: issue.description,
+    link: issue.web_url,
   }
 }
 
-export function normalizeComment (comment: any): Comment {
+export function normalizeComment (comment: any): VssueAPI.Comment {
   return {
     id: comment.id,
     content: comment.body_html,
@@ -33,7 +29,7 @@ export function normalizeComment (comment: any): Comment {
   }
 }
 
-export function normalizeReactions (reactions: any): Reactions {
+export function normalizeReactions (reactions: any): VssueAPI.Reactions {
   return {
     like: reactions.filter(item => item.name === 'thumbsup').length,
     unlike: reactions.filter(item => item.name === 'thumbsdown').length,
@@ -41,7 +37,7 @@ export function normalizeReactions (reactions: any): Reactions {
   }
 }
 
-export function mapReactionName (reaction: any) {
+export function mapReactionName (reaction: keyof VssueAPI.Reactions): string {
   if (reaction === 'like') return 'thumbsup'
   if (reaction === 'unlike') return 'thumbsdown'
   return reaction

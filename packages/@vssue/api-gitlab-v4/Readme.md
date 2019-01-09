@@ -5,3 +5,8 @@
 [__Live Demo and Docs__](https://vssue.js.org)
 
 [__Github Repo__](https://github.com/meteorlxy/vssue)
+
+## Features
+
+- Comments sortable: `true`
+- Comments reactions: `true`
