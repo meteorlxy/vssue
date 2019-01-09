@@ -12,12 +12,7 @@ export {
 } from './option'
 
 export {
-  User,
-  Issue,
-  Comment,
-  Reactions,
   VssueAPI,
-  VssueAPIContructor,
 } from './api'
 
 declare const Vssue: typeof Vue

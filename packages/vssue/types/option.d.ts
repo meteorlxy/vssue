@@ -1,7 +1,7 @@
-import { VssueAPIContructor } from './api'
+import { VssueAPI } from './api'
 
 export interface VssueOptions {
-  api: VssueAPIContructor
+  api: VssueAPI.Contructor
   owner: string
   repo: string
   clientId: string
@@ -9,9 +9,10 @@ export interface VssueOptions {
 
   baseURL?: string
   state: string
-  labels: string
+  labels: Array<string>
   prefix: string
   admins: Array<string>
+  perPage: number
 }
 
 export interface VssueAPIOptions {
@@ -22,5 +23,5 @@ export interface VssueAPIOptions {
 
   baseURL?: string
   state: string
-  labels: string
+  labels: Array<string>
 }
