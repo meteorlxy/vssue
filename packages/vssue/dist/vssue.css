@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.3.1
+ * @version v0.4.0
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -108,6 +108,13 @@
   border: solid 2px #c3ead8;
   border-radius: 5px;
   background-color: #f5fbf8;
+}
+.vssue .vssue-notice .vssue-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background-color: #3eaf7c;
 }
 .vssue .vssue-status {
   text-align: center;
