@@ -224,10 +224,10 @@ export default {
 
 ### Use as a Vue Component
 
-By `import { Vssue } from 'vssue'` you will get a Vue component.
+By `import { VssueComponent } from 'vssue'` you will get a Vue component.
 
 ::: tip
-When you use Vssue as a Plugin by `Vue.use()`, this component has already been registered as a global component via `Vue.component()`.
+When you use Vssue as a Plugin by `Vue.use()`, this component has already been registered as a global component named `Vssue` via `Vue.component()`.
 
 If you don't want to register it globally, you can import it this way.
 
@@ -243,7 +243,7 @@ Notice that if you only import the Vssue component, there is no "global" options
 </template>
 
 <script>
-import { Vssue } from 'vssue'
+import { VssueComponent } from 'vssue'
 import GithubV3 from '@vssue/api-github-v3'
 import 'vssue/dist/vssue.css'
 
@@ -251,7 +251,7 @@ export default {
   name: 'VssueDemo',
 
   components: {
-    Vssue,
+    'Vssue': VssueComponent,
   },
 
   data () {

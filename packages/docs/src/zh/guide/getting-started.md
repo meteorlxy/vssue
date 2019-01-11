@@ -224,10 +224,10 @@ export default {
 
 ### 作为 Vue 组件使用
 
-通过 `import { Vssue } from 'vssue'` 你会得到一个 Vue 组件。
+通过 `import { VssueComponent } from 'vssue'` 你会得到一个 Vue 组件。
 
 ::: tip
-当你通过 `Vue.use()` 把 Vssue 作为插件使用时，这个组件就已经通过 `Vue.component()` 注册为全局组件了。
+当你通过 `Vue.use()` 把 Vssue 作为插件使用时，这个组件就已经通过 `Vue.component()` 注册为一个名称为 `Vssue` 的全局组件了。
 
 如果你不想把它注册为全局组件，你可以通过这种方式引入它。
 
@@ -243,7 +243,7 @@ export default {
 </template>
 
 <script>
-import { Vssue } from 'vssue'
+import { VssueComponent } from 'vssue'
 import GithubV3 from '@vssue/api-github-v3'
 import 'vssue/dist/vssue.css'
 
@@ -251,7 +251,7 @@ export default {
   name: 'VssueDemo',
 
   components: {
-    Vssue,
+    'Vssue': VssueComponent,
   },
 
   data () {
