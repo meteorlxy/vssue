@@ -3,9 +3,8 @@
   "version": "0.3.1",
   "description": "A vue-powered issue-based comment plugin",
   "license": "MIT",
-  "main": "dist/vssue.common.js",
-  "module": "dist/vssue.esm.js",
-  "browser": "dist/vssue.common.js",
+  "main": "dist/vssue.js",
+  "module": "dist/vssue.js",
   "unpkg": "dist/vssue.github.min.js",
   "types": "types/index.d.ts",
   "keywords": [

@@ -31,13 +31,8 @@ module.exports = [
     format: 'umd',
   },
   {
-    input: 'main.common.ts',
-    output: 'vssue.common.js',
-    format: 'cjs',
-  },
-  {
     input: 'main.ts',
-    output: 'vssue.esm.js',
+    output: 'vssue.js',
     format: 'es',
   },
 ].map(opts => {
@@ -59,9 +54,6 @@ module.exports = [
 
     external: [
       'vue',
-      ...(opts.format === 'cjs' ? [
-        '@vssue/utils',
-      ] : []),
       ...(opts.format === 'es' ? [
         '@vssue/utils',
         'vue-property-decorator',
