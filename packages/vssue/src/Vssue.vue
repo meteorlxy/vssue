@@ -63,18 +63,16 @@
         <!-- new-comment -->
         <VssueNewComment />
 
-        <!-- alert and nprogress -->
-        <div class="vssue-alert-container">
-          <div class="vssue-nprogress">
-            <TransitionFade>
-              <div
-                v-show="alert.show"
-                class="vssue-alert"
-                @click="hideAlert()"
-                v-text="alert.message"
-              />
-            </TransitionFade>
-          </div>
+        <!-- notice - alert and progress -->
+        <div class="vssue-notice">
+          <TransitionFade>
+            <div
+              v-show="alert.show"
+              class="vssue-alert"
+              @click="hideAlert()"
+              v-text="alert.message"
+            />
+          </TransitionFade>
         </div>
 
         <!-- comments -->
@@ -87,7 +85,6 @@
 <script lang="ts">
 import { Component, Vue, Prop, Watch, Provide } from 'vue-property-decorator'
 import { Vssue as VssueNamespace, VssueAPI } from 'vssue'
-import nprogress from 'nprogress'
 import TransitionFade from './components/TransitionFade.vue'
 import Iconfont from './components/Iconfont.vue'
 import VssueComments from './components/VssueComments.vue'
@@ -176,20 +173,6 @@ export default class Vssue extends Vue {
   }
 
   /**
-   * Show nprogress when loading comments
-   */
-  @Watch('vssue.status.isLoadingComments')
-  onLoadingCommentsChange (val: boolean): void {
-    if (this.vssue.comments) {
-      if (val) {
-        nprogress.start()
-      } else {
-        nprogress.done()
-      }
-    }
-  }
-
-  /**
    * Created hook. Check Options and init Vssue.
    */
   async created (): Promise<void> {
@@ -218,13 +201,6 @@ export default class Vssue extends Vue {
     try {
       // init VssueStore
       await this.vssue.init()
-
-      // set nprogress
-      nprogress.configure({
-        parent: '.vssue-nprogress',
-        showSpinner: false,
-        trickleSpeed: 150,
-      })
 
       // show alert on error
       this.vssue.$on('error', e => this.showAlert(e.message))
