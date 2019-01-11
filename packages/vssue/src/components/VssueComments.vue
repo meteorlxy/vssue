@@ -1,84 +1,70 @@
 <template>
   <div class="vssue-comments">
     <TransitionFade>
+      <!-- failed -->
       <VssueStatus
-        v-if="failed"
+        v-if="vssue.status.isFailed"
         key="failed"
         icon-name="error"
       >
         Failed to load comments
       </VssueStatus>
 
+      <!-- require login -->
       <VssueStatus
-        v-else-if="requireLogin"
+        v-else-if="vssue.status.isLoginRequired"
         key="requie-login"
       >
         Login to view comments
       </VssueStatus>
 
+      <!-- loading -->
       <VssueStatus
-        v-else-if="!comments"
+        v-else-if="!vssue.comments"
         key="loading"
         icon-name="loading"
       >
         Loading comments...
       </VssueStatus>
 
+      <!-- no comments yet -->
       <VssueStatus
-        v-else-if="comments.data.length === 0"
+        v-else-if="vssue.comments.data.length === 0"
         key="no-comments"
       >
         No comments yet. Leave the first comment !
       </VssueStatus>
 
+      <!-- comments-list -->
       <div
         v-else
         key="comments-list"
         class="vssue-comments-list"
       >
-        <VssuePagination
-          :count="comments.count"
-          :page="page"
-          :per-page="perPage"
-          :sort="sort"
-          :sortable="sortable"
-          :loading="loading"
-          @update:page="val => $emit('update:page', val)"
-          @update:perPage="val => $emit('update:perPage', val)"
-          @update:sort="val => $emit('update:sort', val)"
-        />
+        <!-- pagination top -->
+        <VssuePagination />
 
+        <!-- list of comments -->
         <TransitionFade group>
           <VssueComment
-            v-for="comment in comments.data"
+            v-for="comment in vssue.comments.data"
             :key="comment.id"
             :comment="comment"
-            :reactable="reactable"
             @reply="comment => $emit('reply', comment)"
             @create-reaction="reaction => $emit('create-reaction', reaction)"
           />
         </TransitionFade>
 
-        <VssuePagination
-          v-show="comments.data.length > 5"
-          :count="comments.count"
-          :page="page"
-          :per-page="perPage"
-          :sort="sort"
-          :sortable="sortable"
-          :loading="loading"
-          @update:page="val => $emit('update:page', val)"
-          @update:perPage="val => $emit('update:perPage', val)"
-          @update:sort="val => $emit('update:sort', val)"
-        />
+        <!-- pagination bottom - if too many comments -->
+        <VssuePagination v-show="vssue.comments.data.length > 5" />
       </div>
     </TransitionFade>
   </div>
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { VssueAPI } from 'vssue'
+import { Vue, Component, Prop, Inject } from 'vue-property-decorator'
+import { Vssue } from 'vssue'
 import TransitionFade from './TransitionFade.vue'
 import VssueComment from './VssueComment.vue'
 import VssuePagination from './VssuePagination.vue'
@@ -93,50 +79,6 @@ import VssueStatus from './VssueStatus.vue'
   },
 })
 export default class VssueComments extends Vue {
-  @Prop({
-    type: Object,
-    required: false,
-    default: null,
-  }) comments!: VssueAPI.Comments | null
-
-  @Prop({
-    type: Boolean,
-    required: true,
-  }) reactable!: boolean
-
-  @Prop({
-    type: Boolean,
-    required: true,
-  }) sortable!: boolean
-
-  @Prop({
-    type: Boolean,
-    required: true,
-  }) failed!: boolean
-
-  @Prop({
-    type: Boolean,
-    required: true,
-  }) loading!: boolean
-
-  @Prop({
-    type: Boolean,
-    required: true,
-  }) requireLogin!: boolean
-
-  @Prop({
-    type: Number,
-    required: true,
-  }) page!: number
-
-  @Prop({
-    type: Number,
-    required: true,
-  }) perPage!: number
-
-  @Prop({
-    type: String,
-    required: true,
-  }) sort!: string
+  @Inject() vssue!: Vssue.LocalStore
 }
 </script>

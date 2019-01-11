@@ -14,7 +14,7 @@
         v-else
         :name="platform.toLowerCase()"
         :title="`Login with ${platform}`"
-        @click="$emit('login')"
+        @click="vssue.$emit('login')"
       />
     </div><!-- .vssue-new-comment-avatar -->
 
@@ -40,7 +40,7 @@
 
         <a
           class="vssue-logout"
-          @click="$emit('logout')"
+          @click="vssue.$emit('logout')"
         >
           Logout
         </a>
@@ -74,7 +74,7 @@
           class="vssue-button-login"
           type="primary"
           :title="`Click to Login with ${platform}`"
-          @click="$emit('login')"
+          @click="vssue.$emit('login')"
         >
           Login
         </VssueButton>
@@ -84,8 +84,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { VssueAPI } from 'vssue'
+import { Vue, Component, Prop, Inject } from 'vue-property-decorator'
+import { VssueAPI, Vssue } from 'vssue'
 import VssueButton from './VssueButton.vue'
 import VssueIcon from './VssueIcon.vue'
 
@@ -96,23 +96,21 @@ import VssueIcon from './VssueIcon.vue'
   },
 })
 export default class VssueNewComment extends Vue {
-  @Prop({
-    type: Boolean,
-    required: true,
-  }) loading!: boolean
-
-  @Prop({
-    type: String,
-    required: true,
-  }) platform!: string
-
-  @Prop({
-    type: Object,
-    required: false,
-    default: null,
-  }) user!: VssueAPI.User | null
+  @Inject() vssue!: Vssue.LocalStore
 
   content: string = ''
+
+  get user (): VssueAPI.User | null {
+    return this.vssue.user
+  }
+
+  get platform (): string | null {
+    return this.vssue.API && this.vssue.API.platform.name
+  }
+
+  get loading (): boolean {
+    return this.vssue.status.isCreatingComment
+  }
 
   get contentRows (): number {
     return this.content.split('\n').length - 1
@@ -122,20 +120,26 @@ export default class VssueNewComment extends Vue {
     return this.contentRows < 3 ? 5 : this.contentRows + 2
   }
 
-  add (str: string): void {
-    this.content = this.content.concat(str)
+  created () {
+    this.vssue.$on('reply-comment', (comment) => {
+      const quotedComment = comment.contentRaw.replace(/\n/g, '\n> ')
+      const replyContent = `@${comment.author.username}\n\n> ${quotedComment}\n\n`
+      this.content = this.content.concat(replyContent)
+      this.focus()
+    })
   }
 
   focus (this: any): void {
     this.$refs.input.focus()
   }
 
-  reset (): void {
+  async submit (): Promise<void> {
+    await this.vssue.postComment({ content: this.content })
     this.content = ''
   }
 
-  submit (): void {
-    this.$emit('create-comment', { content: this.content })
+  beforeDestroy () {
+    this.vssue.$off('reply-comment')
   }
 }
 </script>

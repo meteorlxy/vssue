@@ -1,22 +1,18 @@
-import {
-  VssuePlugin,
-  VssueOptions,
-  VssueStore,
-} from 'vssue'
+import { Vssue } from 'vssue'
 
 import VssueComponent from './Vssue.vue'
 
-const Vssue: VssuePlugin = {
+const VssuePlugin: Vssue.Plugin = {
   get version () {
     return <string>process.env.VUE_APP_VERSION
   },
 
-  install (Vue, options?: Partial<VssueOptions>) {
+  install (Vue, options?: Partial<Vssue.Options>) {
     if (Vue.prototype.$vssue) {
       return false
     }
 
-    const store: VssueStore = new Vue({
+    const store: Vssue.GlobalStore = new Vue({
       data: {
         options,
       },
@@ -26,10 +22,8 @@ const Vssue: VssuePlugin = {
     Vue.component('Vssue', VssueComponent)
   },
 
-  Vssue: VssueComponent,
+  VssueComponent: VssueComponent,
 }
 
-export {
-  Vssue as default,
-  VssueComponent as Vssue,
-}
+export { VssueComponent }
+export default VssuePlugin

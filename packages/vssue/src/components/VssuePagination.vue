@@ -1,18 +1,19 @@
 <template>
   <div
-    v-if="count > perPageOptions[0]"
+    v-if="vssue.comments.count > perPageOptions[0]"
     class="vssue-pagination"
   >
     <div class="vssue-pagination-per-page">
       <select
         class="vssue-pagination-select"
         :disabled="loading"
-        v-model="perPageInternal"
+        v-model="perPage"
       >
         <option
           v-for="val in perPageOptions"
           :key="val"
-          :value="val">
+          :value="val"
+        >
           {{ val }}
         </option>
       </select>
@@ -22,15 +23,15 @@
       </span>
 
       <span
-        v-if="sortable"
+        v-if="vssue.API.platform.meta.sortable"
         :class="{
           'vssue-pagination-link': true,
           'disabled': loading,
         }"
         :title="`Click to change the sort direction`"
-        @click="$emit('update:sort', sort === 'asc' ? 'desc' : 'asc')"
+        @click="vssue.query.sort = (vssue.query.sort === 'asc' ? 'desc' : 'asc')"
       >
-        {{ sort === 'asc' ? `↑` : `↓` }}
+        {{ vssue.query.sort === 'asc' ? `↑` : `↓` }}
       </span>
     </div>
 
@@ -38,10 +39,10 @@
       <span
         :class="{
           'vssue-pagination-link': true,
-          'disabled': pageInternal === 1 || loading,
+          'disabled': page === 1 || loading,
         }"
         :title="`Previous Page`"
-        @click="pageInternal -= 1"
+        @click="page -= 1"
         v-text="`<`"
       />
 
@@ -53,12 +54,13 @@
         v-show="pageCount > 1"
         class="vssue-pagination-select"
         :disabled="loading"
-        v-model="pageInternal"
+        v-model="page"
       >
         <option
           v-for="val in pageCount"
           :key="val"
-          :value="val">
+          :value="val"
+        >
           {{ val }}
         </option>
       </select>
@@ -68,15 +70,15 @@
         v-text="page"
       />
 
-      <span v-text="` / ${pageCount} `"/>
+      <span v-text="` / ${pageCount} `" />
 
       <span
         :class="{
           'vssue-pagination-link': true,
-          'disabled': pageInternal === pageCount || loading,
+          'disabled': page === pageCount || loading,
         }"
         :title="`Next Page`"
-        @click="pageInternal += 1"
+        @click="page += 1"
         v-text="`>`"
       />
     </div>
@@ -84,7 +86,8 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
+import { Vue, Component, Prop, Inject } from 'vue-property-decorator'
+import { Vssue } from 'vssue'
 import VssueIcon from './VssueIcon.vue'
 
 @Component({
@@ -93,38 +96,15 @@ import VssueIcon from './VssueIcon.vue'
   },
 })
 export default class VssuePagination extends Vue {
-  @Prop({
-    type: Boolean,
-    required: true,
-  }) sortable!: boolean
+  @Inject() vssue!: Vssue.LocalStore
 
-  @Prop({
-    type: Boolean,
-    required: true,
-  }) loading!: boolean
-
-  @Prop({
-    type: Number,
-    required: true,
-  }) count!: number
-
-  @Prop({
-    type: Number,
-    required: true,
-  }) page!: number
-
-  @Prop({
-    type: Number,
-    required: true,
-  }) perPage!: number
-
-  @Prop({
-    type: String,
-    required: true,
-  }) sort!: string
+  get loading (): boolean {
+    return this.vssue.status.isLoadingComments
+  }
 
   get pageCount (): number {
-    return Math.ceil(this.count / this.perPage)
+    const pageCount = Math.ceil(this.vssue.comments!.count / this.vssue.comments!.perPage)
+    return pageCount > 1 ? pageCount : 1
   }
 
   get perPageOptions (): Array<number> {
@@ -135,22 +115,24 @@ export default class VssuePagination extends Vue {
     return perPageOptions.sort((a, b) => a - b)
   }
 
-  get pageInternal (): number {
-    return this.page
+  get page (): number {
+    return this.vssue.query.page > this.pageCount ? this.pageCount : this.vssue.query.page
   }
 
-  set pageInternal (val) {
+  set page (val: number) {
     if (val > 0 && val <= this.pageCount) {
-      this.$emit('update:page', val)
+      this.vssue.query.page = val
     }
   }
 
-  get perPageInternal (): number {
-    return this.perPage
+  get perPage (): number {
+    return this.vssue.query.perPage
   }
 
-  set perPageInternal (val) {
-    this.$emit('update:perPage', val)
+  set perPage (val: number) {
+    if (this.perPageOptions.includes(val)) {
+      this.vssue.query.perPage = val
+    }
   }
 }
 </script>

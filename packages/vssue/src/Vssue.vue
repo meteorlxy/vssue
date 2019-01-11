@@ -4,24 +4,30 @@
 
     <!-- header -->
     <div class="vssue-header">
-      <span class="vssue-header-comments-count">
-        <span v-if="comments">
-          {{ comments.count }}
+      <!-- comments-count - link to issue -->
+      <a
+        class="vssue-header-comments-count"
+        :href="vssue.issue ? vssue.issue.link : null"
+        target="_blank"
+      >
+        <span v-if="vssue.comments">
+          {{ vssue.comments.count }}
         </span>
 
         <span>Comments</span>
-      </span>
+      </a>
 
+      <!-- powered-by - platform and vssue -->
       <span class="vssue-header-powered-by">
         <span>Powered by</span>
 
-        <span v-if="vssueAPI">
+        <span v-if="vssue.API">
           <a
-            :href="vssueAPI.platform.link"
+            :href="vssue.API.platform.link"
             target="_blank"
-            :title="`${vssueAPI.platform.name} API ${vssueAPI.platform.version}`"
+            :title="`${vssue.API.platform.name} API ${vssue.API.platform.version}`"
           >
-            {{ vssueAPI.platform.name }}
+            {{ vssue.API.platform.name }}
           </a>
 
           <span>&</span>
@@ -30,7 +36,7 @@
         <a
           href="https://vssue.js.org"
           target="_blank"
-          :title="`Vssue v${vssueVersion}`"
+          :title="`Vssue v${vssue.version}`"
         >
           Vssue
         </a>
@@ -41,7 +47,7 @@
     <TransitionFade>
       <!-- initializing -->
       <VssueStatus
-        v-if="!isInitialized"
+        v-if="vssue.status.isInitializing"
         key="initializing"
         icon-name="loading"
       >
@@ -54,62 +60,40 @@
         key="initialized"
         class="vssue-body"
       >
-        <VssueNewComment
-          ref="newComment"
-          :loading="isCreatingComment"
-          :platform="vssueAPI.platform.name"
-          :user="user"
-          @login="handleLogin"
-          @logout="handleLogout"
-          @create-comment="createComment"
-        />
+        <!-- new-comment -->
+        <VssueNewComment />
 
+        <!-- alert and nprogress -->
         <div class="vssue-alert-container">
           <div class="vssue-nprogress">
             <TransitionFade>
               <div
-                v-show="alertShow"
+                v-show="alert.show"
                 class="vssue-alert"
-                @click="alertShow = false"
-                v-text="alertMessage"
+                @click="hideAlert()"
+                v-text="alert.message"
               />
             </TransitionFade>
           </div>
         </div>
 
-        <VssueComments
-          :comments="comments"
-          :reactable="vssueAPI.platform.meta.reactable"
-          :sortable="vssueAPI.platform.meta.sortable"
-          :loading="isLoadingComments"
-          :failed="isFailed"
-          :require-login="isLoginRequired"
-          :page.sync="query.page"
-          :per-page.sync="query.perPage"
-          :sort.sync="query.sort"
-          @reply="replyToComment"
-          @create-reaction="createCommentReaction"
-        />
+        <!-- comments -->
+        <VssueComments />
       </div>
     </TransitionFade>
   </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import {
-  VssueOptions,
-  VssueAPI,
-} from 'vssue'
-import {
-  getCleanURL,
-} from '@vssue/utils'
+import { Component, Vue, Prop, Watch, Provide } from 'vue-property-decorator'
+import { Vssue as VssueNamespace, VssueAPI } from 'vssue'
 import nprogress from 'nprogress'
 import TransitionFade from './components/TransitionFade.vue'
 import Iconfont from './components/Iconfont.vue'
 import VssueComments from './components/VssueComments.vue'
 import VssueNewComment from './components/VssueNewComment.vue'
 import VssueStatus from './components/VssueStatus.vue'
+import VssueStore from './VssueStore'
 
 @Component({
   components: {
@@ -125,7 +109,7 @@ export default class Vssue extends Vue {
     type: [String, Function],
     required: false,
     default: () => opts => `${opts.prefix}${document.title}`,
-  }) title!: string | ((opts?: VssueOptions) => string)
+  }) title!: string | ((opts?: VssueNamespace.Options) => string)
 
   @Prop({
     type: [String, Number],
@@ -137,113 +121,66 @@ export default class Vssue extends Vue {
     type: Object,
     required: false,
     default: () => ({}),
-  }) options!: Partial<VssueOptions>
+  }) options!: Partial<VssueNamespace.Options>
 
-  // the api instance of api package
-  vssueAPI!: VssueAPI.Instance
-
-  // the query paramters of comments
-  query: VssueAPI.Query = {
-    page: 1,
-    perPage: 10,
-    sort: 'desc',
-  }
-
-  // the issue that fetched from the platform
-  issue: VssueAPI.Issue | null = null
-
-  // the comments of this issue that fetched from the platform
-  comments: VssueAPI.Comments | null = null
-
-  // the user that logined
-  user: VssueAPI.User | null = null
-
-  // access token of user
-  accessToken: string | null = null
+  /**
+   * Provide the VssueStore for the child components
+   */
+  @Provide('vssue') vssue: VssueNamespace.LocalStore = new VssueStore({
+    data: { options: this.getOptions() },
+  })
 
   // alert message to show
-  alertShow: boolean = false
-  alertMessage: string | null = null
-
-  // status flags
-  isInitialized: boolean = false
-  isLoginRequired: boolean = false
-  isFailed: boolean = false
-  isLoadingComments: boolean = false
-  isCreatingComment: boolean = false
-
-  /**
-   * the actual options used by this vssue component
-   */
-  get vssueOptions (): VssueOptions {
-    return <VssueOptions>Object.assign({
-      labels: ['Vssue'],
-      state: 'Vssue',
-      prefix: '[Vssue]',
-      admins: [],
-      perPage: 10,
-    }, this.$vssue ? this.$vssue.options : {}, this.options)
+  alert: {
+    show: boolean
+    message: string | null
+    timeout: number | null
+  } = {
+    show: false,
+    message: null,
+    timeout: null,
   }
 
   /**
-   * current version of vssue
-   */
-  get vssueVersion (): string {
-    return <string>process.env.VUE_APP_VERSION
-  }
-
-  /**
-   * the actual title of this issue
+   * The actual title of issue
    */
   get issueTitle (): string {
-    if (typeof this.title === 'function') {
-      return this.title(this.vssueOptions)
+    return typeof this.title === 'function' ? this.title(this.vssue.options) : `${this.vssue.options.prefix}${this.title}`
+  }
+
+  /**
+   * Re-init Vssue if the `title` is changed when the `issueId` is not set
+   */
+  @Watch('title')
+  onTitleChange (): void {
+    if (!this.issueId) {
+      this.init()
     }
-    return `${this.vssueOptions.prefix}${this.title}`
   }
 
   /**
-   * the actual content of this issue (used when auto creating the issue)
+   * Re-init Vssue if the `issueId` is changed
    */
-  get issueContent (): string {
-    return getCleanURL(window.location.href)
+  @Watch('issueId')
+  onIssueIdChange (): void {
+    this.init()
   }
 
   /**
-   * the key of access token for local storage
+   * Re-init Vssue if the `options` is changed
    */
-  get accessTokenKey (): string {
-    return this.vssueAPI ? `Vssue.${this.vssueAPI.platform.name.toLowerCase()}.access_token` : ''
-  }
-  /**
-   * flag that if the user is logined
-   */
-  get isLogined (): boolean {
-    return this.accessToken !== null && this.user !== null
+  @Watch('options', { deep: true })
+  onOptionsChange (): void {
+    this.vssue.options = this.getOptions()
+    this.init()
   }
 
   /**
-   * flag that if the logined user is admin
+   * Show nprogress when loading comments
    */
-  get isAdmin (): boolean {
-    return this.isLogined && this.user !== null && (this.user.username === this.vssueOptions.owner || this.vssueOptions.admins.includes(this.user.username))
-  }
-
-  @Watch('query.perPage')
-  onPerPageChange () {
-    this.query.page = 1
-    this.getComments()
-  }
-
-  @Watch('query.page')
-  @Watch('query.sort')
-  onQueryChange () {
-    this.getComments()
-  }
-
-  @Watch('isLoadingComments')
-  onLoadingCommentsChange (val) {
-    if (this.comments) {
+  @Watch('vssue.status.isLoadingComments')
+  onLoadingCommentsChange (val: boolean): void {
+    if (this.vssue.comments) {
       if (val) {
         nprogress.start()
       } else {
@@ -253,11 +190,11 @@ export default class Vssue extends Vue {
   }
 
   /**
-   * created hook
+   * Created hook. Check Options and init Vssue.
    */
   async created (): Promise<void> {
-    try {
-      // check the options
+    // only check the options in development mode
+    if (process.env.NODE_ENV === 'development') {
       const requiredOptions = [
         'api',
         'owner',
@@ -266,25 +203,21 @@ export default class Vssue extends Vue {
         'clientSecret',
       ]
       for (const opt of requiredOptions) {
-        if (!this.vssueOptions[opt]) {
+        if (!this.vssue.options[opt]) {
           console.warn(`[Vssue] the option '${opt}' is required`)
         }
       }
+    }
+    await this.init()
+  }
 
-      // get the VssueAPI instance according to the options.api
-      const APIConstructor = this.vssueOptions.api
-      this.vssueAPI = new APIConstructor({
-        baseURL: this.vssueOptions.baseURL,
-        labels: this.vssueOptions.labels,
-        state: this.vssueOptions.state,
-        owner: this.vssueOptions.owner,
-        repo: this.vssueOptions.repo,
-        clientId: this.vssueOptions.clientId,
-        clientSecret: this.vssueOptions.clientSecret,
-      })
-
-      // set perPage option
-      this.query.perPage = this.vssueOptions.perPage
+  /**
+   * Init Vssue.
+   */
+  async init (): Promise<void> {
+    try {
+      // init VssueStore
+      await this.vssue.init()
 
       // set nprogress
       nprogress.configure({
@@ -293,234 +226,62 @@ export default class Vssue extends Vue {
         trickleSpeed: 150,
       })
 
-      // get user
-      await this.handleAuth()
+      // show alert on error
+      this.vssue.$on('error', e => this.showAlert(e.message))
 
-      this.isInitialized = true
-
+      // init comments
       if (!this.issueId) {
-        // if `issueId` is not set, get the issue according to `title`
-        this.issue = await this.vssueAPI.getIssue({
-          accessToken: this.accessToken,
-          issueTitle: this.issueTitle,
-        })
-
-        // if the issue of this page does not exist, create it
-        if (!this.issue) {
-          // required login to create the issue
-          if (!this.isLogined) {
-            this.handleLogin()
-          }
-
-          // if current user is not admin
-          if (!this.isAdmin) {
-            throw Error('Failed to get comments')
-          }
-
-          // create the corresponding issue
-          this.issue = await this.vssueAPI.createIssue({
-            title: this.issueTitle,
-            content: this.issueContent,
-            accessToken: this.accessToken,
-          })
-        }
-
-        await this.getComments()
+        await this.vssue.initCommentsByIssueTitle(this.issueTitle)
       } else {
-        // if `issueId` is set, get the issue and comments in the mean time
-        // notice that will not create the issue if not found
-        const [issue, comments] = await Promise.all([
-          this.vssueAPI.getIssue({
-            accessToken: this.accessToken,
-            issueId: this.issueId,
-          }),
-          this.vssueAPI.getComments({
-            accessToken: this.accessToken,
-            issueId: this.issueId,
-          }),
-        ])
-        this.issue = issue
-        this.comments = comments
+        await this.vssue.initCommentsByIssueId(this.issueId)
       }
     } catch (e) {
       if (e.response && [401, 403].includes(e.response.status)) {
         // in some cases, require login to load comments
-        this.isLoginRequired = true
+        this.vssue.status.isLoginRequired = true
       } else {
-        this.isFailed = true
+        this.vssue.status.isFailed = true
       }
       console.error(e)
-    } finally {
-      this.isInitialized = true
     }
   }
 
   /**
-   * get comments of this vssue according to the issue id
+   * Merge the options from Plugin and Prop
    */
-  async getComments (): Promise<void> {
-    try {
-      if (!this.isInitialized || !this.issue) return
-
-      this.isLoadingComments = true
-
-      const comments = await this.vssueAPI.getComments({
-        accessToken: this.accessToken,
-        issueId: this.issue.id,
-        query: this.query,
-      })
-      if (this.query.page === comments.page && this.query.perPage === comments.perPage) {
-        this.comments = comments
-      }
-    } catch (e) {
-      if (e.response && [401, 403].includes(e.response.status) && !this.isLogined) {
-        this.isLoginRequired = true
-      }
-      this.showAlert(e.message)
-    } finally {
-      this.isLoadingComments = false
-    }
+  getOptions (): VssueNamespace.Options {
+    return <VssueNamespace.Options>Object.assign({
+      labels: ['Vssue'],
+      state: 'Vssue',
+      prefix: '[Vssue]',
+      admins: [],
+      perPage: 10,
+    }, this.$vssue ? this.$vssue.options : {}, this.options)
   }
 
   /**
-   * create a new comment submitted by current user
+   * Show alert message
    */
-  async createComment ({ content }): Promise<void> {
-    try {
-      if (!this.isInitialized || !this.issue) return
-
-      this.isCreatingComment = true
-
-      // create comment
-      await this.vssueAPI.createComment({
-        accessToken: this.accessToken,
-        content,
-        issueId: this.issue.id,
-      })
-
-      // refresh comments after creation
-      await this.getComments()
-
-      // reset the new comment textarea
-      this.resetNewComment()
-    } catch (e) {
-      this.showAlert(e.message)
-    } finally {
-      this.isCreatingComment = false
-    }
-  }
-
-  /**
-   * create a new reaction to a certain comment
-   */
-  async createCommentReaction ({
-    commentId,
-    reaction,
-  }: {
-    commentId: string | number
-    reaction: keyof VssueAPI.Reactions
-  }): Promise<void> {
-    try {
-      if (!this.isInitialized || !this.issue) return
-
-      const success = await this.vssueAPI.createCommentReaction({
-        accessToken: this.accessToken,
-        commentId,
-        reaction,
-        issueId: this.issue.id,
-      })
-
-      if (success) {
-        await this.getComments()
-      } else {
-        this.showAlert('Already given this reaction')
-      }
-    } catch (e) {
-      this.showAlert(e.message)
-    }
-  }
-
-  /**
-   * handle authorization and set access_token
-   */
-  async handleAuth (): Promise<void> {
-    // get access_token from storage
-    this.accessToken = this.getAccessToken()
-
-    // handle authorize if query has `code`
-    const accessToken = await this.vssueAPI.handleAuth()
-
-    if (accessToken) {
-      // new access_token
-      this.setAccessToken(accessToken)
-      this.user = await this.vssueAPI.getUser({ accessToken })
-    } else if (this.accessToken) {
-      // stored access_token
-      this.user = await this.vssueAPI.getUser({ accessToken: this.accessToken })
-    } else {
-      // no access_token
-      this.setAccessToken(null)
-      this.user = null
-    }
-  }
-
-  /**
-   * redirect to the platform's authorization page
-   */
-  handleLogin (): void {
-    this.vssueAPI.redirectAuth()
-  }
-
-  /**
-   * clean the access token stored in local storage
-   */
-  handleLogout (): void {
-    this.setAccessToken(null)
-    this.user = null
-  }
-
-  /**
-   * get access token from local storage
-   */
-  getAccessToken (): string | null {
-    return window.localStorage.getItem(this.accessTokenKey)
-  }
-
-  /**
-   * save access token to local storage
-   */
-  setAccessToken (token): void {
-    if (token === null) {
-      window.localStorage.removeItem(this.accessTokenKey)
-    } else {
-      window.localStorage.setItem(this.accessTokenKey, token)
-    }
-    this.accessToken = token
-  }
-
-  /**
-   * reply to a certain comment quickly
-   */
-  replyToComment (this: any, comment): void {
-    const quotedComment = comment.contentRaw.replace(/\n/g, '\n> ')
-    const replyContent = `@${comment.author.username}\n\n> ${quotedComment}\n\n`
-    this.$refs.newComment.add(replyContent)
-    this.$refs.newComment.focus()
-  }
-
-  /**
-   * reset new comment
-   */
-  resetNewComment (this: any): void {
-    this.$refs.newComment.reset()
-  }
-
   showAlert (content, time = 3000): void {
-    this.alertMessage = content
-    this.alertShow = true
-    setTimeout(() => {
-      this.alertShow = false
+    this.alert.show = true
+    this.alert.message = content
+    if (this.alert.timeout !== null) window.clearTimeout(this.alert.timeout)
+    this.alert.timeout = window.setTimeout(() => {
+      this.hideAlert()
     }, time)
+  }
+
+  /**
+   * Hide alert message
+   */
+  hideAlert (): void {
+    this.alert.show = false
+    if (this.alert.timeout !== null) window.clearTimeout(this.alert.timeout)
+    this.alert.timeout = null
+  }
+
+  beforeDestroy () {
+    if (this.alert.timeout !== null) window.clearTimeout(this.alert.timeout)
   }
 }
 </script>
