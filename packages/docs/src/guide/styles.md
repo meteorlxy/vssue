@@ -37,6 +37,9 @@ $vssue-text-light-color
 // the border color
 $vssue-border-color
 
+// the progress color
+$vssue-progress-color
+
 // the font size
 $vssue-font-size
 

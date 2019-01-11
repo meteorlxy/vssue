@@ -37,6 +37,9 @@ $vssue-text-light-color
 // 边框颜色
 $vssue-border-color
 
+// 进度条颜色
+$vssue-progress-color
+
 // 文字大小
 $vssue-font-size
 
