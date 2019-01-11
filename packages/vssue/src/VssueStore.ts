@@ -136,6 +136,7 @@ class VssueStore extends Vue implements Vssue.LocalStore {
       this.API.getComments({
         accessToken: this.accessToken,
         issueId: issueId,
+        query: this.query,
       }),
     ])
     this.issue = issue
