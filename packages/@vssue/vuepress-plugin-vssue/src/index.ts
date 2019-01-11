@@ -34,7 +34,6 @@ module.exports = ({
     },
 
     alias: {
-      'vssue$': 'vssue/dist/vssue.esm.js',
       '@vssue/api$': require.resolve(apiPkg),
     },
   }
