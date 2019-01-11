@@ -1,22 +1,12 @@
 import Vue from 'vue'
-import VssuePlugin from './vssue'
+import Vssue from './vssue'
+import VssueAPI from './api'
 
-export {
-  VssuePlugin,
-  VssueStore,
-} from './vssue'
-
-export {
-  VssueOptions,
-  VssueAPIOptions,
-} from './option'
-
-export {
-  VssueAPI,
-} from './api'
-
-declare const Vssue: typeof Vue
-declare const VssuePluginInstance: VssuePlugin
+declare const VssueComponent: Vssue.Component
+declare const VssuePlugin: Vssue.Plugin
 
 export { Vssue }
-export default VssuePluginInstance
+export { VssueAPI }
+
+export { VssueComponent }
+export default VssuePlugin

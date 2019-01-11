@@ -1,6 +1,16 @@
-import { VssueAPIOptions } from './option'
+import { Vssue } from './vssue'
 
 export namespace VssueAPI {
+  export type Options = {
+    owner: string
+    repo: string
+    clientId: string
+    clientSecret: string
+    baseURL?: string
+    state: string
+    labels: Array<string>
+  }
+
   export type Platform = {
     name: string
     link: string
@@ -10,6 +20,8 @@ export namespace VssueAPI {
       sortable: boolean
     }
   }
+
+  export type AccessToken = string | null
 
   export type User = {
     username: string
@@ -72,7 +84,7 @@ export namespace VssueAPI {
      *
      * @return A string for access token, `null` for no authorization code
      */
-    handleAuth (): Promise<string | null>
+    handleAuth (): Promise<VssueAPI.AccessToken>
 
     /**
      * Get the logined user with access token.
@@ -82,7 +94,7 @@ export namespace VssueAPI {
      * @return The user
      */
     getUser (options: {
-      accessToken: string | null
+      accessToken: VssueAPI.AccessToken
     }): Promise<VssueAPI.User>
 
     /**
@@ -95,10 +107,25 @@ export namespace VssueAPI {
      * @return The comments
      */
     getIssue (options: {
-      accessToken: string | null
+      accessToken: VssueAPI.AccessToken
       issueId?: string | number
       issueTitle?: string
     }): Promise<VssueAPI.Issue | null>
+
+    /**
+     * Create a new issue
+     *
+     * @param options.accessToken - User access token
+     * @param options.title - The title of issue
+     * @param options.content - The content of issue
+     *
+     * @return The created issue
+     */
+    postIssue (options: {
+      accessToken: VssueAPI.AccessToken
+      title: string
+      content: string
+    }): Promise<VssueAPI.Issue>
 
     /**
      * Get comments of issue according to the issue id
@@ -110,25 +137,25 @@ export namespace VssueAPI {
      * @return The comments
      */
     getComments (options: {
-      accessToken: string | null
+      accessToken: VssueAPI.AccessToken
       issueId: string | number
       query?: Partial<VssueAPI.Query>
     }): Promise<VssueAPI.Comments>
 
     /**
-     * Create a new issue
+     * Get a comment of issue
      *
      * @param options.accessToken - User access token
-     * @param options.title - The title of issue
-     * @param options.content - The content of issue
+     * @param options.issueId - The id of issue
+     * @param options.commentId - The id of comment
      *
-     * @return The created issue
+     * @return The comments
      */
-    createIssue (options: {
-      accessToken: string | null
-      title: string
-      content: string
-    }): Promise<VssueAPI.Issue>
+    // getComment (options: {
+    //   accessToken: VssueAPI.AccessToken
+    //   issueId: string | number
+    //   commentId: string | number
+    // }): Promise<VssueAPI.Comment>
 
     /**
      * Create a new comment
@@ -139,29 +166,61 @@ export namespace VssueAPI {
      *
      * @return The created comment
      */
-    createComment (options: {
-      accessToken: string | null
+    postComment (options: {
+      accessToken: VssueAPI.AccessToken
       issueId: string | number
       content: string
     }): Promise<VssueAPI.Comment>
 
     /**
-     * Create a new reaction of issue
+     * Delete a comment
      *
      * @param options.accessToken - User access token
      * @param options.issueId - The id of issue
-     * @param options.reaction - The reaction
+     * @param options.commentId - The id of comment
      *
      * @return `true` if succeed, `false` if failed
      */
-    createIssueReaction (options: {
-      accessToken: string | null
+    deleteComment (options: {
+      accessToken: VssueAPI.AccessToken
       issueId: string | number
-      reaction: keyof VssueAPI.Reactions
+      commentId: string | number
     }): Promise<boolean>
 
     /**
-     * Create a new reaction of comment
+     * Edit a comment
+     *
+     * @param options.accessToken - User access token
+     * @param options.issueId - The id of issue
+     * @param options.commentId - The id of comment
+     * @param options.content - The content of comment
+     *
+     * @return The edited comment
+     */
+    // putComment (options: {
+    //   accessToken: VssueAPI.AccessToken
+    //   issueId: string | number
+    //   commentId: string | number
+    //   content: string
+    // }): Promise<VssueAPI.Comment>
+
+    /**
+     * Get reaction of a comment
+     *
+     * @param options.accessToken - User access token
+     * @param options.issueId - The id of issue
+     * @param options.commentId - The id of comment
+     *
+     * @return `true` if succeed, `false` if failed
+     */
+    getCommentReactions (options: {
+      accessToken: VssueAPI.AccessToken
+      issueId: string | number
+      commentId: string | number
+    }): Promise<VssueAPI.Reactions>
+
+    /**
+     * Create a new reaction of a comment
      *
      * @param options.accessToken - User access token
      * @param options.issueId - The id of issue
@@ -170,8 +229,8 @@ export namespace VssueAPI {
      *
      * @return `true` if succeed, `false` if failed
      */
-    createCommentReaction (options: {
-      accessToken: string | null
+    postCommentReaction (options: {
+      accessToken: VssueAPI.AccessToken
       issueId: string | number
       commentId: string | number
       reaction: keyof VssueAPI.Reactions
@@ -179,7 +238,7 @@ export namespace VssueAPI {
   }
 
   export interface Contructor {
-    new (options: VssueAPIOptions): VssueAPI.Instance
+    new (options: VssueAPI.Options): VssueAPI.Instance
   }
 }
 

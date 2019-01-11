@@ -1,7 +1,4 @@
-import {
-  VssueAPI,
-  VssueAPIOptions,
-} from 'vssue'
+import { VssueAPI } from 'vssue'
 
 import axios, {
   AxiosInstance,
@@ -22,10 +19,10 @@ import {
 } from './utils'
 
 /**
+ * Bitbucket API V2
+ *
+ * @see https://developer.atlassian.com/bitbucket/api/2/reference/
  * @see https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html
- * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication
- * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues
- * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments
  */
 export default class BitbucketV2 implements VssueAPI.Instance {
   baseURL: string
@@ -43,7 +40,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     clientId,
     clientSecret,
     state,
-  }: VssueAPIOptions) {
+  }: VssueAPI.Options) {
     this.baseURL = baseURL
     this.owner = owner
     this.repo = repo
@@ -77,6 +74,8 @@ export default class BitbucketV2 implements VssueAPI.Instance {
 
   /**
    * Redirect to the authorization page of platform.
+   *
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication#oauth-2
    */
   redirectAuth (): void {
     window.location.href = buildURL('https://bitbucket.org/site/oauth2/authorize', {
@@ -89,12 +88,14 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   /**
    * Handle authorization.
    *
+   * @return A string for access token, `null` for no authorization code
+   *
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication#oauth-2
+   *
    * @remarks
    * If the `code` exists in the query, remove them from query, and try to get the access token.
-   *
-   * @return A string for access token, `null` for no authorization code
    */
-  async handleAuth (): Promise<string | null> {
+  async handleAuth (): Promise<VssueAPI.AccessToken> {
     const query = parseQuery(window.location.search)
     if (query.code) {
       const code = query.code
@@ -113,8 +114,14 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    * @param options.code - The code from the query
    *
    * @return User access token
+   *
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication#oauth-2
    */
-  async getAccessToken ({ code }: { code: string }): Promise<string> {
+  async getAccessToken ({
+    code,
+  }: {
+    code: string
+  }): Promise<string> {
     const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${'https://bitbucket.org/site/oauth2/access_token'}`, buildQuery({
       grant_type: 'authorization_code',
       redirect_uri: window.location.href,
@@ -137,8 +144,14 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    * @param options.accessToken - User access token
    *
    * @return The user
+   *
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/user
    */
-  async getUser ({ accessToken }): Promise<VssueAPI.User> {
+  async getUser ({
+    accessToken,
+  }: {
+    accessToken: VssueAPI.AccessToken
+  }): Promise<VssueAPI.User> {
     const { data } = await this.$http.get('2.0/user', {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
@@ -153,11 +166,19 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    * @param options.issueTitle - The title of issue
    *
    * @return The raw response of issue
+   *
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D#get
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues#get
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/pagination
    */
   async getIssue ({
     accessToken,
     issueId,
     issueTitle,
+  }: {
+    accessToken: VssueAPI.AccessToken
+    issueId?: string | number
+    issueTitle?: string
   }): Promise<VssueAPI.Issue | null> {
     const options: AxiosRequestConfig = {}
 
@@ -189,6 +210,39 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   }
 
   /**
+   * Create a new issue
+   *
+   * @param options.accessToken - User access token
+   * @param options.title - The title of issue
+   * @param options.content - The content of issue
+   *
+   * @return The created issue
+   *
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues#post
+   */
+  async postIssue ({
+    accessToken,
+    title,
+    content,
+  }: {
+    accessToken: VssueAPI.AccessToken
+    title: string
+    content: string
+  }): Promise<VssueAPI.Issue> {
+    const { data } = await this.$http.post(`2.0/repositories/${this.owner}/${this.repo}/issues`, {
+      title,
+      content: {
+        raw: content,
+      },
+      priority: 'trivial',
+      type: 'task',
+    }, {
+      headers: { 'Authorization': `Bearer ${accessToken}` },
+    })
+    return normalizeIssue(data)
+  }
+
+  /**
    * Get comments of this page according to the issue id or the issue title
    *
    * @param options.accessToken - User access token
@@ -196,6 +250,9 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    * @param options.query - The query parameters
    *
    * @return The comments
+   *
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments#post
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/pagination
    */
   async getComments ({
     accessToken,
@@ -205,6 +262,10 @@ export default class BitbucketV2 implements VssueAPI.Instance {
       perPage = 10,
       sort = 'desc',
     } = {},
+  }: {
+    accessToken: VssueAPI.AccessToken
+    issueId: string | number
+    query?: Partial<VssueAPI.Query>
   }): Promise<VssueAPI.Comments> {
     const options: AxiosRequestConfig = {
       params: {
@@ -229,36 +290,24 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   }
 
   /**
-   * Create a new issue
+   * Create a new comment
    *
    * @param options.accessToken - User access token
-   * @param options.title - The title of issue
-   * @param options.content - The content of issue
+   * @param options.issueId - The id of issue
+   * @param options.content - The content of comment
    *
-   * @return The created issue
+   * @return The created comment
+   *
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments#post
    */
-  async createIssue ({
-    accessToken,
-    title,
-    content,
-  }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(`2.0/repositories/${this.owner}/${this.repo}/issues`, {
-      title,
-      content: {
-        raw: content,
-      },
-      priority: 'trivial',
-      type: 'task',
-    }, {
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-    })
-    return normalizeIssue(data)
-  }
-
-  async createComment ({
+  async postComment ({
     accessToken,
     issueId,
     content,
+  }: {
+    accessToken: VssueAPI.AccessToken
+    issueId: string | number
+    content: string
   }): Promise<VssueAPI.Comment> {
     const { data } = await this.$http.post(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
       content: {
@@ -271,16 +320,42 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   }
 
   /**
-   * Bitbucket does not support reactions now
+   * Delete a comment
+   *
+   * @param options.accessToken - User access token
+   * @param options.issueId - The id of issue
+   * @param options.commentId - The id of comment
+   *
+   * @return `true` if succeed, `false` if failed
+   *
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments/%7Bcomment_id%7D#delete
    */
-  async createIssueReaction (): Promise<boolean> {
-    throw new Error('Reactions Not Implemented')
+  async deleteComment ({
+    accessToken,
+    issueId,
+    commentId,
+  }: {
+    accessToken: VssueAPI.AccessToken
+    issueId: string | number
+    commentId: string | number
+  }): Promise<boolean> {
+    const { status } = await this.$http.delete(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`, {
+      headers: { 'Authorization': `Bearer ${accessToken}` },
+    })
+    return status === 204
   }
 
   /**
    * Bitbucket does not support reactions now
    */
-  async createCommentReaction (): Promise<boolean> {
-    throw new Error('Reactions Not Implemented')
+  async getCommentReactions (): Promise<VssueAPI.Reactions> {
+    throw new Error('501 Not Implemented')
+  }
+
+  /**
+   * Bitbucket does not support reactions now
+   */
+  async postCommentReaction (): Promise<boolean> {
+    throw new Error('501 Not Implemented')
   }
 }
