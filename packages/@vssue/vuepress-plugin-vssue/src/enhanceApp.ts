@@ -1,4 +1,4 @@
-import Vssue, { Vssue as VssueComponent } from 'vssue'
+import Vssue, { VssueComponent } from 'vssue'
 // @ts-ignore
 import VssueAPI from '@vssue/api'
 
