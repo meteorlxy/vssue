@@ -70,7 +70,6 @@ class VssueStore extends Vue implements Vssue.LocalStore {
   created () {
     this.$on('login', this.handleLogin)
     this.$on('logout', this.handleLogout)
-    this.$on('post-comment', this.postComment)
   }
 
   /**
@@ -234,8 +233,6 @@ class VssueStore extends Vue implements Vssue.LocalStore {
         issueId: this.issue.id,
       })
 
-      // refresh comments after creation
-      await this.getComments()
       return comment
     } catch (e) {
       this.$emit('error', e)

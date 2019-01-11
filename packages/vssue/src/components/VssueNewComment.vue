@@ -136,6 +136,7 @@ export default class VssueNewComment extends Vue {
   async submit (): Promise<void> {
     await this.vssue.postComment({ content: this.content })
     this.content = ''
+    await this.vssue.getComments()
   }
 
   beforeDestroy () {
