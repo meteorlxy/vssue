@@ -12,7 +12,11 @@
 
 ## Contributing
 
-Vssue is still a WIP, feel free to open issues and contributions welcome !
+Vssue is still a WIP, feel free to open issues and contributions welcome :wink:
+
+## LOGO Wanted
+
+Hope someone can help to design a logo for Vssue. If you want to help, open an issue for that ~ Thanks in advance :star:
 
 ## LICENSE
 
