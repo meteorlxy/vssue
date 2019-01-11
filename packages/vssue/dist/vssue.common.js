@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.3.0
+ * @version v0.3.1
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -12,7 +12,6 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var Vue = _interopDefault(require('vue'));
-var nprogress = _interopDefault(require('nprogress'));
 var utils = require('@vssue/utils');
 
 var _isObject = function (it) {
@@ -3506,7 +3505,7 @@ var VssueStore = /** @class */ (function (_super) {
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.3.0";
+            return "0.3.1";
         },
         enumerable: true,
         configurable: true
@@ -4002,19 +4001,6 @@ var Vssue = /** @class */ (function (_super) {
         this.init();
     };
     /**
-     * Show nprogress when loading comments
-     */
-    Vssue.prototype.onLoadingCommentsChange = function (val) {
-        if (this.vssue.comments) {
-            if (val) {
-                nprogress.start();
-            }
-            else {
-                nprogress.done();
-            }
-        }
-    };
-    /**
      * Created hook. Check Options and init Vssue.
      */
     Vssue.prototype.created = function () {
@@ -4043,17 +4029,11 @@ var Vssue = /** @class */ (function (_super) {
                         _a.trys.push([0, 6, , 7]);
                         // init VssueStore
                         return [4 /*yield*/, this.vssue.init()
-                            // set nprogress
+                            // show alert on error
                         ];
                     case 1:
                         // init VssueStore
                         _a.sent();
-                        // set nprogress
-                        nprogress.configure({
-                            parent: '.vssue-nprogress',
-                            showSpinner: false,
-                            trickleSpeed: 150
-                        });
                         // show alert on error
                         this.vssue.$on('error', function (e) { return _this.showAlert(e.message); });
                         if (!!this.issueId) return [3 /*break*/, 3];
@@ -4154,9 +4134,6 @@ var Vssue = /** @class */ (function (_super) {
     __decorate([
         Watch('options', { deep: true })
     ], Vssue.prototype, "onOptionsChange");
-    __decorate([
-        Watch('vssue.status.isLoadingComments')
-    ], Vssue.prototype, "onLoadingCommentsChange");
     Vssue = __decorate([
         Component({
             components: {
@@ -4214,9 +4191,7 @@ var __vue_render__$5 = function __vue_render__() {
     key: "initialized",
     staticClass: "vssue-body"
   }, [_c('VssueNewComment'), _vm._v(" "), _c('div', {
-    staticClass: "vssue-alert-container"
-  }, [_c('div', {
-    staticClass: "vssue-nprogress"
+    staticClass: "vssue-notice"
   }, [_c('TransitionFade', [_c('div', {
     directives: [{
       name: "show",
@@ -4233,7 +4208,7 @@ var __vue_render__$5 = function __vue_render__() {
         _vm.hideAlert();
       }
     }
-  })])], 1)]), _vm._v(" "), _c('VssueComments')], 1)], 1)], 1);
+  })])], 1), _vm._v(" "), _c('VssueComments')], 1)], 1)], 1);
 };
 
 var __vue_staticRenderFns__$5 = [];
@@ -4279,7 +4254,7 @@ var VssueComponent = __vue_normalize__$9({
 
 var VssuePlugin = {
     get version() {
-        return "0.3.0";
+        return "0.3.1";
     },
     install: function (Vue$$1, options) {
         if (Vue$$1.prototype.$vssue) {

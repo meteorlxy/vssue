@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.3.0
+ * @version v0.3.1
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -91,15 +91,13 @@
 .vssue .fade-appear {
   opacity: 0;
 }
-.vssue .vssue-alert-container {
+.vssue .vssue-notice {
   position: relative;
   z-index: 100;
-  min-height: 2px;
-  overflow-y: visible;
   -webkit-transform: translateY(-11px);
           transform: translateY(-11px);
 }
-.vssue .vssue-alert-container .vssue-alert {
+.vssue .vssue-notice .vssue-alert {
   position: absolute;
   z-index: 101;
   cursor: pointer;
@@ -110,22 +108,6 @@
   border: solid 2px #c3ead8;
   border-radius: 5px;
   background-color: #f5fbf8;
-}
-.vssue .vssue-nprogress {
-  min-height: 2px;
-  overflow-x: hidden;
-}
-.vssue .vssue-nprogress #nprogress {
-  position: relative;
-  pointer-events: none;
-}
-.vssue .vssue-nprogress #nprogress .bar {
-  background: #3eaf7c;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
 }
 .vssue .vssue-status {
   text-align: center;

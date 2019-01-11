@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-gitlab-v4",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Vssue api for gitlab v4",
   "license": "MIT",
   "main": "lib/index.js",
@@ -26,10 +26,10 @@
     "build": "rimraf lib types && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vssue/utils": "^0.3.0",
+    "@vssue/utils": "^0.3.1",
     "axios": "^0.18.0"
   },
   "peerDependencies": {
-    "vssue": "^0.3.0"
+    "vssue": "^0.3.1"
   }
 }
