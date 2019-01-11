@@ -29,7 +29,7 @@
     "@vssue/api-bitbucket-v2": "^0.4.0",
     "@vssue/api-github-v3": "^0.4.0",
     "@vssue/api-gitlab-v4": "^0.4.0",
-    "vssue": "^0.3.2"
+    "vssue": "^0.4.0"
   },
   "peerDependencies": {
     "vuepress": "^1.0.0-alpha.30"
