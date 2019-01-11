@@ -1,4 +1,4 @@
-import Vssue, { VssueComponent } from 'vssue'
+import Vssue from 'vssue'
 // @ts-ignore
 import VssueAPI from '@vssue/api'
 
@@ -20,7 +20,10 @@ export default ({ Vue }: { Vue: VueConstructor}) => {
     api: VssueAPI,
   }))
 
-  // make vssue client-only
+  // get the vssue component registered by Vssue.Plugin
+  const VssueComponent = Vue.component('Vssue')
+
+  // make the vssue component client-only
   Vue.component('Vssue', {
     functional: true,
 
