@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.2.0
+ * @version v0.3.0
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -251,59 +251,68 @@
 .vssue .vssue-new-comment .vssue-new-comment-input::placeholder {
   color: #a3aab1;
 }
-.vssue .vssue-comments .vssue-comments-list .vssue-comment {
+.vssue .vssue-comments .vssue-comment {
   margin: 15px 0;
 }
-.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-avatar {
+.vssue .vssue-comments .vssue-comment.disabled {
+  pointer-events: none;
+}
+.vssue .vssue-comments .vssue-comment.disabled .vssue-comment-body {
+  background-color: #f9f9fa;
+}
+.vssue .vssue-comments .vssue-comment .vssue-comment-avatar {
   float: left;
   width: 50px;
   height: 50px;
 }
-.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-avatar img {
+.vssue .vssue-comments .vssue-comment .vssue-comment-avatar img {
   width: 50px;
   height: 50px;
 }
-.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body {
+.vssue .vssue-comments .vssue-comment .vssue-comment-body {
   border: 1px solid #eaecef;
   border-radius: 5px;
 }
 @media screen and (max-width: 576px) {
-  .vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body {
+  .vssue .vssue-comments .vssue-comment .vssue-comment-body {
     margin-left: 60px;
   }
 }
 @media screen and (min-width: 577px) {
-  .vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body {
+  .vssue .vssue-comments .vssue-comment .vssue-comment-body {
     margin-left: 70px;
   }
 }
-.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-header {
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-header {
   padding: 10px 15px;
   border-bottom: 1px solid #eaecef;
   overflow: hidden;
 }
-.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-header .vssue-comment-created-at {
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-header .vssue-comment-created-at {
   float: right;
   color: #a3aab1;
 }
-.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-main {
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-main {
   padding: 15px;
 }
-.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-footer {
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer {
   padding: 10px 15px;
   border-top: 1px solid #eaecef;
   overflow: hidden;
 }
-.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-reactions .vssue-comment-reaction {
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-reactions .vssue-comment-reaction {
   cursor: pointer;
   display: inline-block;
   margin-right: 8px;
   color: #3eaf7c;
 }
-.vssue .vssue-comments .vssue-comments-list .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-reply {
-  cursor: pointer;
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-operations {
   float: right;
   color: #3eaf7c;
+}
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation {
+  cursor: pointer;
+  margin-left: 8px;
 }
 .vssue .vssue-pagination {
   cursor: default;

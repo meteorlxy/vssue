@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.2.0
+ * @version v0.3.0
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -12,32 +12,8 @@
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 
 var Vue = _interopDefault(require('vue'));
+var nprogress = _interopDefault(require('nprogress'));
 var utils = require('@vssue/utils');
-
-var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
-}
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
-}
-
-var _global = createCommonjsModule(function (module) {
-// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
-var global = module.exports = typeof window != 'undefined' && window.Math == Math
-  ? window : typeof self != 'undefined' && self.Math == Math ? self
-  // eslint-disable-next-line no-new-func
-  : Function('return this')();
-if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
-});
-
-var _core = createCommonjsModule(function (module) {
-var core = module.exports = { version: '2.6.1' };
-if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
-});
-var _core_1 = _core.version;
 
 var _isObject = function (it) {
   return typeof it === 'object' ? it !== null : typeof it === 'function';
@@ -59,6 +35,23 @@ var _fails = function (exec) {
 // Thank's IE8 for his funny defineProperty
 var _descriptors = !_fails(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
+});
+
+function unwrapExports (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x.default : x;
+}
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var _global = createCommonjsModule(function (module) {
+// https://github.com/zloirock/core-js/issues/86#issuecomment-115759028
+var global = module.exports = typeof window != 'undefined' && window.Math == Math
+  ? window : typeof self != 'undefined' && self.Math == Math ? self
+  // eslint-disable-next-line no-new-func
+  : Function('return this')();
+if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 });
 
 var document$1 = _global.document;
@@ -102,6 +95,29 @@ var f = _descriptors ? Object.defineProperty : function defineProperty(O, P, Att
 var _objectDp = {
 	f: f
 };
+
+var dP$1 = _objectDp.f;
+var FProto = Function.prototype;
+var nameRE = /^\s*function ([^ (]*)/;
+var NAME = 'name';
+
+// 19.2.4.2 name
+NAME in FProto || _descriptors && dP$1(FProto, NAME, {
+  configurable: true,
+  get: function () {
+    try {
+      return ('' + this).match(nameRE)[1];
+    } catch (e) {
+      return '';
+    }
+  }
+});
+
+var _core = createCommonjsModule(function (module) {
+var core = module.exports = { version: '2.6.1' };
+if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
+});
+var _core_1 = _core.version;
 
 var _propertyDesc = function (bitmap, value) {
   return {
@@ -231,55 +247,6 @@ var _defined = function (it) {
   if (it == undefined) throw TypeError("Can't call method on  " + it);
   return it;
 };
-
-// 7.1.13 ToObject(argument)
-
-var _toObject = function (it) {
-  return Object(_defined(it));
-};
-
-var _strictMethod = function (method, arg) {
-  return !!method && _fails(function () {
-    // eslint-disable-next-line no-useless-call
-    arg ? method.call(null, function () { /* empty */ }, 1) : method.call(null);
-  });
-};
-
-var $sort = [].sort;
-var test = [1, 2, 3];
-
-_export(_export.P + _export.F * (_fails(function () {
-  // IE8-
-  test.sort(undefined);
-}) || !_fails(function () {
-  // V8 bug
-  test.sort(null);
-  // Old WebKit
-}) || !_strictMethod($sort)), 'Array', {
-  // 22.1.3.25 Array.prototype.sort(comparefn)
-  sort: function sort(comparefn) {
-    return comparefn === undefined
-      ? $sort.call(_toObject(this))
-      : $sort.call(_toObject(this), _aFunction(comparefn));
-  }
-});
-
-var dP$1 = _objectDp.f;
-var FProto = Function.prototype;
-var nameRE = /^\s*function ([^ (]*)/;
-var NAME = 'name';
-
-// 19.2.4.2 name
-NAME in FProto || _descriptors && dP$1(FProto, NAME, {
-  configurable: true,
-  get: function () {
-    try {
-      return ('' + this).match(nameRE)[1];
-    } catch (e) {
-      return '';
-    }
-  }
-});
 
 var quot = /"/g;
 // B.2.3.2.1 CreateHTML(string, tag, attribute, value)
@@ -519,6 +486,12 @@ _hide(IteratorPrototype, _wks('iterator'), function () { return this; });
 var _iterCreate = function (Constructor, NAME, next) {
   Constructor.prototype = _objectCreate(IteratorPrototype, { next: _propertyDesc(1, next) });
   _setToStringTag(Constructor, NAME + ' Iterator');
+};
+
+// 7.1.13 ToObject(argument)
+
+var _toObject = function (it) {
+  return Object(_defined(it));
 };
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
@@ -1987,6 +1960,52 @@ var vueClassComponent_common_2 = vueClassComponent_common.mixins;
 
 /** vue-property-decorator verson 7.2.0 MIT LICENSE copyright 2018 kaorun343 */
 /**
+ * decorator of an inject
+ * @param from key
+ * @return PropertyDecorator
+ */
+
+function Inject(options) {
+  return vueClassComponent_common_1(function (componentOptions, key) {
+    if (typeof componentOptions.inject === 'undefined') {
+      componentOptions.inject = {};
+    }
+
+    if (!Array.isArray(componentOptions.inject)) {
+      componentOptions.inject[key] = options || key;
+    }
+  });
+}
+/**
+ * decorator of a provide
+ * @param key key
+ * @return PropertyDecorator | void
+ */
+
+function Provide(key) {
+  return vueClassComponent_common_1(function (componentOptions, k) {
+    var provide = componentOptions.provide;
+
+    if (typeof provide !== 'function' || !provide.managed) {
+      var original_1 = componentOptions.provide;
+
+      provide = componentOptions.provide = function () {
+        var rv = Object.create((typeof original_1 === 'function' ? original_1.call(this) : original_1) || null);
+
+        for (var i in provide.managed) {
+          rv[provide.managed[i]] = this[i];
+        }
+
+        return rv;
+      };
+
+      provide.managed = {};
+    }
+
+    provide.managed[k] = key || k;
+  });
+}
+/**
  * decorator of a prop
  * @param  options the options for the prop
  * @return PropertyDecorator | void
@@ -2029,462 +2048,6 @@ function Watch(path, options) {
     };
   });
 } // Code copied from Vue/src/shared/util.js
-
-var nprogress = createCommonjsModule(function (module, exports) {
-
-  (function (root, factory) {
-    {
-      module.exports = factory();
-    }
-  })(commonjsGlobal, function () {
-    var NProgress = {};
-    NProgress.version = '0.2.0';
-    var Settings = NProgress.settings = {
-      minimum: 0.08,
-      easing: 'ease',
-      positionUsing: '',
-      speed: 200,
-      trickle: true,
-      trickleRate: 0.02,
-      trickleSpeed: 800,
-      showSpinner: true,
-      barSelector: '[role="bar"]',
-      spinnerSelector: '[role="spinner"]',
-      parent: 'body',
-      template: '<div class="bar" role="bar"><div class="peg"></div></div><div class="spinner" role="spinner"><div class="spinner-icon"></div></div>'
-    };
-    /**
-     * Updates configuration.
-     *
-     *     NProgress.configure({
-     *       minimum: 0.1
-     *     });
-     */
-
-    NProgress.configure = function (options) {
-      var key, value;
-
-      for (key in options) {
-        value = options[key];
-        if (value !== undefined && options.hasOwnProperty(key)) Settings[key] = value;
-      }
-
-      return this;
-    };
-    /**
-     * Last number.
-     */
-
-
-    NProgress.status = null;
-    /**
-     * Sets the progress bar status, where `n` is a number from `0.0` to `1.0`.
-     *
-     *     NProgress.set(0.4);
-     *     NProgress.set(1.0);
-     */
-
-    NProgress.set = function (n) {
-      var started = NProgress.isStarted();
-      n = clamp(n, Settings.minimum, 1);
-      NProgress.status = n === 1 ? null : n;
-      var progress = NProgress.render(!started),
-          bar = progress.querySelector(Settings.barSelector),
-          speed = Settings.speed,
-          ease = Settings.easing;
-      progress.offsetWidth;
-      /* Repaint */
-
-      queue(function (next) {
-        // Set positionUsing if it hasn't already been set
-        if (Settings.positionUsing === '') Settings.positionUsing = NProgress.getPositioningCSS(); // Add transition
-
-        css(bar, barPositionCSS(n, speed, ease));
-
-        if (n === 1) {
-          // Fade out
-          css(progress, {
-            transition: 'none',
-            opacity: 1
-          });
-          progress.offsetWidth;
-          /* Repaint */
-
-          setTimeout(function () {
-            css(progress, {
-              transition: 'all ' + speed + 'ms linear',
-              opacity: 0
-            });
-            setTimeout(function () {
-              NProgress.remove();
-              next();
-            }, speed);
-          }, speed);
-        } else {
-          setTimeout(next, speed);
-        }
-      });
-      return this;
-    };
-
-    NProgress.isStarted = function () {
-      return typeof NProgress.status === 'number';
-    };
-    /**
-     * Shows the progress bar.
-     * This is the same as setting the status to 0%, except that it doesn't go backwards.
-     *
-     *     NProgress.start();
-     *
-     */
-
-
-    NProgress.start = function () {
-      if (!NProgress.status) NProgress.set(0);
-
-      var work = function work() {
-        setTimeout(function () {
-          if (!NProgress.status) return;
-          NProgress.trickle();
-          work();
-        }, Settings.trickleSpeed);
-      };
-
-      if (Settings.trickle) work();
-      return this;
-    };
-    /**
-     * Hides the progress bar.
-     * This is the *sort of* the same as setting the status to 100%, with the
-     * difference being `done()` makes some placebo effect of some realistic motion.
-     *
-     *     NProgress.done();
-     *
-     * If `true` is passed, it will show the progress bar even if its hidden.
-     *
-     *     NProgress.done(true);
-     */
-
-
-    NProgress.done = function (force) {
-      if (!force && !NProgress.status) return this;
-      return NProgress.inc(0.3 + 0.5 * Math.random()).set(1);
-    };
-    /**
-     * Increments by a random amount.
-     */
-
-
-    NProgress.inc = function (amount) {
-      var n = NProgress.status;
-
-      if (!n) {
-        return NProgress.start();
-      } else {
-        if (typeof amount !== 'number') {
-          amount = (1 - n) * clamp(Math.random() * n, 0.1, 0.95);
-        }
-
-        n = clamp(n + amount, 0, 0.994);
-        return NProgress.set(n);
-      }
-    };
-
-    NProgress.trickle = function () {
-      return NProgress.inc(Math.random() * Settings.trickleRate);
-    };
-    /**
-     * Waits for all supplied jQuery promises and
-     * increases the progress as the promises resolve.
-     *
-     * @param $promise jQUery Promise
-     */
-
-
-    (function () {
-      var initial = 0,
-          current = 0;
-
-      NProgress.promise = function ($promise) {
-        if (!$promise || $promise.state() === "resolved") {
-          return this;
-        }
-
-        if (current === 0) {
-          NProgress.start();
-        }
-
-        initial++;
-        current++;
-        $promise.always(function () {
-          current--;
-
-          if (current === 0) {
-            initial = 0;
-            NProgress.done();
-          } else {
-            NProgress.set((initial - current) / initial);
-          }
-        });
-        return this;
-      };
-    })();
-    /**
-     * (Internal) renders the progress bar markup based on the `template`
-     * setting.
-     */
-
-
-    NProgress.render = function (fromStart) {
-      if (NProgress.isRendered()) return document.getElementById('nprogress');
-      addClass(document.documentElement, 'nprogress-busy');
-      var progress = document.createElement('div');
-      progress.id = 'nprogress';
-      progress.innerHTML = Settings.template;
-      var bar = progress.querySelector(Settings.barSelector),
-          perc = fromStart ? '-100' : toBarPerc(NProgress.status || 0),
-          parent = document.querySelector(Settings.parent),
-          spinner;
-      css(bar, {
-        transition: 'all 0 linear',
-        transform: 'translate3d(' + perc + '%,0,0)'
-      });
-
-      if (!Settings.showSpinner) {
-        spinner = progress.querySelector(Settings.spinnerSelector);
-        spinner && removeElement(spinner);
-      }
-
-      if (parent != document.body) {
-        addClass(parent, 'nprogress-custom-parent');
-      }
-
-      parent.appendChild(progress);
-      return progress;
-    };
-    /**
-     * Removes the element. Opposite of render().
-     */
-
-
-    NProgress.remove = function () {
-      removeClass(document.documentElement, 'nprogress-busy');
-      removeClass(document.querySelector(Settings.parent), 'nprogress-custom-parent');
-      var progress = document.getElementById('nprogress');
-      progress && removeElement(progress);
-    };
-    /**
-     * Checks if the progress bar is rendered.
-     */
-
-
-    NProgress.isRendered = function () {
-      return !!document.getElementById('nprogress');
-    };
-    /**
-     * Determine which positioning CSS rule to use.
-     */
-
-
-    NProgress.getPositioningCSS = function () {
-      // Sniff on document.body.style
-      var bodyStyle = document.body.style; // Sniff prefixes
-
-      var vendorPrefix = 'WebkitTransform' in bodyStyle ? 'Webkit' : 'MozTransform' in bodyStyle ? 'Moz' : 'msTransform' in bodyStyle ? 'ms' : 'OTransform' in bodyStyle ? 'O' : '';
-
-      if (vendorPrefix + 'Perspective' in bodyStyle) {
-        // Modern browsers with 3D support, e.g. Webkit, IE10
-        return 'translate3d';
-      } else if (vendorPrefix + 'Transform' in bodyStyle) {
-        // Browsers without 3D support, e.g. IE9
-        return 'translate';
-      } else {
-        // Browsers without translate() support, e.g. IE7-8
-        return 'margin';
-      }
-    };
-    /**
-     * Helpers
-     */
-
-
-    function clamp(n, min, max) {
-      if (n < min) return min;
-      if (n > max) return max;
-      return n;
-    }
-    /**
-     * (Internal) converts a percentage (`0..1`) to a bar translateX
-     * percentage (`-100%..0%`).
-     */
-
-
-    function toBarPerc(n) {
-      return (-1 + n) * 100;
-    }
-    /**
-     * (Internal) returns the correct CSS for changing the bar's
-     * position given an n percentage, and speed and ease from Settings
-     */
-
-
-    function barPositionCSS(n, speed, ease) {
-      var barCSS;
-
-      if (Settings.positionUsing === 'translate3d') {
-        barCSS = {
-          transform: 'translate3d(' + toBarPerc(n) + '%,0,0)'
-        };
-      } else if (Settings.positionUsing === 'translate') {
-        barCSS = {
-          transform: 'translate(' + toBarPerc(n) + '%,0)'
-        };
-      } else {
-        barCSS = {
-          'margin-left': toBarPerc(n) + '%'
-        };
-      }
-
-      barCSS.transition = 'all ' + speed + 'ms ' + ease;
-      return barCSS;
-    }
-    /**
-     * (Internal) Queues a function to be executed.
-     */
-
-
-    var queue = function () {
-      var pending = [];
-
-      function next() {
-        var fn = pending.shift();
-
-        if (fn) {
-          fn(next);
-        }
-      }
-
-      return function (fn) {
-        pending.push(fn);
-        if (pending.length == 1) next();
-      };
-    }();
-    /**
-     * (Internal) Applies css properties to an element, similar to the jQuery 
-     * css method.
-     *
-     * While this helper does assist with vendor prefixed property names, it 
-     * does not perform any manipulation of values prior to setting styles.
-     */
-
-
-    var css = function () {
-      var cssPrefixes = ['Webkit', 'O', 'Moz', 'ms'],
-          cssProps = {};
-
-      function camelCase(string) {
-        return string.replace(/^-ms-/, 'ms-').replace(/-([\da-z])/gi, function (match, letter) {
-          return letter.toUpperCase();
-        });
-      }
-
-      function getVendorProp(name) {
-        var style = document.body.style;
-        if (name in style) return name;
-        var i = cssPrefixes.length,
-            capName = name.charAt(0).toUpperCase() + name.slice(1),
-            vendorName;
-
-        while (i--) {
-          vendorName = cssPrefixes[i] + capName;
-          if (vendorName in style) return vendorName;
-        }
-
-        return name;
-      }
-
-      function getStyleProp(name) {
-        name = camelCase(name);
-        return cssProps[name] || (cssProps[name] = getVendorProp(name));
-      }
-
-      function applyCss(element, prop, value) {
-        prop = getStyleProp(prop);
-        element.style[prop] = value;
-      }
-
-      return function (element, properties) {
-        var args = arguments,
-            prop,
-            value;
-
-        if (args.length == 2) {
-          for (prop in properties) {
-            value = properties[prop];
-            if (value !== undefined && properties.hasOwnProperty(prop)) applyCss(element, prop, value);
-          }
-        } else {
-          applyCss(element, args[1], args[2]);
-        }
-      };
-    }();
-    /**
-     * (Internal) Determines if an element or space separated list of class names contains a class name.
-     */
-
-
-    function hasClass(element, name) {
-      var list = typeof element == 'string' ? element : classList(element);
-      return list.indexOf(' ' + name + ' ') >= 0;
-    }
-    /**
-     * (Internal) Adds a class to an element.
-     */
-
-
-    function addClass(element, name) {
-      var oldList = classList(element),
-          newList = oldList + name;
-      if (hasClass(oldList, name)) return; // Trim the opening space.
-
-      element.className = newList.substring(1);
-    }
-    /**
-     * (Internal) Removes a class from an element.
-     */
-
-
-    function removeClass(element, name) {
-      var oldList = classList(element),
-          newList;
-      if (!hasClass(element, name)) return; // Replace the class name.
-
-      newList = oldList.replace(' ' + name + ' ', ' '); // Trim the opening and closing spaces.
-
-      element.className = newList.substring(1, newList.length - 1);
-    }
-    /**
-     * (Internal) Gets a space separated list of the class names on the element. 
-     * The list is wrapped with a single space on each end to facilitate finding 
-     * matches within the list.
-     */
-
-
-    function classList(element) {
-      return (' ' + (element.className || '') + ' ').replace(/\s+/gi, ' ');
-    }
-    /**
-     * (Internal) Removes an element from the DOM.
-     */
-
-
-    function removeElement(element) {
-      element && element.parentNode && element.parentNode.removeChild(element);
-    }
-
-    return NProgress;
-  });
-});
 
 var script = Vue.extend({
     name: 'TransitionFade',
@@ -2586,22 +2149,22 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-loading",
-      "viewBox": "0 0 1024 1024"
-    }
-  }, [_c('path', {
-    attrs: {
-      "d": "M843.307 742.24c0 3.217 2.607 5.824 5.824 5.824s5.824-2.607 5.824-5.824a5.823 5.823 0 0 0-5.824-5.824 5.823 5.823 0 0 0-5.824 5.824zM714.731 874.912c0 6.398 5.186 11.584 11.584 11.584s11.584-5.186 11.584-11.584-5.186-11.584-11.584-11.584-11.584 5.186-11.584 11.584zM541.419 943.2c0 9.614 7.794 17.408 17.408 17.408s17.408-7.794 17.408-17.408-7.794-17.408-17.408-17.408-17.408 7.794-17.408 17.408z m-186.56-9.152c0 12.795 10.373 23.168 23.168 23.168s23.168-10.373 23.168-23.168-10.373-23.168-23.168-23.168-23.168 10.373-23.168 23.168zM189.355 849.12c0 16.012 12.98 28.992 28.992 28.992s28.992-12.98 28.992-28.992-12.98-28.992-28.992-28.992-28.992 12.98-28.992 28.992zM74.731 704.736c0 19.228 15.588 34.816 34.816 34.816s34.816-15.588 34.816-34.816-15.588-34.816-34.816-34.816-34.816 15.588-34.816 34.816z m-43.008-177.28c0 22.41 18.166 40.576 40.576 40.576s40.576-18.166 40.576-40.576-18.166-40.576-40.576-40.576-40.576 18.166-40.576 40.576z m35.392-176.128c0 25.626 20.774 46.4 46.4 46.4s46.4-20.774 46.4-46.4c0-25.626-20.774-46.4-46.4-46.4-25.626 0-46.4 20.774-46.4 46.4z m106.176-142.016c0 28.843 23.381 52.224 52.224 52.224s52.224-23.381 52.224-52.224c0-28.843-23.381-52.224-52.224-52.224-28.843 0-52.224 23.381-52.224 52.224z m155.904-81.344c0 32.024 25.96 57.984 57.984 57.984s57.984-25.96 57.984-57.984-25.96-57.984-57.984-57.984-57.984 25.96-57.984 57.984z m175.104-5.056c0 35.24 28.568 63.808 63.808 63.808s63.808-28.568 63.808-63.808c0-35.24-28.568-63.808-63.808-63.808-35.24 0-63.808 28.568-63.808 63.808z m160.32 72.128c0 38.421 31.147 69.568 69.568 69.568s69.568-31.147 69.568-69.568-31.147-69.568-69.568-69.568-69.568 31.147-69.568 69.568z m113.92 135.488c0 41.638 33.754 75.392 75.392 75.392s75.392-33.754 75.392-75.392-33.754-75.392-75.392-75.392-75.392 33.754-75.392 75.392z m45.312 175.488c0 44.854 36.362 81.216 81.216 81.216s81.216-36.362 81.216-81.216c0-44.854-36.362-81.216-81.216-81.216-44.854 0-81.216 36.362-81.216 81.216z",
-      "fill": ""
-    }
-  })]), _vm._v(" "), _c('symbol', {
-    attrs: {
       "id": "icon-gitlab",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
     attrs: {
       "d": "M59.544137 403.419429L512.115566 983.405714 16.09728 623.396571a39.936 39.936 0 0 1-14.299429-43.995428l57.709715-176.018286z m264.009143 0h377.161143L512.152137 983.405714zM210.40128 53.723429l113.152 349.696H59.544137l113.152-349.696a20.041143 20.041143 0 0 1 37.705143 0z m754.285714 349.696l57.709715 176.018285a39.862857 39.862857 0 0 1-14.299429 43.995429l-496.018286 360.009143 452.571429-579.986286z m0 0h-264.009143l113.152-349.696a20.041143 20.041143 0 0 1 37.705143 0z",
+      "fill": ""
+    }
+  })]), _vm._v(" "), _c('symbol', {
+    attrs: {
+      "id": "icon-loading",
+      "viewBox": "0 0 1024 1024"
+    }
+  }, [_c('path', {
+    attrs: {
+      "d": "M843.307 742.24c0 3.217 2.607 5.824 5.824 5.824s5.824-2.607 5.824-5.824a5.823 5.823 0 0 0-5.824-5.824 5.823 5.823 0 0 0-5.824 5.824zM714.731 874.912c0 6.398 5.186 11.584 11.584 11.584s11.584-5.186 11.584-11.584-5.186-11.584-11.584-11.584-11.584 5.186-11.584 11.584zM541.419 943.2c0 9.614 7.794 17.408 17.408 17.408s17.408-7.794 17.408-17.408-7.794-17.408-17.408-17.408-17.408 7.794-17.408 17.408z m-186.56-9.152c0 12.795 10.373 23.168 23.168 23.168s23.168-10.373 23.168-23.168-10.373-23.168-23.168-23.168-23.168 10.373-23.168 23.168zM189.355 849.12c0 16.012 12.98 28.992 28.992 28.992s28.992-12.98 28.992-28.992-12.98-28.992-28.992-28.992-28.992 12.98-28.992 28.992zM74.731 704.736c0 19.228 15.588 34.816 34.816 34.816s34.816-15.588 34.816-34.816-15.588-34.816-34.816-34.816-34.816 15.588-34.816 34.816z m-43.008-177.28c0 22.41 18.166 40.576 40.576 40.576s40.576-18.166 40.576-40.576-18.166-40.576-40.576-40.576-40.576 18.166-40.576 40.576z m35.392-176.128c0 25.626 20.774 46.4 46.4 46.4s46.4-20.774 46.4-46.4c0-25.626-20.774-46.4-46.4-46.4-25.626 0-46.4 20.774-46.4 46.4z m106.176-142.016c0 28.843 23.381 52.224 52.224 52.224s52.224-23.381 52.224-52.224c0-28.843-23.381-52.224-52.224-52.224-28.843 0-52.224 23.381-52.224 52.224z m155.904-81.344c0 32.024 25.96 57.984 57.984 57.984s57.984-25.96 57.984-57.984-25.96-57.984-57.984-57.984-57.984 25.96-57.984 57.984z m175.104-5.056c0 35.24 28.568 63.808 63.808 63.808s63.808-28.568 63.808-63.808c0-35.24-28.568-63.808-63.808-63.808-35.24 0-63.808 28.568-63.808 63.808z m160.32 72.128c0 38.421 31.147 69.568 69.568 69.568s69.568-31.147 69.568-69.568-31.147-69.568-69.568-69.568-69.568 31.147-69.568 69.568z m113.92 135.488c0 41.638 33.754 75.392 75.392 75.392s75.392-33.754 75.392-75.392-33.754-75.392-75.392-75.392-75.392 33.754-75.392 75.392z m45.312 175.488c0 44.854 36.362 81.216 81.216 81.216s81.216-36.362 81.216-81.216c0-44.854-36.362-81.216-81.216-81.216-44.854 0-81.216 36.362-81.216 81.216z",
       "fill": ""
     }
   })]), _vm._v(" "), _c('symbol', {
@@ -2630,6 +2193,24 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
   }, [_c('path', {
     attrs: {
       "d": "M923 283.6c-13.4-31.1-32.6-58.9-56.9-82.8-24.3-23.8-52.5-42.4-84-55.5-32.5-13.5-66.9-20.3-102.4-20.3-49.3 0-97.4 13.5-139.2 39-10 6.1-19.5 12.8-28.5 20.1-9-7.3-18.5-14-28.5-20.1-41.8-25.5-89.9-39-139.2-39-35.5 0-69.9 6.8-102.4 20.3-31.4 13-59.7 31.7-84 55.5-24.4 23.9-43.5 51.7-56.9 82.8-13.9 32.3-21 66.6-21 101.9 0 33.3 6.8 68 20.3 103.3 11.3 29.5 27.5 60.1 48.2 91 32.8 48.9 77.9 99.9 133.9 151.6 92.8 85.7 184.7 144.9 188.6 147.3l23.7 15.2c10.5 6.7 24 6.7 34.5 0l23.7-15.2c3.9-2.5 95.7-61.6 188.6-147.3 56-51.7 101.1-102.7 133.9-151.6 20.7-30.9 37-61.5 48.2-91 13.5-35.3 20.3-70 20.3-103.3 0.1-35.3-7-69.6-20.9-101.9zM512 814.8S156 586.7 156 385.5C156 283.6 240.3 201 344.3 201c73.1 0 136.5 40.8 167.7 100.4C543.2 241.8 606.6 201 679.7 201c104 0 188.3 82.6 188.3 184.5 0 201.2-356 429.3-356 429.3z"
+    }
+  })]), _vm._v(" "), _c('symbol', {
+    attrs: {
+      "id": "icon-delete",
+      "viewBox": "0 0 1024 1024"
+    }
+  }, [_c('path', {
+    attrs: {
+      "d": "M677.647059 256l0-90.352941c0-37.436235-23.461647-60.235294-61.771294-60.235294L408.094118 105.411765c-38.249412 0-61.741176 22.799059-61.741176 60.235294l0 90.352941-180.705882 0 0 60.235294 60.235294 0 0 512c0 54.272 33.972706 90.352941 90.352941 90.352941l391.529412 0c55.085176 0 90.352941-33.490824 90.352941-90.352941l0-512 60.235294 0 0-60.235294L677.647059 256zM406.588235 165.647059l210.823529 0-1.264941 90.352941L406.588235 256 406.588235 165.647059zM737.882353 858.352941l-451.764706 0 0-542.117647 451.764706 0L737.882353 858.352941zM466.823529 376.470588l-58.729412 0-1.505882 391.529412 60.235294 0L466.823529 376.470588zM617.411765 376.470588l-60.235294 0 0 391.529412 60.235294 0L617.411765 376.470588z"
+    }
+  })]), _vm._v(" "), _c('symbol', {
+    attrs: {
+      "id": "icon-reply",
+      "viewBox": "0 0 1024 1024"
+    }
+  }, [_c('path', {
+    attrs: {
+      "d": "M426.666667 384 426.666667 213.333333 128 512 426.666667 810.666667 426.666667 635.733333C640 635.733333 789.333333 704 896 853.333333 853.333333 640 725.333333 426.666667 426.666667 384Z"
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
@@ -2691,6 +2272,58 @@ var Iconfont = __vue_normalize__$1({
   render: __vue_render__,
   staticRenderFns: __vue_staticRenderFns__
 }, __vue_inject_styles__$1, __vue_script__$1, __vue_scope_id__$1, __vue_is_functional_template__$1, __vue_module_identifier__$1, undefined, undefined);
+
+// https://github.com/tc39/Array.prototype.includes
+
+var $includes = _arrayIncludes(true);
+
+_export(_export.P, 'Array', {
+  includes: function includes(el /* , fromIndex = 0 */) {
+    return $includes(this, el, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
+
+_addToUnscopables('includes');
+
+// 7.2.8 IsRegExp(argument)
+
+
+var MATCH = _wks('match');
+var _isRegexp = function (it) {
+  var isRegExp;
+  return _isObject(it) && ((isRegExp = it[MATCH]) !== undefined ? !!isRegExp : _cof(it) == 'RegExp');
+};
+
+// helper for String#{startsWith, endsWith, includes}
+
+
+
+var _stringContext = function (that, searchString, NAME) {
+  if (_isRegexp(searchString)) throw TypeError('String#' + NAME + " doesn't accept regex!");
+  return String(_defined(that));
+};
+
+var MATCH$1 = _wks('match');
+var _failsIsRegexp = function (KEY) {
+  var re = /./;
+  try {
+    '/./'[KEY](re);
+  } catch (e) {
+    try {
+      re[MATCH$1] = false;
+      return !'/./'[KEY](re);
+    } catch (f) { /* empty */ }
+  } return true;
+};
+
+var INCLUDES = 'includes';
+
+_export(_export.P + _export.F * _failsIsRegexp(INCLUDES), 'String', {
+  includes: function includes(searchString /* , position = 0 */) {
+    return !!~_stringContext(this, searchString, INCLUDES)
+      .indexOf(searchString, arguments.length > 1 ? arguments[1] : undefined);
+  }
+});
 
 var script$2 = Vue.extend({
     name: 'VssueIcon',
@@ -2768,8 +2401,18 @@ var VssueIcon = __vue_normalize__$2({}, __vue_inject_styles__$2, __vue_script__$
 var VssueComment = /** @class */ (function (_super) {
     __extends(VssueComment, _super);
     function VssueComment() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.creatingReactions = [];
+        _this.isDeletingComment = false;
+        return _this;
     }
+    Object.defineProperty(VssueComment.prototype, "currentUser", {
+        get: function () {
+            return this.vssue.user ? this.vssue.user.username : null;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(VssueComment.prototype, "content", {
         get: function () {
             return this.comment.content;
@@ -2807,11 +2450,98 @@ var VssueComment = /** @class */ (function (_super) {
     });
     Object.defineProperty(VssueComment.prototype, "showReactions", {
         get: function () {
-            return this.reactable && Boolean(this.comment.reactions);
+            return Boolean(this.vssue.API && this.vssue.API.platform.meta.reactable && this.comment.reactions);
         },
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(VssueComment.prototype, "reactionKeys", {
+        get: function () {
+            return ['heart', 'like', 'unlike'];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    VssueComment.prototype.postReaction = function (_a) {
+        var reaction = _a.reaction;
+        return __awaiter(this, void 0, Promise, function () {
+            var success, reactions;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, , 3, 4]);
+                        if (this.creatingReactions.includes(reaction))
+                            return [2 /*return*/];
+                        this.creatingReactions.push(reaction);
+                        return [4 /*yield*/, this.vssue.postCommentReaction({
+                                commentId: this.comment.id,
+                                reaction: reaction
+                            })];
+                    case 1:
+                        success = _b.sent();
+                        if (!success) {
+                            this.vssue.$emit('error', new Error('Already given this reaction'));
+                        }
+                        return [4 /*yield*/, this.vssue.getCommentReactions({
+                                commentId: this.comment.id
+                            })];
+                    case 2:
+                        reactions = _b.sent();
+                        if (reactions) {
+                            this.comment.reactions = reactions;
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        this.creatingReactions.splice(this.creatingReactions.findIndex(function (item) { return item === reaction; }), 1);
+                        return [7 /*endfinally*/];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    VssueComment.prototype.deleteComment = function () {
+        return __awaiter(this, void 0, Promise, function () {
+            var success;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, , 7, 8]);
+                        if (this.isDeletingComment)
+                            return [2 /*return*/];
+                        this.isDeletingComment = true;
+                        return [4 /*yield*/, this.vssue.deleteComment({
+                                commentId: this.comment.id
+                            })];
+                    case 1:
+                        success = _a.sent();
+                        if (!success) return [3 /*break*/, 5];
+                        // decrease count immediately
+                        this.vssue.comments.count -= 1;
+                        // if there are more than one comment on this page, remove the deleted comment immediately
+                        if (this.vssue.comments.data.length > 1) {
+                            this.vssue.comments.data.splice(this.vssue.comments.data.findIndex(function (item) { return item.id === _this.comment.id; }), 1);
+                        }
+                        if (!(this.vssue.query.page > 1 && this.vssue.query.page > Math.ceil(this.vssue.comments.count / this.vssue.query.perPage))) return [3 /*break*/, 2];
+                        this.vssue.query.page -= 1;
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, this.vssue.getComments()];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
+                        this.vssue.$emit('error', new Error('Failed to delete comment'));
+                        _a.label = 6;
+                    case 6: return [3 /*break*/, 8];
+                    case 7:
+                        this.isDeletingComment = false;
+                        return [7 /*endfinally*/];
+                    case 8: return [2 /*return*/];
+                }
+            });
+        });
+    };
     __decorate([
         Prop({
             type: Object,
@@ -2819,11 +2549,8 @@ var VssueComment = /** @class */ (function (_super) {
         })
     ], VssueComment.prototype, "comment");
     __decorate([
-        Prop({
-            type: Boolean,
-            required: true
-        })
-    ], VssueComment.prototype, "reactable");
+        Inject()
+    ], VssueComment.prototype, "vssue");
     VssueComment = __decorate([
         Component({
             components: {
@@ -2834,7 +2561,6 @@ var VssueComment = /** @class */ (function (_super) {
     return VssueComment;
 }(Vue));
 
-/* script */
 var __vue_script__$3 = VssueComment;
 /* template */
 
@@ -2846,7 +2572,10 @@ var __vue_render__$1 = function __vue_render__() {
   var _c = _vm._self._c || _h;
 
   return _c('div', {
-    staticClass: "vssue-comment"
+    staticClass: "vssue-comment",
+    class: {
+      'disabled': _vm.isDeletingComment
+    }
   }, [_c('div', {
     staticClass: "vssue-comment-avatar"
   }, [_c('a', {
@@ -2884,33 +2613,55 @@ var __vue_render__$1 = function __vue_render__() {
     staticClass: "vssue-comment-footer"
   }, [_vm.showReactions ? _c('span', {
     staticClass: "vssue-comment-reactions"
-  }, _vm._l(['heart', 'like', 'unlike'], function (reaction) {
+  }, _vm._l(_vm.reactionKeys, function (reaction) {
     return _c('span', {
       key: reaction,
       staticClass: "vssue-comment-reaction",
+      attrs: {
+        "title": reaction
+      },
       on: {
         "click": function click($event) {
-          _vm.$emit('create-reaction', {
-            commentId: _vm.comment.id,
+          _vm.postReaction({
             reaction: reaction
           });
         }
       }
     }, [_c('VssueIcon', {
       attrs: {
-        "name": reaction
+        "name": _vm.creatingReactions.includes(reaction) ? 'loading' : reaction,
+        "title": _vm.creatingReactions.includes(reaction) ? 'loading' : reaction
       }
     }), _vm._v(" "), _c('span', {
       staticClass: "vssue-comment-reaction-number"
     }, [_vm._v("\n              " + _vm._s(_vm.comment.reactions[reaction]) + "\n            ")])], 1);
   }), 0) : _vm._e(), _vm._v(" "), _c('span', {
-    staticClass: "vssue-comment-reply",
+    staticClass: "vssue-comment-operations"
+  }, [_vm.comment.author.username === _vm.currentUser ? _c('span', {
+    staticClass: "vssue-comment-operation",
     on: {
       "click": function click($event) {
-        _vm.$emit('reply', _vm.comment);
+        _vm.deleteComment();
       }
     }
-  }, [_vm._v("\n          Reply\n        ")])])])], 2)]);
+  }, [_c('VssueIcon', {
+    attrs: {
+      "name": _vm.isDeletingComment ? 'loading' : 'delete',
+      "title": _vm.isDeletingComment ? "Deleting" : "Delete"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _c('span', {
+    staticClass: "vssue-comment-operation",
+    on: {
+      "click": function click($event) {
+        _vm.vssue.$emit('reply-comment', _vm.comment);
+      }
+    }
+  }, [_c('VssueIcon', {
+    attrs: {
+      "name": "reply",
+      "title": "Reply"
+    }
+  })], 1)])])])], 2)]);
 };
 
 var __vue_staticRenderFns__$1 = [];
@@ -2954,14 +2705,48 @@ var VssueComment$1 = __vue_normalize__$3({
   staticRenderFns: __vue_staticRenderFns__$1
 }, __vue_inject_styles__$3, __vue_script__$3, __vue_scope_id__$3, __vue_is_functional_template__$3, __vue_module_identifier__$3, undefined, undefined);
 
+var _strictMethod = function (method, arg) {
+  return !!method && _fails(function () {
+    // eslint-disable-next-line no-useless-call
+    arg ? method.call(null, function () { /* empty */ }, 1) : method.call(null);
+  });
+};
+
+var $sort = [].sort;
+var test = [1, 2, 3];
+
+_export(_export.P + _export.F * (_fails(function () {
+  // IE8-
+  test.sort(undefined);
+}) || !_fails(function () {
+  // V8 bug
+  test.sort(null);
+  // Old WebKit
+}) || !_strictMethod($sort)), 'Array', {
+  // 22.1.3.25 Array.prototype.sort(comparefn)
+  sort: function sort(comparefn) {
+    return comparefn === undefined
+      ? $sort.call(_toObject(this))
+      : $sort.call(_toObject(this), _aFunction(comparefn));
+  }
+});
+
 var VssuePagination = /** @class */ (function (_super) {
     __extends(VssuePagination, _super);
     function VssuePagination() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    Object.defineProperty(VssuePagination.prototype, "loading", {
+        get: function () {
+            return this.vssue.status.isLoadingComments;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(VssuePagination.prototype, "pageCount", {
         get: function () {
-            return Math.ceil(this.count / this.perPage);
+            var pageCount = Math.ceil(this.vssue.comments.count / this.vssue.comments.perPage);
+            return pageCount > 1 ? pageCount : 1;
         },
         enumerable: true,
         configurable: true
@@ -2977,64 +2762,33 @@ var VssuePagination = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(VssuePagination.prototype, "pageInternal", {
+    Object.defineProperty(VssuePagination.prototype, "page", {
         get: function () {
-            return this.page;
+            return this.vssue.query.page > this.pageCount ? this.pageCount : this.vssue.query.page;
         },
         set: function (val) {
             if (val > 0 && val <= this.pageCount) {
-                this.$emit('update:page', val);
+                this.vssue.query.page = val;
             }
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(VssuePagination.prototype, "perPageInternal", {
+    Object.defineProperty(VssuePagination.prototype, "perPage", {
         get: function () {
-            return this.perPage;
+            return this.vssue.query.perPage;
         },
         set: function (val) {
-            this.$emit('update:perPage', val);
+            if (this.perPageOptions.includes(val)) {
+                this.vssue.query.perPage = val;
+            }
         },
         enumerable: true,
         configurable: true
     });
     __decorate([
-        Prop({
-            type: Boolean,
-            required: true
-        })
-    ], VssuePagination.prototype, "sortable");
-    __decorate([
-        Prop({
-            type: Boolean,
-            required: true
-        })
-    ], VssuePagination.prototype, "loading");
-    __decorate([
-        Prop({
-            type: Number,
-            required: true
-        })
-    ], VssuePagination.prototype, "count");
-    __decorate([
-        Prop({
-            type: Number,
-            required: true
-        })
-    ], VssuePagination.prototype, "page");
-    __decorate([
-        Prop({
-            type: Number,
-            required: true
-        })
-    ], VssuePagination.prototype, "perPage");
-    __decorate([
-        Prop({
-            type: String,
-            required: true
-        })
-    ], VssuePagination.prototype, "sort");
+        Inject()
+    ], VssuePagination.prototype, "vssue");
     VssuePagination = __decorate([
         Component({
             components: {
@@ -3055,7 +2809,7 @@ var __vue_render__$2 = function __vue_render__() {
 
   var _c = _vm._self._c || _h;
 
-  return _c('div', {
+  return _vm.vssue.comments.count > _vm.perPageOptions[0] ? _c('div', {
     staticClass: "vssue-pagination"
   }, [_c('div', {
     staticClass: "vssue-pagination-per-page"
@@ -3063,8 +2817,8 @@ var __vue_render__$2 = function __vue_render__() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.perPageInternal,
-      expression: "perPageInternal"
+      value: _vm.perPage,
+      expression: "perPage"
     }],
     staticClass: "vssue-pagination-select",
     attrs: {
@@ -3078,7 +2832,7 @@ var __vue_render__$2 = function __vue_render__() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.perPageInternal = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+        _vm.perPage = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
       }
     }
   }, _vm._l(_vm.perPageOptions, function (val) {
@@ -3088,7 +2842,7 @@ var __vue_render__$2 = function __vue_render__() {
         "value": val
       }
     }, [_vm._v("\n        " + _vm._s(val) + "\n      ")]);
-  }), 0), _vm._v(" "), _c('span', [_vm._v("\n      Comments per page\n    ")]), _vm._v(" "), _vm.sortable ? _c('span', {
+  }), 0), _vm._v(" "), _c('span', [_vm._v("\n      Comments per page\n    ")]), _vm._v(" "), _vm.vssue.API.platform.meta.sortable ? _c('span', {
     class: {
       'vssue-pagination-link': true,
       'disabled': _vm.loading
@@ -3098,15 +2852,15 @@ var __vue_render__$2 = function __vue_render__() {
     },
     on: {
       "click": function click($event) {
-        _vm.$emit('update:sort', _vm.sort === 'asc' ? 'desc' : 'asc');
+        _vm.vssue.query.sort = _vm.vssue.query.sort === 'asc' ? 'desc' : 'asc';
       }
     }
-  }, [_vm._v("\n      " + _vm._s(_vm.sort === 'asc' ? "↑" : "↓") + "\n    ")]) : _vm._e()]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n      " + _vm._s(_vm.vssue.query.sort === 'asc' ? "↑" : "↓") + "\n    ")]) : _vm._e()]), _vm._v(" "), _c('div', {
     staticClass: "vssue-pagination-page"
   }, [_c('span', {
     class: {
       'vssue-pagination-link': true,
-      'disabled': _vm.pageInternal === 1 || _vm.loading
+      'disabled': _vm.page === 1 || _vm.loading
     },
     attrs: {
       "title": "Previous Page"
@@ -3116,7 +2870,7 @@ var __vue_render__$2 = function __vue_render__() {
     },
     on: {
       "click": function click($event) {
-        _vm.pageInternal -= 1;
+        _vm.page -= 1;
       }
     }
   }), _vm._v(" "), _c('span', [_vm._v("\n      Page\n    ")]), _vm._v(" "), _c('select', {
@@ -3128,8 +2882,8 @@ var __vue_render__$2 = function __vue_render__() {
     }, {
       name: "model",
       rawName: "v-model",
-      value: _vm.pageInternal,
-      expression: "pageInternal"
+      value: _vm.page,
+      expression: "page"
     }],
     staticClass: "vssue-pagination-select",
     attrs: {
@@ -3143,7 +2897,7 @@ var __vue_render__$2 = function __vue_render__() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.pageInternal = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
+        _vm.page = $event.target.multiple ? $$selectedVal : $$selectedVal[0];
       }
     }
   }, _vm._l(_vm.pageCount, function (val) {
@@ -3170,7 +2924,7 @@ var __vue_render__$2 = function __vue_render__() {
   }), _vm._v(" "), _c('span', {
     class: {
       'vssue-pagination-link': true,
-      'disabled': _vm.pageInternal === _vm.pageCount || _vm.loading
+      'disabled': _vm.page === _vm.pageCount || _vm.loading
     },
     attrs: {
       "title": "Next Page"
@@ -3180,10 +2934,10 @@ var __vue_render__$2 = function __vue_render__() {
     },
     on: {
       "click": function click($event) {
-        _vm.pageInternal += 1;
+        _vm.page += 1;
       }
     }
-  })])]);
+  })])]) : _vm._e();
 };
 
 var __vue_staticRenderFns__$2 = [];
@@ -3302,60 +3056,8 @@ var VssueComments = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     __decorate([
-        Prop({
-            type: Object,
-            required: false,
-            "default": null
-        })
-    ], VssueComments.prototype, "comments");
-    __decorate([
-        Prop({
-            type: Boolean,
-            required: true
-        })
-    ], VssueComments.prototype, "reactable");
-    __decorate([
-        Prop({
-            type: Boolean,
-            required: true
-        })
-    ], VssueComments.prototype, "sortable");
-    __decorate([
-        Prop({
-            type: Boolean,
-            required: true
-        })
-    ], VssueComments.prototype, "failed");
-    __decorate([
-        Prop({
-            type: Boolean,
-            required: true
-        })
-    ], VssueComments.prototype, "loading");
-    __decorate([
-        Prop({
-            type: Boolean,
-            required: true
-        })
-    ], VssueComments.prototype, "requireLogin");
-    __decorate([
-        Prop({
-            type: Number,
-            required: true
-        })
-    ], VssueComments.prototype, "page");
-    __decorate([
-        Prop({
-            type: Number,
-            required: true
-        })
-    ], VssueComments.prototype, "perPage");
-    __decorate([
-        Prop({
-            type: String,
-            required: true
-        })
-    ], VssueComments.prototype, "sort");
+        Inject()
+    ], VssueComments.prototype, "vssue");
     VssueComments = __decorate([
         Component({
             components: {
@@ -3369,6 +3071,7 @@ var VssueComments = /** @class */ (function (_super) {
     return VssueComments;
 }(Vue));
 
+/* script */
 var __vue_script__$6 = VssueComments;
 /* template */
 
@@ -3381,51 +3084,32 @@ var __vue_render__$3 = function __vue_render__() {
 
   return _c('div', {
     staticClass: "vssue-comments"
-  }, [_c('TransitionFade', [_vm.failed ? _c('VssueStatus', {
+  }, [_c('TransitionFade', [_vm.vssue.status.isFailed ? _c('VssueStatus', {
     key: "failed",
     attrs: {
       "icon-name": "error"
     }
-  }, [_vm._v("\n      Failed to load comments\n    ")]) : _vm.requireLogin ? _c('VssueStatus', {
+  }, [_vm._v("\n      Failed to load comments\n    ")]) : _vm.vssue.status.isLoginRequired ? _c('VssueStatus', {
     key: "requie-login"
-  }, [_vm._v("\n      Login to view comments\n    ")]) : !_vm.comments ? _c('VssueStatus', {
+  }, [_vm._v("\n      Login to view comments\n    ")]) : !_vm.vssue.comments ? _c('VssueStatus', {
     key: "loading",
     attrs: {
       "icon-name": "loading"
     }
-  }, [_vm._v("\n      Loading comments...\n    ")]) : _c('div', {
+  }, [_vm._v("\n      Loading comments...\n    ")]) : _vm.vssue.comments.data.length === 0 ? _c('VssueStatus', {
+    key: "no-comments"
+  }, [_vm._v("\n      No comments yet. Leave the first comment !\n    ")]) : _c('div', {
     key: "comments-list",
     staticClass: "vssue-comments-list"
-  }, [_c('VssuePagination', {
-    attrs: {
-      "count": _vm.comments.count,
-      "page": _vm.page,
-      "per-page": _vm.perPage,
-      "sort": _vm.sort,
-      "sortable": _vm.sortable,
-      "loading": _vm.loading
-    },
-    on: {
-      "update:page": function updatePage(val) {
-        return _vm.$emit('update:page', val);
-      },
-      "update:perPage": function updatePerPage(val) {
-        return _vm.$emit('update:perPage', val);
-      },
-      "update:sort": function updateSort(val) {
-        return _vm.$emit('update:sort', val);
-      }
-    }
-  }), _vm._v(" "), _c('TransitionFade', {
+  }, [_c('VssuePagination'), _vm._v(" "), _c('TransitionFade', {
     attrs: {
       "group": ""
     }
-  }, _vm._l(_vm.comments.data, function (comment) {
+  }, _vm._l(_vm.vssue.comments.data, function (comment) {
     return _c('VssueComment', {
       key: comment.id,
       attrs: {
-        "comment": comment,
-        "reactable": _vm.reactable
+        "comment": comment
       },
       on: {
         "reply": function reply(comment) {
@@ -3440,28 +3124,9 @@ var __vue_render__$3 = function __vue_render__() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.comments.data.length > 5,
-      expression: "comments.data.length > 5"
-    }],
-    attrs: {
-      "count": _vm.comments.count,
-      "page": _vm.page,
-      "per-page": _vm.perPage,
-      "sort": _vm.sort,
-      "sortable": _vm.sortable,
-      "loading": _vm.loading
-    },
-    on: {
-      "update:page": function updatePage(val) {
-        return _vm.$emit('update:page', val);
-      },
-      "update:perPage": function updatePerPage(val) {
-        return _vm.$emit('update:perPage', val);
-      },
-      "update:sort": function updateSort(val) {
-        return _vm.$emit('update:sort', val);
-      }
-    }
+      value: _vm.vssue.comments.data.length > 5,
+      expression: "vssue.comments.data.length > 5"
+    }]
   })], 1)], 1)], 1);
 };
 
@@ -3573,6 +3238,27 @@ var VssueNewComment = /** @class */ (function (_super) {
         _this.content = '';
         return _this;
     }
+    Object.defineProperty(VssueNewComment.prototype, "user", {
+        get: function () {
+            return this.vssue.user;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VssueNewComment.prototype, "platform", {
+        get: function () {
+            return this.vssue.API && this.vssue.API.platform.name;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VssueNewComment.prototype, "loading", {
+        get: function () {
+            return this.vssue.status.isCreatingComment;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(VssueNewComment.prototype, "contentRows", {
         get: function () {
             return this.content.split('\n').length - 1;
@@ -3587,37 +3273,37 @@ var VssueNewComment = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
-    VssueNewComment.prototype.add = function (str) {
-        this.content = this.content.concat(str);
+    VssueNewComment.prototype.created = function () {
+        var _this = this;
+        this.vssue.$on('reply-comment', function (comment) {
+            var quotedComment = comment.contentRaw.replace(/\n/g, '\n> ');
+            var replyContent = "@" + comment.author.username + "\n\n> " + quotedComment + "\n\n";
+            _this.content = _this.content.concat(replyContent);
+            _this.focus();
+        });
     };
     VssueNewComment.prototype.focus = function () {
         this.$refs.input.focus();
     };
-    VssueNewComment.prototype.reset = function () {
-        this.content = '';
-    };
     VssueNewComment.prototype.submit = function () {
-        this.$emit('create-comment', { content: this.content });
+        return __awaiter(this, void 0, Promise, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.vssue.postComment({ content: this.content })];
+                    case 1:
+                        _a.sent();
+                        this.content = '';
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    VssueNewComment.prototype.beforeDestroy = function () {
+        this.vssue.$off('reply-comment');
     };
     __decorate([
-        Prop({
-            type: Boolean,
-            required: true
-        })
-    ], VssueNewComment.prototype, "loading");
-    __decorate([
-        Prop({
-            type: String,
-            required: true
-        })
-    ], VssueNewComment.prototype, "platform");
-    __decorate([
-        Prop({
-            type: Object,
-            required: false,
-            "default": null
-        })
-    ], VssueNewComment.prototype, "user");
+        Inject()
+    ], VssueNewComment.prototype, "vssue");
     VssueNewComment = __decorate([
         Component({
             components: {
@@ -3661,7 +3347,7 @@ var __vue_render__$4 = function __vue_render__() {
     },
     on: {
       "click": function click($event) {
-        _vm.$emit('login');
+        _vm.vssue.$emit('login');
       }
     }
   })], 1), _vm._v(" "), _c('div', {
@@ -3712,7 +3398,7 @@ var __vue_render__$4 = function __vue_render__() {
     staticClass: "vssue-logout",
     on: {
       "click": function click($event) {
-        _vm.$emit('logout');
+        _vm.vssue.$emit('logout');
       }
     }
   }, [_vm._v("\n        Logout\n      ")])]) : _c('span', {
@@ -3748,7 +3434,7 @@ var __vue_render__$4 = function __vue_render__() {
     },
     on: {
       "click": function click($event) {
-        _vm.$emit('login');
+        _vm.vssue.$emit('login');
       }
     }
   }, [_vm._v("\n        Login\n      ")])], 1)])]);
@@ -3795,282 +3481,251 @@ var VssueNewComment$1 = __vue_normalize__$8({
   staticRenderFns: __vue_staticRenderFns__$4
 }, __vue_inject_styles__$8, __vue_script__$8, __vue_scope_id__$8, __vue_is_functional_template__$8, __vue_module_identifier__$8, undefined, undefined);
 
-var Vssue = /** @class */ (function (_super) {
-    __extends(Vssue, _super);
-    function Vssue() {
+var VssueStore = /** @class */ (function (_super) {
+    __extends(VssueStore, _super);
+    function VssueStore() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        // the query paramters of comments
+        _this.API = null;
+        _this.accessToken = null;
+        _this.user = null;
+        _this.issue = null;
+        _this.comments = null;
         _this.query = {
             page: 1,
             perPage: 10,
             sort: 'desc'
         };
-        // the issue that fetched from the platform
-        _this.issue = null;
-        // the comments of this issue that fetched from the platform
-        _this.comments = null;
-        // the user that logined
-        _this.user = null;
-        // access token of user
-        _this.accessToken = null;
-        // alert message to show
-        _this.alertShow = false;
-        _this.alertMessage = null;
-        // status flags
-        _this.isInitialized = false;
-        _this.isLoginRequired = false;
-        _this.isFailed = false;
-        _this.isLoadingComments = false;
-        _this.isCreatingComment = false;
+        _this.status = {
+            isInitializing: false,
+            isLoginRequired: false,
+            isLoadingComments: false,
+            isFailed: false,
+            isCreatingComment: false
+        };
         return _this;
     }
-    Object.defineProperty(Vssue.prototype, "vssueOptions", {
-        /**
-         * the actual options used by this vssue component
-         */
+    Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return Object.assign({
-                labels: ['Vssue'],
-                state: 'Vssue',
-                prefix: '[Vssue]',
-                admins: [],
-                perPage: 10
-            }, this.$vssue ? this.$vssue.options : {}, this.options);
+            return "0.3.0";
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Vssue.prototype, "vssueVersion", {
-        /**
-         * current version of vssue
-         */
+    Object.defineProperty(VssueStore.prototype, "authStatus", {
         get: function () {
-            return "0.2.0";
+            return {
+                isLogined: this.accessToken !== null && this.user !== null,
+                isAdmin: this.accessToken !== null && this.user !== null &&
+                    (this.user.username === this.options.owner ||
+                        this.options.admins.includes(this.user.username))
+            };
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Vssue.prototype, "issueTitle", {
-        /**
-         * the actual title of this issue
-         */
-        get: function () {
-            if (typeof this.title === 'function') {
-                return this.title(this.vssueOptions);
-            }
-            return "" + this.vssueOptions.prefix + this.title;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Vssue.prototype, "issueContent", {
-        /**
-         * the actual content of this issue (used when auto creating the issue)
-         */
-        get: function () {
-            return utils.getCleanURL(window.location.href);
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Vssue.prototype, "accessTokenKey", {
+    Object.defineProperty(VssueStore.prototype, "accessTokenKey", {
         /**
          * the key of access token for local storage
          */
         get: function () {
-            return this.vssueAPI ? "Vssue." + this.vssueAPI.platform.name.toLowerCase() + ".access_token" : '';
+            return this.API ? "Vssue." + this.API.platform.name.toLowerCase() + ".access_token" : '';
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(Vssue.prototype, "isLogined", {
-        /**
-         * flag that if the user is logined
-         */
-        get: function () {
-            return this.accessToken !== null && this.user !== null;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Vssue.prototype, "isAdmin", {
-        /**
-         * flag that if the logined user is admin
-         */
-        get: function () {
-            return this.isLogined && this.user !== null && (this.user.username === this.vssueOptions.owner || this.vssueOptions.admins.includes(this.user.username));
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Vssue.prototype.onPerPageChange = function () {
+    VssueStore.prototype.onQueryPerPageChange = function () {
         this.query.page = 1;
         this.getComments();
     };
-    Vssue.prototype.onQueryChange = function () {
+    VssueStore.prototype.onQueryChange = function () {
         this.getComments();
     };
-    Vssue.prototype.onLoadingCommentsChange = function (val) {
-        if (this.comments) {
-            if (val) {
-                nprogress.start();
-            }
-            else {
-                nprogress.done();
-            }
-        }
+    /**
+     * Created hook. Bind event listeners.
+     */
+    VssueStore.prototype.created = function () {
+        this.$on('login', this.handleLogin);
+        this.$on('logout', this.handleLogout);
+        this.$on('post-comment', this.postComment);
     };
     /**
-     * created hook
+     * Init VssueStore
      */
-    Vssue.prototype.created = function () {
+    VssueStore.prototype.init = function () {
         return __awaiter(this, void 0, Promise, function () {
-            var requiredOptions, _i, requiredOptions_1, opt, APIConstructor, _a, _b, _c, issue, comments, e_1;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            var APIConstructor;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _d.trys.push([0, 9, 10, 11]);
-                        requiredOptions = [
-                            'api',
-                            'owner',
-                            'repo',
-                            'clientId',
-                            'clientSecret',
-                        ];
-                        for (_i = 0, requiredOptions_1 = requiredOptions; _i < requiredOptions_1.length; _i++) {
-                            opt = requiredOptions_1[_i];
-                            if (!this.vssueOptions[opt]) {
-                                console.warn("[Vssue] the option '" + opt + "' is required");
-                            }
-                        }
-                        APIConstructor = this.vssueOptions.api;
-                        this.vssueAPI = new APIConstructor({
-                            baseURL: this.vssueOptions.baseURL,
-                            labels: this.vssueOptions.labels,
-                            state: this.vssueOptions.state,
-                            owner: this.vssueOptions.owner,
-                            repo: this.vssueOptions.repo,
-                            clientId: this.vssueOptions.clientId,
-                            clientSecret: this.vssueOptions.clientSecret
+                        _a.trys.push([0, , 2, 3]);
+                        if (!this.options)
+                            throw new Error('Options are required to initialize Vssue');
+                        if (this.status.isInitializing)
+                            return [2 /*return*/];
+                        this.status.isInitializing = true;
+                        // reset data
+                        this.API = null;
+                        this.accessToken = null;
+                        this.user = null;
+                        this.issue = null;
+                        this.comments = null;
+                        this.query = {
+                            page: 1,
+                            perPage: this.options.perPage,
+                            sort: 'desc'
+                        };
+                        // reset status
+                        this.status.isLoginRequired = false;
+                        this.status.isLoadingComments = false;
+                        this.status.isFailed = false;
+                        this.status.isCreatingComment = false;
+                        APIConstructor = this.options.api;
+                        this.API = new APIConstructor({
+                            baseURL: this.options.baseURL,
+                            labels: this.options.labels,
+                            state: this.options.state,
+                            owner: this.options.owner,
+                            repo: this.options.repo,
+                            clientId: this.options.clientId,
+                            clientSecret: this.options.clientSecret
                         });
-                        // set perPage option
-                        this.query.perPage = this.vssueOptions.perPage;
-                        // set nprogress
-                        nprogress.configure({
-                            parent: '.vssue-nprogress',
-                            showSpinner: false,
-                            trickleSpeed: 150
-                        });
-                        // get user
+                        // handle authorization
                         return [4 /*yield*/, this.handleAuth()];
                     case 1:
-                        // get user
-                        _d.sent();
-                        this.isInitialized = true;
-                        if (!!this.issueId) return [3 /*break*/, 6];
-                        // if `issueId` is not set, get the issue according to `title`
-                        _a = this;
-                        return [4 /*yield*/, this.vssueAPI.getIssue({
-                                accessToken: this.accessToken,
-                                issueTitle: this.issueTitle
-                            })
-                            // if the issue of this page does not exist, create it
-                        ];
+                        // handle authorization
+                        _a.sent();
+                        return [3 /*break*/, 3];
                     case 2:
-                        // if `issueId` is not set, get the issue according to `title`
-                        _a.issue = _d.sent();
-                        if (!!this.issue) return [3 /*break*/, 4];
-                        // required login to create the issue
-                        if (!this.isLogined) {
-                            this.handleLogin();
-                        }
-                        // if current user is not admin
-                        if (!this.isAdmin) {
-                            throw Error('Failed to get comments');
-                        }
-                        // create the corresponding issue
-                        _b = this;
-                        return [4 /*yield*/, this.vssueAPI.createIssue({
-                                title: this.issueTitle,
-                                content: this.issueContent,
-                                accessToken: this.accessToken
-                            })];
-                    case 3:
-                        // create the corresponding issue
-                        _b.issue = _d.sent();
-                        _d.label = 4;
-                    case 4: return [4 /*yield*/, this.getComments()];
-                    case 5:
-                        _d.sent();
-                        return [3 /*break*/, 8];
-                    case 6: return [4 /*yield*/, Promise.all([
-                            this.vssueAPI.getIssue({
-                                accessToken: this.accessToken,
-                                issueId: this.issueId
-                            }),
-                            this.vssueAPI.getComments({
-                                accessToken: this.accessToken,
-                                issueId: this.issueId
-                            }),
-                        ])];
-                    case 7:
-                        _c = _d.sent(), issue = _c[0], comments = _c[1];
-                        this.issue = issue;
-                        this.comments = comments;
-                        _d.label = 8;
-                    case 8: return [3 /*break*/, 11];
-                    case 9:
-                        e_1 = _d.sent();
-                        if (e_1.response && [401, 403].includes(e_1.response.status)) {
-                            // in some cases, require login to load comments
-                            this.isLoginRequired = true;
-                        }
-                        else {
-                            this.isFailed = true;
-                        }
-                        console.error(e_1);
-                        return [3 /*break*/, 11];
-                    case 10:
-                        this.isInitialized = true;
+                        this.status.isInitializing = false;
                         return [7 /*endfinally*/];
-                    case 11: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
     /**
-     * get comments of this vssue according to the issue id
+     * Init comments according to issue id
      */
-    Vssue.prototype.getComments = function () {
+    VssueStore.prototype.initCommentsByIssueId = function (issueId) {
         return __awaiter(this, void 0, Promise, function () {
-            var comments, e_2;
+            var _a, issue, comments;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!this.API)
+                            return [2 /*return*/];
+                        return [4 /*yield*/, Promise.all([
+                                this.API.getIssue({
+                                    accessToken: this.accessToken,
+                                    issueId: issueId
+                                }),
+                                this.API.getComments({
+                                    accessToken: this.accessToken,
+                                    issueId: issueId
+                                }),
+                            ])];
+                    case 1:
+                        _a = _b.sent(), issue = _a[0], comments = _a[1];
+                        this.issue = issue;
+                        this.comments = comments;
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Init comments according to issue title
+     */
+    VssueStore.prototype.initCommentsByIssueTitle = function (issueTitle) {
+        return __awaiter(this, void 0, Promise, function () {
+            var _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
+                    case 0:
+                        if (!this.API)
+                            return [2 /*return*/];
+                        // get issue according to title first
+                        _a = this;
+                        return [4 /*yield*/, this.API.getIssue({
+                                accessToken: this.accessToken,
+                                issueTitle: issueTitle
+                            })
+                            // if the issue of this page does not exist, try to create it
+                        ];
+                    case 1:
+                        // get issue according to title first
+                        _a.issue = _c.sent();
+                        if (!!this.issue) return [3 /*break*/, 3];
+                        // require login to create the issue
+                        if (!this.authStatus.isLogined) {
+                            this.$emit('login');
+                        }
+                        // if current user is not admin, cannot create issue
+                        if (!this.authStatus.isAdmin) {
+                            throw Error('Failed to get comments');
+                        }
+                        // create the corresponding issue
+                        _b = this;
+                        return [4 /*yield*/, this.API.postIssue({
+                                title: issueTitle,
+                                content: utils.getCleanURL(window.location.href),
+                                accessToken: this.accessToken
+                            })];
+                    case 2:
+                        // create the corresponding issue
+                        _b.issue = _c.sent();
+                        _c.label = 3;
+                    case 3: 
+                    // try to load comments
+                    return [4 /*yield*/, this.getComments()];
+                    case 4:
+                        // try to load comments
+                        _c.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Get comments of this vssue according to the issue id
+     */
+    VssueStore.prototype.getComments = function () {
+        return __awaiter(this, void 0, Promise, function () {
+            var comments, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
-                        if (!this.isInitialized || !this.issue)
+                        if (!this.API || !this.issue || this.status.isLoadingComments)
                             return [2 /*return*/];
-                        this.isLoadingComments = true;
-                        return [4 /*yield*/, this.vssueAPI.getComments({
+                        this.status.isLoadingComments = true;
+                        return [4 /*yield*/, this.API.getComments({
                                 accessToken: this.accessToken,
                                 issueId: this.issue.id,
                                 query: this.query
                             })];
                     case 1:
                         comments = _a.sent();
-                        if (this.query.page === comments.page && this.query.perPage === comments.perPage) {
-                            this.comments = comments;
+                        this.comments = comments;
+                        if (this.query.page !== comments.page) {
+                            this.query.page = comments.page;
+                        }
+                        if (this.query.perPage !== comments.perPage) {
+                            this.query.perPage = comments.perPage;
                         }
                         return [3 /*break*/, 4];
                     case 2:
-                        e_2 = _a.sent();
-                        if (e_2.response && [401, 403].includes(e_2.response.status) && !this.isLogined) {
-                            this.isLoginRequired = true;
+                        e_1 = _a.sent();
+                        if (e_1.response && [401, 403].includes(e_1.response.status) && !this.authStatus.isLogined) {
+                            this.status.isLoginRequired = true;
                         }
-                        this.showAlert(e_2.message);
+                        else {
+                            this.$emit('error', e_1);
+                            throw e_1;
+                        }
                         return [3 /*break*/, 4];
                     case 3:
-                        this.isLoadingComments = false;
+                        this.status.isLoadingComments = false;
                         return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -4078,21 +3733,20 @@ var Vssue = /** @class */ (function (_super) {
         });
     };
     /**
-     * create a new comment submitted by current user
+     * Post a new comment
      */
-    Vssue.prototype.createComment = function (_a) {
+    VssueStore.prototype.postComment = function (_a) {
         var content = _a.content;
         return __awaiter(this, void 0, Promise, function () {
-            var e_3;
+            var comment, e_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 3, 4, 5]);
-                        if (!this.isInitialized || !this.issue)
+                        if (!this.API || !this.issue || this.status.isCreatingComment)
                             return [2 /*return*/];
-                        this.isCreatingComment = true;
-                        // create comment
-                        return [4 /*yield*/, this.vssueAPI.createComment({
+                        this.status.isCreatingComment = true;
+                        return [4 /*yield*/, this.API.postComment({
                                 accessToken: this.accessToken,
                                 content: content,
                                 issueId: this.issue.id
@@ -4100,24 +3754,19 @@ var Vssue = /** @class */ (function (_super) {
                             // refresh comments after creation
                         ];
                     case 1:
-                        // create comment
-                        _b.sent();
+                        comment = _b.sent();
                         // refresh comments after creation
-                        return [4 /*yield*/, this.getComments()
-                            // reset the new comment textarea
-                        ];
+                        return [4 /*yield*/, this.getComments()];
                     case 2:
                         // refresh comments after creation
                         _b.sent();
-                        // reset the new comment textarea
-                        this.resetNewComment();
-                        return [3 /*break*/, 5];
+                        return [2 /*return*/, comment];
                     case 3:
-                        e_3 = _b.sent();
-                        this.showAlert(e_3.message);
-                        return [3 /*break*/, 5];
+                        e_2 = _b.sent();
+                        this.$emit('error', e_2);
+                        throw e_2;
                     case 4:
-                        this.isCreatingComment = false;
+                        this.status.isCreatingComment = false;
                         return [7 /*endfinally*/];
                     case 5: return [2 /*return*/];
                 }
@@ -4125,73 +3774,144 @@ var Vssue = /** @class */ (function (_super) {
         });
     };
     /**
-     * create a new reaction to a certain comment
+     * Delete a new comment
      */
-    Vssue.prototype.createCommentReaction = function (_a) {
-        var commentId = _a.commentId, reaction = _a.reaction;
+    VssueStore.prototype.deleteComment = function (_a) {
+        var commentId = _a.commentId;
         return __awaiter(this, void 0, Promise, function () {
-            var success, e_4;
+            var success, e_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 5, , 6]);
-                        if (!this.isInitialized || !this.issue)
+                        _b.trys.push([0, 2, , 3]);
+                        if (!this.API || !this.issue)
                             return [2 /*return*/];
-                        return [4 /*yield*/, this.vssueAPI.createCommentReaction({
+                        return [4 /*yield*/, this.API.deleteComment({
                                 accessToken: this.accessToken,
-                                commentId: commentId,
-                                reaction: reaction,
-                                issueId: this.issue.id
+                                issueId: this.issue.id,
+                                commentId: commentId
                             })];
                     case 1:
                         success = _b.sent();
-                        if (!success) return [3 /*break*/, 3];
-                        return [4 /*yield*/, this.getComments()];
+                        return [2 /*return*/, success];
                     case 2:
-                        _b.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        this.showAlert('Already given this reaction');
-                        _b.label = 4;
-                    case 4: return [3 /*break*/, 6];
-                    case 5:
-                        e_4 = _b.sent();
-                        this.showAlert(e_4.message);
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/];
+                        e_3 = _b.sent();
+                        this.$emit('error', e_3);
+                        throw e_3;
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
     /**
-     * handle authorization and set access_token
+     * Get reactions of a comment
      */
-    Vssue.prototype.handleAuth = function () {
+    VssueStore.prototype.getCommentReactions = function (_a) {
+        var commentId = _a.commentId;
+        return __awaiter(this, void 0, Promise, function () {
+            var reactions, e_4;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        if (!this.API || !this.issue)
+                            return [2 /*return*/];
+                        return [4 /*yield*/, this.API.getCommentReactions({
+                                accessToken: this.accessToken,
+                                issueId: this.issue.id,
+                                commentId: commentId
+                            })];
+                    case 1:
+                        reactions = _b.sent();
+                        return [2 /*return*/, reactions];
+                    case 2:
+                        e_4 = _b.sent();
+                        this.$emit('error', e_4);
+                        throw e_4;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Create a new reaction to a certain comment
+     */
+    VssueStore.prototype.postCommentReaction = function (_a) {
+        var commentId = _a.commentId, reaction = _a.reaction;
+        return __awaiter(this, void 0, Promise, function () {
+            var success, e_5;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        if (!this.API || !this.issue)
+                            return [2 /*return*/, false];
+                        return [4 /*yield*/, this.API.postCommentReaction({
+                                accessToken: this.accessToken,
+                                issueId: this.issue.id,
+                                commentId: commentId,
+                                reaction: reaction
+                            })];
+                    case 1:
+                        success = _b.sent();
+                        return [2 /*return*/, success];
+                    case 2:
+                        e_5 = _b.sent();
+                        this.$emit('error', e_5);
+                        throw e_5;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
+     * Get access token from local storage
+     */
+    VssueStore.prototype.getAccessToken = function () {
+        this.accessToken = window.localStorage.getItem(this.accessTokenKey);
+        return this.accessToken;
+    };
+    /**
+     * Save access token to local storage
+     */
+    VssueStore.prototype.setAccessToken = function (token) {
+        if (token === null) {
+            window.localStorage.removeItem(this.accessTokenKey);
+        }
+        else {
+            window.localStorage.setItem(this.accessTokenKey, token);
+        }
+        this.accessToken = token;
+    };
+    /**
+     * Handle authorization and set access_token
+     */
+    VssueStore.prototype.handleAuth = function () {
         return __awaiter(this, void 0, Promise, function () {
             var accessToken, _a, _b;
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        // get access_token from storage
-                        this.accessToken = this.getAccessToken();
-                        return [4 /*yield*/, this.vssueAPI.handleAuth()];
+                        if (!this.API)
+                            return [2 /*return*/];
+                        return [4 /*yield*/, this.API.handleAuth()];
                     case 1:
                         accessToken = _c.sent();
                         if (!accessToken) return [3 /*break*/, 3];
                         // new access_token
                         this.setAccessToken(accessToken);
                         _a = this;
-                        return [4 /*yield*/, this.vssueAPI.getUser({ accessToken: accessToken })];
+                        return [4 /*yield*/, this.API.getUser({ accessToken: accessToken })];
                     case 2:
                         _a.user = _c.sent();
                         return [3 /*break*/, 6];
                     case 3:
-                        if (!this.accessToken) return [3 /*break*/, 5];
-                        // stored access_token
+                        if (!this.getAccessToken()) return [3 /*break*/, 5];
+                        // have access_token in localstorage
                         _b = this;
-                        return [4 /*yield*/, this.vssueAPI.getUser({ accessToken: this.accessToken })];
+                        return [4 /*yield*/, this.API.getUser({ accessToken: this.accessToken })];
                     case 4:
-                        // stored access_token
+                        // have access_token in localstorage
                         _b.user = _c.sent();
                         return [3 /*break*/, 6];
                     case 5:
@@ -4205,59 +3925,201 @@ var Vssue = /** @class */ (function (_super) {
         });
     };
     /**
-     * redirect to the platform's authorization page
+     * Redirect to the platform's authorization page
      */
-    Vssue.prototype.handleLogin = function () {
-        this.vssueAPI.redirectAuth();
+    VssueStore.prototype.handleLogin = function () {
+        if (!this.API)
+            return;
+        this.API.redirectAuth();
     };
     /**
-     * clean the access token stored in local storage
+     * Clean the access token stored in local storage
      */
-    Vssue.prototype.handleLogout = function () {
+    VssueStore.prototype.handleLogout = function () {
         this.setAccessToken(null);
         this.user = null;
     };
+    __decorate([
+        Watch('query.perPage')
+    ], VssueStore.prototype, "onQueryPerPageChange");
+    __decorate([
+        Watch('query.page'),
+        Watch('query.sort')
+    ], VssueStore.prototype, "onQueryChange");
+    VssueStore = __decorate([
+        Component
+    ], VssueStore);
+    return VssueStore;
+}(Vue));
+
+var Vssue = /** @class */ (function (_super) {
+    __extends(Vssue, _super);
+    function Vssue() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        /**
+         * Provide the VssueStore for the child components
+         */
+        _this.vssue = new VssueStore({
+            data: { options: _this.getOptions() }
+        });
+        // alert message to show
+        _this.alert = {
+            show: false,
+            message: null,
+            timeout: null
+        };
+        return _this;
+    }
+    Object.defineProperty(Vssue.prototype, "issueTitle", {
+        /**
+         * The actual title of issue
+         */
+        get: function () {
+            return typeof this.title === 'function' ? this.title(this.vssue.options) : "" + this.vssue.options.prefix + this.title;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
-     * get access token from local storage
+     * Re-init Vssue if the `title` is changed when the `issueId` is not set
      */
-    Vssue.prototype.getAccessToken = function () {
-        return window.localStorage.getItem(this.accessTokenKey);
-    };
-    /**
-     * save access token to local storage
-     */
-    Vssue.prototype.setAccessToken = function (token) {
-        if (token === null) {
-            window.localStorage.removeItem(this.accessTokenKey);
+    Vssue.prototype.onTitleChange = function () {
+        if (!this.issueId) {
+            this.init();
         }
-        else {
-            window.localStorage.setItem(this.accessTokenKey, token);
+    };
+    /**
+     * Re-init Vssue if the `issueId` is changed
+     */
+    Vssue.prototype.onIssueIdChange = function () {
+        this.init();
+    };
+    /**
+     * Re-init Vssue if the `options` is changed
+     */
+    Vssue.prototype.onOptionsChange = function () {
+        this.vssue.options = this.getOptions();
+        this.init();
+    };
+    /**
+     * Show nprogress when loading comments
+     */
+    Vssue.prototype.onLoadingCommentsChange = function (val) {
+        if (this.vssue.comments) {
+            if (val) {
+                nprogress.start();
+            }
+            else {
+                nprogress.done();
+            }
         }
-        this.accessToken = token;
     };
     /**
-     * reply to a certain comment quickly
+     * Created hook. Check Options and init Vssue.
      */
-    Vssue.prototype.replyToComment = function (comment) {
-        var quotedComment = comment.contentRaw.replace(/\n/g, '\n> ');
-        var replyContent = "@" + comment.author.username + "\n\n> " + quotedComment + "\n\n";
-        this.$refs.newComment.add(replyContent);
-        this.$refs.newComment.focus();
+    Vssue.prototype.created = function () {
+        return __awaiter(this, void 0, Promise, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        return [4 /*yield*/, this.init()];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
     };
     /**
-     * reset new comment
+     * Init Vssue.
      */
-    Vssue.prototype.resetNewComment = function () {
-        this.$refs.newComment.reset();
+    Vssue.prototype.init = function () {
+        return __awaiter(this, void 0, Promise, function () {
+            var e_1;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 6, , 7]);
+                        // init VssueStore
+                        return [4 /*yield*/, this.vssue.init()
+                            // set nprogress
+                        ];
+                    case 1:
+                        // init VssueStore
+                        _a.sent();
+                        // set nprogress
+                        nprogress.configure({
+                            parent: '.vssue-nprogress',
+                            showSpinner: false,
+                            trickleSpeed: 150
+                        });
+                        // show alert on error
+                        this.vssue.$on('error', function (e) { return _this.showAlert(e.message); });
+                        if (!!this.issueId) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.vssue.initCommentsByIssueTitle(this.issueTitle)];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 5];
+                    case 3: return [4 /*yield*/, this.vssue.initCommentsByIssueId(this.issueId)];
+                    case 4:
+                        _a.sent();
+                        _a.label = 5;
+                    case 5: return [3 /*break*/, 7];
+                    case 6:
+                        e_1 = _a.sent();
+                        if (e_1.response && [401, 403].includes(e_1.response.status)) {
+                            // in some cases, require login to load comments
+                            this.vssue.status.isLoginRequired = true;
+                        }
+                        else {
+                            this.vssue.status.isFailed = true;
+                        }
+                        console.error(e_1);
+                        return [3 /*break*/, 7];
+                    case 7: return [2 /*return*/];
+                }
+            });
+        });
     };
+    /**
+     * Merge the options from Plugin and Prop
+     */
+    Vssue.prototype.getOptions = function () {
+        return Object.assign({
+            labels: ['Vssue'],
+            state: 'Vssue',
+            prefix: '[Vssue]',
+            admins: [],
+            perPage: 10
+        }, this.$vssue ? this.$vssue.options : {}, this.options);
+    };
+    /**
+     * Show alert message
+     */
     Vssue.prototype.showAlert = function (content, time) {
         var _this = this;
         if (time === void 0) { time = 3000; }
-        this.alertMessage = content;
-        this.alertShow = true;
-        setTimeout(function () {
-            _this.alertShow = false;
+        this.alert.show = true;
+        this.alert.message = content;
+        if (this.alert.timeout !== null)
+            window.clearTimeout(this.alert.timeout);
+        this.alert.timeout = window.setTimeout(function () {
+            _this.hideAlert();
         }, time);
+    };
+    /**
+     * Hide alert message
+     */
+    Vssue.prototype.hideAlert = function () {
+        this.alert.show = false;
+        if (this.alert.timeout !== null)
+            window.clearTimeout(this.alert.timeout);
+        this.alert.timeout = null;
+    };
+    Vssue.prototype.beforeDestroy = function () {
+        if (this.alert.timeout !== null)
+            window.clearTimeout(this.alert.timeout);
     };
     __decorate([
         Prop({
@@ -4281,14 +4143,19 @@ var Vssue = /** @class */ (function (_super) {
         })
     ], Vssue.prototype, "options");
     __decorate([
-        Watch('query.perPage')
-    ], Vssue.prototype, "onPerPageChange");
+        Provide('vssue')
+    ], Vssue.prototype, "vssue");
     __decorate([
-        Watch('query.page'),
-        Watch('query.sort')
-    ], Vssue.prototype, "onQueryChange");
+        Watch('title')
+    ], Vssue.prototype, "onTitleChange");
     __decorate([
-        Watch('isLoadingComments')
+        Watch('issueId')
+    ], Vssue.prototype, "onIssueIdChange");
+    __decorate([
+        Watch('options', { deep: true })
+    ], Vssue.prototype, "onOptionsChange");
+    __decorate([
+        Watch('vssue.status.isLoadingComments')
     ], Vssue.prototype, "onLoadingCommentsChange");
     Vssue = __decorate([
         Component({
@@ -4318,23 +4185,27 @@ var __vue_render__$5 = function __vue_render__() {
     staticClass: "vssue"
   }, [_c('Iconfont'), _vm._v(" "), _c('div', {
     staticClass: "vssue-header"
-  }, [_c('span', {
-    staticClass: "vssue-header-comments-count"
-  }, [_vm.comments ? _c('span', [_vm._v("\n        " + _vm._s(_vm.comments.count) + "\n      ")]) : _vm._e(), _vm._v(" "), _c('span', [_vm._v("Comments")])]), _vm._v(" "), _c('span', {
-    staticClass: "vssue-header-powered-by"
-  }, [_c('span', [_vm._v("Powered by")]), _vm._v(" "), _vm.vssueAPI ? _c('span', [_c('a', {
+  }, [_c('a', {
+    staticClass: "vssue-header-comments-count",
     attrs: {
-      "href": _vm.vssueAPI.platform.link,
-      "target": "_blank",
-      "title": _vm.vssueAPI.platform.name + " API " + _vm.vssueAPI.platform.version
+      "href": _vm.vssue.issue ? _vm.vssue.issue.link : null,
+      "target": "_blank"
     }
-  }, [_vm._v("\n          " + _vm._s(_vm.vssueAPI.platform.name) + "\n        ")]), _vm._v(" "), _c('span', [_vm._v("&")])]) : _vm._e(), _vm._v(" "), _c('a', {
+  }, [_vm.vssue.comments ? _c('span', [_vm._v("\n        " + _vm._s(_vm.vssue.comments.count) + "\n      ")]) : _vm._e(), _vm._v(" "), _c('span', [_vm._v("Comments")])]), _vm._v(" "), _c('span', {
+    staticClass: "vssue-header-powered-by"
+  }, [_c('span', [_vm._v("Powered by")]), _vm._v(" "), _vm.vssue.API ? _c('span', [_c('a', {
+    attrs: {
+      "href": _vm.vssue.API.platform.link,
+      "target": "_blank",
+      "title": _vm.vssue.API.platform.name + " API " + _vm.vssue.API.platform.version
+    }
+  }, [_vm._v("\n          " + _vm._s(_vm.vssue.API.platform.name) + "\n        ")]), _vm._v(" "), _c('span', [_vm._v("&")])]) : _vm._e(), _vm._v(" "), _c('a', {
     attrs: {
       "href": "https://vssue.js.org",
       "target": "_blank",
-      "title": "Vssue v" + _vm.vssueVersion
+      "title": "Vssue v" + _vm.vssue.version
     }
-  }, [_vm._v("\n        Vssue\n      ")])])]), _vm._v(" "), _c('TransitionFade', [!_vm.isInitialized ? _c('VssueStatus', {
+  }, [_vm._v("\n        Vssue\n      ")])])]), _vm._v(" "), _c('TransitionFade', [_vm.vssue.status.isInitializing ? _c('VssueStatus', {
     key: "initializing",
     attrs: {
       "icon-name": "loading"
@@ -4342,19 +4213,7 @@ var __vue_render__$5 = function __vue_render__() {
   }, [_vm._v("\n      Initializing...\n    ")]) : _c('div', {
     key: "initialized",
     staticClass: "vssue-body"
-  }, [_c('VssueNewComment', {
-    ref: "newComment",
-    attrs: {
-      "loading": _vm.isCreatingComment,
-      "platform": _vm.vssueAPI.platform.name,
-      "user": _vm.user
-    },
-    on: {
-      "login": _vm.handleLogin,
-      "logout": _vm.handleLogout,
-      "create-comment": _vm.createComment
-    }
-  }), _vm._v(" "), _c('div', {
+  }, [_c('VssueNewComment'), _vm._v(" "), _c('div', {
     staticClass: "vssue-alert-container"
   }, [_c('div', {
     staticClass: "vssue-nprogress"
@@ -4362,44 +4221,19 @@ var __vue_render__$5 = function __vue_render__() {
     directives: [{
       name: "show",
       rawName: "v-show",
-      value: _vm.alertShow,
-      expression: "alertShow"
+      value: _vm.alert.show,
+      expression: "alert.show"
     }],
     staticClass: "vssue-alert",
     domProps: {
-      "textContent": _vm._s(_vm.alertMessage)
+      "textContent": _vm._s(_vm.alert.message)
     },
     on: {
       "click": function click($event) {
-        _vm.alertShow = false;
+        _vm.hideAlert();
       }
     }
-  })])], 1)]), _vm._v(" "), _c('VssueComments', {
-    attrs: {
-      "comments": _vm.comments,
-      "reactable": _vm.vssueAPI.platform.meta.reactable,
-      "sortable": _vm.vssueAPI.platform.meta.sortable,
-      "loading": _vm.isLoadingComments,
-      "failed": _vm.isFailed,
-      "require-login": _vm.isLoginRequired,
-      "page": _vm.query.page,
-      "per-page": _vm.query.perPage,
-      "sort": _vm.query.sort
-    },
-    on: {
-      "update:page": function updatePage($event) {
-        _vm.$set(_vm.query, "page", $event);
-      },
-      "update:perPage": function updatePerPage($event) {
-        _vm.$set(_vm.query, "perPage", $event);
-      },
-      "update:sort": function updateSort($event) {
-        _vm.$set(_vm.query, "sort", $event);
-      },
-      "reply": _vm.replyToComment,
-      "create-reaction": _vm.createCommentReaction
-    }
-  })], 1)], 1)], 1);
+  })])], 1)]), _vm._v(" "), _c('VssueComments')], 1)], 1)], 1);
 };
 
 var __vue_staticRenderFns__$5 = [];
@@ -4443,9 +4277,9 @@ var VssueComponent = __vue_normalize__$9({
   staticRenderFns: __vue_staticRenderFns__$5
 }, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
 
-var Vssue$1 = {
+var VssuePlugin = {
     get version() {
-        return "0.2.0";
+        return "0.3.0";
     },
     install: function (Vue$$1, options) {
         if (Vue$$1.prototype.$vssue) {
@@ -4459,7 +4293,7 @@ var Vssue$1 = {
         Vue$$1.prototype.$vssue = store;
         Vue$$1.component('Vssue', VssueComponent);
     },
-    Vssue: VssueComponent
+    VssueComponent: VssueComponent
 };
 
-module.exports = Vssue$1;
+module.exports = VssuePlugin;
