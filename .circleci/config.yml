@@ -23,6 +23,13 @@ commands:
             - node_modules
 
 jobs:
+  lint:
+    executor: node
+    steps:
+      - install
+      - run:
+          name: Lint Code
+          command: yarn lint
   build:
     executor: node
     steps:
@@ -30,6 +37,9 @@ jobs:
       - run:
           name: Build All Packages
           command: yarn build
+      - run:
+          name: Build Docs
+          command: yarn build-docs
   build_docs_and_publish:
     executor: node
     steps:
@@ -48,13 +58,6 @@ jobs:
             git add .
             git commit -m "Build $(date +%Y%m%d%H%M)"
             git push --force --quiet "https://${GH_TOKEN}@${GH_REPO}" master:gh-pages
-  lint:
-    executor: node
-    steps:
-      - install
-      - run:
-          name: Lint Code
-          command: yarn lint
 
 workflows:
   version: 2
