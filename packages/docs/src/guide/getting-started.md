@@ -91,12 +91,16 @@ Vssue can be used directly via `<script>` tag in browser. As Vssue depends on [V
 ::: tip
 If you are not familiar with the different builds of `Vue` (i.e. `vue.runtime.min.js`, `vue.min.js`, etc.), see [Vue Docs](https://vuejs.org/v2/guide/installation.html#Explanation-of-Different-Builds).
 
-`Vssue` also provide multiple builds (some builds are just like `Vue`). See [Explanation-of-Different-Builds](#explanation-of-different-builds) section for more details.
+`Vssue` also provide multiple builds. See [Explanation-of-Different-Builds](#explanation-of-different-builds) section for more details.
 :::
 
 ## In Vue App
 
 Vssue is a Vue Plugin / Component, so could be imported in Vue Apps.
+
+::: tip
+Vssue only provides [ES2015](https://github.com/lukehoban/es6features) code as we assume you are using [vue-cli](https://cli.vuejs.org) or other tools.
+:::
 
 ### Install via npm
 
@@ -144,48 +148,6 @@ Vue.use(Vssue, {
   clientSecret: 'YOUR_CLIENT_SECRET',
 })
 ```
-
-::: tip
-Notice that you are using ES module syntax, so you should use the ES Module build of Vue and Vssue (i.e. `vue.esm.js` / `vue.runtime.esm.js` and `vssue.esm.js`).
-
-- Example for `webpack` config:
-
-  ```js
-  // webpack.config.js
-
-  module.exports = {
-    // ...
-
-    resolve: {
-      alias: {
-        // Vue ESM runtime only build
-        'vue$': 'vue/dist/vue.runtime.esm.js',
-        // OR: Vue ESM full build
-        'vue$': 'vue/dist/vue.esm.js',
-        // Vssue ESM build
-        'vssue$': 'vssue/dist/vssue.esm.js',
-      },
-    },
-  }
-  ```
-
-- Example for `vue-cli` config:
-
-  ```js
-  // vue.config.js
-
-  module.exports = {
-    // ...
-
-    chainWebpack: config => {
-      // vue-cli has already set the alias of `vue` for you
-      // so you only need to set the alias of `vssue` here
-      config.resolve.alias
-        .set('vssue$', 'vssue/dist/vssue.esm.js')
-    },
-  }
-  ```
-:::
 
 Then you can use Vssue Component in your [SFC](https://cn.vuejs.org/v2/guide/single-file-components.html):
 
@@ -276,6 +238,13 @@ Similar to Vue, Vssue also provide different builds for different usage.
 
 > See [different builds of Vue](https://vuejs.org/v2/guide/installation.html#Explanation-of-Different-Builds)
 
-- `vssue.common.js`: the [Commonjs](http://wiki.commonjs.org/wiki/Modules/1.1) build
-- `vssue.esm.js`: the [ES Module](http://exploringjs.com/es6/ch_modules.html) build
-- `vssue.bitbucket.min.js`, `vssue.gitlab.min.js`, `vssue.github.min.js`: minified/production [UMD](https://github.com/umdjs/umd) builds for specific platform, to be used directly in the browser via a `<script>` tag
+These files are located in the [dist](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/dist) folder:
+
+- `vssue.js`: the [ES Module](http://exploringjs.com/es6/ch_modules.html) build
+- `vssue.github.min.js`: minified [UMD](https://github.com/umdjs/umd) build for GitHub API V3, to be used directly in the browser via a `<script>` tag
+- `vssue.bitbucket.min.js`: minified [UMD](https://github.com/umdjs/umd) build for Bitbucket API V2, to be used directly in the browser via a `<script>` tag
+- `vssue.gitlab.min.js`: minified [UMD](https://github.com/umdjs/umd) build for GitLab API V4, to be used directly in the browser via a `<script>` tag
+
+::: tip
+From v0.4.0, we do not provide [Commonjs](http://wiki.commonjs.org/wiki/Modules/1.1) build anymore. The ESM build is renamed to `vssue.js` as the `main` file in `package.json`.
+:::

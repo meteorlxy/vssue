@@ -91,12 +91,16 @@ Vssue 可以在浏览器中通过 `<script>` 标签直接使用。由于 Vssue �
 ::: tip
 如果你还不了解 `Vue` 的不同版本间的区别 （即 `vue.runtime.min.js`, `vue.min.js` 等），可以参考 [Vue 文档](https://cn.vuejs.org/v2/guide/installation.html#%E5%AF%B9%E4%B8%8D%E5%90%8C%E6%9E%84%E5%BB%BA%E7%89%88%E6%9C%AC%E7%9A%84%E8%A7%A3%E9%87%8A)。
 
-`Vssue` 同样提供了不同版本的构建（部分版本和 `Vue` 很相似）。细节可以查看[对不同构建版本的解释](#对不同构建版本的解释)章节。
+`Vssue` 同样提供了不同版本的构建。细节可以查看[对不同构建版本的解释](#对不同构建版本的解释)章节。
 :::
 
 ## 在 Vue 应用中使用
 
 Vssue 是一个 Vue 插件 / 组件，可以在 Vue 项目中引入并使用。
+
+::: tip
+Vssue 只提供了 [ES2015](https://github.com/lukehoban/es6features) 代码，因为我们假设你在使用 [vue-cli](https://cli.vuejs.org/zh/) 或其他工具。
+:::
 
 ### 通过 npm 安装
 
@@ -144,48 +148,6 @@ Vue.use(Vssue, {
   clientSecret: 'YOUR_CLIENT_SECRET',
 })
 ```
-
-::: tip
-注意，你这里使用的是 ES Module 语法，所以你应该使用 Vue 和 Vssue 的 ES Module 版本（即 `vue.esm.js` / `vue.runtime.esm.js` 和 `vssue.esm.js`）
-
-- `webpack` 配置示例：
-
-  ```js
-  // webpack.config.js
-
-  module.exports = {
-    // ...
-
-    resolve: {
-      alias: {
-        // Vue ESM 运行时版
-        'vue$': 'vue/dist/vue.runtime.esm.js',
-        // 或： Vue ESM 完整版
-        'vue$': 'vue/dist/vue.esm.js',
-        // Vssue ESM 版
-        'vssue$': 'vssue/dist/vssue.esm.js',
-      },
-    },
-  }
-  ```
-
-- `vue-cli` 配置示例:
-
-  ```js
-  // vue.config.js
-
-  module.exports = {
-    // ...
-
-    chainWebpack: config => {
-      // vue-cli 已经为你设置好了 `vue` 的 alias
-      // 所以你只需要在这里设置 `vssue` 的 alias 即可
-      config.resolve.alias
-        .set('vssue$', 'vssue/dist/vssue.esm.js')
-    },
-  }
-  ```
-:::
 
 然后你就可以在 [SFC](https://cn.vuejs.org/v2/guide/single-file-components.html) 中使用 Vssue 组件了：
 
@@ -272,10 +234,17 @@ export default {
 
 ## 对不同构建版本的解释
 
-和 Vue 很类似，Vssue 也提供了不同的构建版本以供使用。
+和 Vue 类似，Vssue 也提供了不同的构建版本以供使用。
 
 > 参考 [Vue 的不同构建版本](https://cn.vuejs.org/v2/guide/installation.html#%E5%AF%B9%E4%B8%8D%E5%90%8C%E6%9E%84%E5%BB%BA%E7%89%88%E6%9C%AC%E7%9A%84%E8%A7%A3%E9%87%8A)
 
-- `vssue.common.js`： [Commonjs](http://wiki.commonjs.org/wiki/Modules/1.1) 版本
-- `vssue.esm.js`: [ES Module](http://exploringjs.com/es6/ch_modules.html) 版本
-- `vssue.bitbucket.min.js`, `vssue.gitlab.min.js`, `vssue.github.min.js`：用于不同平台的最小化/生产环境的 [UMD](https://github.com/umdjs/umd) 版本。通过 `<script>` 标签直接用在浏览器中。
+这些文件放置在 [dist](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/dist) 文件夹中：
+
+- `vssue.js`：[ES Module](http://exploringjs.com/es6/ch_modules.html) 版本
+- `vssue.github.min.js`：使用 GitHub API V3 的最小化 [UMD](https://github.com/umdjs/umd) 版本。通过 `<script>` 标签直接用在浏览器中。
+- `vssue.bitbucket.min.js`：使用 Bitbucket API V2 的最小化 [UMD](https://github.com/umdjs/umd) 版本。通过 `<script>` 标签直接用在浏览器中。
+- `vssue.gitlab.min.js`：使用 GitLab API V4 的最小化 [UMD](https://github.com/umdjs/umd) 版本。通过 `<script>` 标签直接用在浏览器中。
+
+::: tip
+从 v0.4.0 开始，我们不再提供 [Commonjs](http://wiki.commonjs.org/wiki/Modules/1.1) 版本。ESM 版本重命名为 `vssue.js`，并作为 `package.json` 的 `main` 文件。
+:::
