@@ -64,18 +64,9 @@
         <VssueNewComment />
 
         <!-- notice - alert and progress -->
-        <div class="vssue-notice">
-          <TransitionFade>
-            <div
-              v-show="alert.show"
-              class="vssue-alert"
-              @click="hideAlert()"
-              v-text="alert.message"
-            />
-          </TransitionFade>
-        </div>
+        <VssueNotice />
 
-        <!-- comments -->
+        <!-- comments - list and pagination -->
         <VssueComments />
       </div>
     </TransitionFade>
@@ -89,6 +80,7 @@ import TransitionFade from './components/TransitionFade.vue'
 import Iconfont from './components/Iconfont.vue'
 import VssueComments from './components/VssueComments.vue'
 import VssueNewComment from './components/VssueNewComment.vue'
+import VssueNotice from './components/VssueNotice.vue'
 import VssueStatus from './components/VssueStatus.vue'
 import VssueStore from './VssueStore'
 
@@ -98,6 +90,7 @@ import VssueStore from './VssueStore'
     TransitionFade,
     VssueComments,
     VssueNewComment,
+    VssueNotice,
     VssueStatus,
   },
 })
@@ -126,17 +119,6 @@ export default class Vssue extends Vue {
   @Provide('vssue') vssue: VssueNamespace.LocalStore = new VssueStore({
     data: { options: this.getOptions() },
   })
-
-  // alert message to show
-  alert: {
-    show: boolean
-    message: string | null
-    timeout: number | null
-  } = {
-    show: false,
-    message: null,
-    timeout: null,
-  }
 
   /**
    * The actual title of issue
@@ -203,7 +185,6 @@ export default class Vssue extends Vue {
       await this.vssue.init()
 
       // show alert on error
-      this.vssue.$on('error', e => this.showAlert(e.message))
 
       // init comments
       if (!this.issueId) {
@@ -233,31 +214,6 @@ export default class Vssue extends Vue {
       admins: [],
       perPage: 10,
     }, this.$vssue ? this.$vssue.options : {}, this.options)
-  }
-
-  /**
-   * Show alert message
-   */
-  showAlert (content, time = 3000): void {
-    this.alert.show = true
-    this.alert.message = content
-    if (this.alert.timeout !== null) window.clearTimeout(this.alert.timeout)
-    this.alert.timeout = window.setTimeout(() => {
-      this.hideAlert()
-    }, time)
-  }
-
-  /**
-   * Hide alert message
-   */
-  hideAlert (): void {
-    this.alert.show = false
-    if (this.alert.timeout !== null) window.clearTimeout(this.alert.timeout)
-    this.alert.timeout = null
-  }
-
-  beforeDestroy () {
-    if (this.alert.timeout !== null) window.clearTimeout(this.alert.timeout)
   }
 }
 </script>
