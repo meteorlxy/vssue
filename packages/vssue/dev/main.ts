@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VssuePlguin, {
   Vssue,
-  VssueOptions,
+  VssueComponent,
 } from 'vssue'
 // @ts-ignore
 import GithubV3 from '@vssue/api'
@@ -11,7 +11,7 @@ import 'github-markdown-css'
 
 const onlyComponent: boolean = process.env.VUE_APP_ONLY_COMPONENT === 'true'
 
-const options: VssueOptions = {
+const options: Vssue.Options = {
   api: GithubV3,
   owner: process.env.VUE_APP_OWNER,
   repo: process.env.VUE_APP_REPO,
@@ -27,17 +27,20 @@ const options: VssueOptions = {
 if (!onlyComponent) {
   Vue.use(VssuePlguin, options)
 } else {
-  Vue.component('Vssue', Vssue)
+  Vue.component('Vssue', VssueComponent)
 }
 
 /* eslint-disable-next-line no-new */
 new Vue({
   el: '#app',
-  render: h => h('Vssue', {
-    props: {
+
+  data () {
+    return {
       title: 'Vssue Dev',
-      // issueId: 1,
+      issueId: 1,
       options,
-    },
-  }),
+    }
+  },
+
+  template: '<Vssue :issue-id="issueId" :options="options"/>',
 })

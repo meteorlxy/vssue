@@ -6,6 +6,8 @@ process.env.VUE_APP_VERSION = version
 module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development',
 
+  runtimeCompiler: process.env.NODE_ENV === 'development',
+
   css: {
     loaderOptions: {
       postcss: {
