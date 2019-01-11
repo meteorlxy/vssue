@@ -61,7 +61,7 @@
         class="vssue-body"
       >
         <!-- new-comment -->
-        <VssueNewComment />
+        <VssueNewComment v-if="vssue.API" />
 
         <!-- notice - alert and progress -->
         <VssueNotice />
@@ -170,23 +170,21 @@ export default class Vssue extends Vue {
   /**
    * Created hook. Check Options and init Vssue.
    */
-  async created (): Promise<void> {
-    // only check the options in development mode
-    if (process.env.NODE_ENV === 'development') {
-      const requiredOptions = [
-        'api',
-        'owner',
-        'repo',
-        'clientId',
-        'clientSecret',
-      ]
-      for (const opt of requiredOptions) {
-        if (!this.vssue.options[opt]) {
-          console.warn(`[Vssue] the option '${opt}' is required`)
-        }
+  created (): void {
+    // check the options
+    const requiredOptions = [
+      'api',
+      'owner',
+      'repo',
+      'clientId',
+      'clientSecret',
+    ]
+    for (const opt of requiredOptions) {
+      if (!this.vssue.options[opt]) {
+        console.warn(`[Vssue] the option '${opt}' is required`)
       }
     }
-    await this.init()
+    this.init()
   }
 
   /**
