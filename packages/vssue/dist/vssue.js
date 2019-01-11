@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.4.0
+ * @version v0.4.1
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -2976,7 +2976,7 @@ var VssueStore = /** @class */ (function (_super) {
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.4.0";
+            return "0.4.1";
         },
         enumerable: true,
         configurable: true
@@ -3674,7 +3674,7 @@ var VssueComponent = __vue_normalize__$a({
 
 var VssuePlugin = {
     get version() {
-        return "0.4.0";
+        return "0.4.1";
     },
     installed: false,
     install: function (Vue$$1, options) {
