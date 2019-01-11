@@ -116,8 +116,8 @@ export default class Vssue extends Vue {
   /**
    * Provide the VssueStore for the child components
    */
-  @Provide('vssue') vssue: VssueNamespace.LocalStore = new VssueStore({
-    data: { options: this.getOptions() },
+  @Provide('vssue') vssue: VssueNamespace.Store = new VssueStore({
+    data: { options: this.mergedOptions },
   })
 
   /**
@@ -125,6 +125,19 @@ export default class Vssue extends Vue {
    */
   get issueTitle (): string {
     return typeof this.title === 'function' ? this.title(this.vssue.options) : `${this.vssue.options.prefix}${this.title}`
+  }
+
+  /**
+   * Merged options - default and prop
+   */
+  get mergedOptions (): VssueNamespace.Options {
+    return <VssueNamespace.Options>Object.assign({
+      labels: ['Vssue'],
+      state: 'Vssue',
+      prefix: '[Vssue]',
+      admins: [],
+      perPage: 10,
+    }, this.options)
   }
 
   /**
@@ -150,7 +163,7 @@ export default class Vssue extends Vue {
    */
   @Watch('options', { deep: true })
   onOptionsChange (): void {
-    this.vssue.options = this.getOptions()
+    this.vssue.options = this.mergedOptions
     this.init()
   }
 
@@ -201,19 +214,6 @@ export default class Vssue extends Vue {
       }
       console.error(e)
     }
-  }
-
-  /**
-   * Merge the options from Plugin and Prop
-   */
-  getOptions (): VssueNamespace.Options {
-    return <VssueNamespace.Options>Object.assign({
-      labels: ['Vssue'],
-      state: 'Vssue',
-      prefix: '[Vssue]',
-      admins: [],
-      perPage: 10,
-    }, this.$vssue ? this.$vssue.options : {}, this.options)
   }
 }
 </script>

@@ -96,7 +96,7 @@ import VssueIcon from './VssueIcon.vue'
   },
 })
 export default class VssuePagination extends Vue {
-  @Inject() vssue!: Vssue.LocalStore
+  @Inject() vssue!: Vssue.Store
 
   get loading (): boolean {
     return this.vssue.status.isLoadingComments

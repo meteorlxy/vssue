@@ -79,6 +79,6 @@ import VssueStatus from './VssueStatus.vue'
   },
 })
 export default class VssueComments extends Vue {
-  @Inject() vssue!: Vssue.LocalStore
+  @Inject() vssue!: Vssue.Store
 }
 </script>

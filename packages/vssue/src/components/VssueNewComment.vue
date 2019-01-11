@@ -96,7 +96,7 @@ import VssueIcon from './VssueIcon.vue'
   },
 })
 export default class VssueNewComment extends Vue {
-  @Inject() vssue!: Vssue.LocalStore
+  @Inject() vssue!: Vssue.Store
 
   content: string = ''
 

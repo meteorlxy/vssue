@@ -31,7 +31,7 @@ import TransitionFade from './TransitionFade.vue'
   },
 })
 export default class VssueNotice extends Vue {
-  @Inject() vssue!: Vssue.LocalStore
+  @Inject() vssue!: Vssue.Store
 
   // progress data
   progress: {

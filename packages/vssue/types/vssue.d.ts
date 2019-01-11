@@ -18,16 +18,13 @@ export namespace Vssue {
 
   export interface Plugin extends PluginObject<Vssue.Options> {
     readonly version: string
+    installed: boolean
     VssueComponent: Vssue.Component
   }
 
   export type Component = typeof Vue
 
-  export interface GlobalStore extends Vue {
-    options: Partial<Vssue.Options>
-  }
-
-  export interface LocalStore extends Vue {
+  export interface Store extends Vue {
     readonly version: string
     options: Vssue.Options
     API: VssueAPI.Instance | null
@@ -61,12 +58,6 @@ export namespace Vssue {
     isLoadingComments: boolean
     isFailed: boolean
     isCreatingComment: boolean
-  }
-}
-
-declare module 'vue/types/vue' {
-  export interface Vue {
-    $vssue?: Vssue.GlobalStore
   }
 }
 

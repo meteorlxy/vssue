@@ -38,9 +38,12 @@ new Vue({
     return {
       title: 'Vssue Dev',
       issueId: 1,
-      options,
+      options: onlyComponent ? options : {
+        // override the default options here if use plugin
+        perPage: 7,
+      },
     }
   },
 
-  template: '<Vssue :issue-id="issueId" :options="options"/>',
+  template: '<Vssue :issue-id="issueId" :options="options" />',
 })

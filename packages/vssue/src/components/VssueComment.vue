@@ -113,7 +113,7 @@ export default class VssueComment extends Vue {
     required: true,
   }) comment!: VssueAPI.Comment
 
-  @Inject() vssue!: Vssue.LocalStore
+  @Inject() vssue!: Vssue.Store
 
   creatingReactions: Array<keyof VssueAPI.Reactions> = []
 

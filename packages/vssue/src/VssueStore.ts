@@ -3,7 +3,7 @@ import { Vssue, VssueAPI } from 'vssue'
 import { getCleanURL } from '@vssue/utils'
 
 @Component
-class VssueStore extends Vue implements Vssue.LocalStore {
+class VssueStore extends Vue implements Vssue.Store {
   get version () {
     return <string>process.env.VUE_APP_VERSION
   }
