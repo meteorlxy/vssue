@@ -222,9 +222,9 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
   Vssue uses [vue-i18n](https://kazupon.github.io/vue-i18n/) for i18n, but it will not affect other parts of your Vue App.
   And if you already have vue-i18n in your project, it will not affect Vssue.
   Language packages locate in `src/i18n/lang` directory. Currently we have supported:
-  
-  - `'en'`
-  - `'zh-CN'`
+
+  - `'en'` (`'en-US'`)
+  - `'zh'` (`'zh-CN'`)
 
   Contributions welcome for more languages support.
   :::
