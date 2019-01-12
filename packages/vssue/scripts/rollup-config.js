@@ -56,6 +56,7 @@ module.exports = [
       'vue',
       ...(opts.format === 'es' ? [
         '@vssue/utils',
+        'vue-i18n',
         'vue-property-decorator',
       ] : []),
     ],

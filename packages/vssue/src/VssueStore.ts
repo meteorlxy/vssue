@@ -1,8 +1,9 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { Vssue, VssueAPI } from 'vssue'
 import { getCleanURL } from '@vssue/utils'
+import i18n from './i18n'
 
-@Component
+@Component({ i18n })
 class VssueStore extends Vue implements Vssue.Store {
   get version () {
     return <string>process.env.VUE_APP_VERSION
@@ -127,6 +128,11 @@ class VssueStore extends Vue implements Vssue.Store {
       this.status.isLoadingComments = false
       this.status.isFailed = false
       this.status.isCreatingComment = false
+
+      // set locale
+      if (this.options.locale) {
+        this.$i18n.locale = this.options.locale
+      }
 
       // get the VssueAPI instance according to the options.api
       const APIConstructor = this.options.api

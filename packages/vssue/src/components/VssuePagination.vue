@@ -19,7 +19,7 @@
       </select>
 
       <span>
-        Comments per page
+        {{ vssue.$t('perPage') }}
       </span>
 
       <span
@@ -28,7 +28,7 @@
           'vssue-pagination-link': true,
           'disabled': loading,
         }"
-        :title="`Click to change the sort direction`"
+        :title="vssue.$t('sort')"
         @click="vssue.query.sort = (vssue.query.sort === 'asc' ? 'desc' : 'asc')"
       >
         {{ vssue.query.sort === 'asc' ? `↑` : `↓` }}
@@ -41,13 +41,13 @@
           'vssue-pagination-link': true,
           'disabled': page === 1 || loading,
         }"
-        :title="`Previous Page`"
+        :title="vssue.$t('prev')"
         @click="page -= 1"
         v-text="`<`"
       />
 
       <span>
-        Page
+        {{ vssue.$t('page') }}
       </span>
 
       <select
@@ -77,7 +77,7 @@
           'vssue-pagination-link': true,
           'disabled': page === pageCount || loading,
         }"
-        :title="`Next Page`"
+        :title="vssue.$t('next')"
         @click="page += 1"
         v-text="`>`"
       />

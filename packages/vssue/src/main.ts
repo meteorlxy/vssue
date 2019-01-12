@@ -1,5 +1,4 @@
 import { Vssue } from 'vssue'
-
 import VssueComponent from './Vssue.vue'
 
 const VssuePlugin: Vssue.Plugin = {

@@ -41,6 +41,7 @@ new Vue({
       options: onlyComponent ? options : {
         // override the default options here if use plugin
         perPage: 7,
+        // locale: 'en',
       },
     }
   },

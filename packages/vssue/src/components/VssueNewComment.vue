@@ -13,7 +13,7 @@
       <VssueIcon
         v-else
         :name="platform.toLowerCase()"
-        :title="`Login with ${platform}`"
+        :title="vssue.$t('loginToComment', { platform })"
         @click="vssue.$emit('login')"
       />
     </div><!-- .vssue-new-comment-avatar -->
@@ -24,7 +24,7 @@
         class="vssue-new-comment-input"
         :rows="inputRows"
         :disabled="!user || loading"
-        :placeholder="user ? 'Leave a comment. Styling with Markdown is supported. Ctrl + Enter to submit.' : 'Login to leave a comment'"
+        :placeholder="vssue.$t(user ? 'placeholder' : 'noLoginPlaceHolder')"
         :spellcheck="false"
         v-model="content"
         @keyup.enter.ctrl="submit()"
@@ -36,13 +36,13 @@
         v-if="user"
         class="vssue-current-user"
       >
-        <span>Current user - {{ user.username }} - </span>
+        <span>{{ vssue.$t('currentUser') }} - {{ user.username }} - </span>
 
         <a
           class="vssue-logout"
           @click="vssue.$emit('logout')"
         >
-          Logout
+          {{ vssue.$t('logout') }}
         </a>
       </span>
 
@@ -50,7 +50,7 @@
         v-else
         class="vssue-current-user"
       >
-        Login with {{ platform }} account to leave a comment
+        {{ vssue.$t('loginToComment', { platform }) }}
       </span>
 
       <div class="vssue-new-comment-operations">
@@ -66,17 +66,17 @@
             name="loading"
           />
 
-          {{ loading ? `Submitting` : `Submit Comment` }}
+          {{ vssue.$t(loading ? 'submitting' : 'submitComment') }}
         </VssueButton>
 
         <VssueButton
           v-else
           class="vssue-button-login"
           type="primary"
-          :title="`Click to Login with ${platform}`"
-          @click="vssue.$emit('login')"
+          :title="vssue.$t('loginToComment', { platform })"
+          @click="vssue.$emit('login', { platform })"
         >
-          Login
+          {{ vssue.$t('login', { platform }) }}
         </VssueButton>
       </div>
     </div><!-- .vssue-new-comment-footer -->
@@ -129,6 +129,10 @@ export default class VssueNewComment extends Vue {
     })
   }
 
+  beforeDestroy () {
+    this.vssue.$off('reply-comment')
+  }
+
   focus (this: any): void {
     this.$refs.input.focus()
   }
@@ -137,10 +141,6 @@ export default class VssueNewComment extends Vue {
     await this.vssue.postComment({ content: this.content })
     this.content = ''
     await this.vssue.getComments()
-  }
-
-  beforeDestroy () {
-    this.vssue.$off('reply-comment')
   }
 }
 </script>

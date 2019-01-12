@@ -14,6 +14,7 @@ export namespace Vssue {
     prefix: string
     admins: Array<string>
     perPage: number
+    locale?: string
   }
 
   export interface Plugin extends PluginObject<Vssue.Options> {

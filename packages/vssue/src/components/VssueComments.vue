@@ -7,24 +7,26 @@
         key="failed"
         icon-name="error"
       >
-        Failed to load comments
+        {{ vssue.$t('failed') }}
       </VssueStatus>
 
       <!-- require login -->
       <VssueStatus
         v-else-if="vssue.status.isLoginRequired"
-        key="requie-login"
+        key="require-login"
       >
-        Login to view comments
+        <a @click="vssue.$emit('login')">
+          {{ vssue.$t('requireLogin') }}
+        </a>
       </VssueStatus>
 
       <!-- loading -->
       <VssueStatus
         v-else-if="!vssue.comments"
-        key="loading"
+        key="loading-comments"
         icon-name="loading"
       >
-        Loading comments...
+        {{ vssue.$t('loadingComments') }}
       </VssueStatus>
 
       <!-- no comments yet -->
@@ -32,7 +34,7 @@
         v-else-if="vssue.comments.data.length === 0"
         key="no-comments"
       >
-        No comments yet. Leave the first comment !
+        {{ vssue.$t('noComments') }}
       </VssueStatus>
 
       <!-- comments-list -->
@@ -50,8 +52,6 @@
             v-for="comment in vssue.comments.data"
             :key="comment.id"
             :comment="comment"
-            @reply="comment => $emit('reply', comment)"
-            @create-reaction="reaction => $emit('create-reaction', reaction)"
           />
         </TransitionFade>
 

@@ -61,7 +61,7 @@
             v-if="editMode"
             class="vssue-comment-hint"
           >
-            Edit Mode
+            {{ vssue.$t('editMode') }}
           </span>
 
           <!-- reactions -->
@@ -73,12 +73,12 @@
               v-for="reaction in reactionKeys"
               :key="reaction"
               class="vssue-comment-reaction"
-              :title="reaction"
+              :title="vssue.$t(creatingReactions.includes(reaction) ? 'loading' : reaction)"
               @click="postReaction({ reaction: reaction })"
             >
               <VssueIcon
                 :name="creatingReactions.includes(reaction) ? 'loading' : reaction"
-                :title="creatingReactions.includes(reaction) ? 'loading' : reaction"
+                :title="vssue.$t(creatingReactions.includes(reaction) ? 'loading' : reaction)"
               />
 
               <span class="vssue-comment-reaction-number">
@@ -93,24 +93,25 @@
               v-if="comment.author.username === currentUser && editMode"
               class="vssue-comment-operation"
               :class="{ 'vssue-comment-operation-muted': isPutingComment }"
-              :title="isPutingComment ? 'Submitting' : 'Submit'"
+              :title="vssue.$t(isPutingComment ? 'loading' : 'submit')"
               @click="putComment()"
             >
               <VssueIcon
                 v-show="isPutingComment"
                 name="loading"
-                :title="`Submitting`"
+                :title="vssue.$t('loading')"
               />
 
-              Submit
+              {{ vssue.$t('submit') }}
             </span>
 
             <span
               v-if="comment.author.username === currentUser && editMode"
               class="vssue-comment-operation vssue-comment-operation-muted"
+              :title="vssue.$t('cancel')"
               @click="resetEdit()"
             >
-              Cancel
+              {{ vssue.$t('cancel') }}
             </span>
 
             <span
@@ -120,8 +121,8 @@
               @click="enterEdit()"
             >
               <VssueIcon
-                :name="`edit`"
-                :title="`Edit`"
+                name="edit"
+                :title="vssue.$t('edit')"
               />
             </span>
 
@@ -133,7 +134,7 @@
             >
               <VssueIcon
                 :name="isDeletingComment ? 'loading' : 'delete'"
-                :title="isDeletingComment ? `Deleting` : `Delete`"
+                :title="vssue.$t(isDeletingComment ? 'loading' : 'delete')"
               />
             </span>
 
@@ -144,7 +145,7 @@
             >
               <VssueIcon
                 name="reply"
-                :title="`Reply`"
+                :title="vssue.$t('reply')"
               />
             </span>
           </span>
@@ -232,7 +233,7 @@ export default class VssueComment extends Vue {
       })
 
       if (!success) {
-        this.vssue.$emit('error', new Error('Already given this reaction'))
+        this.vssue.$emit('error', new Error(<string> this.vssue.$t('reactionGiven', { reaction: this.vssue.$t(reaction) })))
       }
 
       // always refresh reactions even already given
@@ -288,7 +289,7 @@ export default class VssueComment extends Vue {
     try {
       if (this.isDeletingComment || this.vssue.status.isLoadingComments) return
 
-      if (!window.confirm('Confirm to delete this comment?')) return
+      if (!window.confirm(<string> this.vssue.$t('deleteConfirm'))) return
 
       this.isDeletingComment = true
       this.vssue.status.isLoadingComments = true
@@ -313,7 +314,7 @@ export default class VssueComment extends Vue {
           await this.vssue.getComments()
         }
       } else {
-        this.vssue.$emit('error', new Error('Failed to delete comment'))
+        this.vssue.$emit('error', new Error(<string> this.vssue.$t('deleteFailed')))
       }
     } finally {
       this.isDeletingComment = false

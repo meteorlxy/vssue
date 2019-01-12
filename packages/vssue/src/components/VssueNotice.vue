@@ -76,6 +76,7 @@ export default class VssueNotice extends Vue {
   }
 
   beforeDestroy () {
+    this.vssue.$off('error')
     if (this.progress.timer !== null) window.clearTimeout(this.progress.timer)
     if (this.alert.timer !== null) window.clearTimeout(this.alert.timer)
   }

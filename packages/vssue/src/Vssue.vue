@@ -10,11 +10,11 @@
         :href="vssue.issue ? vssue.issue.link : null"
         target="_blank"
       >
-        <span v-if="vssue.comments">
-          {{ vssue.comments.count }}
+        <span>
+          {{ vssue.comments
+            ? vssue.$tc('comments', vssue.comments.count, { count: vssue.comments.count })
+          : vssue.$tc('comments') }}
         </span>
-
-        <span>Comments</span>
       </a>
 
       <!-- powered-by - platform and vssue -->
@@ -34,7 +34,7 @@
         </span>
 
         <a
-          href="https://vssue.js.org"
+          href="https://github.com/meteorlxy/vssue"
           target="_blank"
           :title="`Vssue v${vssue.version}`"
         >
@@ -51,7 +51,7 @@
         key="initializing"
         icon-name="loading"
       >
-        Initializing...
+        {{ vssue.$t('initializing') }}
       </VssueStatus>
 
       <!-- initialized -->
