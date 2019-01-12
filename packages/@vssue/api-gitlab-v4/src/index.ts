@@ -355,6 +355,53 @@ export default class GitlabV4 implements VssueAPI.Instance {
   }
 
   /**
+   * Edit a comment
+   *
+   * @param options.accessToken - User access token
+   * @param options.issueId - The id of issue
+   * @param options.commentId - The id of comment
+   * @param options.content - The content of comment
+   *
+   * @return The edited comment
+   *
+   * @see https://docs.gitlab.com/ce/api/notes.html#modify-existing-issue-note
+   */
+  async putComment ({
+    accessToken,
+    issueId,
+    commentId,
+    content,
+  }: {
+    accessToken: VssueAPI.AccessToken
+    issueId: string | number
+    commentId: string | number
+    content: string
+  }): Promise<VssueAPI.Comment> {
+    const { data } = await this.$http.put(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}`, {
+      body: content,
+    }, {
+      headers: { 'Authorization': `Bearer ${accessToken}` },
+    })
+
+    const [contentHTML, reactions] = await Promise.all([
+      this.getMarkdownContent({
+        accessToken: accessToken,
+        contentRaw: data.body,
+      }),
+      this.getCommentReactions({
+        accessToken: accessToken,
+        issueId: issueId,
+        commentId: data.id,
+      }),
+    ])
+
+    data.body_html = contentHTML
+    data.reactions = reactions
+
+    return normalizeComment(data)
+  }
+
+  /**
    * Delete a comment
    *
    * @param options.accessToken - User access token

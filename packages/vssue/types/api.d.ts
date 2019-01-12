@@ -143,21 +143,6 @@ export namespace VssueAPI {
     }): Promise<VssueAPI.Comments>
 
     /**
-     * Get a comment of issue
-     *
-     * @param options.accessToken - User access token
-     * @param options.issueId - The id of issue
-     * @param options.commentId - The id of comment
-     *
-     * @return The comments
-     */
-    // getComment (options: {
-    //   accessToken: VssueAPI.AccessToken
-    //   issueId: string | number
-    //   commentId: string | number
-    // }): Promise<VssueAPI.Comment>
-
-    /**
      * Create a new comment
      *
      * @param options.accessToken - User access token
@@ -169,6 +154,23 @@ export namespace VssueAPI {
     postComment (options: {
       accessToken: VssueAPI.AccessToken
       issueId: string | number
+      content: string
+    }): Promise<VssueAPI.Comment>
+
+    /**
+     * Edit a comment
+     *
+     * @param options.accessToken - User access token
+     * @param options.issueId - The id of issue
+     * @param options.commentId - The id of comment
+     * @param options.content - The content of comment
+     *
+     * @return The edited comment
+     */
+    putComment (options: {
+      accessToken: VssueAPI.AccessToken
+      issueId: string | number
+      commentId: string | number
       content: string
     }): Promise<VssueAPI.Comment>
 
@@ -186,23 +188,6 @@ export namespace VssueAPI {
       issueId: string | number
       commentId: string | number
     }): Promise<boolean>
-
-    /**
-     * Edit a comment
-     *
-     * @param options.accessToken - User access token
-     * @param options.issueId - The id of issue
-     * @param options.commentId - The id of comment
-     * @param options.content - The content of comment
-     *
-     * @return The edited comment
-     */
-    // putComment (options: {
-    //   accessToken: VssueAPI.AccessToken
-    //   issueId: string | number
-    //   commentId: string | number
-    //   content: string
-    // }): Promise<VssueAPI.Comment>
 
     /**
      * Get reaction of a comment

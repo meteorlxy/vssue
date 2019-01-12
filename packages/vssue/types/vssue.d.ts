@@ -42,7 +42,7 @@ export namespace Vssue {
     getComments (): Promise<VssueAPI.Comments | void>
     postComment (options: { content: string }): Promise<VssueAPI.Comment | void>
     deleteComment (options: { commentId: number | string }): Promise<boolean | void>
-    // putComment (options: { commentId: number | string, content: string }): Promise<VssueAPI.Comment | void>
+    putComment (options: { commentId: number | string, content: string }): Promise<VssueAPI.Comment | void>
     getCommentReactions (options: { commentId: number | string }): Promise<VssueAPI.Reactions | void>
     postCommentReaction (options: { commentId: number | string, reaction: keyof VssueAPI.Reactions }): Promise<boolean | void>
   }

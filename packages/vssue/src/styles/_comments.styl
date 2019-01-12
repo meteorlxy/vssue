@@ -1,7 +1,10 @@
 .vssue-comments
   .vssue-comment
     margin 15px 0
-    &.disabled
+    &.vssue-comment-edit-mode
+      .vssue-comment-main
+        box-shadow 0 0 1px 1px lighten($vssue-theme-color, 50%)
+    &.vssue-comment-disabled
       pointer-events none
       .vssue-comment-body
         background-color lighten($vssue-border-color, 70%)
@@ -25,13 +28,23 @@
         overflow hidden
         .vssue-comment-created-at
           float right
+          cursor default
           color $vssue-text-light-color
       .vssue-comment-main
         padding 15px
+        .vssue-edit-comment-input
+          resize none
+          outline none
+          border none
+          width 100%
+          background transparent
       .vssue-comment-footer
         padding 10px 15px
         border-top 1px solid $vssue-border-color
         overflow hidden
+        .vssue-comment-hint
+          cursor default
+          color $vssue-text-light-color
         .vssue-comment-reactions
           .vssue-comment-reaction
             cursor pointer
@@ -44,3 +57,7 @@
           .vssue-comment-operation
             cursor pointer
             margin-left 8px
+            &.vssue-comment-operation-muted
+              color $vssue-text-light-color
+              .vssue-icon
+                fill $vssue-text-light-color

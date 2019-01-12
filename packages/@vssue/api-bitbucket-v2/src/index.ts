@@ -190,6 +190,10 @@ export default class BitbucketV2 implements VssueAPI.Instance {
 
     if (issueId) {
       try {
+        options.params = {
+          // to avoid caching
+          timestamp: Date.now(),
+        }
         const { data } = await this.$http.get(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}`, options)
         return normalizeIssue(data)
       } catch (e) {
@@ -203,6 +207,8 @@ export default class BitbucketV2 implements VssueAPI.Instance {
       options.params = {
         sort: 'created_on',
         q: `title="${issueTitle}"`,
+        // to avoid caching
+        timestamp: Date.now(),
       }
       const { data } = await this.$http.get(`2.0/repositories/${this.owner}/${this.repo}/issues`, options)
       return data.size > 0 ? normalizeIssue(data.values[0]) : null
@@ -273,6 +279,8 @@ export default class BitbucketV2 implements VssueAPI.Instance {
         'page': page,
         'pagelen': perPage,
         'sort': sort === 'desc' ? '-created_on' : 'created_on',
+        // to avoid caching
+        timestamp: Date.now(),
       },
     }
     if (accessToken) {
@@ -310,6 +318,39 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     content: string
   }): Promise<VssueAPI.Comment> {
     const { data } = await this.$http.post(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
+      content: {
+        raw: content,
+      },
+    }, {
+      headers: { 'Authorization': `Bearer ${accessToken}` },
+    })
+    return normalizeComment(data)
+  }
+
+  /**
+   * Edit a comment
+   *
+   * @param options.accessToken - User access token
+   * @param options.issueId - The id of issue
+   * @param options.commentId - The id of comment
+   * @param options.content - The content of comment
+   *
+   * @return The edited comment
+   *
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments/%7Bcomment_id%7D#put
+   */
+  async putComment ({
+    accessToken,
+    issueId,
+    commentId,
+    content,
+  }: {
+    accessToken: VssueAPI.AccessToken
+    issueId: string | number
+    commentId: string | number
+    content: string
+  }): Promise<VssueAPI.Comment> {
+    const { data } = await this.$http.put(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`, {
       content: {
         raw: content,
       },

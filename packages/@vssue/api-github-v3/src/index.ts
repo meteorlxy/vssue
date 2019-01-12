@@ -385,6 +385,42 @@ export default class GithubV3 implements VssueAPI.Instance {
   }
 
   /**
+   * Edit a comment
+   *
+   * @param options.accessToken - User access token
+   * @param options.commentId - The id of comment
+   * @param options.content - The content of comment
+   *
+   * @return The edited comment
+   *
+   * @see https://developer.github.com/v3/issues/comments/#edit-a-comment
+   */
+  async putComment ({
+    accessToken,
+    commentId,
+    content,
+  }: {
+    accessToken: VssueAPI.AccessToken
+    issueId: string | number
+    commentId: string | number
+    content: string
+  }): Promise<VssueAPI.Comment> {
+    const { data } = await this.$http.patch(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}`, {
+      body: content,
+    }, {
+      headers: {
+        'Authorization': `token ${accessToken}`,
+        'Accept': [
+          'application/vnd.github.v3.raw+json',
+          'application/vnd.github.v3.html+json',
+          'application/vnd.github.squirrel-girl-preview',
+        ],
+      },
+    })
+    return normalizeComment(data)
+  }
+
+  /**
    * Delete a comment
    *
    * @param options.accessToken - User access token

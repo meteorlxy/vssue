@@ -244,6 +244,33 @@ class VssueStore extends Vue implements Vssue.Store {
   }
 
   /**
+   * Edit a comment
+   */
+  async putComment ({
+    commentId,
+    content,
+  }: {
+    commentId: number | string
+    content: string
+  }): Promise<VssueAPI.Comment | void> {
+    try {
+      if (!this.API || !this.issue) return
+
+      const comment = await this.API.putComment({
+        accessToken: this.accessToken,
+        issueId: this.issue.id,
+        commentId,
+        content,
+      })
+
+      return comment
+    } catch (e) {
+      this.$emit('error', e)
+      throw e
+    }
+  }
+
+  /**
    * Delete a new comment
    */
   async deleteComment ({

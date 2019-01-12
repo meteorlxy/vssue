@@ -1,7 +1,10 @@
 <template>
   <div
     class="vssue-comment"
-    :class="{ 'disabled': isDeletingComment }"
+    :class="{
+      'vssue-comment-edit-mode': editMode,
+      'vssue-comment-disabled': isDeletingComment || isPutingComment,
+    }"
   >
     <!-- avatar -->
     <div class="vssue-comment-avatar">
@@ -37,13 +40,30 @@
 
         <!-- comment content - html string - we trust platform api so use v-html -->
         <div class="vssue-comment-main">
+          <textarea
+            ref="input"
+            v-if="editMode"
+            class="vssue-edit-comment-input"
+            :rows="editInputRows"
+            v-model="editContent"
+            @keyup.enter.ctrl="putComment()"
+          />
           <article
+            v-else
             class="markdown-body"
             v-html="content"
           />
         </div>
 
         <div class="vssue-comment-footer">
+          <!-- edit mode hint -->
+          <span
+            v-if="editMode"
+            class="vssue-comment-hint"
+          >
+            Edit Mode
+          </span>
+
           <!-- reactions -->
           <span
             v-if="showReactions"
@@ -70,7 +90,44 @@
           <!-- operations -->
           <span class="vssue-comment-operations">
             <span
+              v-if="comment.author.username === currentUser && editMode"
+              class="vssue-comment-operation"
+              :class="{ 'vssue-comment-operation-muted': isPutingComment }"
+              :title="isPutingComment ? 'Submitting' : 'Submit'"
+              @click="putComment()"
+            >
+              <VssueIcon
+                v-show="isPutingComment"
+                name="loading"
+                :title="`Submitting`"
+              />
+
+              Submit
+            </span>
+
+            <span
+              v-if="comment.author.username === currentUser && editMode"
+              class="vssue-comment-operation vssue-comment-operation-muted"
+              @click="resetEdit()"
+            >
+              Cancel
+            </span>
+
+            <span
               v-if="comment.author.username === currentUser"
+              v-show="!editMode"
+              class="vssue-comment-operation"
+              @click="enterEdit()"
+            >
+              <VssueIcon
+                :name="`edit`"
+                :title="`Edit`"
+              />
+            </span>
+
+            <span
+              v-if="comment.author.username === currentUser"
+              v-show="!editMode"
               class="vssue-comment-operation"
               @click="deleteComment()"
             >
@@ -81,6 +138,7 @@
             </span>
 
             <span
+              v-show="!editMode"
               class="vssue-comment-operation"
               @click="vssue.$emit('reply-comment', comment)"
             >
@@ -115,8 +173,11 @@ export default class VssueComment extends Vue {
 
   @Inject() vssue!: Vssue.Store
 
-  creatingReactions: Array<keyof VssueAPI.Reactions> = []
+  editMode: boolean = false
+  editContent: string = this.comment.contentRaw
 
+  creatingReactions: Array<keyof VssueAPI.Reactions> = []
+  isPutingComment: boolean = false
   isDeletingComment: boolean = false
 
   get currentUser (): string | null {
@@ -125,10 +186,6 @@ export default class VssueComment extends Vue {
 
   get content (): string {
     return this.comment.content
-  }
-
-  get contentRaw (): string {
-    return this.comment.contentRaw
   }
 
   get author (): VssueAPI.User {
@@ -144,11 +201,19 @@ export default class VssueComment extends Vue {
   }
 
   get showReactions (): boolean {
-    return Boolean(this.vssue.API && this.vssue.API.platform.meta.reactable && this.comment.reactions)
+    return Boolean(this.vssue.API && this.vssue.API.platform.meta.reactable && this.comment.reactions && !this.editMode)
   }
 
   get reactionKeys (): Array<keyof VssueAPI.Reactions> {
     return ['heart', 'like', 'unlike']
+  }
+
+  get editContentRows (): number {
+    return this.editContent.split('\n').length - 1
+  }
+
+  get editInputRows (): number {
+    return this.editContentRows < 3 ? 5 : this.editContentRows + 2
   }
 
   async postReaction ({
@@ -182,13 +247,51 @@ export default class VssueComment extends Vue {
     }
   }
 
+  enterEdit (this: any): void {
+    this.editMode = true
+    this.$nextTick(() => {
+      this.$refs.input.focus()
+    })
+  }
+
+  resetEdit (): void {
+    this.editMode = false
+    this.editContent = this.comment.contentRaw
+  }
+
+  async putComment (): Promise<void> {
+    try {
+      if (this.isPutingComment || this.vssue.status.isLoadingComments) return
+
+      if (this.editContent !== this.comment.contentRaw) {
+        this.isPutingComment = true
+        this.vssue.status.isLoadingComments = true
+
+        const comment = await this.vssue.putComment({
+          commentId: this.comment.id,
+          content: this.editContent,
+        })
+
+        if (comment) {
+          this.vssue.comments!.data.splice(this.vssue.comments!.data.findIndex(item => item.id === this.comment.id), 1, comment)
+        }
+      }
+
+      this.editMode = false
+    } finally {
+      this.isPutingComment = false
+      this.vssue.status.isLoadingComments = false
+    }
+  }
+
   async deleteComment (): Promise<void> {
     try {
-      if (this.isDeletingComment) return
+      if (this.isDeletingComment || this.vssue.status.isLoadingComments) return
 
       if (!window.confirm('Confirm to delete this comment?')) return
 
       this.isDeletingComment = true
+      this.vssue.status.isLoadingComments = true
 
       const success = await this.vssue.deleteComment({
         commentId: this.comment.id,
@@ -214,6 +317,7 @@ export default class VssueComment extends Vue {
       }
     } finally {
       this.isDeletingComment = false
+      this.vssue.status.isLoadingComments = false
     }
   }
 }
