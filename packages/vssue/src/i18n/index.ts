@@ -1,14 +1,15 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-import en from './lang/en'
-import zhCN from './lang/zh-cn'
+import enUS from './lang/en-US'
+import zhCN from './lang/zh-CN'
 
 if (!Vue.prototype.hasOwnProperty('$i18n')) {
   Vue.use(VueI18n)
 }
 
 const messages = {
-  'en': en,
+  'en': enUS,
+  'en-US': enUS,
   'zh': zhCN,
   'zh-CN': zhCN,
 }
