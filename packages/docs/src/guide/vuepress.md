@@ -53,6 +53,12 @@ The only difference is that, you should set `platform` rather than the `api` pac
 - platform `bitbucket` - api package `@vssue/api-bitbucket-v2`
 :::
 
+::: tip
+If you don't set the `locale` option, Vssue will use Vuepress's `$lang` as the language of current page.
+
+> See [locale](../options/index.md#locale) of Vssue and [$lang](https://vuepress.vuejs.org/guide/global-computed.html#lang) of Vuepress
+:::
+
 ### Use Vssue Component
 
 `Vssue` has already been registered as a Vue component, and can be used in your Vuepress markdown directly.

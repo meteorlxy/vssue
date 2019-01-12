@@ -53,6 +53,12 @@ module.exports = {
 - platform `bitbucket` - api 包 `@vssue/api-bitbucket-v2`
 :::
 
+::: tip
+如果你不设置 `locale`，Vssue 会自动使用 Vuepress 的 `$lang` 作为当前页面的语言。
+
+> 参考 Vssue 的 [locale](../options/index.md#locale) 设置，以及 Vuepress 的 [$lang](https://vuepress.vuejs.org/zh/guide/global-computed.html#lang) 属性。
+:::
+
 ### 使用 Vssue 组件
 
 `Vssue` 已经注册为 Vue 组件，你可以在你的 Vuepress Markdown 文件中直接使用它。
