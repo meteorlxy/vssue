@@ -122,6 +122,9 @@ export default class Vssue extends Vue {
    * The actual title of issue
    */
   get issueTitle (): string {
+    if (this.vssue.options === null) {
+      return ''
+    }
     return typeof this.title === 'function' ? this.title(this.vssue.options) : `${this.vssue.options.prefix}${this.title}`
   }
 

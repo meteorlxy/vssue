@@ -27,7 +27,7 @@ export namespace Vssue {
 
   export interface Store extends Vue {
     readonly version: string
-    options: Vssue.Options
+    options: Vssue.Options | null
     API: VssueAPI.Instance | null
     accessToken: string | null
     user: VssueAPI.User | null

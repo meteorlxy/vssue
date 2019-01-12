@@ -9,7 +9,7 @@ class VssueStore extends Vue implements Vssue.Store {
     return <string>process.env.VUE_APP_VERSION
   }
 
-  options!: Vssue.Options
+  options: Vssue.Options | null = null
 
   API: VssueAPI.Instance | null = null
 
@@ -38,7 +38,7 @@ class VssueStore extends Vue implements Vssue.Store {
   get authStatus (): Vssue.AuthStatus {
     return {
       isLogined: this.accessToken !== null && this.user !== null,
-      isAdmin: this.accessToken !== null && this.user !== null &&
+      isAdmin: this.options !== null && this.accessToken !== null && this.user !== null &&
         (
           this.user.username === this.options.owner ||
           this.options.admins.includes(this.user.username)

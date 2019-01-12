@@ -109,8 +109,8 @@ export default class VssuePagination extends Vue {
 
   get perPageOptions (): Array<number> {
     const perPageOptions: Array<number> = [5, 10, 20, 50]
-    if (!perPageOptions.includes(this.vssue.options.perPage) && this.vssue.options.perPage < 100) {
-      perPageOptions.push(this.vssue.options.perPage)
+    if (!perPageOptions.includes(this.vssue.options!.perPage) && this.vssue.options!.perPage < 100) {
+      perPageOptions.push(this.vssue.options!.perPage)
     }
     return perPageOptions.sort((a, b) => a - b)
   }
