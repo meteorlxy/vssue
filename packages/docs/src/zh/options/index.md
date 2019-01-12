@@ -198,7 +198,7 @@ Vue.use(Vssue, {
   在 `owner` 是一个组织而不是用户时，可以将你的用户名添加进 `admins` 来自动创建对应 Issue。
   :::
 
-- __Reference__: [owner](#owner)
+- __参考__: [owner](#owner)
 
 ### perPage <Badge text="v0.2+"/>
 
@@ -207,6 +207,27 @@ Vue.use(Vssue, {
 - __详细__:
 
   默认每页显示的评论数。
+
+### locale <Badge text="v0.5+"/>
+
+- __类型__: `string`
+- __默认值__: `undefined`
+- __详细__:
+
+  使用的语言。
+
+  不设置该选项时，Vssue 会使用 `window.navigator.languages` 中的语言，如果其中没有 Vssue 支持的语言则会默认使用 `'en'`。
+
+  ::: tip
+  Vssue 使用 [vue-i18n](https://kazupon.github.io/vue-i18n/) 实现国际化，但是并不会影响你的 Vue 应用的其他部分。
+  如果你在项目中已经使用了 vue-i18n，也不会对 Vssue 造成影响。
+  语言包在 `src/i18n/lang` 目录下。目前我们支持：
+
+  - `'en'`
+  - `'zh-CN'`
+
+  欢迎贡献代码帮助 Vssue 支持更多语言。
+  :::
 
 ## 组件 Props
 
