@@ -116,28 +116,13 @@ export default class Vssue extends Vue {
   /**
    * Provide the VssueStore for the child components
    */
-  @Provide('vssue') vssue: VssueNamespace.Store = new VssueStore({
-    data: { options: this.mergedOptions },
-  })
+  @Provide('vssue') vssue: VssueNamespace.Store = new VssueStore()
 
   /**
    * The actual title of issue
    */
   get issueTitle (): string {
     return typeof this.title === 'function' ? this.title(this.vssue.options) : `${this.vssue.options.prefix}${this.title}`
-  }
-
-  /**
-   * Merged options - default and prop
-   */
-  get mergedOptions (): VssueNamespace.Options {
-    return <VssueNamespace.Options>Object.assign({
-      labels: ['Vssue'],
-      state: 'Vssue',
-      prefix: '[Vssue]',
-      admins: [],
-      perPage: 10,
-    }, this.options)
   }
 
   /**
@@ -162,8 +147,8 @@ export default class Vssue extends Vue {
    * Re-init Vssue if the `options` is changed
    */
   @Watch('options', { deep: true })
-  onOptionsChange (): void {
-    this.vssue.options = this.mergedOptions
+  onOptionsChange (options): void {
+    this.vssue.setOptions(options)
     this.init()
   }
 
@@ -171,19 +156,10 @@ export default class Vssue extends Vue {
    * Created hook. Check Options and init Vssue.
    */
   created (): void {
-    // check the options
-    const requiredOptions = [
-      'api',
-      'owner',
-      'repo',
-      'clientId',
-      'clientSecret',
-    ]
-    for (const opt of requiredOptions) {
-      if (!this.vssue.options[opt]) {
-        console.warn(`[Vssue] the option '${opt}' is required`)
-      }
-    }
+    // set options
+    this.vssue.setOptions(this.options)
+
+    // init vssue
     this.init()
   }
 
@@ -194,8 +170,6 @@ export default class Vssue extends Vue {
     try {
       // init VssueStore
       await this.vssue.init()
-
-      // show alert on error
 
       // init comments
       if (!this.issueId) {

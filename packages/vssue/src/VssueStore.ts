@@ -73,6 +73,33 @@ class VssueStore extends Vue implements Vssue.Store {
   }
 
   /**
+   * Set options of Vssue
+   */
+  setOptions (options: Partial<Vssue.Options>): void {
+    this.options = <Vssue.Options>Object.assign({
+      labels: ['Vssue'],
+      state: 'Vssue',
+      prefix: '[Vssue]',
+      admins: [],
+      perPage: 10,
+    }, options)
+
+    // check options
+    const requiredOptions = [
+      'api',
+      'owner',
+      'repo',
+      'clientId',
+      'clientSecret',
+    ]
+    for (const opt of requiredOptions) {
+      if (!this.options[opt]) {
+        console.warn(`[Vssue] the option '${opt}' is required`)
+      }
+    }
+  }
+
+  /**
    * Init VssueStore
    */
   async init (): Promise<void> {

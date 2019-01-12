@@ -35,6 +35,7 @@ export namespace Vssue {
     query: VssueAPI.Query
     status: Vssue.Status
     authStatus: Vssue.AuthStatus
+    setOptions (options: Partial<Vssue.Options>): void
     init (): Promise<void>
     initCommentsByIssueTitle(issueTitle: string): Promise<void>
     initCommentsByIssueId(issueId: number | string): Promise<void>
