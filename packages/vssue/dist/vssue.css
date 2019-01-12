@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.4.2
+ * @version v0.4.3
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -243,10 +243,14 @@
 .vssue .vssue-comments .vssue-comment {
   margin: 15px 0;
 }
-.vssue .vssue-comments .vssue-comment.disabled {
+.vssue .vssue-comments .vssue-comment.vssue-comment-edit-mode .vssue-comment-main {
+  -webkit-box-shadow: 0 0 1px 1px #9adbbe;
+          box-shadow: 0 0 1px 1px #9adbbe;
+}
+.vssue .vssue-comments .vssue-comment.vssue-comment-disabled {
   pointer-events: none;
 }
-.vssue .vssue-comments .vssue-comment.disabled .vssue-comment-body {
+.vssue .vssue-comments .vssue-comment.vssue-comment-disabled .vssue-comment-body {
   background-color: #f9f9fa;
 }
 .vssue .vssue-comments .vssue-comment .vssue-comment-avatar {
@@ -279,15 +283,27 @@
 }
 .vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-header .vssue-comment-created-at {
   float: right;
+  cursor: default;
   color: #a3aab1;
 }
 .vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-main {
   padding: 15px;
 }
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-main .vssue-edit-comment-input {
+  resize: none;
+  outline: none;
+  border: none;
+  width: 100%;
+  background: transparent;
+}
 .vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer {
   padding: 10px 15px;
   border-top: 1px solid #eaecef;
   overflow: hidden;
+}
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-hint {
+  cursor: default;
+  color: #a3aab1;
 }
 .vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-reactions .vssue-comment-reaction {
   cursor: pointer;
@@ -302,6 +318,12 @@
 .vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation {
   cursor: pointer;
   margin-left: 8px;
+}
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation.vssue-comment-operation-muted {
+  color: #a3aab1;
+}
+.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation.vssue-comment-operation-muted .vssue-icon {
+  fill: #a3aab1;
 }
 .vssue .vssue-pagination {
   cursor: default;

@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.4.2
+ * @version v0.4.3
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -1470,6 +1470,19 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
+      "id": "icon-edit",
+      "viewBox": "0 0 1024 1024"
+    }
+  }, [_c('path', {
+    attrs: {
+      "d": "M723.2 917.76H286.72c-65.28 0-118.4-51.2-118.4-113.92V261.76C168.32 198.4 221.44 147.2 286.72 147.2h375.04c17.92 0 32 14.08 32 32s-14.08 32-32 32H286.72c-30.08 0-54.4 22.4-54.4 49.92v542.08c0 27.52 24.32 49.92 54.4 49.92H723.2c30.08 0 54.4-22.4 54.4-49.92V440.32c0-17.92 14.08-32 32-32s32 14.08 32 32v363.52c0 62.72-53.12 113.92-118.4 113.92z"
+    }
+  }), _vm._v(" "), _c('path', {
+    attrs: {
+      "d": "M499.84 602.24c-7.68 0-14.72-2.56-21.12-7.68-13.44-11.52-14.72-32-3.2-45.44L780.16 198.4c11.52-13.44 32-14.72 45.44-3.2s14.72 32 3.2 45.44L524.16 591.36c-6.4 7.04-15.36 10.88-24.32 10.88z"
+    }
+  })]), _vm._v(" "), _c('symbol', {
+    attrs: {
       "id": "icon-delete",
       "viewBox": "0 0 1024 1024"
     }
@@ -1676,7 +1689,10 @@ var VssueComment = /** @class */ (function (_super) {
     __extends(VssueComment, _super);
     function VssueComment() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.editMode = false;
+        _this.editContent = _this.comment.contentRaw;
         _this.creatingReactions = [];
+        _this.isPutingComment = false;
         _this.isDeletingComment = false;
         return _this;
     }
@@ -1690,13 +1706,6 @@ var VssueComment = /** @class */ (function (_super) {
     Object.defineProperty(VssueComment.prototype, "content", {
         get: function () {
             return this.comment.content;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(VssueComment.prototype, "contentRaw", {
-        get: function () {
-            return this.comment.contentRaw;
         },
         enumerable: true,
         configurable: true
@@ -1724,7 +1733,7 @@ var VssueComment = /** @class */ (function (_super) {
     });
     Object.defineProperty(VssueComment.prototype, "showReactions", {
         get: function () {
-            return Boolean(this.vssue.API && this.vssue.API.platform.meta.reactable && this.comment.reactions);
+            return Boolean(this.vssue.API && this.vssue.API.platform.meta.reactable && this.comment.reactions && !this.editMode);
         },
         enumerable: true,
         configurable: true
@@ -1732,6 +1741,20 @@ var VssueComment = /** @class */ (function (_super) {
     Object.defineProperty(VssueComment.prototype, "reactionKeys", {
         get: function () {
             return ['heart', 'like', 'unlike'];
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VssueComment.prototype, "editContentRows", {
+        get: function () {
+            return this.editContent.split('\n').length - 1;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VssueComment.prototype, "editInputRows", {
+        get: function () {
+            return this.editContentRows < 3 ? 5 : this.editContentRows + 2;
         },
         enumerable: true,
         configurable: true
@@ -1773,6 +1796,52 @@ var VssueComment = /** @class */ (function (_super) {
             });
         });
     };
+    VssueComment.prototype.enterEdit = function () {
+        var _this = this;
+        this.editMode = true;
+        this.$nextTick(function () {
+            _this.$refs.input.focus();
+        });
+    };
+    VssueComment.prototype.resetEdit = function () {
+        this.editMode = false;
+        this.editContent = this.comment.contentRaw;
+    };
+    VssueComment.prototype.putComment = function () {
+        return __awaiter(this, void 0, Promise, function () {
+            var comment;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, , 3, 4]);
+                        if (this.isPutingComment || this.vssue.status.isLoadingComments)
+                            return [2 /*return*/];
+                        if (!(this.editContent !== this.comment.contentRaw)) return [3 /*break*/, 2];
+                        this.isPutingComment = true;
+                        this.vssue.status.isLoadingComments = true;
+                        return [4 /*yield*/, this.vssue.putComment({
+                                commentId: this.comment.id,
+                                content: this.editContent
+                            })];
+                    case 1:
+                        comment = _a.sent();
+                        if (comment) {
+                            this.vssue.comments.data.splice(this.vssue.comments.data.findIndex(function (item) { return item.id === _this.comment.id; }), 1, comment);
+                        }
+                        _a.label = 2;
+                    case 2:
+                        this.editMode = false;
+                        return [3 /*break*/, 4];
+                    case 3:
+                        this.isPutingComment = false;
+                        this.vssue.status.isLoadingComments = false;
+                        return [7 /*endfinally*/];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     VssueComment.prototype.deleteComment = function () {
         return __awaiter(this, void 0, Promise, function () {
             var success;
@@ -1781,9 +1850,12 @@ var VssueComment = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, , 7, 8]);
-                        if (this.isDeletingComment)
+                        if (this.isDeletingComment || this.vssue.status.isLoadingComments)
+                            return [2 /*return*/];
+                        if (!window.confirm('Confirm to delete this comment?'))
                             return [2 /*return*/];
                         this.isDeletingComment = true;
+                        this.vssue.status.isLoadingComments = true;
                         return [4 /*yield*/, this.vssue.deleteComment({
                                 commentId: this.comment.id
                             })];
@@ -1810,6 +1882,7 @@ var VssueComment = /** @class */ (function (_super) {
                     case 6: return [3 /*break*/, 8];
                     case 7:
                         this.isDeletingComment = false;
+                        this.vssue.status.isLoadingComments = false;
                         return [7 /*endfinally*/];
                     case 8: return [2 /*return*/];
                 }
@@ -1848,7 +1921,8 @@ var __vue_render__$1 = function __vue_render__() {
   return _c('div', {
     staticClass: "vssue-comment",
     class: {
-      'disabled': _vm.isDeletingComment
+      'vssue-comment-edit-mode': _vm.editMode,
+      'vssue-comment-disabled': _vm.isDeletingComment || _vm.isPutingComment
     }
   }, [_c('div', {
     staticClass: "vssue-comment-avatar"
@@ -1878,14 +1952,51 @@ var __vue_render__$1 = function __vue_render__() {
     staticClass: "vssue-comment-created-at"
   }, [_vm._v("\n          " + _vm._s(_vm.createdAt) + "\n        ")])]), _vm._v(" "), _c('div', {
     staticClass: "vssue-comment-main"
-  }, [_c('article', {
+  }, [_vm.editMode ? _c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.editContent,
+      expression: "editContent"
+    }],
+    ref: "input",
+    staticClass: "vssue-edit-comment-input",
+    attrs: {
+      "rows": _vm.editInputRows
+    },
+    domProps: {
+      "value": _vm.editContent
+    },
+    on: {
+      "keyup": function keyup($event) {
+        if (!('button' in $event) && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) {
+          return null;
+        }
+
+        if (!$event.ctrlKey) {
+          return null;
+        }
+
+        _vm.putComment();
+      },
+      "input": function input($event) {
+        if ($event.target.composing) {
+          return;
+        }
+
+        _vm.editContent = $event.target.value;
+      }
+    }
+  }) : _c('article', {
     staticClass: "markdown-body",
     domProps: {
       "innerHTML": _vm._s(_vm.content)
     }
   })]), _vm._v(" "), _c('div', {
     staticClass: "vssue-comment-footer"
-  }, [_vm.showReactions ? _c('span', {
+  }, [_vm.editMode ? _c('span', {
+    staticClass: "vssue-comment-hint"
+  }, [_vm._v("\n          Edit Mode\n        ")]) : _vm._e(), _vm._v(" "), _vm.showReactions ? _c('span', {
     staticClass: "vssue-comment-reactions"
   }, _vm._l(_vm.reactionKeys, function (reaction) {
     return _c('span', {
@@ -1911,7 +2022,62 @@ var __vue_render__$1 = function __vue_render__() {
     }, [_vm._v("\n              " + _vm._s(_vm.comment.reactions[reaction]) + "\n            ")])], 1);
   }), 0) : _vm._e(), _vm._v(" "), _c('span', {
     staticClass: "vssue-comment-operations"
-  }, [_vm.comment.author.username === _vm.currentUser ? _c('span', {
+  }, [_vm.comment.author.username === _vm.currentUser && _vm.editMode ? _c('span', {
+    staticClass: "vssue-comment-operation",
+    class: {
+      'vssue-comment-operation-muted': _vm.isPutingComment
+    },
+    attrs: {
+      "title": _vm.isPutingComment ? 'Submitting' : 'Submit'
+    },
+    on: {
+      "click": function click($event) {
+        _vm.putComment();
+      }
+    }
+  }, [_c('VssueIcon', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: _vm.isPutingComment,
+      expression: "isPutingComment"
+    }],
+    attrs: {
+      "name": "loading",
+      "title": "Submitting"
+    }
+  }), _vm._v("\n\n            Submit\n          ")], 1) : _vm._e(), _vm._v(" "), _vm.comment.author.username === _vm.currentUser && _vm.editMode ? _c('span', {
+    staticClass: "vssue-comment-operation vssue-comment-operation-muted",
+    on: {
+      "click": function click($event) {
+        _vm.resetEdit();
+      }
+    }
+  }, [_vm._v("\n            Cancel\n          ")]) : _vm._e(), _vm._v(" "), _vm.comment.author.username === _vm.currentUser ? _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.editMode,
+      expression: "!editMode"
+    }],
+    staticClass: "vssue-comment-operation",
+    on: {
+      "click": function click($event) {
+        _vm.enterEdit();
+      }
+    }
+  }, [_c('VssueIcon', {
+    attrs: {
+      "name": "edit",
+      "title": "Edit"
+    }
+  })], 1) : _vm._e(), _vm._v(" "), _vm.comment.author.username === _vm.currentUser ? _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.editMode,
+      expression: "!editMode"
+    }],
     staticClass: "vssue-comment-operation",
     on: {
       "click": function click($event) {
@@ -1924,6 +2090,12 @@ var __vue_render__$1 = function __vue_render__() {
       "title": _vm.isDeletingComment ? "Deleting" : "Delete"
     }
   })], 1) : _vm._e(), _vm._v(" "), _c('span', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: !_vm.editMode,
+      expression: "!editMode"
+    }],
     staticClass: "vssue-comment-operation",
     on: {
       "click": function click($event) {
@@ -2028,8 +2200,8 @@ var VssuePagination = /** @class */ (function (_super) {
     Object.defineProperty(VssuePagination.prototype, "perPageOptions", {
         get: function () {
             var perPageOptions = [5, 10, 20, 50];
-            if (!perPageOptions.includes(this.perPage) && this.perPage < 100) {
-                perPageOptions.push(this.perPage);
+            if (!perPageOptions.includes(this.vssue.options.perPage) && this.vssue.options.perPage < 100) {
+                perPageOptions.push(this.vssue.options.perPage);
             }
             return perPageOptions.sort(function (a, b) { return a - b; });
         },
@@ -2976,7 +3148,7 @@ var VssueStore = /** @class */ (function (_super) {
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.4.2";
+            return "0.4.3";
         },
         enumerable: true,
         configurable: true
@@ -3237,12 +3409,43 @@ var VssueStore = /** @class */ (function (_super) {
         });
     };
     /**
+     * Edit a comment
+     */
+    VssueStore.prototype.putComment = function (_a) {
+        var commentId = _a.commentId, content = _a.content;
+        return __awaiter(this, void 0, Promise, function () {
+            var comment, e_3;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        if (!this.API || !this.issue)
+                            return [2 /*return*/];
+                        return [4 /*yield*/, this.API.putComment({
+                                accessToken: this.accessToken,
+                                issueId: this.issue.id,
+                                commentId: commentId,
+                                content: content
+                            })];
+                    case 1:
+                        comment = _b.sent();
+                        return [2 /*return*/, comment];
+                    case 2:
+                        e_3 = _b.sent();
+                        this.$emit('error', e_3);
+                        throw e_3;
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    /**
      * Delete a new comment
      */
     VssueStore.prototype.deleteComment = function (_a) {
         var commentId = _a.commentId;
         return __awaiter(this, void 0, Promise, function () {
-            var success, e_3;
+            var success, e_4;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -3258,9 +3461,9 @@ var VssueStore = /** @class */ (function (_super) {
                         success = _b.sent();
                         return [2 /*return*/, success];
                     case 2:
-                        e_3 = _b.sent();
-                        this.$emit('error', e_3);
-                        throw e_3;
+                        e_4 = _b.sent();
+                        this.$emit('error', e_4);
+                        throw e_4;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -3272,7 +3475,7 @@ var VssueStore = /** @class */ (function (_super) {
     VssueStore.prototype.getCommentReactions = function (_a) {
         var commentId = _a.commentId;
         return __awaiter(this, void 0, Promise, function () {
-            var reactions, e_4;
+            var reactions, e_5;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -3288,9 +3491,9 @@ var VssueStore = /** @class */ (function (_super) {
                         reactions = _b.sent();
                         return [2 /*return*/, reactions];
                     case 2:
-                        e_4 = _b.sent();
-                        this.$emit('error', e_4);
-                        throw e_4;
+                        e_5 = _b.sent();
+                        this.$emit('error', e_5);
+                        throw e_5;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -3302,7 +3505,7 @@ var VssueStore = /** @class */ (function (_super) {
     VssueStore.prototype.postCommentReaction = function (_a) {
         var commentId = _a.commentId, reaction = _a.reaction;
         return __awaiter(this, void 0, Promise, function () {
-            var success, e_5;
+            var success, e_6;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -3319,9 +3522,9 @@ var VssueStore = /** @class */ (function (_super) {
                         success = _b.sent();
                         return [2 /*return*/, success];
                     case 2:
-                        e_5 = _b.sent();
-                        this.$emit('error', e_5);
-                        throw e_5;
+                        e_6 = _b.sent();
+                        this.$emit('error', e_6);
+                        throw e_6;
                     case 3: return [2 /*return*/];
                 }
             });
@@ -3674,7 +3877,7 @@ var VssueComponent = __vue_normalize__$a({
 
 var VssuePlugin = {
     get version() {
-        return "0.4.2";
+        return "0.4.3";
     },
     installed: false,
     install: function (Vue$$1, options) {
