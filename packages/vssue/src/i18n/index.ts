@@ -7,21 +7,15 @@ if (!Vue.prototype.hasOwnProperty('$i18n')) {
   Vue.use(VueI18n)
 }
 
-const messages = {
-  'en': enUS,
-  'en-US': enUS,
-  'zh': zhCN,
-  'zh-CN': zhCN,
-}
-
-const locales = Object.keys(messages)
-const navLangs = window.navigator.languages
-const defaultLocale = navLangs.filter(item => locales.includes(item)).shift() || 'en'
-
 const i18n: VueI18n = new VueI18n({
-  locale: defaultLocale,
+  locale: 'en',
   fallbackLocale: 'en',
-  messages,
+  messages: {
+    'en': enUS,
+    'en-US': enUS,
+    'zh': zhCN,
+    'zh-CN': zhCN,
+  },
 })
 
 export default i18n

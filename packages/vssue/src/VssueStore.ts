@@ -132,6 +132,10 @@ class VssueStore extends Vue implements Vssue.Store {
       // set locale
       if (this.options.locale) {
         this.$i18n.locale = this.options.locale
+      } else {
+        const locales = Object.keys(this.$i18n.messages)
+        const navLangs = window.navigator.languages
+        this.$i18n.locale = navLangs.filter(item => locales.includes(item)).shift() || 'en'
       }
 
       // get the VssueAPI instance according to the options.api
