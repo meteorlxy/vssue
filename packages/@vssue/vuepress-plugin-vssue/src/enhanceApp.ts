@@ -16,7 +16,9 @@ declare module 'vue/types/vue' {
 
 export default ({ Vue }: { Vue: VueConstructor}) => {
   // options come from vuepress plugin config
-  Vue.use(Vssue, Object.assign(JSON.parse(VSSUE_OPTIONS), {
+  const vpOptions = JSON.parse(VSSUE_OPTIONS)
+
+  Vue.use(Vssue, Object.assign({}, vpOptions, {
     api: VssueAPI,
   }))
 
@@ -29,6 +31,18 @@ export default ({ Vue }: { Vue: VueConstructor}) => {
 
     /* eslint-disable-next-line vue/require-render-return */
     render (h, { parent, data }) {
+      // if locale is not set by user, use Vupress `$lang`
+      if (!vpOptions.locale) {
+        if (!data.attrs) {
+          data.attrs = {}
+        }
+        if (!data.attrs.options) {
+          data.attrs.options = {}
+        }
+        if (!data.attrs.options.locale) {
+          data.attrs.options.locale = parent.$lang || 'en'
+        }
+      }
       if (parent._isMounted) {
         return h(VssueComponent, data)
       } else {
