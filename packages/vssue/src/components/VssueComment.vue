@@ -186,6 +186,8 @@ export default class VssueComment extends Vue {
     try {
       if (this.isDeletingComment) return
 
+      if (!window.confirm('Confirm to delete this comment?')) return
+
       this.isDeletingComment = true
 
       const success = await this.vssue.deleteComment({
