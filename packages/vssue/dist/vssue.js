@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.4.3
+ * @version v0.5.0
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -10,6 +10,7 @@
 import { Prop, Inject, Component, Vue as Vue$1, Watch, Provide } from 'vue-property-decorator';
 import Vue from 'vue';
 import { formatDateTime, getCleanURL } from '@vssue/utils';
+import VueI18n from 'vue-i18n';
 
 function createCommonjsModule(fn, module) {
 	return module = { exports: {} }, fn(module, module.exports), module.exports;
@@ -1777,7 +1778,7 @@ var VssueComment = /** @class */ (function (_super) {
                     case 1:
                         success = _b.sent();
                         if (!success) {
-                            this.vssue.$emit('error', new Error('Already given this reaction'));
+                            this.vssue.$emit('error', new Error(this.vssue.$t('reactionGiven', { reaction: this.vssue.$t(reaction) })));
                         }
                         return [4 /*yield*/, this.vssue.getCommentReactions({
                                 commentId: this.comment.id
@@ -1852,7 +1853,7 @@ var VssueComment = /** @class */ (function (_super) {
                         _a.trys.push([0, , 7, 8]);
                         if (this.isDeletingComment || this.vssue.status.isLoadingComments)
                             return [2 /*return*/];
-                        if (!window.confirm('Confirm to delete this comment?'))
+                        if (!window.confirm(this.vssue.$t('deleteConfirm')))
                             return [2 /*return*/];
                         this.isDeletingComment = true;
                         this.vssue.status.isLoadingComments = true;
@@ -1877,7 +1878,7 @@ var VssueComment = /** @class */ (function (_super) {
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
                     case 5:
-                        this.vssue.$emit('error', new Error('Failed to delete comment'));
+                        this.vssue.$emit('error', new Error(this.vssue.$t('deleteFailed')));
                         _a.label = 6;
                     case 6: return [3 /*break*/, 8];
                     case 7:
@@ -1996,14 +1997,14 @@ var __vue_render__$1 = function __vue_render__() {
     staticClass: "vssue-comment-footer"
   }, [_vm.editMode ? _c('span', {
     staticClass: "vssue-comment-hint"
-  }, [_vm._v("\n          Edit Mode\n        ")]) : _vm._e(), _vm._v(" "), _vm.showReactions ? _c('span', {
+  }, [_vm._v("\n          " + _vm._s(_vm.vssue.$t('editMode')) + "\n        ")]) : _vm._e(), _vm._v(" "), _vm.showReactions ? _c('span', {
     staticClass: "vssue-comment-reactions"
   }, _vm._l(_vm.reactionKeys, function (reaction) {
     return _c('span', {
       key: reaction,
       staticClass: "vssue-comment-reaction",
       attrs: {
-        "title": reaction
+        "title": _vm.vssue.$t(_vm.creatingReactions.includes(reaction) ? 'loading' : reaction)
       },
       on: {
         "click": function click($event) {
@@ -2015,7 +2016,7 @@ var __vue_render__$1 = function __vue_render__() {
     }, [_c('VssueIcon', {
       attrs: {
         "name": _vm.creatingReactions.includes(reaction) ? 'loading' : reaction,
-        "title": _vm.creatingReactions.includes(reaction) ? 'loading' : reaction
+        "title": _vm.vssue.$t(_vm.creatingReactions.includes(reaction) ? 'loading' : reaction)
       }
     }), _vm._v(" "), _c('span', {
       staticClass: "vssue-comment-reaction-number"
@@ -2028,7 +2029,7 @@ var __vue_render__$1 = function __vue_render__() {
       'vssue-comment-operation-muted': _vm.isPutingComment
     },
     attrs: {
-      "title": _vm.isPutingComment ? 'Submitting' : 'Submit'
+      "title": _vm.vssue.$t(_vm.isPutingComment ? 'loading' : 'submit')
     },
     on: {
       "click": function click($event) {
@@ -2044,16 +2045,19 @@ var __vue_render__$1 = function __vue_render__() {
     }],
     attrs: {
       "name": "loading",
-      "title": "Submitting"
+      "title": _vm.vssue.$t('loading')
     }
-  }), _vm._v("\n\n            Submit\n          ")], 1) : _vm._e(), _vm._v(" "), _vm.comment.author.username === _vm.currentUser && _vm.editMode ? _c('span', {
+  }), _vm._v("\n\n            " + _vm._s(_vm.vssue.$t('submit')) + "\n          ")], 1) : _vm._e(), _vm._v(" "), _vm.comment.author.username === _vm.currentUser && _vm.editMode ? _c('span', {
     staticClass: "vssue-comment-operation vssue-comment-operation-muted",
+    attrs: {
+      "title": _vm.vssue.$t('cancel')
+    },
     on: {
       "click": function click($event) {
         _vm.resetEdit();
       }
     }
-  }, [_vm._v("\n            Cancel\n          ")]) : _vm._e(), _vm._v(" "), _vm.comment.author.username === _vm.currentUser ? _c('span', {
+  }, [_vm._v("\n            " + _vm._s(_vm.vssue.$t('cancel')) + "\n          ")]) : _vm._e(), _vm._v(" "), _vm.comment.author.username === _vm.currentUser ? _c('span', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -2069,7 +2073,7 @@ var __vue_render__$1 = function __vue_render__() {
   }, [_c('VssueIcon', {
     attrs: {
       "name": "edit",
-      "title": "Edit"
+      "title": _vm.vssue.$t('edit')
     }
   })], 1) : _vm._e(), _vm._v(" "), _vm.comment.author.username === _vm.currentUser ? _c('span', {
     directives: [{
@@ -2087,7 +2091,7 @@ var __vue_render__$1 = function __vue_render__() {
   }, [_c('VssueIcon', {
     attrs: {
       "name": _vm.isDeletingComment ? 'loading' : 'delete',
-      "title": _vm.isDeletingComment ? "Deleting" : "Delete"
+      "title": _vm.vssue.$t(_vm.isDeletingComment ? 'loading' : 'delete')
     }
   })], 1) : _vm._e(), _vm._v(" "), _c('span', {
     directives: [{
@@ -2105,7 +2109,7 @@ var __vue_render__$1 = function __vue_render__() {
   }, [_c('VssueIcon', {
     attrs: {
       "name": "reply",
-      "title": "Reply"
+      "title": _vm.vssue.$t('reply')
     }
   })], 1)])])])], 2)]);
 };
@@ -2288,13 +2292,13 @@ var __vue_render__$2 = function __vue_render__() {
         "value": val
       }
     }, [_vm._v("\n        " + _vm._s(val) + "\n      ")]);
-  }), 0), _vm._v(" "), _c('span', [_vm._v("\n      Comments per page\n    ")]), _vm._v(" "), _vm.vssue.API.platform.meta.sortable ? _c('span', {
+  }), 0), _vm._v(" "), _c('span', [_vm._v("\n      " + _vm._s(_vm.vssue.$t('perPage')) + "\n    ")]), _vm._v(" "), _vm.vssue.API.platform.meta.sortable ? _c('span', {
     class: {
       'vssue-pagination-link': true,
       'disabled': _vm.loading
     },
     attrs: {
-      "title": "Click to change the sort direction"
+      "title": _vm.vssue.$t('sort')
     },
     on: {
       "click": function click($event) {
@@ -2309,7 +2313,7 @@ var __vue_render__$2 = function __vue_render__() {
       'disabled': _vm.page === 1 || _vm.loading
     },
     attrs: {
-      "title": "Previous Page"
+      "title": _vm.vssue.$t('prev')
     },
     domProps: {
       "textContent": _vm._s("<")
@@ -2319,7 +2323,7 @@ var __vue_render__$2 = function __vue_render__() {
         _vm.page -= 1;
       }
     }
-  }), _vm._v(" "), _c('span', [_vm._v("\n      Page\n    ")]), _vm._v(" "), _c('select', {
+  }), _vm._v(" "), _c('span', [_vm._v("\n      " + _vm._s(_vm.vssue.$t('page')) + "\n    ")]), _vm._v(" "), _c('select', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -2373,7 +2377,7 @@ var __vue_render__$2 = function __vue_render__() {
       'disabled': _vm.page === _vm.pageCount || _vm.loading
     },
     attrs: {
-      "title": "Next Page"
+      "title": _vm.vssue.$t('next')
     },
     domProps: {
       "textContent": _vm._s(">")
@@ -2535,16 +2539,22 @@ var __vue_render__$3 = function __vue_render__() {
     attrs: {
       "icon-name": "error"
     }
-  }, [_vm._v("\n      Failed to load comments\n    ")]) : _vm.vssue.status.isLoginRequired ? _c('VssueStatus', {
-    key: "requie-login"
-  }, [_vm._v("\n      Login to view comments\n    ")]) : !_vm.vssue.comments ? _c('VssueStatus', {
-    key: "loading",
+  }, [_vm._v("\n      " + _vm._s(_vm.vssue.$t('failed')) + "\n    ")]) : _vm.vssue.status.isLoginRequired ? _c('VssueStatus', {
+    key: "require-login"
+  }, [_c('a', {
+    on: {
+      "click": function click($event) {
+        _vm.vssue.$emit('login');
+      }
+    }
+  }, [_vm._v("\n        " + _vm._s(_vm.vssue.$t('requireLogin')) + "\n      ")])]) : !_vm.vssue.comments ? _c('VssueStatus', {
+    key: "loading-comments",
     attrs: {
       "icon-name": "loading"
     }
-  }, [_vm._v("\n      Loading comments...\n    ")]) : _vm.vssue.comments.data.length === 0 ? _c('VssueStatus', {
+  }, [_vm._v("\n      " + _vm._s(_vm.vssue.$t('loadingComments')) + "\n    ")]) : _vm.vssue.comments.data.length === 0 ? _c('VssueStatus', {
     key: "no-comments"
-  }, [_vm._v("\n      No comments yet. Leave the first comment !\n    ")]) : _c('div', {
+  }, [_vm._v("\n      " + _vm._s(_vm.vssue.$t('noComments')) + "\n    ")]) : _c('div', {
     key: "comments-list",
     staticClass: "vssue-comments-list"
   }, [_c('VssuePagination'), _vm._v(" "), _c('TransitionFade', {
@@ -2556,14 +2566,6 @@ var __vue_render__$3 = function __vue_render__() {
       key: comment.id,
       attrs: {
         "comment": comment
-      },
-      on: {
-        "reply": function reply(comment) {
-          return _vm.$emit('reply', comment);
-        },
-        "create-reaction": function createReaction(reaction) {
-          return _vm.$emit('create-reaction', reaction);
-        }
       }
     });
   }), 1), _vm._v(" "), _c('VssuePagination', {
@@ -2728,6 +2730,9 @@ var VssueNewComment = /** @class */ (function (_super) {
             _this.focus();
         });
     };
+    VssueNewComment.prototype.beforeDestroy = function () {
+        this.vssue.$off('reply-comment');
+    };
     VssueNewComment.prototype.focus = function () {
         this.$refs.input.focus();
     };
@@ -2746,9 +2751,6 @@ var VssueNewComment = /** @class */ (function (_super) {
                 }
             });
         });
-    };
-    VssueNewComment.prototype.beforeDestroy = function () {
-        this.vssue.$off('reply-comment');
     };
     __decorate([
         Inject()
@@ -2792,7 +2794,9 @@ var __vue_render__$4 = function __vue_render__() {
   })]) : _c('VssueIcon', {
     attrs: {
       "name": _vm.platform.toLowerCase(),
-      "title": "Login with " + _vm.platform
+      "title": _vm.vssue.$t('loginToComment', {
+        platform: _vm.platform
+      })
     },
     on: {
       "click": function click($event) {
@@ -2813,7 +2817,7 @@ var __vue_render__$4 = function __vue_render__() {
     attrs: {
       "rows": _vm.inputRows,
       "disabled": !_vm.user || _vm.loading,
-      "placeholder": _vm.user ? 'Leave a comment. Styling with Markdown is supported. Ctrl + Enter to submit.' : 'Login to leave a comment',
+      "placeholder": _vm.vssue.$t(_vm.user ? 'placeholder' : 'noLoginPlaceHolder'),
       "spellcheck": false
     },
     domProps: {
@@ -2843,16 +2847,18 @@ var __vue_render__$4 = function __vue_render__() {
     staticClass: "vssue-new-comment-footer"
   }, [_vm.user ? _c('span', {
     staticClass: "vssue-current-user"
-  }, [_c('span', [_vm._v("Current user - " + _vm._s(_vm.user.username) + " - ")]), _vm._v(" "), _c('a', {
+  }, [_c('span', [_vm._v(_vm._s(_vm.vssue.$t('currentUser')) + " - " + _vm._s(_vm.user.username) + " - ")]), _vm._v(" "), _c('a', {
     staticClass: "vssue-logout",
     on: {
       "click": function click($event) {
         _vm.vssue.$emit('logout');
       }
     }
-  }, [_vm._v("\n        Logout\n      ")])]) : _c('span', {
+  }, [_vm._v("\n        " + _vm._s(_vm.vssue.$t('logout')) + "\n      ")])]) : _c('span', {
     staticClass: "vssue-current-user"
-  }, [_vm._v("\n      Login with " + _vm._s(_vm.platform) + " account to leave a comment\n    ")]), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n      " + _vm._s(_vm.vssue.$t('loginToComment', {
+    platform: _vm.platform
+  })) + "\n    ")]), _vm._v(" "), _c('div', {
     staticClass: "vssue-new-comment-operations"
   }, [_vm.user ? _c('VssueButton', {
     staticClass: "vssue-button-submit-comment",
@@ -2875,18 +2881,24 @@ var __vue_render__$4 = function __vue_render__() {
     attrs: {
       "name": "loading"
     }
-  }), _vm._v("\n\n        " + _vm._s(_vm.loading ? "Submitting" : "Submit Comment") + "\n      ")], 1) : _c('VssueButton', {
+  }), _vm._v("\n\n        " + _vm._s(_vm.vssue.$t(_vm.loading ? 'submitting' : 'submitComment')) + "\n      ")], 1) : _c('VssueButton', {
     staticClass: "vssue-button-login",
     attrs: {
       "type": "primary",
-      "title": "Click to Login with " + _vm.platform
+      "title": _vm.vssue.$t('loginToComment', {
+        platform: _vm.platform
+      })
     },
     on: {
       "click": function click($event) {
-        _vm.vssue.$emit('login');
+        _vm.vssue.$emit('login', {
+          platform: _vm.platform
+        });
       }
     }
-  }, [_vm._v("\n        Login\n      ")])], 1)])]);
+  }, [_vm._v("\n        " + _vm._s(_vm.vssue.$t('login', {
+    platform: _vm.platform
+  })) + "\n      ")])], 1)])]);
 };
 
 var __vue_staticRenderFns__$4 = [];
@@ -2967,6 +2979,7 @@ var VssueNotice = /** @class */ (function (_super) {
         this.vssue.$on('error', function (e) { return _this.alertShow(e.message); });
     };
     VssueNotice.prototype.beforeDestroy = function () {
+        this.vssue.$off('error');
         if (this.progress.timer !== null)
             window.clearTimeout(this.progress.timer);
         if (this.alert.timer !== null)
@@ -3123,10 +3136,109 @@ var VssueNotice$1 = __vue_normalize__$9({
   staticRenderFns: __vue_staticRenderFns__$5
 }, __vue_inject_styles__$9, __vue_script__$9, __vue_scope_id__$9, __vue_is_functional_template__$9, __vue_module_identifier__$9, undefined, undefined);
 
+var messages = {
+    // auth
+    login: 'Login with {platform}',
+    logout: 'Logout',
+    currentUser: 'Current User',
+    // comment input
+    loading: 'Loading',
+    submit: 'Submit',
+    submitting: 'Submitting',
+    submitComment: 'Submit Comment',
+    cancel: 'Cancel',
+    edit: 'Edit',
+    editMode: 'Edit Mode',
+    "delete": 'Delete',
+    reply: 'Reply',
+    // reactions
+    heart: 'Heart',
+    like: 'Like',
+    unlike: 'Unlike',
+    // pagination
+    perPage: 'Comments per page',
+    sort: 'Click to change the sort direction',
+    page: 'Page',
+    prev: 'Previous Page',
+    next: 'Next Page',
+    // hint
+    comments: 'Comments | {count} Comments',
+    loginToComment: 'Login with {platform} account to leave a comment',
+    placeholder: 'Leave a comment. Styling with Markdown is supported. Ctrl + Enter to submit.',
+    noLoginPlaceHolder: 'Login to leave a comment. Styling with Markdown is supported. ',
+    // status
+    initializing: 'Initializing...',
+    loadingComments: 'Loading comments...',
+    failed: 'Failed to load comments',
+    requireLogin: 'Login to view comments',
+    noComments: 'No comments yet. Leave the first comment !',
+    // alerts
+    reactionGiven: "Already given '{reaction}' reaction",
+    deleteConfirm: 'Confirm to delete this comment ?',
+    deleteFailed: 'Failed to delete comment'
+};
+
+var messages$1 = {
+    // auth
+    login: '使用 {platform} 登录',
+    logout: '退出登录',
+    currentUser: '当前用户',
+    // comment input
+    loading: '加载中',
+    submit: '提交',
+    submitting: '发表中',
+    submitComment: '发表评论',
+    cancel: '取消',
+    edit: '编辑',
+    editMode: '编辑模式',
+    "delete": '删除',
+    reply: '回复',
+    // reactions
+    heart: '喜欢',
+    like: '赞',
+    unlike: '踩',
+    // pagination
+    perPage: '每页评论数',
+    sort: '点击改变排序方式',
+    page: '页数',
+    prev: '上一页',
+    next: '下一页',
+    // hint
+    comments: '评论 | {count} 条评论',
+    loginToComment: '使用 {platform} 帐号登录后发表评论',
+    placeholder: '留下你的评论丨支持 Markdown 语法丨Ctrl + Enter 发表评论',
+    noLoginPlaceHolder: '登陆后才能发表评论丨支持 Markdown 语法',
+    // status
+    initializing: '正在初始化...',
+    loadingComments: '正在加载评论...',
+    failed: '加载评论失败',
+    requireLogin: '登录后查看评论',
+    noComments: '还没有评论，来发表第一条评论吧！',
+    // alerts
+    reactionGiven: "\u5DF2\u7ECF\u6DFB\u52A0\u8FC7 '{reaction}' \u4E86",
+    deleteConfirm: '确认要删除该评论吗？',
+    deleteFailed: '删除评论失败'
+};
+
+if (!Vue.prototype.hasOwnProperty('$i18n')) {
+    Vue.use(VueI18n);
+}
+var i18n = new VueI18n({
+    locale: 'en',
+    fallbackLocale: 'en',
+    messages: {
+        'en': messages,
+        'en-US': messages,
+        'zh': messages$1,
+        'zh-CN': messages$1
+    }
+});
+
 var VssueStore = /** @class */ (function (_super) {
     __extends(VssueStore, _super);
     function VssueStore() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.options = null;
         _this.API = null;
         _this.accessToken = null;
         _this.user = null;
@@ -3148,7 +3260,7 @@ var VssueStore = /** @class */ (function (_super) {
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.4.3";
+            return "0.5.0";
         },
         enumerable: true,
         configurable: true
@@ -3157,7 +3269,7 @@ var VssueStore = /** @class */ (function (_super) {
         get: function () {
             return {
                 isLogined: this.accessToken !== null && this.user !== null,
-                isAdmin: this.accessToken !== null && this.user !== null &&
+                isAdmin: this.options !== null && this.accessToken !== null && this.user !== null &&
                     (this.user.username === this.options.owner ||
                         this.options.admins.includes(this.user.username))
             };
@@ -3190,11 +3302,37 @@ var VssueStore = /** @class */ (function (_super) {
         this.$on('logout', this.handleLogout);
     };
     /**
+     * Set options of Vssue
+     */
+    VssueStore.prototype.setOptions = function (options) {
+        this.options = Object.assign({
+            labels: ['Vssue'],
+            state: 'Vssue',
+            prefix: '[Vssue]',
+            admins: [],
+            perPage: 10
+        }, options);
+        // check options
+        var requiredOptions = [
+            'api',
+            'owner',
+            'repo',
+            'clientId',
+            'clientSecret',
+        ];
+        for (var _i = 0, requiredOptions_1 = requiredOptions; _i < requiredOptions_1.length; _i++) {
+            var opt = requiredOptions_1[_i];
+            if (!this.options[opt]) {
+                console.warn("[Vssue] the option '" + opt + "' is required");
+            }
+        }
+    };
+    /**
      * Init VssueStore
      */
     VssueStore.prototype.init = function () {
         return __awaiter(this, void 0, Promise, function () {
-            var APIConstructor;
+            var locales_1, navLangs, APIConstructor;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -3220,6 +3358,15 @@ var VssueStore = /** @class */ (function (_super) {
                         this.status.isLoadingComments = false;
                         this.status.isFailed = false;
                         this.status.isCreatingComment = false;
+                        // set locale
+                        if (this.options.locale) {
+                            this.$i18n.locale = this.options.locale;
+                        }
+                        else {
+                            locales_1 = Object.keys(this.$i18n.messages);
+                            navLangs = window.navigator.languages;
+                            this.$i18n.locale = navLangs.filter(function (item) { return locales_1.includes(item); }).shift() || 'en';
+                        }
                         APIConstructor = this.options.api;
                         this.API = new APIConstructor({
                             baseURL: this.options.baseURL,
@@ -3613,7 +3760,7 @@ var VssueStore = /** @class */ (function (_super) {
         Watch('query.sort')
     ], VssueStore.prototype, "onQueryChange");
     VssueStore = __decorate([
-        Component
+        Component({ i18n: i18n })
     ], VssueStore);
     return VssueStore;
 }(Vue$1));
@@ -3625,9 +3772,7 @@ var Vssue = /** @class */ (function (_super) {
         /**
          * Provide the VssueStore for the child components
          */
-        _this.vssue = new VssueStore({
-            data: { options: _this.mergedOptions }
-        });
+        _this.vssue = new VssueStore();
         return _this;
     }
     Object.defineProperty(Vssue.prototype, "issueTitle", {
@@ -3635,23 +3780,10 @@ var Vssue = /** @class */ (function (_super) {
          * The actual title of issue
          */
         get: function () {
+            if (this.vssue.options === null) {
+                return '';
+            }
             return typeof this.title === 'function' ? this.title(this.vssue.options) : "" + this.vssue.options.prefix + this.title;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(Vssue.prototype, "mergedOptions", {
-        /**
-         * Merged options - default and prop
-         */
-        get: function () {
-            return Object.assign({
-                labels: ['Vssue'],
-                state: 'Vssue',
-                prefix: '[Vssue]',
-                admins: [],
-                perPage: 10
-            }, this.options);
         },
         enumerable: true,
         configurable: true
@@ -3673,28 +3805,17 @@ var Vssue = /** @class */ (function (_super) {
     /**
      * Re-init Vssue if the `options` is changed
      */
-    Vssue.prototype.onOptionsChange = function () {
-        this.vssue.options = this.mergedOptions;
+    Vssue.prototype.onOptionsChange = function (options) {
+        this.vssue.setOptions(options);
         this.init();
     };
     /**
      * Created hook. Check Options and init Vssue.
      */
     Vssue.prototype.created = function () {
-        // check the options
-        var requiredOptions = [
-            'api',
-            'owner',
-            'repo',
-            'clientId',
-            'clientSecret',
-        ];
-        for (var _i = 0, requiredOptions_1 = requiredOptions; _i < requiredOptions_1.length; _i++) {
-            var opt = requiredOptions_1[_i];
-            if (!this.vssue.options[opt]) {
-                console.warn("[Vssue] the option '" + opt + "' is required");
-            }
-        }
+        // set options
+        this.vssue.setOptions(this.options);
+        // init vssue
         this.init();
     };
     /**
@@ -3709,7 +3830,6 @@ var Vssue = /** @class */ (function (_super) {
                         _a.trys.push([0, 6, , 7]);
                         // init VssueStore
                         return [4 /*yield*/, this.vssue.init()
-                            // show alert on error
                             // init comments
                         ];
                     case 1:
@@ -3809,7 +3929,9 @@ var __vue_render__$6 = function __vue_render__() {
       "href": _vm.vssue.issue ? _vm.vssue.issue.link : null,
       "target": "_blank"
     }
-  }, [_vm.vssue.comments ? _c('span', [_vm._v("\n        " + _vm._s(_vm.vssue.comments.count) + "\n      ")]) : _vm._e(), _vm._v(" "), _c('span', [_vm._v("Comments")])]), _vm._v(" "), _c('span', {
+  }, [_c('span', [_vm._v("\n        " + _vm._s(_vm.vssue.comments ? _vm.vssue.$tc('comments', _vm.vssue.comments.count, {
+    count: _vm.vssue.comments.count
+  }) : _vm.vssue.$tc('comments')) + "\n      ")])]), _vm._v(" "), _c('span', {
     staticClass: "vssue-header-powered-by"
   }, [_c('span', [_vm._v("Powered by")]), _vm._v(" "), _vm.vssue.API ? _c('span', [_c('a', {
     attrs: {
@@ -3819,7 +3941,7 @@ var __vue_render__$6 = function __vue_render__() {
     }
   }, [_vm._v("\n          " + _vm._s(_vm.vssue.API.platform.name) + "\n        ")]), _vm._v(" "), _c('span', [_vm._v("&")])]) : _vm._e(), _vm._v(" "), _c('a', {
     attrs: {
-      "href": "https://vssue.js.org",
+      "href": "https://github.com/meteorlxy/vssue",
       "target": "_blank",
       "title": "Vssue v" + _vm.vssue.version
     }
@@ -3828,7 +3950,7 @@ var __vue_render__$6 = function __vue_render__() {
     attrs: {
       "icon-name": "loading"
     }
-  }, [_vm._v("\n      Initializing...\n    ")]) : _c('div', {
+  }, [_vm._v("\n      " + _vm._s(_vm.vssue.$t('initializing')) + "\n    ")]) : _c('div', {
     key: "initialized",
     staticClass: "vssue-body"
   }, [_vm.vssue.API ? _c('VssueNewComment') : _vm._e(), _vm._v(" "), _c('VssueNotice'), _vm._v(" "), _c('VssueComments')], 1)], 1)], 1);
@@ -3877,7 +3999,7 @@ var VssueComponent = __vue_normalize__$a({
 
 var VssuePlugin = {
     get version() {
-        return "0.4.3";
+        return "0.5.0";
     },
     installed: false,
     install: function (Vue$$1, options) {

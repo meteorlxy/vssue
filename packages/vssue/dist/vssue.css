@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.4.3
+ * @version v0.5.0
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -402,6 +402,7 @@
           box-sizing: border-box;
 }
 .vssue :not(.vssue-comment-content) a {
+  cursor: pointer;
   font-weight: 500;
   color: #3eaf7c;
   text-decoration: none;
