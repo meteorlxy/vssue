@@ -29,7 +29,7 @@ export default class GithubV3 implements VssueAPI.Instance {
   baseURL: string
   owner: string
   repo: string
-  labels: string
+  labels: Array<string>
   clientId: string
   clientSecret: string
   state: string
@@ -47,7 +47,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     this.baseURL = baseURL
     this.owner = owner
     this.repo = repo
-    this.labels = labels.join(',')
+    this.labels = labels
 
     this.clientId = clientId
     this.clientSecret = clientSecret
@@ -226,7 +226,7 @@ export default class GithubV3 implements VssueAPI.Instance {
       }
     } else {
       options.params = {
-        labels: this.labels,
+        labels: this.labels.join(','),
         sort: 'created',
         direction: 'asc',
         // to avoid caching
@@ -261,7 +261,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues`, {
       title,
       body: content,
-      labels: this.labels.split(','),
+      labels: this.labels,
     }, {
       headers: { 'Authorization': `token ${accessToken}` },
     })
@@ -341,10 +341,18 @@ export default class GithubV3 implements VssueAPI.Instance {
     // it's annoying that have to get the page and per_page from the `Link` header
     const linkHeader = commentsRes.headers['link'] || null
 
+    const thisPage = /rel="next"/.test(linkHeader)
+      ? Number(linkHeader.replace(/^.*[^_]page=(\d*).*rel="next".*$/, '$1')) - 1
+      : /rel="prev"/.test(linkHeader)
+        ? Number(linkHeader.replace(/^.*[^_]page=(\d*).*rel="prev".*$/, '$1')) + 1
+        : 1
+
+    const thisPerPage = linkHeader ? Number(linkHeader.replace(/^.*per_page=(\d*).*$/, '$1')) : perPage
+
     return {
       count: Number(issueRes.data.comments),
-      page: page,
-      perPage: linkHeader ? Number(linkHeader.replace(/^.*per_page=(\d*).*$/, '$1')) : perPage,
+      page: thisPage,
+      perPage: thisPerPage,
       data: commentsRes.data.map(normalizeComment),
     }
   }
