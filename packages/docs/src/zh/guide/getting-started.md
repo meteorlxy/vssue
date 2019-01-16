@@ -4,7 +4,7 @@
 
 Vssue 支持通过 Github、Gitlab 或者 Bitbucket 的 Issue 系统来为你的静态页面提供评论功能，你可以选择其中之一来使用。
 
-前往 [创建 OAuth App](./supported-platforms.md) 查看详细指引。
+前往 [支持的代码托管平台 - 创建 OAuth App](./supported-platforms.md) 查看详细指引。
 
 完成这一步之后，你将会配置好一个 OAuth App，并得到对应的 `client id` 和 `client secret`，它们将会用于 Vssue 的使用。
 
@@ -112,12 +112,16 @@ npm install vssue
 
 安装对应平台的 api 包：
 
+> 详情可以查看 [支持的代码托管平台](./supported-platforms.md)。
+
 ```bash
-# 对于 Github
+# 使用 Github V3
 npm install @vssue/api-github-v3
-# 或：对于 Gitlab
+# 或：使用 Github V4
+npm install @vssue/api-github-v4
+# 或：使用 Gitlab V4
 npm install @vssue/api-gitlab-v4
-# 或：对于 Bitbucket
+# 或：使用 Bitbucket V2
 npm install @vssue/api-bitbucket-v2
 ```
 

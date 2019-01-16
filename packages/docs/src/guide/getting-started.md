@@ -4,7 +4,7 @@
 
 Vssue can enable comments for your static pages via the `Issue System` of `Github`, `Gitlab` or `Bitbucket`, and you can choose one of those platforms.
 
-Go to [Set up OAuth App](./supported-platforms.md) for detailed instructions.
+Go to [Supported Platforms - Set up OAuth App](./supported-platforms.md) for detailed instructions.
 
 After this step, you will get `client id` and `client secret` of your OAuth App, which will be used for Vssue options:
 
@@ -112,12 +112,16 @@ npm install vssue
 
 Install the api package for different platform:
 
+> See [Supported Platforms](./supported-platforms.md) for more details.
+
 ```bash
-# for Github
+# use Github V3
 npm install @vssue/api-github-v3
-# OR: for Gitlab
+# OR: use Github V4
+npm install @vssue/api-github-v4
+# OR: use Gitlab V4
 npm install @vssue/api-gitlab-v4
-# OR: for Bitbucket
+# OR: use Bitbucket V2
 npm install @vssue/api-bitbucket-v2
 ```
 

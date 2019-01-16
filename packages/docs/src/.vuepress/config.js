@@ -94,6 +94,7 @@ function sidebarGuide (titleGuide, titleOAuthApp) {
       children: [
         '',
         'getting-started',
+        'supported-platforms',
         'styles',
         'vuepress',
       ],
@@ -102,7 +103,6 @@ function sidebarGuide (titleGuide, titleOAuthApp) {
       title: titleOAuthApp,
       collapsable: false,
       children: [
-        'supported-platforms',
         'github',
         'gitlab',
         'bitbucket',
