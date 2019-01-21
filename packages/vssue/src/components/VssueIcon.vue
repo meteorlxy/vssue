@@ -26,7 +26,7 @@ export default Vue.extend({
         ...data,
         'class': [
           'vssue-icon',
-          `icon-${props.name}`,
+          `vssue-icon-${props.name}`,
         ],
         attrs: {
           'aria-hidden': 'true',
@@ -36,7 +36,7 @@ export default Vue.extend({
         h('title', props.title),
         h('use', {
           attrs: {
-            'xlink:href': `#icon-${props.name}`,
+            'xlink:href': `#vssue-icon-${props.name}`,
           },
         }),
       ],
