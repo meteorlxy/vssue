@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.5.0
+ * @version v0.5.1
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -53,7 +53,7 @@
   fill: #3eaf7c;
   overflow: hidden;
 }
-.vssue .icon-loading {
+.vssue .vssue-icon-loading {
   -webkit-animation: vssue-keyframe-rotation 1s linear infinite;
           animation: vssue-keyframe-rotation 1s linear infinite;
 }

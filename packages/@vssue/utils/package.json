@@ -1,6 +1,6 @@
 {
   "name": "@vssue/utils",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Vssue internal utils",
   "license": "MIT",
   "main": "lib/index.js",

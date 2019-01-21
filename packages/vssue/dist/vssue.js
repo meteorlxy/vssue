@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.5.0
+ * @version v0.5.1
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -1406,7 +1406,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }]
   }, [_c('symbol', {
     attrs: {
-      "id": "icon-bitbucket",
+      "id": "vssue-icon-bitbucket",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1415,7 +1415,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-github",
+      "id": "vssue-icon-github",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1424,7 +1424,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-gitlab",
+      "id": "vssue-icon-gitlab",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1434,7 +1434,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-loading",
+      "id": "vssue-icon-loading",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1444,7 +1444,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-like",
+      "id": "vssue-icon-like",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1453,7 +1453,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-unlike",
+      "id": "vssue-icon-unlike",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1462,7 +1462,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-heart",
+      "id": "vssue-icon-heart",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1471,7 +1471,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-edit",
+      "id": "vssue-icon-edit",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1484,7 +1484,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-delete",
+      "id": "vssue-icon-delete",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1493,7 +1493,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-reply",
+      "id": "vssue-icon-reply",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1502,7 +1502,7 @@ var __vue_render__ = function __vue_render__(_h, _vm) {
     }
   })]), _vm._v(" "), _c('symbol', {
     attrs: {
-      "id": "icon-error",
+      "id": "vssue-icon-error",
       "viewBox": "0 0 1024 1024"
     }
   }, [_c('path', {
@@ -1631,14 +1631,14 @@ var script$2 = Vue.extend({
         var props = _a.props, data = _a.data;
         return h('svg', _assign({}, data, { 'class': [
                 'vssue-icon',
-                "icon-" + props.name,
+                "vssue-icon-" + props.name,
             ], attrs: {
                 'aria-hidden': 'true'
             } }), [
             h('title', props.title),
             h('use', {
                 attrs: {
-                    'xlink:href': "#icon-" + props.name
+                    'xlink:href': "#vssue-icon-" + props.name
                 }
             }),
         ]);
@@ -3260,7 +3260,7 @@ var VssueStore = /** @class */ (function (_super) {
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.5.0";
+            return "0.5.1";
         },
         enumerable: true,
         configurable: true
@@ -3999,7 +3999,7 @@ var VssueComponent = __vue_normalize__$a({
 
 var VssuePlugin = {
     get version() {
-        return "0.5.0";
+        return "0.5.1";
     },
     installed: false,
     install: function (Vue$$1, options) {
