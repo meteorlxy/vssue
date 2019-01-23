@@ -36,12 +36,13 @@ export namespace Vssue {
     query: VssueAPI.Query
     status: Vssue.Status
     authStatus: Vssue.AuthStatus
+    isPending: boolean
     setOptions (options: Partial<Vssue.Options>): void
     init (): Promise<void>
     initCommentsByIssueTitle(issueTitle: string): Promise<void>
     initCommentsByIssueId(issueId: number | string): Promise<void>
     handleAuth (): Promise<void>
-    getComments (force?: boolean): Promise<VssueAPI.Comments | void>
+    getComments (): Promise<VssueAPI.Comments | void>
     postComment (options: { content: string }): Promise<VssueAPI.Comment | void>
     deleteComment (options: { commentId: number | string }): Promise<boolean | void>
     putComment (options: { commentId: number | string, content: string }): Promise<VssueAPI.Comment | void>
@@ -57,9 +58,10 @@ export namespace Vssue {
   export type Status = {
     isInitializing: boolean
     isLoginRequired: boolean
-    isLoadingComments: boolean
     isFailed: boolean
+    isLoadingComments: boolean
     isCreatingComment: boolean
+    isUpdatingComment: boolean
   }
 }
 

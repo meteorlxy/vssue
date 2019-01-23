@@ -30,9 +30,10 @@ class VssueStore extends Vue implements Vssue.Store {
   status: Vssue.Status = {
     isInitializing: false,
     isLoginRequired: false,
-    isLoadingComments: false,
     isFailed: false,
+    isLoadingComments: false,
     isCreatingComment: false,
+    isUpdatingComment: false,
   }
 
   get authStatus (): Vssue.AuthStatus {
@@ -44,6 +45,10 @@ class VssueStore extends Vue implements Vssue.Store {
           this.options.admins.includes(this.user.username)
         ),
     }
+  }
+
+  get isPending (): boolean {
+    return this.status.isLoadingComments || this.status.isCreatingComment || this.status.isUpdatingComment
   }
 
   /**
@@ -125,9 +130,10 @@ class VssueStore extends Vue implements Vssue.Store {
 
       // reset status
       this.status.isLoginRequired = false
-      this.status.isLoadingComments = false
       this.status.isFailed = false
+      this.status.isLoadingComments = false
       this.status.isCreatingComment = false
+      this.status.isUpdatingComment = false
 
       // set locale
       if (this.options.locale) {
@@ -219,9 +225,9 @@ class VssueStore extends Vue implements Vssue.Store {
   /**
    * Get comments of this vssue according to the issue id
    */
-  async getComments (force: boolean = false): Promise<VssueAPI.Comments | void> {
+  async getComments (): Promise<VssueAPI.Comments | void> {
     try {
-      if (!this.API || !this.issue || (this.status.isLoadingComments && !force)) return
+      if (!this.API || !this.issue || this.status.isLoadingComments) return
 
       this.status.isLoadingComments = true
 
@@ -342,9 +348,9 @@ class VssueStore extends Vue implements Vssue.Store {
     try {
       if (!this.API || !this.issue) return
 
-      const reactions = await this.API!.getCommentReactions({
+      const reactions = await this.API.getCommentReactions({
         accessToken: this.accessToken,
-        issueId: this.issue!.id,
+        issueId: this.issue.id,
         commentId,
       })
 
