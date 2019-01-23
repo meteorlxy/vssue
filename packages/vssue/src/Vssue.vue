@@ -13,7 +13,7 @@
         <span>
           {{ vssue.comments
             ? vssue.$tc('comments', vssue.comments.count, { count: vssue.comments.count })
-          : vssue.$tc('comments') }}
+            : vssue.$tc('comments') }}
         </span>
       </a>
 
