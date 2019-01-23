@@ -262,7 +262,7 @@ export default class VssueComment extends Vue {
 
   async putComment (): Promise<void> {
     try {
-      if (this.vssue.isPending) return
+      if (this.vssue.computedStatus.isPending) return
 
       if (this.editContent !== this.comment.contentRaw) {
         this.isPutingComment = true
@@ -287,7 +287,7 @@ export default class VssueComment extends Vue {
 
   async deleteComment (): Promise<void> {
     try {
-      if (this.vssue.isPending) return
+      if (this.vssue.computedStatus.isPending) return
 
       if (!window.confirm(<string> this.vssue.$t('deleteConfirm'))) return
 

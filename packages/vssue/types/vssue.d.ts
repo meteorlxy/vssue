@@ -35,8 +35,7 @@ export namespace Vssue {
     comments: VssueAPI.Comments | null
     query: VssueAPI.Query
     status: Vssue.Status
-    authStatus: Vssue.AuthStatus
-    isPending: boolean
+    computedStatus: Vssue.ComputedStatus
     setOptions (options: Partial<Vssue.Options>): void
     init (): Promise<void>
     initCommentsByIssueTitle(issueTitle: string): Promise<void>
@@ -50,9 +49,10 @@ export namespace Vssue {
     postCommentReaction (options: { commentId: number | string, reaction: keyof VssueAPI.Reactions }): Promise<boolean | void>
   }
 
-  export type AuthStatus = {
+  export type ComputedStatus = {
     readonly isLogined: boolean
     readonly isAdmin: boolean
+    readonly isPending: boolean
   }
 
   export type Status = {
