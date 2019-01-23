@@ -292,6 +292,8 @@ export default class VssueComment extends Vue {
       if (!window.confirm(<string> this.vssue.$t('deleteConfirm'))) return
 
       this.isDeletingComment = true
+
+      // to prevent loading comments before the deletion finished
       this.vssue.status.isLoadingComments = true
 
       const success = await this.vssue.deleteComment({
@@ -311,7 +313,7 @@ export default class VssueComment extends Vue {
         if (this.vssue.query.page > 1 && this.vssue.query.page > Math.ceil(this.vssue.comments!.count / this.vssue.query.perPage)) {
           this.vssue.query.page -= 1
         } else {
-          await this.vssue.getComments()
+          await this.vssue.getComments(true)
         }
       } else {
         this.vssue.$emit('error', new Error(<string> this.vssue.$t('deleteFailed')))

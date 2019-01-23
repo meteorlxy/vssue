@@ -41,7 +41,7 @@ export namespace Vssue {
     initCommentsByIssueTitle(issueTitle: string): Promise<void>
     initCommentsByIssueId(issueId: number | string): Promise<void>
     handleAuth (): Promise<void>
-    getComments (): Promise<VssueAPI.Comments | void>
+    getComments (force?: boolean): Promise<VssueAPI.Comments | void>
     postComment (options: { content: string }): Promise<VssueAPI.Comment | void>
     deleteComment (options: { commentId: number | string }): Promise<boolean | void>
     putComment (options: { commentId: number | string, content: string }): Promise<VssueAPI.Comment | void>

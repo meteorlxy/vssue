@@ -219,9 +219,9 @@ class VssueStore extends Vue implements Vssue.Store {
   /**
    * Get comments of this vssue according to the issue id
    */
-  async getComments (): Promise<VssueAPI.Comments | void> {
+  async getComments (force: boolean = false): Promise<VssueAPI.Comments | void> {
     try {
-      if (!this.API || !this.issue || this.status.isLoadingComments) return
+      if (!this.API || !this.issue || (this.status.isLoadingComments && !force)) return
 
       this.status.isLoadingComments = true
 
