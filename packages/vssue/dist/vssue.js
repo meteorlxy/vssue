@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.5.1
+ * @version v0.5.2
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -1816,11 +1816,11 @@ var VssueComment = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, , 3, 4]);
-                        if (this.isPutingComment || this.vssue.status.isLoadingComments)
+                        if (this.vssue.computedStatus.isPending)
                             return [2 /*return*/];
                         if (!(this.editContent !== this.comment.contentRaw)) return [3 /*break*/, 2];
                         this.isPutingComment = true;
-                        this.vssue.status.isLoadingComments = true;
+                        this.vssue.status.isUpdatingComment = true;
                         return [4 /*yield*/, this.vssue.putComment({
                                 commentId: this.comment.id,
                                 content: this.editContent
@@ -1836,7 +1836,7 @@ var VssueComment = /** @class */ (function (_super) {
                         return [3 /*break*/, 4];
                     case 3:
                         this.isPutingComment = false;
-                        this.vssue.status.isLoadingComments = false;
+                        this.vssue.status.isUpdatingComment = false;
                         return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -1851,12 +1851,12 @@ var VssueComment = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, , 7, 8]);
-                        if (this.isDeletingComment || this.vssue.status.isLoadingComments)
+                        if (this.vssue.computedStatus.isPending)
                             return [2 /*return*/];
                         if (!window.confirm(this.vssue.$t('deleteConfirm')))
                             return [2 /*return*/];
                         this.isDeletingComment = true;
-                        this.vssue.status.isLoadingComments = true;
+                        this.vssue.status.isUpdatingComment = true;
                         return [4 /*yield*/, this.vssue.deleteComment({
                                 commentId: this.comment.id
                             })];
@@ -1883,7 +1883,7 @@ var VssueComment = /** @class */ (function (_super) {
                     case 6: return [3 /*break*/, 8];
                     case 7:
                         this.isDeletingComment = false;
-                        this.vssue.status.isLoadingComments = false;
+                        this.vssue.status.isUpdatingComment = false;
                         return [7 /*endfinally*/];
                     case 8: return [2 /*return*/];
                 }
@@ -2186,9 +2186,9 @@ var VssuePagination = /** @class */ (function (_super) {
     function VssuePagination() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    Object.defineProperty(VssuePagination.prototype, "loading", {
+    Object.defineProperty(VssuePagination.prototype, "disabled", {
         get: function () {
-            return this.vssue.status.isLoadingComments;
+            return this.vssue.computedStatus.isPending;
         },
         enumerable: true,
         configurable: true
@@ -2272,7 +2272,7 @@ var __vue_render__$2 = function __vue_render__() {
     }],
     staticClass: "vssue-pagination-select",
     attrs: {
-      "disabled": _vm.loading
+      "disabled": _vm.disabled
     },
     on: {
       "change": function change($event) {
@@ -2295,7 +2295,7 @@ var __vue_render__$2 = function __vue_render__() {
   }), 0), _vm._v(" "), _c('span', [_vm._v("\n      " + _vm._s(_vm.vssue.$t('perPage')) + "\n    ")]), _vm._v(" "), _vm.vssue.API.platform.meta.sortable ? _c('span', {
     class: {
       'vssue-pagination-link': true,
-      'disabled': _vm.loading
+      'disabled': _vm.disabled
     },
     attrs: {
       "title": _vm.vssue.$t('sort')
@@ -2310,7 +2310,7 @@ var __vue_render__$2 = function __vue_render__() {
   }, [_c('span', {
     class: {
       'vssue-pagination-link': true,
-      'disabled': _vm.page === 1 || _vm.loading
+      'disabled': _vm.page === 1 || _vm.disabled
     },
     attrs: {
       "title": _vm.vssue.$t('prev')
@@ -2337,7 +2337,7 @@ var __vue_render__$2 = function __vue_render__() {
     }],
     staticClass: "vssue-pagination-select",
     attrs: {
-      "disabled": _vm.loading
+      "disabled": _vm.disabled
     },
     on: {
       "change": function change($event) {
@@ -2374,7 +2374,7 @@ var __vue_render__$2 = function __vue_render__() {
   }), _vm._v(" "), _c('span', {
     class: {
       'vssue-pagination-link': true,
-      'disabled': _vm.page === _vm.pageCount || _vm.loading
+      'disabled': _vm.page === _vm.pageCount || _vm.disabled
     },
     attrs: {
       "title": _vm.vssue.$t('next')
@@ -2700,6 +2700,13 @@ var VssueNewComment = /** @class */ (function (_super) {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(VssueNewComment.prototype, "disabled", {
+        get: function () {
+            return this.content === '' || this.vssue.computedStatus.isPending;
+        },
+        enumerable: true,
+        configurable: true
+    });
     Object.defineProperty(VssueNewComment.prototype, "loading", {
         get: function () {
             return this.vssue.status.isCreatingComment;
@@ -2740,7 +2747,10 @@ var VssueNewComment = /** @class */ (function (_super) {
         return __awaiter(this, void 0, Promise, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.vssue.postComment({ content: this.content })];
+                    case 0:
+                        if (this.vssue.computedStatus.isPending)
+                            return [2 /*return*/];
+                        return [4 /*yield*/, this.vssue.postComment({ content: this.content })];
                     case 1:
                         _a.sent();
                         this.content = '';
@@ -2864,7 +2874,7 @@ var __vue_render__$4 = function __vue_render__() {
     staticClass: "vssue-button-submit-comment",
     attrs: {
       "type": "primary",
-      "disabled": _vm.content === '' || _vm.loading
+      "disabled": _vm.disabled
     },
     on: {
       "click": function click($event) {
@@ -3252,26 +3262,28 @@ var VssueStore = /** @class */ (function (_super) {
         _this.status = {
             isInitializing: false,
             isLoginRequired: false,
-            isLoadingComments: false,
             isFailed: false,
-            isCreatingComment: false
+            isLoadingComments: false,
+            isCreatingComment: false,
+            isUpdatingComment: false
         };
         return _this;
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.5.1";
+            return "0.5.2";
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(VssueStore.prototype, "authStatus", {
+    Object.defineProperty(VssueStore.prototype, "computedStatus", {
         get: function () {
             return {
                 isLogined: this.accessToken !== null && this.user !== null,
                 isAdmin: this.options !== null && this.accessToken !== null && this.user !== null &&
                     (this.user.username === this.options.owner ||
-                        this.options.admins.includes(this.user.username))
+                        this.options.admins.includes(this.user.username)),
+                isPending: this.status.isLoadingComments || this.status.isCreatingComment || this.status.isUpdatingComment
             };
         },
         enumerable: true,
@@ -3355,9 +3367,10 @@ var VssueStore = /** @class */ (function (_super) {
                         };
                         // reset status
                         this.status.isLoginRequired = false;
-                        this.status.isLoadingComments = false;
                         this.status.isFailed = false;
+                        this.status.isLoadingComments = false;
                         this.status.isCreatingComment = false;
+                        this.status.isUpdatingComment = false;
                         // set locale
                         if (this.options.locale) {
                             this.$i18n.locale = this.options.locale;
@@ -3446,11 +3459,11 @@ var VssueStore = /** @class */ (function (_super) {
                         _a.issue = _c.sent();
                         if (!!this.issue) return [3 /*break*/, 3];
                         // require login to create the issue
-                        if (!this.authStatus.isLogined) {
+                        if (!this.computedStatus.isLogined) {
                             this.$emit('login');
                         }
                         // if current user is not admin, cannot create issue
-                        if (!this.authStatus.isAdmin) {
+                        if (!this.computedStatus.isAdmin) {
                             throw Error('Failed to get comments');
                         }
                         // create the corresponding issue
@@ -3505,7 +3518,7 @@ var VssueStore = /** @class */ (function (_super) {
                         return [3 /*break*/, 4];
                     case 2:
                         e_1 = _a.sent();
-                        if (e_1.response && [401, 403].includes(e_1.response.status) && !this.authStatus.isLogined) {
+                        if (e_1.response && [401, 403].includes(e_1.response.status) && !this.computedStatus.isLogined) {
                             this.status.isLoginRequired = true;
                         }
                         else {
@@ -3999,7 +4012,7 @@ var VssueComponent = __vue_normalize__$a({
 
 var VssuePlugin = {
     get version() {
-        return "0.5.1";
+        return "0.5.2";
     },
     installed: false,
     install: function (Vue$$1, options) {
