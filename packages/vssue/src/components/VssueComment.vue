@@ -262,11 +262,11 @@ export default class VssueComment extends Vue {
 
   async putComment (): Promise<void> {
     try {
-      if (this.isPutingComment || this.vssue.status.isLoadingComments) return
+      if (this.vssue.computedStatus.isPending) return
 
       if (this.editContent !== this.comment.contentRaw) {
         this.isPutingComment = true
-        this.vssue.status.isLoadingComments = true
+        this.vssue.status.isUpdatingComment = true
 
         const comment = await this.vssue.putComment({
           commentId: this.comment.id,
@@ -281,20 +281,18 @@ export default class VssueComment extends Vue {
       this.editMode = false
     } finally {
       this.isPutingComment = false
-      this.vssue.status.isLoadingComments = false
+      this.vssue.status.isUpdatingComment = false
     }
   }
 
   async deleteComment (): Promise<void> {
     try {
-      if (this.isDeletingComment || this.vssue.status.isLoadingComments) return
+      if (this.vssue.computedStatus.isPending) return
 
       if (!window.confirm(<string> this.vssue.$t('deleteConfirm'))) return
 
       this.isDeletingComment = true
-
-      // to prevent loading comments before the deletion finished
-      this.vssue.status.isLoadingComments = true
+      this.vssue.status.isUpdatingComment = true
 
       const success = await this.vssue.deleteComment({
         commentId: this.comment.id,
@@ -313,14 +311,14 @@ export default class VssueComment extends Vue {
         if (this.vssue.query.page > 1 && this.vssue.query.page > Math.ceil(this.vssue.comments!.count / this.vssue.query.perPage)) {
           this.vssue.query.page -= 1
         } else {
-          await this.vssue.getComments(true)
+          await this.vssue.getComments()
         }
       } else {
         this.vssue.$emit('error', new Error(<string> this.vssue.$t('deleteFailed')))
       }
     } finally {
       this.isDeletingComment = false
-      this.vssue.status.isLoadingComments = false
+      this.vssue.status.isUpdatingComment = false
     }
   }
 }

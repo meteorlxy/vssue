@@ -58,7 +58,7 @@
           v-if="user"
           class="vssue-button-submit-comment"
           type="primary"
-          :disabled="content === '' || loading"
+          :disabled="disabled"
           @click="submit()"
         >
           <VssueIcon
@@ -108,6 +108,10 @@ export default class VssueNewComment extends Vue {
     return this.vssue.API && this.vssue.API.platform.name
   }
 
+  get disabled (): boolean {
+    return this.content === '' || this.vssue.computedStatus.isPending
+  }
+
   get loading (): boolean {
     return this.vssue.status.isCreatingComment
   }
@@ -138,6 +142,7 @@ export default class VssueNewComment extends Vue {
   }
 
   async submit (): Promise<void> {
+    if (this.vssue.computedStatus.isPending) return
     await this.vssue.postComment({ content: this.content })
     this.content = ''
     await this.vssue.getComments()

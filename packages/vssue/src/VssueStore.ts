@@ -30,12 +30,13 @@ class VssueStore extends Vue implements Vssue.Store {
   status: Vssue.Status = {
     isInitializing: false,
     isLoginRequired: false,
-    isLoadingComments: false,
     isFailed: false,
+    isLoadingComments: false,
     isCreatingComment: false,
+    isUpdatingComment: false,
   }
 
-  get authStatus (): Vssue.AuthStatus {
+  get computedStatus (): Vssue.ComputedStatus {
     return {
       isLogined: this.accessToken !== null && this.user !== null,
       isAdmin: this.options !== null && this.accessToken !== null && this.user !== null &&
@@ -43,6 +44,7 @@ class VssueStore extends Vue implements Vssue.Store {
           this.user.username === this.options.owner ||
           this.options.admins.includes(this.user.username)
         ),
+      isPending: this.status.isLoadingComments || this.status.isCreatingComment || this.status.isUpdatingComment,
     }
   }
 
@@ -125,9 +127,10 @@ class VssueStore extends Vue implements Vssue.Store {
 
       // reset status
       this.status.isLoginRequired = false
-      this.status.isLoadingComments = false
       this.status.isFailed = false
+      this.status.isLoadingComments = false
       this.status.isCreatingComment = false
+      this.status.isUpdatingComment = false
 
       // set locale
       if (this.options.locale) {
@@ -195,12 +198,12 @@ class VssueStore extends Vue implements Vssue.Store {
     // if the issue of this page does not exist, try to create it
     if (!this.issue) {
       // require login to create the issue
-      if (!this.authStatus.isLogined) {
+      if (!this.computedStatus.isLogined) {
         this.$emit('login')
       }
 
       // if current user is not admin, cannot create issue
-      if (!this.authStatus.isAdmin) {
+      if (!this.computedStatus.isAdmin) {
         throw Error('Failed to get comments')
       }
 
@@ -219,9 +222,9 @@ class VssueStore extends Vue implements Vssue.Store {
   /**
    * Get comments of this vssue according to the issue id
    */
-  async getComments (force: boolean = false): Promise<VssueAPI.Comments | void> {
+  async getComments (): Promise<VssueAPI.Comments | void> {
     try {
-      if (!this.API || !this.issue || (this.status.isLoadingComments && !force)) return
+      if (!this.API || !this.issue || this.status.isLoadingComments) return
 
       this.status.isLoadingComments = true
 
@@ -241,7 +244,7 @@ class VssueStore extends Vue implements Vssue.Store {
         this.query.perPage = comments.perPage
       }
     } catch (e) {
-      if (e.response && [401, 403].includes(e.response.status) && !this.authStatus.isLogined) {
+      if (e.response && [401, 403].includes(e.response.status) && !this.computedStatus.isLogined) {
         this.status.isLoginRequired = true
       } else {
         this.$emit('error', e)
@@ -342,9 +345,9 @@ class VssueStore extends Vue implements Vssue.Store {
     try {
       if (!this.API || !this.issue) return
 
-      const reactions = await this.API!.getCommentReactions({
+      const reactions = await this.API.getCommentReactions({
         accessToken: this.accessToken,
-        issueId: this.issue!.id,
+        issueId: this.issue.id,
         commentId,
       })
 

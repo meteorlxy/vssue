@@ -6,7 +6,7 @@
     <div class="vssue-pagination-per-page">
       <select
         class="vssue-pagination-select"
-        :disabled="loading"
+        :disabled="disabled"
         v-model="perPage"
       >
         <option
@@ -26,7 +26,7 @@
         v-if="vssue.API.platform.meta.sortable"
         :class="{
           'vssue-pagination-link': true,
-          'disabled': loading,
+          'disabled': disabled,
         }"
         :title="vssue.$t('sort')"
         @click="vssue.query.sort = (vssue.query.sort === 'asc' ? 'desc' : 'asc')"
@@ -39,7 +39,7 @@
       <span
         :class="{
           'vssue-pagination-link': true,
-          'disabled': page === 1 || loading,
+          'disabled': page === 1 || disabled,
         }"
         :title="vssue.$t('prev')"
         @click="page -= 1"
@@ -53,7 +53,7 @@
       <select
         v-show="pageCount > 1"
         class="vssue-pagination-select"
-        :disabled="loading"
+        :disabled="disabled"
         v-model="page"
       >
         <option
@@ -75,7 +75,7 @@
       <span
         :class="{
           'vssue-pagination-link': true,
-          'disabled': page === pageCount || loading,
+          'disabled': page === pageCount || disabled,
         }"
         :title="vssue.$t('next')"
         @click="page += 1"
@@ -98,8 +98,8 @@ import VssueIcon from './VssueIcon.vue'
 export default class VssuePagination extends Vue {
   @Inject() vssue!: Vssue.Store
 
-  get loading (): boolean {
-    return this.vssue.status.isLoadingComments
+  get disabled (): boolean {
+    return this.vssue.computedStatus.isPending
   }
 
   get pageCount (): number {
