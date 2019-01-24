@@ -42,6 +42,10 @@ module.exports = {
             text: 'Options Reference',
             link: '/options/',
           },
+          {
+            text: 'Changelog',
+            link: 'https://github.com/meteorlxy/vssue/blob/master/CHANGELOG.md',
+          },
         ],
         sidebar: {
           '/guide/': sidebarGuide('Vssue Guide', 'Set up OAuth App'),
@@ -60,6 +64,10 @@ module.exports = {
           {
             text: '配置参考',
             link: '/zh/options/',
+          },
+          {
+            text: '更新日志',
+            link: 'https://github.com/meteorlxy/vssue/blob/master/CHANGELOG.md',
           },
         ],
         sidebar: {
