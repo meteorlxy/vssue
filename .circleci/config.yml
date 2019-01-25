@@ -40,39 +40,10 @@ jobs:
       - run:
           name: Build Docs
           command: yarn build-docs
-  build_docs_and_publish:
-    executor: node
-    steps:
-      - install
-      - run:
-          name: Build Docs
-          command: yarn build-docs
-      - run:
-          name: Publish Github Pages
-          command: |
-            cd ./packages/docs/dist
-            echo ${GH_CNAME} > CNAME
-            git init
-            git config user.name "${GH_USER_NAME}"
-            git config user.email "${GH_USER_EMAIL}"
-            git add .
-            git commit -m "Build $(date +%Y%m%d%H%M)"
-            git push --force --quiet "https://${GH_TOKEN}@${GH_REPO}" master:gh-pages
 
 workflows:
   version: 2
-  github_pages:
-    jobs:
-      - build_docs_and_publish:
-          filters:
-            branches:
-              only: master
   checks:
     jobs:
-      - lint:
-          filters:
-            branches:
-              ignore: gh-pages
-      - build:
-          requires:
-            - lint
+      - lint
+      - build
