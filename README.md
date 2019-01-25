@@ -12,7 +12,7 @@
 
 ## Contributing
 
-Vssue is still a WIP, feel free to open issues and contributions welcome :wink:
+Feel free to open issues and contributions welcome :wink:
 
 ## LOGO Wanted
 
