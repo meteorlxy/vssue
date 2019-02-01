@@ -7,6 +7,7 @@ import axios, {
 
 import {
   buildURL,
+  concatURL,
   getCleanURL,
   parseQuery,
 } from '@vssue/utils'
@@ -45,7 +46,7 @@ export default class GithubV4 implements VssueAPI.Instance {
   }
 
   constructor ({
-    baseURL = 'https://api.github.com',
+    baseURL = 'https://github.com',
     owner,
     repo,
     labels,
@@ -71,7 +72,7 @@ export default class GithubV4 implements VssueAPI.Instance {
     }
 
     this.$http = axios.create({
-      baseURL,
+      baseURL: baseURL === 'https://github.com' ? 'https://api.github.com' : concatURL(baseURL, 'api'),
       headers: {
         'Accept': 'application/vnd.github.v3+json',
       },
@@ -94,7 +95,7 @@ export default class GithubV4 implements VssueAPI.Instance {
   get platform (): VssueAPI.Platform {
     return {
       name: 'GitHub',
-      link: 'https://github.com',
+      link: this.baseURL,
       version: 'v4',
       meta: {
         reactable: true,
@@ -109,7 +110,7 @@ export default class GithubV4 implements VssueAPI.Instance {
    * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#1-request-a-users-github-identity
    */
   redirectAuth (): void {
-    window.location.href = buildURL('https://github.com/login/oauth/authorize', {
+    window.location.href = buildURL(concatURL(this.baseURL, 'login/oauth/authorize'), {
       client_id: this.clientId,
       redirect_uri: window.location.href,
       scope: 'public_repo',
@@ -162,7 +163,7 @@ export default class GithubV4 implements VssueAPI.Instance {
      * access_token api does not support cors
      * @see https://github.com/isaacs/github/issues/330
      */
-    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${'https://github.com/login/oauth/access_token'}`, {
+    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${concatURL(this.baseURL, 'login/oauth/access_token')}`, {
       client_id: this.clientId,
       client_secret: this.clientSecret,
       code,
@@ -486,7 +487,7 @@ query getComments(
     issueId: string | number
     content: string
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
+    const { data } = await this.$http.post(`${this.baseURL === 'https://github.com' ? '' : 'v3/'}repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
       body: content,
     }, {
       headers: {
@@ -601,7 +602,7 @@ mutation putComment(
    *
    * @remarks
    * This mutation is listed in the docs, but has not been implemented for now
-   * Fallback to v3
+   * As the commentId of v4 and v3 is different, cannot fallback to v3, throw an error instead
    */
   async deleteComment ({
     accessToken,
@@ -611,10 +612,7 @@ mutation putComment(
     issueId: string | number
     commentId: string | number
   }): Promise<boolean> {
-    const { status } = await this.$http.delete(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}`, {
-      headers: { 'Authorization': `token ${accessToken}` },
-    })
-    return status === 204
+    throw new Error('Delete comments in Github V4 has not been implemented')
     /* eslint-disable-next-line no-unreachable */
     await this.$http.post(`graphql`, {
       variables: {
