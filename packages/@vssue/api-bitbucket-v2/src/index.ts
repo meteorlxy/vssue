@@ -8,6 +8,7 @@ import axios, {
 import {
   buildQuery,
   buildURL,
+  concatURL,
   getCleanURL,
   parseQuery,
 } from '@vssue/utils'
@@ -34,7 +35,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   $http: AxiosInstance
 
   constructor ({
-    baseURL = 'https://api.bitbucket.org',
+    baseURL = 'https://bitbucket.org',
     owner,
     repo,
     clientId,
@@ -50,7 +51,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     this.state = state
 
     this.$http = axios.create({
-      baseURL,
+      baseURL: 'https://api.bitbucket.org/2.0',
       headers: {
         'Accept': 'application/json',
       },
@@ -63,7 +64,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   get platform (): VssueAPI.Platform {
     return {
       name: 'Bitbucket',
-      link: 'https://bitbucket.org',
+      link: this.baseURL,
       version: 'v2',
       meta: {
         reactable: false,
@@ -78,7 +79,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication#oauth-2
    */
   redirectAuth (): void {
-    window.location.href = buildURL('https://bitbucket.org/site/oauth2/authorize', {
+    window.location.href = buildURL(concatURL(this.baseURL, 'site/oauth2/authorize'), {
       client_id: this.clientId,
       redirect_uri: window.location.href,
       response_type: 'code',
@@ -122,7 +123,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   }: {
     code: string
   }): Promise<string> {
-    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${'https://bitbucket.org/site/oauth2/access_token'}`, buildQuery({
+    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${concatURL(this.baseURL, 'site/oauth2/access_token')}`, buildQuery({
       grant_type: 'authorization_code',
       redirect_uri: window.location.href,
       code,
@@ -152,7 +153,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   }: {
     accessToken: VssueAPI.AccessToken
   }): Promise<VssueAPI.User> {
-    const { data } = await this.$http.get('2.0/user', {
+    const { data } = await this.$http.get('user', {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
     return normalizeUser(data)
@@ -194,7 +195,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
           // to avoid caching
           timestamp: Date.now(),
         }
-        const { data } = await this.$http.get(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}`, options)
+        const { data } = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues/${issueId}`, options)
         return normalizeIssue(data)
       } catch (e) {
         if (e.response && e.response.status === 404) {
@@ -210,7 +211,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
         // to avoid caching
         timestamp: Date.now(),
       }
-      const { data } = await this.$http.get(`2.0/repositories/${this.owner}/${this.repo}/issues`, options)
+      const { data } = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues`, options)
       return data.size > 0 ? normalizeIssue(data.values[0]) : null
     }
   }
@@ -235,7 +236,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     title: string
     content: string
   }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(`2.0/repositories/${this.owner}/${this.repo}/issues`, {
+    const { data } = await this.$http.post(`repositories/${this.owner}/${this.repo}/issues`, {
       title,
       content: {
         raw: content,
@@ -288,7 +289,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
         'Authorization': `Bearer ${accessToken}`,
       }
     }
-    const { data } = await this.$http.get(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
+    const { data } = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
     return {
       count: data.size,
       page: data.page,
@@ -317,7 +318,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     issueId: string | number
     content: string
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
+    const { data } = await this.$http.post(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
       content: {
         raw: content,
       },
@@ -350,7 +351,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     commentId: string | number
     content: string
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.put(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`, {
+    const { data } = await this.$http.put(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`, {
       content: {
         raw: content,
       },
@@ -380,7 +381,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     issueId: string | number
     commentId: string | number
   }): Promise<boolean> {
-    const { status } = await this.$http.delete(`2.0/repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`, {
+    const { status } = await this.$http.delete(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
     return status === 204
