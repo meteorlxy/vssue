@@ -1,5 +1,7 @@
 # GitHub OAuth App
 
+> Vssue can also work with self-hosted GitHub Enterprise Server. Set the `baseURL` options to your Github URL. See [Options Reference - baseURL](../options/index.md#baseurl)
+
 ## Create a new OAuth App
 
 - Go to [Settings - Developer Settings - OAuth Apps](https://github.com/settings/developers)

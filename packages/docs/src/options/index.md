@@ -130,12 +130,12 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
 
   Default values for supported platforms are:
 
-  - `'https://api.github.com'` for Github
+  - `'https://github.com'` for Github
   - `'https://gitlab.com'` for Gitlab
-  - `'https://api.bitbucket.org'` for Bitbucket
+  - `'https://bitbucket.org'` for Bitbucket
 
   ::: warning ATTENSION
-  Only when you choose to use __self-hosted Gitlab__ should you set this option.
+  Only when you choose to use __self-hosted__ platform should you set this option. (e.g. __GitLab Community/Enterprise Edition__ or __GitHub Enterprise Server__)
   :::
 
 - __Reference__: [Gitlab Application](../guide/gitlab.md)
