@@ -7,6 +7,7 @@ import axios, {
 
 import {
   buildURL,
+  concatURL,
   getCleanURL,
   parseQuery,
 } from '@vssue/utils'
@@ -36,7 +37,7 @@ export default class GithubV3 implements VssueAPI.Instance {
   $http: AxiosInstance
 
   constructor ({
-    baseURL = 'https://api.github.com',
+    baseURL = 'https://github.com',
     owner,
     repo,
     labels,
@@ -54,7 +55,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     this.state = state
 
     this.$http = axios.create({
-      baseURL,
+      baseURL: baseURL === 'https://github.com' ? 'https://api.github.com' : concatURL(baseURL, 'api/v3'),
       headers: {
         'Accept': 'application/vnd.github.v3+json',
       },
@@ -74,7 +75,7 @@ export default class GithubV3 implements VssueAPI.Instance {
   get platform (): VssueAPI.Platform {
     return {
       name: 'GitHub',
-      link: 'https://github.com',
+      link: this.baseURL,
       version: 'v3',
       meta: {
         reactable: true,
@@ -89,7 +90,7 @@ export default class GithubV3 implements VssueAPI.Instance {
    * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#1-request-a-users-github-identity
    */
   redirectAuth (): void {
-    window.location.href = buildURL('https://github.com/login/oauth/authorize', {
+    window.location.href = buildURL(concatURL(this.baseURL, 'login/oauth/authorize'), {
       client_id: this.clientId,
       redirect_uri: window.location.href,
       scope: 'public_repo',
@@ -142,7 +143,7 @@ export default class GithubV3 implements VssueAPI.Instance {
      * access_token api does not support cors
      * @see https://github.com/isaacs/github/issues/330
      */
-    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${'https://github.com/login/oauth/access_token'}`, {
+    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${concatURL(this.baseURL, 'login/oauth/access_token')}`, {
       client_id: this.clientId,
       client_secret: this.clientSecret,
       code,
@@ -173,7 +174,7 @@ export default class GithubV3 implements VssueAPI.Instance {
   }: {
     accessToken: VssueAPI.AccessToken
   }): Promise<VssueAPI.User> {
-    const { data } = await this.$http.get('/user', {
+    const { data } = await this.$http.get('user', {
       headers: { 'Authorization': `token ${accessToken}` },
     })
     return normalizeUser(data)
