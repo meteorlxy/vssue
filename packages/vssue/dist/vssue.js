@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.5.3
+ * @version v0.6.0
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -3271,7 +3271,7 @@ var VssueStore = /** @class */ (function (_super) {
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.5.3";
+            return "0.6.0";
         },
         enumerable: true,
         configurable: true
@@ -3322,7 +3322,8 @@ var VssueStore = /** @class */ (function (_super) {
             state: 'Vssue',
             prefix: '[Vssue]',
             admins: [],
-            perPage: 10
+            perPage: 10,
+            proxy: function (url) { return "https://cors-anywhere.herokuapp.com/" + url; }
         }, options);
         // check options
         var requiredOptions = [
@@ -3388,7 +3389,8 @@ var VssueStore = /** @class */ (function (_super) {
                             owner: this.options.owner,
                             repo: this.options.repo,
                             clientId: this.options.clientId,
-                            clientSecret: this.options.clientSecret
+                            clientSecret: this.options.clientSecret,
+                            proxy: this.options.proxy
                         });
                         // handle authorization
                         return [4 /*yield*/, this.handleAuth()];
@@ -4012,7 +4014,7 @@ var VssueComponent = __vue_normalize__$a({
 
 var VssuePlugin = {
     get version() {
-        return "0.5.3";
+        return "0.6.0";
     },
     installed: false,
     install: function (Vue$$1, options) {
