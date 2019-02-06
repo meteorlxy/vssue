@@ -97,7 +97,10 @@ Vue.use(Vssue, {
 
   Vssue 将使用 `clientId` 和 `clientSecret` 来获取用户的 access token。
 
-- __参考__: [创建 OAuth App](../guide/supported-platforms.md), [clientSecret](#clientsecret)
+- __参考__:
+  - [clientSecret](#clientsecret)
+  - [创建 OAuth App](../guide/supported-platforms.md)
+  - [安全](../guide/security.md)
 
 ### clientSecret
 
@@ -110,7 +113,10 @@ Vue.use(Vssue, {
 
   Vssue 将使用 `clientId` 和 `clientSecret` 来获取用户的 access token。
 
-- __参考__: [创建 OAuth App](../guide/supported-platforms.md), [clientId](#clientid)
+- __参考__:
+  - [clientId](#clientid)
+  - [创建 OAuth App](../guide/supported-platforms.md)
+  - [安全](../guide/security.md)
 
 ::: tip
 在不同平台上， __OAuth App__、`clientId` 和 `clientSecret` 的实际名称也不同：
@@ -230,11 +236,30 @@ Vue.use(Vssue, {
   欢迎贡献代码帮助 Vssue 支持更多语言。
   :::
 
+### proxy <Badge text="v0.6+"/>
+
+- __类型__: `string | ((url: string) => string)`
+- __默认值__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
+- __详细__:
+
+  平台的 Access Token API 不支持 CORS （详见 [GitHub 的相关 Issue](https://github.com/isaacs/github/issues/330)）。由于 Vssue 是一个纯前端插件，我们必须要通过代理来请求 Access Token。
+
+  默认情况下，我们使用一个开源的 CORS 代理服务 [cors-anywhere](https://github.com/Rob--W/cors-anywhere)。
+  
+  如果你希望使用自己的代理，就需要设置这个选项。例如：
+
+  ```js
+  proxy: url => `https://your.cors.porxy?target=${url}`
+  ```
+
+- __参考__: [安全](../guide/security.md)
+
+
 ## 组件 Props
 
 ### title
 
-- __类型__: `string | (options: VssueOptions) => string`
+- __类型__: `string | ((options: VssueOptions) => string)`
 - __是否必须__: `false`
 - __默认值__: `` options => `${options.prefix}${document.title}` ``
 - __详细__:

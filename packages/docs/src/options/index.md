@@ -97,7 +97,10 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
   Vssue will use it together with `clientSecret` to get user's access token.
 
-- __Reference__: [Set up OAuth App](../guide/supported-platforms.md), [clientSecret](#clientsecret)
+- __Reference__:
+  - [clientSecret](#clientsecret)
+  - [Set up OAuth App](../guide/supported-platforms.md)
+  - [Security](../guide/security.md)
 
 ### clientSecret
 
@@ -110,7 +113,12 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
   Vssue will use it together with `clientId` to get user's access token.
 
-- __Reference__: [Set up OAuth App](../guide/supported-platforms.md), [clientId](#clientid)
+- __Reference__:
+  - [clientId](#clientid)
+  - [Set up OAuth App](../guide/supported-platforms.md)
+  - [Security](../guide/security.md)
+
+- __Reference__: 
 
 ::: tip
 In different platforms, the actual name of __OAuth App__, `clientId` and `clientSecret` differs:
@@ -230,11 +238,29 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
   Contributions welcome for more languages support.
   :::
 
+### proxy <Badge text="v0.6+"/>
+
+- __Type__: `string | ((url: string) => string)`
+- __Default__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
+- __Details__:
+
+  The access token API of the platfroms do not support CORS (see [related issue of GitHub](https://github.com/isaacs/github/issues/330)). As Vssue is a pure front-end plugin, we have to use a proxy to request access token.
+
+  By default, we use an open source CORS proxy service [cors-anywhere](https://github.com/Rob--W/cors-anywhere) for that.
+  
+  If you want to use your own proxy, you need to set this option. For example:
+
+  ```js
+  proxy: url => `https://your.cors.porxy?target=${url}`
+  ```
+
+- __Reference__: [Security](../guide/security.md)
+
 ## Component Props
 
 ### title
 
-- __Type__: `string | (options: VssueOptions) => string`
+- __Type__: `string | ((options: VssueOptions) => string)`
 - __Required__: `false`
 - __Default__: `` options => `${options.prefix}${document.title}` ``
 - __Details__:
