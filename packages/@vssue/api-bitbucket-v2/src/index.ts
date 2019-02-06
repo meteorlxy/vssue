@@ -32,6 +32,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   clientId: string
   clientSecret: string
   state: string
+  proxy: string | ((url: string) => string)
   $http: AxiosInstance
 
   constructor ({
@@ -41,6 +42,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     clientId,
     clientSecret,
     state,
+    proxy,
   }: VssueAPI.Options) {
     this.baseURL = baseURL
     this.owner = owner
@@ -49,6 +51,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     this.clientId = clientId
     this.clientSecret = clientSecret
     this.state = state
+    this.proxy = proxy
 
     this.$http = axios.create({
       baseURL: 'https://api.bitbucket.org/2.0',
@@ -123,7 +126,11 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   }: {
     code: string
   }): Promise<string> {
-    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${concatURL(this.baseURL, 'site/oauth2/access_token')}`, buildQuery({
+    const originalURL = concatURL(this.baseURL, 'site/oauth2/access_token')
+    const proxyURL = typeof this.proxy === 'function'
+      ? this.proxy(originalURL)
+      : this.proxy
+    const { data } = await this.$http.post(proxyURL, buildQuery({
       grant_type: 'authorization_code',
       redirect_uri: window.location.href,
       code,

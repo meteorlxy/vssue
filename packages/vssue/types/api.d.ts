@@ -9,6 +9,7 @@ export namespace VssueAPI {
     baseURL?: string
     state: string
     labels: Array<string>
+    proxy: string | ((url: string) => string)
   }
 
   export type Platform = {

@@ -85,6 +85,7 @@ class VssueStore extends Vue implements Vssue.Store {
       prefix: '[Vssue]',
       admins: [],
       perPage: 10,
+      proxy: (url: string): string => `https://cors-anywhere.herokuapp.com/${url}`,
     }, options)
 
     // check options
@@ -152,6 +153,7 @@ class VssueStore extends Vue implements Vssue.Store {
         repo: this.options.repo,
         clientId: this.options.clientId,
         clientSecret: this.options.clientSecret,
+        proxy: this.options.proxy,
       })
 
       // handle authorization

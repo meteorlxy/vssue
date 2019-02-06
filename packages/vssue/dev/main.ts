@@ -4,15 +4,15 @@ import VssuePlguin, {
   VssueComponent,
 } from 'vssue'
 // @ts-ignore
-import GithubV3 from '@vssue/api'
+import PlatformAPI from '@vssue/api'
 
 import 'vssue/dist/vssue.css'
 import 'github-markdown-css'
 
 const onlyComponent: boolean = process.env.VUE_APP_ONLY_COMPONENT === 'true'
 
-const options: Vssue.Options = {
-  api: GithubV3,
+const options: Partial<Vssue.Options> = {
+  api: PlatformAPI,
   owner: process.env.VUE_APP_OWNER,
   repo: process.env.VUE_APP_REPO,
   clientId: process.env.VUE_APP_CLIENT_ID,
@@ -22,6 +22,7 @@ const options: Vssue.Options = {
   prefix: '[Vssue]',
   admins: [],
   perPage: 5,
+  proxy: url => `https://cors-anywhere.herokuapp.com/${url}`,
 }
 
 if (!onlyComponent) {

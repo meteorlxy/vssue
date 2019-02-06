@@ -34,6 +34,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
   clientId: string
   clientSecret: string
   state: string
+  proxy: string | ((url: string) => string)
   $http: AxiosInstance
 
   private _encodedRepo: string
@@ -46,6 +47,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     clientId,
     clientSecret,
     state,
+    proxy,
   }: VssueAPI.Options) {
     this.baseURL = baseURL
     this.owner = owner
@@ -55,6 +57,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     this.clientId = clientId
     this.clientSecret = clientSecret
     this.state = state
+    this.proxy = proxy
 
     // @see https://docs.gitlab.com/ce/api/README.html#namespaced-path-encoding
     this._encodedRepo = encodeURIComponent(`${this.owner}/${this.repo}`)
@@ -137,7 +140,11 @@ export default class GitlabV4 implements VssueAPI.Instance {
   }: {
     code: string
   }): Promise<string> {
-    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${concatURL(this.baseURL, 'oauth/token')}`, {
+    const originalURL = concatURL(this.baseURL, 'oauth/token')
+    const proxyURL = typeof this.proxy === 'function'
+      ? this.proxy(originalURL)
+      : this.proxy
+    const { data } = await this.$http.post(proxyURL, {
       client_id: this.clientId,
       client_secret: this.clientSecret,
       code,

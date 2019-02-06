@@ -35,6 +35,7 @@ export default class GithubV4 implements VssueAPI.Instance {
   clientId: string
   clientSecret: string
   state: string
+  proxy: string | ((url: string) => string)
   $http: AxiosInstance
 
   private _pageInfo: {
@@ -53,6 +54,7 @@ export default class GithubV4 implements VssueAPI.Instance {
     clientId,
     clientSecret,
     state,
+    proxy,
   }: VssueAPI.Options) {
     this.baseURL = baseURL
     this.owner = owner
@@ -62,6 +64,7 @@ export default class GithubV4 implements VssueAPI.Instance {
     this.clientId = clientId
     this.clientSecret = clientSecret
     this.state = state
+    this.proxy = proxy
 
     this._pageInfo = {
       page: 1,
@@ -163,7 +166,11 @@ export default class GithubV4 implements VssueAPI.Instance {
      * access_token api does not support cors
      * @see https://github.com/isaacs/github/issues/330
      */
-    const { data } = await this.$http.post(`https://cors-anywhere.herokuapp.com/${concatURL(this.baseURL, 'login/oauth/access_token')}`, {
+    const originalURL = concatURL(this.baseURL, 'login/oauth/access_token')
+    const proxyURL = typeof this.proxy === 'function'
+      ? this.proxy(originalURL)
+      : this.proxy
+    const { data } = await this.$http.post(proxyURL, {
       client_id: this.clientId,
       client_secret: this.clientSecret,
       code,

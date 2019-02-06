@@ -8,16 +8,17 @@ export namespace Vssue {
     repo: string
     clientId: string
     clientSecret: string
-    baseURL?: string
+    baseURL: string
     state: string
     labels: Array<string>
     prefix: string
     admins: Array<string>
     perPage: number
-    locale?: string
+    locale: string
+    proxy: string | ((url: string) => string)
   }
 
-  export interface Plugin extends PluginObject<Vssue.Options> {
+  export interface Plugin extends PluginObject<Partial<Vssue.Options>> {
     readonly version: string
     installed: boolean
     VssueComponent: Vssue.Component
