@@ -1,3 +1,12 @@
+# [0.6.0](https://github.com/meteorlxy/vssue/compare/v0.5.3...v0.6.0) (2019-02-06)
+
+
+### Features
+
+* add proxy option ([65a0ee1](https://github.com/meteorlxy/vssue/commit/65a0ee1))
+
+
+
 ## [0.5.2](https://github.com/meteorlxy/vssue/compare/v0.5.1...v0.5.2) (2019-01-24)
 
 
