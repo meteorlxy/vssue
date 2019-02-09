@@ -223,7 +223,7 @@ export namespace VssueAPI {
     }): Promise<boolean>
   }
 
-  export interface Contructor {
+  export interface Constructor {
     new (options: VssueAPI.Options): VssueAPI.Instance
   }
 }

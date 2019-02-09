@@ -3,7 +3,7 @@ import { VssueAPI } from './api'
 
 export namespace Vssue {
   export type Options = {
-    api: VssueAPI.Contructor
+    api: VssueAPI.Constructor
     owner: string
     repo: string
     clientId: string
