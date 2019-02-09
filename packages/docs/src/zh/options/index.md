@@ -19,7 +19,7 @@ Vue.use(Vssue, {
 
 ### api
 
-- __类型__: `VssueAPI.Contructor`
+- __类型__: `VssueAPI.Constructor`
 - __详细__:
 
   VssueAPI 类的构造函数，而 VssueAPI 类实现了 `VssueAPI.Instance` 接口。
@@ -32,6 +32,7 @@ Vue.use(Vssue, {
 
   - Github
     - API V3: `@vssue/api-github-v3`
+    - API V4: `@vssue/api-github-v4`
   - Gitlab
     - API V4: `@vssue/api-gitlab-v4`
   - Bitbucket
@@ -144,7 +145,9 @@ Vue.use(Vssue, {
   只有在你要使用 __自行搭建的 Gitlab__ 时才需要设置这个选项。
   :::
 
-- __参考__: [Gitlab Application](../guide/gitlab.md)
+- __参考__:
+  - [GitHub OAuth App](../guide/github.md)
+  - [GitLab Application](../guide/gitlab.md)
 
 ### state
 
