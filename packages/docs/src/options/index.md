@@ -247,7 +247,7 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
 - __Default__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
 - __Details__:
 
-  The access token API of the platfroms do not support CORS (see [related issue of GitHub](https://github.com/isaacs/github/issues/330)). As Vssue is a pure front-end plugin, we have to use a proxy to request access token.
+  The access token API of the platforms do not support CORS (see [related issue of GitHub](https://github.com/isaacs/github/issues/330)). As Vssue is a pure front-end plugin, we have to use a proxy to request access token.
 
   By default, we use an open source CORS proxy service [cors-anywhere](https://github.com/Rob--W/cors-anywhere) for that.
   
