@@ -1,6 +1,5 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { Vssue, VssueAPI } from 'vssue'
-import { getCleanURL } from '@vssue/utils'
 import i18n from './i18n'
 
 @Component({ i18n })
@@ -188,7 +187,7 @@ class VssueStore extends Vue implements Vssue.Store {
   /**
    * Init comments according to issue title
    */
-  async initCommentsByIssueTitle (issueTitle: string): Promise<void> {
+  async initCommentsByIssueTitle (issueTitle: string, issueContent: string): Promise<void> {
     if (!this.API) return
 
     // get issue according to title first
@@ -212,7 +211,7 @@ class VssueStore extends Vue implements Vssue.Store {
       // create the corresponding issue
       this.issue = await this.API.postIssue({
         title: issueTitle,
-        content: getCleanURL(window.location.href),
+        content: issueContent,
         accessToken: this.accessToken,
       })
     }

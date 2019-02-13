@@ -29,6 +29,8 @@ export const formatDateTime = (str: string): string => {
   return dateTime
 }
 
+export const getType = (target: any) => Object.prototype.toString.call(target).replace(/\[object ([A-z]+)\]/, '$1')
+
 export const noop = () => {}
 
 export default {
@@ -39,4 +41,5 @@ export default {
   buildQuery,
   formatDateTime,
   noop,
+  getType,
 }

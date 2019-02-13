@@ -283,6 +283,23 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
 
 - __Reference__: [prefix](#prefix), [labels](#labels)
 
+### content <Badge text="v0.7+"/>
+
+- __Type__: `string | ((options: VssueOptions) => string) | ((options: VssueOptions) => Promise<string>)`
+- __Required__: `false`
+- __Default__: `null`
+- __Details__:
+
+  The content of issue that used by this Vssue component.
+
+  - If the type is `string`, create by setting content.
+  - If the type is `Function|Promise`, the actual title of issue is the return value of the function. Notice that the first parameter of the function is the options of Vssue, and you can use them to generate the actual title.
+
+  ::: danger ATTENSION
+  The `content` parameter is only used to create a Issue. If `issueId` is set, or the Issue bound to the page already exists, the content will not be re-updated.
+  :::
+
+
 ### issueId <Badge text="v0.2+"/>
 
 - __Type__: `string | number`

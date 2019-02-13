@@ -282,6 +282,22 @@ Vue.use(Vssue, {
 
 - __参考__: [prefix](#prefix), [labels](#labels)
 
+### content <Badge text="v0.7+"/>
+
+- __类型__: `string | ((options: VssueOptions) => string) | ((options: VssueOptions) => Promise<string>)`
+- __是否必须__: `false`
+- __默认值__: `null`
+- __详细__:
+
+  当前 Vssue 组件使用的 Issue 的内容。
+
+  - 如果类型是 `string`，按设置内容创建 Issue。
+  - 如果类型是 `Function|Promise` ，实际内容是函数的返回值。注意，这个函数的第一个参数是 Vssue 的 options，你可以通过它们来生成实际的创建内容。
+
+  ::: danger 注意
+  `content` 参数仅用于创建 Issue，如果设置了 `issueId`，或者页面所绑定的 Issue 已存在，则不会重新更新内容。
+  :::
+
 ### issueId <Badge text="v0.2+"/>
 
 - __类型__: `string | number`
