@@ -295,7 +295,7 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
   If `issueId` is set, `labels`, `preifx` and `title` will be ignored.
 
   ::: danger ATTENSION
-  If `issueId` is set, Vssue will use it to determine which issue to use directly, instead of requesting issues according to `labels` and `title`. This will make the initilization process of Vssue faster.
+  If `issueId` is set, Vssue will use it to determine which issue to use directly, instead of requesting issues according to `labels` and `title`. This will make the initialization process of Vssue faster.
 
   In this case, however, you have to __create issue manually__. If the corresponding issue is not found, Vssue will not try to create a new issue for you. 
   :::
