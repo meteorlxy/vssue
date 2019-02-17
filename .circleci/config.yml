@@ -49,7 +49,7 @@ jobs:
           command: yarn test --coverage
       - run:
           name: Coveralls
-          command: yarn add coveralls && cat ./coverage/lcov.info | yarn coveralls
+          command: yarn global add coveralls && cat ./coverage/lcov.info | $(yarn global bin)/coveralls
 
 workflows:
   version: 2
