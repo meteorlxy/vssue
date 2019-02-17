@@ -4,7 +4,8 @@
 [![npmjs](https://img.shields.io/npm/v/vssue/latest.svg?logo=npm)](https://www.npmjs.com/package/vssue)
 [![unpkg](https://img.badgesize.io/meteorlxy/vssue/master/packages/vssue/dist/vssue.github.min.js.svg?label=min%20size)](https://unpkg.com/vssue/dist/vssue.github.min.js)
 [![unpkg](https://img.badgesize.io/meteorlxy/vssue/master/packages/vssue/dist/vssue.github.min.js.svg?compression=gzip)](https://unpkg.com/vssue/dist/vssue.github.min.js)
-[![](https://img.shields.io/github/license/meteorlxy/vssue.svg)](./LICENSE)
+[![Coverage Status](https://coveralls.io/repos/github/meteorlxy/vssue/badge.svg?branch=master)](https://coveralls.io/github/meteorlxy/vssue?branch=master)
+[![LICENSE](https://img.shields.io/github/license/meteorlxy/vssue.svg)](./LICENSE)
 
 > A Vue-powered Issue-based comment plugin
 
