@@ -1,3 +1,5 @@
+__mocks__/
+__tests__/
 dev/
 scripts/
 .browserslistrc

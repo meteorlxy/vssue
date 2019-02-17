@@ -30,6 +30,16 @@ jobs:
       - run:
           name: Lint Code
           command: yarn lint
+  test:
+    executor: node
+    steps:
+      - install
+      - run:
+          name: Test Code with Coverage
+          command: yarn test --coverage
+      - run:
+          name: Coveralls
+          command: yarn global add coveralls && cat ./coverage/lcov.info | coveralls
   build:
     executor: node
     steps:
@@ -46,4 +56,5 @@ workflows:
   checks:
     jobs:
       - lint
+      - test
       - build
