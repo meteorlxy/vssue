@@ -1,6 +1,4 @@
-import {
-  VssueAPI,
-} from 'vssue'
+import { VssueAPI } from 'vssue'
 
 export function normalizeUser (user: any): VssueAPI.User {
   return {

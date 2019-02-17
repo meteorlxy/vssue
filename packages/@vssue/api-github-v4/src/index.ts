@@ -1,4 +1,4 @@
-import { VssueAPI } from '../../../vssue/types'
+import { VssueAPI } from 'vssue'
 
 import axios, {
   AxiosInstance,
