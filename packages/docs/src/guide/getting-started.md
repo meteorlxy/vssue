@@ -15,7 +15,7 @@ After this step, you will get `client id` and `client secret` of your OAuth App,
 
 ## In Browser
 
-Vssue can be used directly via `<script>` tag in browser. As Vssue depends on [Vue.js](https://vuejs.org), you should also import Vue.
+Vssue can be used directly via a `<script>` tag in browser. As Vssue depends on [Vue.js](https://vuejs.org), you should also import Vue.
 
 ```html
 <head>
