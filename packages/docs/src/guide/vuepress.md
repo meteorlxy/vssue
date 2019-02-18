@@ -7,7 +7,11 @@
 Vssue provides a [Vuepress Plugin](https://vuepress.vuejs.org/plugin/) - [@vssue/vuepress-plugin-vssue](https://www.npmjs.com/package/@vssue/vuepress-plugin-vssue) - to help use Vssue in Vuepress quickly.
 
 ::: tip
-Only Vuepress v1.0+ supports plugins, which is in alpha stage for now.
+Vuepress v1.0+ supports plugins.
+:::
+
+::: warning ATTENSION
+Vuepress 1.x is in alpha stage and is not stable, so our plugin may also have potential problems with different version of Vuepress.
 :::
 
 ## Usage

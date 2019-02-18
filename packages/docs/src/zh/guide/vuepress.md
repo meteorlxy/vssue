@@ -7,7 +7,11 @@
 Vssue 提供了一个 [Vuepress 插件](https://vuepress.vuejs.org/zh/plugin/) - [@vssue/vuepress-plugin-vssue](https://www.npmjs.com/package/@vssue/vuepress-plugin-vssue) - 来帮助你在 Vuepress 中快速使用 Vssue。
 
 ::: tip
-Vuepress v1.0+ 才支持插件，现在 Vuepress 1.0 版本还处于 alpha 测试阶段。
+Vuepress v1.0+ 开始支持插件。
+:::
+
+::: warning 注意
+现在 Vuepress 1.x 版本还处于 alpha 测试阶段，并不稳定，所以我们的插件在不同版本的 Vuepress 下可能会存在潜在的问题。
 :::
 
 ## 使用方法
@@ -99,4 +103,3 @@ $accentColor = blue
 
 $vssue-theme-color = red
 ```
-
