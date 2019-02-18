@@ -23,6 +23,7 @@ const options: Partial<Vssue.Options> = {
   admins: [],
   perPage: 5,
   proxy: url => `https://cors-anywhere.herokuapp.com/${url}`,
+  issueContent: ({ url }) => url,
 }
 
 if (!onlyComponent) {
@@ -43,6 +44,7 @@ new Vue({
         // override the default options here if use plugin
         perPage: 7,
         // locale: 'en',
+        // issueContent: ({ url }) => `This issue is created by Vssue to store comments of page: ${url}`,
       },
     }
   },
