@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.6.0
+ * @version v0.6.1
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -3271,7 +3271,7 @@ var VssueStore = /** @class */ (function (_super) {
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.6.0";
+            return "0.6.1";
         },
         enumerable: true,
         configurable: true
@@ -3339,13 +3339,22 @@ var VssueStore = /** @class */ (function (_super) {
                 console.warn("[Vssue] the option '" + opt + "' is required");
             }
         }
+        // set locale
+        if (this.options.locale) {
+            this.$i18n.locale = this.options.locale;
+        }
+        else {
+            var locales_1 = Object.keys(this.$i18n.messages);
+            var navLangs = window.navigator.languages;
+            this.$i18n.locale = navLangs.filter(function (item) { return locales_1.includes(item); }).shift() || 'en';
+        }
     };
     /**
      * Init VssueStore
      */
     VssueStore.prototype.init = function () {
         return __awaiter(this, void 0, Promise, function () {
-            var locales_1, navLangs, APIConstructor;
+            var APIConstructor;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -3372,15 +3381,6 @@ var VssueStore = /** @class */ (function (_super) {
                         this.status.isLoadingComments = false;
                         this.status.isCreatingComment = false;
                         this.status.isUpdatingComment = false;
-                        // set locale
-                        if (this.options.locale) {
-                            this.$i18n.locale = this.options.locale;
-                        }
-                        else {
-                            locales_1 = Object.keys(this.$i18n.messages);
-                            navLangs = window.navigator.languages;
-                            this.$i18n.locale = navLangs.filter(function (item) { return locales_1.includes(item); }).shift() || 'en';
-                        }
                         APIConstructor = this.options.api;
                         this.API = new APIConstructor({
                             baseURL: this.options.baseURL,
@@ -3804,25 +3804,10 @@ var Vssue = /** @class */ (function (_super) {
         configurable: true
     });
     /**
-     * Re-init Vssue if the `title` is changed when the `issueId` is not set
-     */
-    Vssue.prototype.onTitleChange = function () {
-        if (!this.issueId) {
-            this.init();
-        }
-    };
-    /**
-     * Re-init Vssue if the `issueId` is changed
-     */
-    Vssue.prototype.onIssueIdChange = function () {
-        this.init();
-    };
-    /**
-     * Re-init Vssue if the `options` is changed
+     * Set options of Vssue if `options` prop is changed
      */
     Vssue.prototype.onOptionsChange = function (options) {
         this.vssue.setOptions(options);
-        this.init();
     };
     /**
      * Created hook. Check Options and init Vssue.
@@ -3900,12 +3885,6 @@ var Vssue = /** @class */ (function (_super) {
     __decorate([
         Provide('vssue')
     ], Vssue.prototype, "vssue");
-    __decorate([
-        Watch('title')
-    ], Vssue.prototype, "onTitleChange");
-    __decorate([
-        Watch('issueId')
-    ], Vssue.prototype, "onIssueIdChange");
     __decorate([
         Watch('options', { deep: true })
     ], Vssue.prototype, "onOptionsChange");
@@ -4014,7 +3993,7 @@ var VssueComponent = __vue_normalize__$a({
 
 var VssuePlugin = {
     get version() {
-        return "0.6.0";
+        return "0.6.1";
     },
     installed: false,
     install: function (Vue$$1, options) {

@@ -1,6 +1,6 @@
 {
   "name": "@vssue/vuepress-plugin-vssue",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Vuepress plugin for vssue",
   "license": "MIT",
   "main": "lib/index.js",
@@ -26,10 +26,10 @@
     "build": "rimraf lib types && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vssue/api-bitbucket-v2": "^0.6.0",
-    "@vssue/api-github-v3": "^0.6.0",
-    "@vssue/api-gitlab-v4": "^0.6.0",
-    "vssue": "^0.6.0"
+    "@vssue/api-bitbucket-v2": "^0.6.1",
+    "@vssue/api-github-v3": "^0.6.1",
+    "@vssue/api-gitlab-v4": "^0.6.1",
+    "vssue": "^0.6.1"
   },
   "peerDependencies": {
     "vuepress": "^1.0.0-alpha.30"
