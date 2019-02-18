@@ -101,6 +101,15 @@ class VssueStore extends Vue implements Vssue.Store {
         console.warn(`[Vssue] the option '${opt}' is required`)
       }
     }
+
+    // set locale
+    if (this.options.locale) {
+      this.$i18n.locale = this.options.locale
+    } else {
+      const locales = Object.keys(this.$i18n.messages)
+      const navLangs = window.navigator.languages
+      this.$i18n.locale = navLangs.filter(item => locales.includes(item)).shift() || 'en'
+    }
   }
 
   /**
@@ -132,15 +141,6 @@ class VssueStore extends Vue implements Vssue.Store {
       this.status.isLoadingComments = false
       this.status.isCreatingComment = false
       this.status.isUpdatingComment = false
-
-      // set locale
-      if (this.options.locale) {
-        this.$i18n.locale = this.options.locale
-      } else {
-        const locales = Object.keys(this.$i18n.messages)
-        const navLangs = window.navigator.languages
-        this.$i18n.locale = navLangs.filter(item => locales.includes(item)).shift() || 'en'
-      }
 
       // get the VssueAPI instance according to the options.api
       const APIConstructor = this.options.api

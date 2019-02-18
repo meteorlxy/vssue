@@ -129,30 +129,11 @@ export default class Vssue extends Vue {
   }
 
   /**
-   * Re-init Vssue if the `title` is changed when the `issueId` is not set
-   */
-  @Watch('title')
-  onTitleChange (): void {
-    if (!this.issueId) {
-      this.init()
-    }
-  }
-
-  /**
-   * Re-init Vssue if the `issueId` is changed
-   */
-  @Watch('issueId')
-  onIssueIdChange (): void {
-    this.init()
-  }
-
-  /**
-   * Re-init Vssue if the `options` is changed
+   * Set options of Vssue if `options` prop is changed
    */
   @Watch('options', { deep: true })
   onOptionsChange (options): void {
     this.vssue.setOptions(options)
-    this.init()
   }
 
   /**
