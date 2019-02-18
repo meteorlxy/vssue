@@ -1,3 +1,12 @@
+# [0.7.0](https://github.com/meteorlxy/vssue/compare/v0.6.1...v0.7.0) (2019-02-18)
+
+
+### Features
+
+* **$vssue:** add issue-content option ([#10](https://github.com/meteorlxy/vssue/issues/10)) ([df99108](https://github.com/meteorlxy/vssue/commit/df99108))
+
+
+
 ## [0.6.1](https://github.com/meteorlxy/vssue/compare/v0.6.0...v0.6.1) (2019-02-18)
 
 
