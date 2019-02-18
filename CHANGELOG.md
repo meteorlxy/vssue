@@ -1,9 +1,33 @@
+## [0.6.1](https://github.com/meteorlxy/vssue/compare/v0.6.0...v0.6.1) (2019-02-18)
+
+
+### Bug Fixes
+
+* **$vssue:** do not re-init when options are changed (close [#12](https://github.com/meteorlxy/vssue/issues/12)) ([3afc61a](https://github.com/meteorlxy/vssue/commit/3afc61a))
+
+
+
 # [0.6.0](https://github.com/meteorlxy/vssue/compare/v0.5.3...v0.6.0) (2019-02-06)
 
 
 ### Features
 
 * add proxy option ([65a0ee1](https://github.com/meteorlxy/vssue/commit/65a0ee1))
+
+
+
+## [0.5.3](https://github.com/meteorlxy/vssue/compare/v0.5.2...v0.5.3) (2019-02-01)
+
+
+### Bug Fixes
+
+* **$vssue:** make button background transparent ([0cded76](https://github.com/meteorlxy/vssue/commit/0cded76))
+
+
+### Features
+
+* **$api-github-v3:** support github enterprise server ([c7b661d](https://github.com/meteorlxy/vssue/commit/c7b661d))
+* **$api-github-v4:** support github enterprise server ([999808a](https://github.com/meteorlxy/vssue/commit/999808a))
 
 
 
