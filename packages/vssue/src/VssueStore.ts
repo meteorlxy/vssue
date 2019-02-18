@@ -86,6 +86,7 @@ class VssueStore extends Vue implements Vssue.Store {
       admins: [],
       perPage: 10,
       proxy: (url: string): string => `https://cors-anywhere.herokuapp.com/${url}`,
+      issueContent: ({ url }): string => url,
     }, options)
 
     // check options
@@ -189,7 +190,7 @@ class VssueStore extends Vue implements Vssue.Store {
    * Init comments according to issue title
    */
   async initCommentsByIssueTitle (issueTitle: string): Promise<void> {
-    if (!this.API) return
+    if (!this.API || !this.options) return
 
     // get issue according to title first
     this.issue = await this.API.getIssue({
@@ -212,7 +213,10 @@ class VssueStore extends Vue implements Vssue.Store {
       // create the corresponding issue
       this.issue = await this.API.postIssue({
         title: issueTitle,
-        content: getCleanURL(window.location.href),
+        content: this.options.issueContent({
+          options: this.options,
+          url: getCleanURL(window.location.href),
+        }),
         accessToken: this.accessToken,
       })
     }

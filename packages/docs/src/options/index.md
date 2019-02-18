@@ -251,13 +251,42 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
 
   By default, we use an open source CORS proxy service [cors-anywhere](https://github.com/Rob--W/cors-anywhere) for that.
   
-  If you want to use your own proxy, you need to set this option. For example:
+  If you want to use your own proxy, you need to set this option.
+
+- __Example__:
 
   ```js
   proxy: url => `https://your.cors.porxy?target=${url}`
   ```
 
 - __Reference__: [Security](../guide/security.md)
+
+### issueContent <Badge text="v0.7+"/>
+
+- __Type__: `((param: { options: Vssue.Options, url: string }) => string)`
+- __Default__: `({ url }) => url`
+- __Details__:
+
+  The content of issue that auto created by Vssue.
+
+  Vssue will use the return value of the function as the content.
+  
+  The parameter includes two properties:
+
+  - `options` is the options of Vssue.
+  - `url` is the URL of current page, which is the default content.
+
+- __Example__:
+
+  ```js
+  issueContent: ({ url }) => `This issue is auto created by Vssue to store comments of this page: ${url}`
+  ```
+
+  ::: tip
+  The `issueContent` option is only used to auto create the corresonpding issue when it does not exist.
+
+  If the issue already exists, Vssue will not try to update the content.
+  :::
 
 ## Component Props
 
@@ -274,14 +303,17 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
   - If the type is `Function`, the actual title of issue is the return value of the function. Notice that the first parameter of the function is the options of Vssue, and you can use them to generate the actual title.
 
   ::: warning ATTENSION
-  When trying to load comments, Vssue will request for the corresponding issue according to `labels` and `title`. If the issue does not exist, Vssue will try to create one.
+  When trying to load comments, Vssue will request the corresponding issue according to `labels` and `title`. If the issue does not exist, Vssue will try to create a new issue with `title`, `issueContent` and `labels`.
 
   In other words, `labels` and `title` is the identifier of the corresponding issue.
   
   So make sure that Vssue on different pages have different `title`s. Vssue with same `title` will correspond to the same issue, and share the same comments.
   :::
 
-- __Reference__: [prefix](#prefix), [labels](#labels)
+- __Reference__:
+  - [prefix](#prefix)
+  - [labels](#labels)
+  - [issueContent](#issuecontent)
 
 ### issueId <Badge text="v0.2+"/>
 
@@ -292,7 +324,10 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
 
   The id of issue that used by this Vssue component.
   
-  If `issueId` is set, `labels`, `preifx` and `title` will be ignored.
+  If `issueId` is set, these parameters will be ignored:
+
+  - Options: `labels`, `prefix` and `issueContent`
+  - Props: `title`
 
   ::: danger ATTENSION
   If `issueId` is set, Vssue will use it to determine which issue to use directly, instead of requesting issues according to `labels` and `title`. This will make the initialization process of Vssue faster.
