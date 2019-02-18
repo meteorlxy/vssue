@@ -1,5 +1,6 @@
 import { Vue, Component, Watch } from 'vue-property-decorator'
 import { Vssue, VssueAPI } from 'vssue'
+import { getCleanURL } from '@vssue/utils'
 import i18n from './i18n'
 
 @Component({ i18n })
@@ -85,6 +86,7 @@ class VssueStore extends Vue implements Vssue.Store {
       admins: [],
       perPage: 10,
       proxy: (url: string): string => `https://cors-anywhere.herokuapp.com/${url}`,
+      issueContent: ({ url }): string => url,
     }, options)
 
     // check options
@@ -187,8 +189,8 @@ class VssueStore extends Vue implements Vssue.Store {
   /**
    * Init comments according to issue title
    */
-  async initCommentsByIssueTitle (issueTitle: string, issueContent: string): Promise<void> {
-    if (!this.API) return
+  async initCommentsByIssueTitle (issueTitle: string): Promise<void> {
+    if (!this.API || !this.options) return
 
     // get issue according to title first
     this.issue = await this.API.getIssue({
@@ -211,7 +213,10 @@ class VssueStore extends Vue implements Vssue.Store {
       // create the corresponding issue
       this.issue = await this.API.postIssue({
         title: issueTitle,
-        content: issueContent,
+        content: this.options.issueContent({
+          options: this.options,
+          url: getCleanURL(window.location.href),
+        }),
         accessToken: this.accessToken,
       })
     }

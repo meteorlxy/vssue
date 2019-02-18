@@ -16,6 +16,7 @@ export namespace Vssue {
     perPage: number
     locale: string
     proxy: string | ((url: string) => string)
+    issueContent: ((param: { options: Vssue.Options, url: string }) => string)
   }
 
   export interface Plugin extends PluginObject<Partial<Vssue.Options>> {
@@ -39,7 +40,7 @@ export namespace Vssue {
     computedStatus: Vssue.ComputedStatus
     setOptions (options: Partial<Vssue.Options>): void
     init (): Promise<void>
-    initCommentsByIssueTitle(issueTitle: string, issueContent: string): Promise<void>
+    initCommentsByIssueTitle(issueTitle: string): Promise<void>
     initCommentsByIssueId(issueId: number | string): Promise<void>
     handleAuth (): Promise<void>
     getComments (): Promise<VssueAPI.Comments | void>
@@ -64,8 +65,6 @@ export namespace Vssue {
     isCreatingComment: boolean
     isUpdatingComment: boolean
   }
-
-  export type IssueContent = string | ((options: Vssue.Options | null) => string) | ((options: Vssue.Options | null) => Promise<string>)
 }
 
 export default Vssue

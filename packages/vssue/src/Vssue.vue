@@ -83,7 +83,6 @@ import VssueNewComment from './components/VssueNewComment.vue'
 import VssueNotice from './components/VssueNotice.vue'
 import VssueStatus from './components/VssueStatus.vue'
 import VssueStore from './VssueStore'
-import { getCleanURL, getType } from '@vssue/utils'
 
 @Component({
   components: {
@@ -107,12 +106,6 @@ export default class Vssue extends Vue {
     required: false,
     default: null,
   }) issueId!: string | number | null
-
-  @Prop({
-    type: [Function],
-    required: false,
-    default: null,
-  }) content!: VssueNamespace.IssueContent
 
   @Prop({
     type: Object,
@@ -183,10 +176,7 @@ export default class Vssue extends Vue {
 
       // init comments
       if (!this.issueId) {
-        await this.vssue.initCommentsByIssueTitle(
-          this.issueTitle,
-          await this.getIssueContent(this.content)
-        )
+        await this.vssue.initCommentsByIssueTitle(this.issueTitle)
       } else {
         await this.vssue.initCommentsByIssueId(this.issueId)
       }
@@ -198,21 +188,6 @@ export default class Vssue extends Vue {
         this.vssue.status.isFailed = true
       }
       console.error(e)
-    }
-  }
-
-  /*
-   * Get the content used to create the issue
-   */
-  async getIssueContent (issueContent: VssueNamespace.IssueContent | null) {
-    const type = getType(issueContent)
-
-    if (typeof issueContent === 'string') {
-      return issueContent
-    } else if (type === 'Promise' || type === 'Function') {
-      return (issueContent as (options: any) => string)(this.vssue.options)
-    } else {
-      return getCleanURL(window.location.href)
     }
   }
 }

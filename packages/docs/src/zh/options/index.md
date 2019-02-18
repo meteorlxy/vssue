@@ -249,13 +249,42 @@ Vue.use(Vssue, {
 
   默认情况下，我们使用一个开源的 CORS 代理服务 [cors-anywhere](https://github.com/Rob--W/cors-anywhere)。
   
-  如果你希望使用自己的代理，就需要设置这个选项。例如：
+  如果你希望使用自己的代理，就需要设置这个选项。
+
+- __示例__:
 
   ```js
   proxy: url => `https://your.cors.porxy?target=${url}`
   ```
 
 - __参考__: [安全](../guide/security.md)
+
+### issueContent <Badge text="v0.7+"/>
+
+- __类型__: `((param: { options: Vssue.Options, url: string }) => string)`
+- __默认值__: `({ url }) => url`
+- __详细__:
+
+  Vssue 自动创建 Issue 时使用的内容。
+
+  Vssue 将使用该函数的返回值作为 Issue 的内容。
+
+  参数包含两个属性：
+
+  - `options` 是 Vssue 的 options。
+  - `url` 是当前页面的 URL ，是 Vssue 生成 Issue 时默认使用的内容。
+
+- __示例__:
+
+  ```js
+  issueContent: ({ url }) => `这个 Issue 由 Vssue 自动创建，用来存储该页面的评论：${url}`
+  ```
+
+  ::: tip
+  `issueContent` 只用来在对应 Issue 不存在时新建 Issue。
+
+  如果对应的 Issue 已经存在，Vssue 不会更新 Issue 的内容。
+  :::
 
 
 ## 组件 Props
@@ -273,30 +302,17 @@ Vue.use(Vssue, {
   - 如果类型是 `Function`，实际标题是函数的返回值。注意，这个函数的第一个参数是 Vssue 的 options，你可以通过它们来生成实际的标题。
 
   ::: warning 注意
-  Vssue 在尝试加载评论时，将会根据 `labels` 和 `title` 来请求对应的 Issue。如果这个 Issue 不存在，将会尝试创建它。
+  Vssue 在尝试加载评论时，将会根据 `labels` 和 `title` 来请求对应的 Issue。如果这个 Issue 不存在，将会使用 `title` 、 `issueContent` 和 `labels` 来创建一个新的 Issue。
 
   换句话说，`labels` 和 `title` 是存储评论的对应 Issue 的标识符。
 
   所以请确保不同页面的 Vssue 使用不同的 `title`。拥有相同 `title` 的 Vssue 会对应到同一个 Issue，也就会有同样的评论。
   :::
 
-- __参考__: [prefix](#prefix), [labels](#labels)
-
-### content <Badge text="v0.7+"/>
-
-- __类型__: `string | ((options: VssueOptions) => string) | ((options: VssueOptions) => Promise<string>)`
-- __是否必须__: `false`
-- __默认值__: `null`
-- __详细__:
-
-  当前 Vssue 组件使用的 Issue 的内容。
-
-  - 如果类型是 `string`，按设置内容创建 Issue。
-  - 如果类型是 `Function|Promise` ，实际内容是函数的返回值。注意，这个函数的第一个参数是 Vssue 的 options，你可以通过它们来生成实际的创建内容。
-
-  ::: danger 注意
-  `content` 参数仅用于创建 Issue，如果设置了 `issueId`，或者页面所绑定的 Issue 已存在，则不会重新更新内容。
-  :::
+- __参考__:
+  - [prefix](#prefix)
+  - [labels](#labels)
+  - [issueContent](#issuecontent)
 
 ### issueId <Badge text="v0.2+"/>
 
@@ -307,7 +323,10 @@ Vue.use(Vssue, {
 
   当前 Vssue 组件使用的 Issue 的 ID。
   
-  如果设置了 `issueId`， `labels`、 `preifx` 和 `title` 都将被忽略。
+  如果设置了 `issueId`，下列参数将会被忽略：
+
+  - Options: `labels`, `preifx` 和 `issueContent`
+  - Props: `title`
 
   ::: danger 注意
   如果设置了 `issueId`，Vssue 将会直接使用它来确定要使用哪个 Issue，而不是根据 `labels` 和 `title` 来查找对应的 Issue。这会加快 Vssue 的初始化过程、
