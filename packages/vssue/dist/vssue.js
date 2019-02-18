@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.6.1
+ * @version v0.7.0
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -3271,7 +3271,7 @@ var VssueStore = /** @class */ (function (_super) {
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.6.1";
+            return "0.7.0";
         },
         enumerable: true,
         configurable: true
@@ -3323,7 +3323,11 @@ var VssueStore = /** @class */ (function (_super) {
             prefix: '[Vssue]',
             admins: [],
             perPage: 10,
-            proxy: function (url) { return "https://cors-anywhere.herokuapp.com/" + url; }
+            proxy: function (url) { return "https://cors-anywhere.herokuapp.com/" + url; },
+            issueContent: function (_a) {
+                var url = _a.url;
+                return url;
+            }
         }, options);
         // check options
         var requiredOptions = [
@@ -3446,7 +3450,7 @@ var VssueStore = /** @class */ (function (_super) {
             return __generator(this, function (_c) {
                 switch (_c.label) {
                     case 0:
-                        if (!this.API)
+                        if (!this.API || !this.options)
                             return [2 /*return*/];
                         // get issue according to title first
                         _a = this;
@@ -3472,7 +3476,10 @@ var VssueStore = /** @class */ (function (_super) {
                         _b = this;
                         return [4 /*yield*/, this.API.postIssue({
                                 title: issueTitle,
-                                content: getCleanURL(window.location.href),
+                                content: this.options.issueContent({
+                                    options: this.options,
+                                    url: getCleanURL(window.location.href)
+                                }),
                                 accessToken: this.accessToken
                             })];
                     case 2:
@@ -3993,7 +4000,7 @@ var VssueComponent = __vue_normalize__$a({
 
 var VssuePlugin = {
     get version() {
-        return "0.6.1";
+        return "0.7.0";
     },
     installed: false,
     install: function (Vue$$1, options) {
