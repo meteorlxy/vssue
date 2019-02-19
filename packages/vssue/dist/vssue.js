@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.7.0
+ * @version v0.7.1
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -3271,7 +3271,7 @@ var VssueStore = /** @class */ (function (_super) {
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.7.0";
+            return "0.7.1";
         },
         enumerable: true,
         configurable: true
@@ -3446,9 +3446,9 @@ var VssueStore = /** @class */ (function (_super) {
      */
     VssueStore.prototype.initCommentsByIssueTitle = function (issueTitle) {
         return __awaiter(this, void 0, Promise, function () {
-            var _a, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var _a, _b, _c, _d, _e;
+            return __generator(this, function (_f) {
+                switch (_f.label) {
                     case 0:
                         if (!this.API || !this.options)
                             return [2 /*return*/];
@@ -3462,8 +3462,8 @@ var VssueStore = /** @class */ (function (_super) {
                         ];
                     case 1:
                         // get issue according to title first
-                        _a.issue = _c.sent();
-                        if (!!this.issue) return [3 /*break*/, 3];
+                        _a.issue = _f.sent();
+                        if (!!this.issue) return [3 /*break*/, 4];
                         // require login to create the issue
                         if (!this.computedStatus.isLogined) {
                             this.$emit('login');
@@ -3474,24 +3474,27 @@ var VssueStore = /** @class */ (function (_super) {
                         }
                         // create the corresponding issue
                         _b = this;
-                        return [4 /*yield*/, this.API.postIssue({
-                                title: issueTitle,
-                                content: this.options.issueContent({
-                                    options: this.options,
-                                    url: getCleanURL(window.location.href)
-                                }),
-                                accessToken: this.accessToken
+                        _d = (_c = this.API).postIssue;
+                        _e = {
+                            title: issueTitle
+                        };
+                        return [4 /*yield*/, this.options.issueContent({
+                                options: this.options,
+                                url: getCleanURL(window.location.href)
                             })];
-                    case 2:
+                    case 2: return [4 /*yield*/, _d.apply(_c, [(_e.content = _f.sent(),
+                                _e.accessToken = this.accessToken,
+                                _e)])];
+                    case 3:
                         // create the corresponding issue
-                        _b.issue = _c.sent();
-                        _c.label = 3;
-                    case 3: 
+                        _b.issue = _f.sent();
+                        _f.label = 4;
+                    case 4: 
                     // try to load comments
                     return [4 /*yield*/, this.getComments()];
-                    case 4:
+                    case 5:
                         // try to load comments
-                        _c.sent();
+                        _f.sent();
                         return [2 /*return*/];
                 }
             });
@@ -4000,7 +4003,7 @@ var VssueComponent = __vue_normalize__$a({
 
 var VssuePlugin = {
     get version() {
-        return "0.7.0";
+        return "0.7.1";
     },
     installed: false,
     install: function (Vue$$1, options) {
