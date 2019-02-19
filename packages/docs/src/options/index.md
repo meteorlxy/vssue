@@ -28,15 +28,7 @@ Vue.use(Vssue, {
 
   The name of VssueAPI packages format as `@vssue/api-${platform}-${version}`, for different API version of different platforms.
 
-  Currently, we provide following VssueAPI packages:
-
-  - Github
-    - API V3: `@vssue/api-github-v3`
-    - API V4: `@vssue/api-github-v4`
-  - Gitlab
-    - API V4: `@vssue/api-gitlab-v4`
-  - Bitbucket
-    - API V2: `@vssue/api-bitbucket-v2`
+  Check [Supported Platforms](../guide/supported-platforms.md) for available VssueAPI pacakges.
 
 - __Example__:
 

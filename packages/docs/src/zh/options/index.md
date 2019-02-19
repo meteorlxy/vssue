@@ -28,15 +28,7 @@ Vue.use(Vssue, {
 
   VssueAPI 包的命名格式为 `@vssue/api-${platform}-${version}`，对应不同平台的不同 API 版本。
 
-  目前，我们提供了以下 VssueAPI 包：
-
-  - Github
-    - API V3: `@vssue/api-github-v3`
-    - API V4: `@vssue/api-github-v4`
-  - Gitlab
-    - API V4: `@vssue/api-gitlab-v4`
-  - Bitbucket
-    - API V2: `@vssue/api-bitbucket-v2`
+  查看 [支持的代码托管平台](../guide/supported-platforms.md) 了解目前提供的 VssueAPI 包。
 
 - __示例__:
 
