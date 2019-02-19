@@ -253,7 +253,7 @@ Vue.use(Vssue, {
 
 ### issueContent <Badge text="v0.7+"/>
 
-- __类型__: `((param: { options: Vssue.Options, url: string }) => string)`
+- __类型__: `((param: { options: Vssue.Options, url: string }) => string | Promise<string>)`
 - __默认值__: `({ url }) => url`
 - __详细__:
 

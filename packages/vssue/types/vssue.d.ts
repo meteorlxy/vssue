@@ -16,7 +16,7 @@ export namespace Vssue {
     perPage: number
     locale: string
     proxy: string | ((url: string) => string)
-    issueContent: ((param: { options: Vssue.Options, url: string }) => string)
+    issueContent: ((param: { options: Vssue.Options, url: string }) => string | Promise<string>)
   }
 
   export interface Plugin extends PluginObject<Partial<Vssue.Options>> {

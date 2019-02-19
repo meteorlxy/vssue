@@ -255,7 +255,7 @@ In different platforms, the actual name of __OAuth App__, `clientId` and `client
 
 ### issueContent <Badge text="v0.7+"/>
 
-- __Type__: `((param: { options: Vssue.Options, url: string }) => string)`
+- __Type__: `((param: { options: Vssue.Options, url: string }) => string | Promise<string>)`
 - __Default__: `({ url }) => url`
 - __Details__:
 

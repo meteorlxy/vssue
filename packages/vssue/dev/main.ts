@@ -45,9 +45,11 @@ new Vue({
         perPage: 7,
         // locale: 'en',
         // issueContent: ({ url }) => `This issue is created by Vssue to store comments of page: ${url}`,
+        // issueContent: async ({ url }) => await Promise.resolve(`This issue is created by Vssue to store comments of page: ${url}`),
       },
     }
   },
 
   template: '<Vssue :issue-id="issueId" :options="options" />',
+  // template: '<Vssue :title="title" :options="options" />',
 })

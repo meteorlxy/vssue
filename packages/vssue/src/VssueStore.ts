@@ -213,7 +213,7 @@ class VssueStore extends Vue implements Vssue.Store {
       // create the corresponding issue
       this.issue = await this.API.postIssue({
         title: issueTitle,
-        content: this.options.issueContent({
+        content: await this.options.issueContent({
           options: this.options,
           url: getCleanURL(window.location.href),
         }),
