@@ -81,7 +81,7 @@ export default class GithubV4 implements VssueAPI.Instance {
       },
     })
 
-    this.$http.interceptors.response.use(function (response) {
+    this.$http.interceptors.response.use(response => {
       if (response.data.error) {
         return Promise.reject(response.data.error_description)
       }
