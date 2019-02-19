@@ -53,3 +53,14 @@ Guide: [Set up Bitbucket OAuth Cousumer](./bitbucket.md)
   - after login, the access token expires in one hour
   - cannot post emoji reactions to comments (heart, like, unlike, etc.)
 - Developer Reference: [Official Docs](https://developer.atlassian.com/bitbucket/api/2/reference)
+
+## Coding
+
+Guide: []()
+
+#### Coding API
+
+- Vssue API package: [@vssue/api-coding](https://www.npmjs.com/package/@vssue/api-coding)
+- Features or drawbacks:
+  - 
+- Developer Reference: [Official Docs](https://coding.net/help/doc/account/oauth.html)
