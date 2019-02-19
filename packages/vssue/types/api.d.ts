@@ -1,5 +1,3 @@
-import { Vssue } from './vssue'
-
 export namespace VssueAPI {
   export type Options = {
     owner: string
