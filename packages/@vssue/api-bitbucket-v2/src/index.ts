@@ -257,7 +257,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   }
 
   /**
-   * Get comments of this page according to the issue id or the issue title
+   * Get comments of this page according to the issue id
    *
    * @param options.accessToken - User access token
    * @param options.issueId - The id of issue
@@ -265,7 +265,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    *
    * @return The comments
    *
-   * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments#post
+   * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments#get
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/pagination
    */
   async getComments ({

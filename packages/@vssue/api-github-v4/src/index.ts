@@ -351,7 +351,7 @@ query getIssueByTitle(
   }
 
   /**
-   * Get comments of this page according to the issue id or the issue title
+   * Get comments of this page according to the issue id
    *
    * @param options.accessToken - User access token
    * @param options.issueId - The id of issue

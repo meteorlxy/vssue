@@ -30,7 +30,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
   baseURL: string
   owner: string
   repo: string
-  labels: string
+  labels: Array<string>
   clientId: string
   clientSecret: string
   state: string
@@ -52,7 +52,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     this.baseURL = baseURL
     this.owner = owner
     this.repo = repo
-    this.labels = labels.join(',')
+    this.labels = labels
 
     this.clientId = clientId
     this.clientSecret = clientSecret
@@ -63,7 +63,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     this._encodedRepo = encodeURIComponent(`${this.owner}/${this.repo}`)
 
     this.$http = axios.create({
-      baseURL,
+      baseURL: concatURL(baseURL, 'api/v4'),
       headers: {
         'Accept': 'application/json',
       },
@@ -166,7 +166,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
   }: {
     accessToken: VssueAPI.AccessToken
   }): Promise<VssueAPI.User> {
-    const { data } = await this.$http.get('api/v4/user', {
+    const { data } = await this.$http.get('user', {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
     return normalizeUser(data)
@@ -205,7 +205,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
 
     if (issueId) {
       try {
-        const { data } = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues/${issueId}`, options)
+        const { data } = await this.$http.get(`projects/${this._encodedRepo}/issues/${issueId}`, options)
         return normalizeIssue(data)
       } catch (e) {
         if (e.response && e.response.status === 404) {
@@ -216,12 +216,12 @@ export default class GitlabV4 implements VssueAPI.Instance {
       }
     } else {
       options.params = {
-        labels: this.labels,
+        labels: this.labels.join(','),
         order_by: 'created_at',
         sort: 'asc',
         search: issueTitle,
       }
-      const { data } = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues`, options)
+      const { data } = await this.$http.get(`projects/${this._encodedRepo}/issues`, options)
       const issue = data.map(normalizeIssue).find(item => item.title === issueTitle)
       return issue || null
     }
@@ -247,10 +247,10 @@ export default class GitlabV4 implements VssueAPI.Instance {
     title: string
     content: string
   }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(`api/v4/projects/${this._encodedRepo}/issues`, {
+    const { data } = await this.$http.post(`projects/${this._encodedRepo}/issues`, {
       title,
       description: content,
-      labels: this.labels,
+      labels: this.labels.join(','),
     }, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
@@ -258,7 +258,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
   }
 
   /**
-   * Get comments of this page according to the issue id or the issue title
+   * Get comments of this page according to the issue id
    *
    * @param options.accessToken - User access token
    * @param options.issueId - The id of issue
@@ -300,7 +300,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
         'Authorization': `Bearer ${accessToken}`,
       }
     }
-    const response = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes`, options)
+    const response = await this.$http.get(`projects/${this._encodedRepo}/issues/${issueId}/notes`, options)
     const commentsRaw = response.data
 
     // gitlab api v4 should get parsed markdown content and reactions by other api
@@ -353,7 +353,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     issueId: string | number
     content: string
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes`, {
+    const { data } = await this.$http.post(`projects/${this._encodedRepo}/issues/${issueId}/notes`, {
       body: content,
     }, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
@@ -384,7 +384,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     commentId: string | number
     content: string
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.put(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}`, {
+    const { data } = await this.$http.put(`projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}`, {
       body: content,
     }, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
@@ -428,7 +428,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     issueId: string | number
     commentId: string | number
   }): Promise<boolean> {
-    const { status } = await this.$http.delete(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}`, {
+    const { status } = await this.$http.delete(`projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}`, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
     return status === 204
@@ -454,7 +454,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     issueId: string | number
     commentId: string | number
   }): Promise<VssueAPI.Reactions> {
-    const { data } = await this.$http.get(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji`, {
+    const { data } = await this.$http.get(`projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji`, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
     return normalizeReactions(data)
@@ -484,7 +484,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     reaction: keyof VssueAPI.Reactions
   }): Promise<boolean> {
     try {
-      const response = await this.$http.post(`api/v4/projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji`, {
+      const response = await this.$http.post(`projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji`, {
         name: mapReactionName(reaction),
       }, {
         headers: {
@@ -527,7 +527,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
         'Authorization': `Bearer ${accessToken}`,
       }
     }
-    const { data } = await this.$http.post(`api/v4/markdown`, {
+    const { data } = await this.$http.post(`markdown`, {
       text: contentRaw,
       gfm: true,
     }, options)
