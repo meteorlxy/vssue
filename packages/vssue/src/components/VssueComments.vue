@@ -3,7 +3,7 @@
     <TransitionFade>
       <!-- failed -->
       <VssueStatus
-        v-if="vssue.status.isFailed"
+        v-if="vssue.isFailed"
         key="failed"
         icon-name="error"
       >
@@ -12,7 +12,7 @@
 
       <!-- require login -->
       <VssueStatus
-        v-else-if="vssue.status.isLoginRequired"
+        v-else-if="vssue.isLoginRequired"
         key="require-login"
       >
         <a @click="vssue.$emit('login')">

@@ -262,11 +262,11 @@ export default class VssueComment extends Vue {
 
   async putComment (): Promise<void> {
     try {
-      if (this.vssue.computedStatus.isPending) return
+      if (this.vssue.isPending) return
 
       if (this.editContent !== this.comment.contentRaw) {
         this.isPutingComment = true
-        this.vssue.status.isUpdatingComment = true
+        this.vssue.isUpdatingComment = true
 
         const comment = await this.vssue.putComment({
           commentId: this.comment.id,
@@ -281,18 +281,18 @@ export default class VssueComment extends Vue {
       this.editMode = false
     } finally {
       this.isPutingComment = false
-      this.vssue.status.isUpdatingComment = false
+      this.vssue.isUpdatingComment = false
     }
   }
 
   async deleteComment (): Promise<void> {
     try {
-      if (this.vssue.computedStatus.isPending) return
+      if (this.vssue.isPending) return
 
       if (!window.confirm(<string> this.vssue.$t('deleteConfirm'))) return
 
       this.isDeletingComment = true
-      this.vssue.status.isUpdatingComment = true
+      this.vssue.isUpdatingComment = true
 
       const success = await this.vssue.deleteComment({
         commentId: this.comment.id,
@@ -318,7 +318,7 @@ export default class VssueComment extends Vue {
       }
     } finally {
       this.isDeletingComment = false
-      this.vssue.status.isUpdatingComment = false
+      this.vssue.isUpdatingComment = false
     }
   }
 }

@@ -109,11 +109,11 @@ export default class VssueNewComment extends Vue {
   }
 
   get disabled (): boolean {
-    return this.content === '' || this.vssue.computedStatus.isPending
+    return this.content === '' || this.vssue.isPending
   }
 
   get loading (): boolean {
-    return this.vssue.status.isCreatingComment
+    return this.vssue.isCreatingComment
   }
 
   get contentRows (): number {
@@ -142,7 +142,7 @@ export default class VssueNewComment extends Vue {
   }
 
   async submit (): Promise<void> {
-    if (this.vssue.computedStatus.isPending) return
+    if (this.vssue.isPending) return
     await this.vssue.postComment({ content: this.content })
     this.content = ''
     await this.vssue.getComments()

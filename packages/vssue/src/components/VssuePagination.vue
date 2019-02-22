@@ -99,7 +99,7 @@ export default class VssuePagination extends Vue {
   @Inject() vssue!: Vssue.Store
 
   get disabled (): boolean {
-    return this.vssue.computedStatus.isPending
+    return this.vssue.isPending
   }
 
   get pageCount (): number {

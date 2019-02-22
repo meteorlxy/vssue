@@ -60,7 +60,7 @@ export default class VssueNotice extends Vue {
   /**
    * Show progress when loading comments
    */
-  @Watch('vssue.status.isLoadingComments')
+  @Watch('vssue.isLoadingComments')
   onLoadingCommentsChange (val: boolean): void {
     if (this.vssue.comments) {
       if (val) {
