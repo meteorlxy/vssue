@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.7.1
+ * @version v0.7.2
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -1816,11 +1816,11 @@ var VssueComment = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, , 3, 4]);
-                        if (this.vssue.computedStatus.isPending)
+                        if (this.vssue.isPending)
                             return [2 /*return*/];
                         if (!(this.editContent !== this.comment.contentRaw)) return [3 /*break*/, 2];
                         this.isPutingComment = true;
-                        this.vssue.status.isUpdatingComment = true;
+                        this.vssue.isUpdatingComment = true;
                         return [4 /*yield*/, this.vssue.putComment({
                                 commentId: this.comment.id,
                                 content: this.editContent
@@ -1836,7 +1836,7 @@ var VssueComment = /** @class */ (function (_super) {
                         return [3 /*break*/, 4];
                     case 3:
                         this.isPutingComment = false;
-                        this.vssue.status.isUpdatingComment = false;
+                        this.vssue.isUpdatingComment = false;
                         return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -1851,12 +1851,12 @@ var VssueComment = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, , 7, 8]);
-                        if (this.vssue.computedStatus.isPending)
+                        if (this.vssue.isPending)
                             return [2 /*return*/];
                         if (!window.confirm(this.vssue.$t('deleteConfirm')))
                             return [2 /*return*/];
                         this.isDeletingComment = true;
-                        this.vssue.status.isUpdatingComment = true;
+                        this.vssue.isUpdatingComment = true;
                         return [4 /*yield*/, this.vssue.deleteComment({
                                 commentId: this.comment.id
                             })];
@@ -1883,7 +1883,7 @@ var VssueComment = /** @class */ (function (_super) {
                     case 6: return [3 /*break*/, 8];
                     case 7:
                         this.isDeletingComment = false;
-                        this.vssue.status.isUpdatingComment = false;
+                        this.vssue.isUpdatingComment = false;
                         return [7 /*endfinally*/];
                     case 8: return [2 /*return*/];
                 }
@@ -2075,7 +2075,7 @@ var __vue_render__$1 = function __vue_render__() {
       "name": "edit",
       "title": _vm.vssue.$t('edit')
     }
-  })], 1) : _vm._e(), _vm._v(" "), _vm.comment.author.username === _vm.currentUser ? _c('span', {
+  })], 1) : _vm._e(), _vm._v(" "), _vm.comment.author.username === _vm.currentUser || _vm.vssue.isAdmin ? _c('span', {
     directives: [{
       name: "show",
       rawName: "v-show",
@@ -2188,7 +2188,7 @@ var VssuePagination = /** @class */ (function (_super) {
     }
     Object.defineProperty(VssuePagination.prototype, "disabled", {
         get: function () {
-            return this.vssue.computedStatus.isPending;
+            return this.vssue.isPending;
         },
         enumerable: true,
         configurable: true
@@ -2534,12 +2534,12 @@ var __vue_render__$3 = function __vue_render__() {
 
   return _c('div', {
     staticClass: "vssue-comments"
-  }, [_c('TransitionFade', [_vm.vssue.status.isFailed ? _c('VssueStatus', {
+  }, [_c('TransitionFade', [_vm.vssue.isFailed ? _c('VssueStatus', {
     key: "failed",
     attrs: {
       "icon-name": "error"
     }
-  }, [_vm._v("\n      " + _vm._s(_vm.vssue.$t('failed')) + "\n    ")]) : _vm.vssue.status.isLoginRequired ? _c('VssueStatus', {
+  }, [_vm._v("\n      " + _vm._s(_vm.vssue.$t('failed')) + "\n    ")]) : _vm.vssue.isLoginRequired ? _c('VssueStatus', {
     key: "require-login"
   }, [_c('a', {
     on: {
@@ -2702,14 +2702,14 @@ var VssueNewComment = /** @class */ (function (_super) {
     });
     Object.defineProperty(VssueNewComment.prototype, "disabled", {
         get: function () {
-            return this.content === '' || this.vssue.computedStatus.isPending;
+            return this.content === '' || this.vssue.isPending;
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(VssueNewComment.prototype, "loading", {
         get: function () {
-            return this.vssue.status.isCreatingComment;
+            return this.vssue.isCreatingComment;
         },
         enumerable: true,
         configurable: true
@@ -2748,7 +2748,7 @@ var VssueNewComment = /** @class */ (function (_super) {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (this.vssue.computedStatus.isPending)
+                        if (this.vssue.isPending)
                             return [2 /*return*/];
                         return [4 /*yield*/, this.vssue.postComment({ content: this.content })];
                     case 1:
@@ -3049,7 +3049,7 @@ var VssueNotice = /** @class */ (function (_super) {
         Inject()
     ], VssueNotice.prototype, "vssue");
     __decorate([
-        Watch('vssue.status.isLoadingComments')
+        Watch('vssue.isLoadingComments')
     ], VssueNotice.prototype, "onLoadingCommentsChange");
     VssueNotice = __decorate([
         Component({
@@ -3259,32 +3259,40 @@ var VssueStore = /** @class */ (function (_super) {
             perPage: 10,
             sort: 'desc'
         };
-        _this.status = {
-            isInitializing: false,
-            isLoginRequired: false,
-            isFailed: false,
-            isLoadingComments: false,
-            isCreatingComment: false,
-            isUpdatingComment: false
-        };
+        _this.isInitializing = true;
+        _this.isLoginRequired = false;
+        _this.isFailed = false;
+        _this.isLoadingComments = false;
+        _this.isCreatingComment = false;
+        _this.isUpdatingComment = false;
         return _this;
     }
     Object.defineProperty(VssueStore.prototype, "version", {
         get: function () {
-            return "0.7.1";
+            return "0.7.2";
         },
         enumerable: true,
         configurable: true
     });
-    Object.defineProperty(VssueStore.prototype, "computedStatus", {
+    Object.defineProperty(VssueStore.prototype, "isPending", {
         get: function () {
-            return {
-                isLogined: this.accessToken !== null && this.user !== null,
-                isAdmin: this.options !== null && this.accessToken !== null && this.user !== null &&
-                    (this.user.username === this.options.owner ||
-                        this.options.admins.includes(this.user.username)),
-                isPending: this.status.isLoadingComments || this.status.isCreatingComment || this.status.isUpdatingComment
-            };
+            return this.isLoadingComments || this.isCreatingComment || this.isUpdatingComment;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VssueStore.prototype, "isLogined", {
+        get: function () {
+            return this.accessToken !== null && this.user !== null;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VssueStore.prototype, "isAdmin", {
+        get: function () {
+            return this.options !== null && this.accessToken !== null && this.user !== null &&
+                (this.user.username === this.options.owner ||
+                    this.options.admins.includes(this.user.username));
         },
         enumerable: true,
         configurable: true
@@ -3365,9 +3373,6 @@ var VssueStore = /** @class */ (function (_super) {
                         _a.trys.push([0, , 2, 3]);
                         if (!this.options)
                             throw new Error('Options are required to initialize Vssue');
-                        if (this.status.isInitializing)
-                            return [2 /*return*/];
-                        this.status.isInitializing = true;
                         // reset data
                         this.API = null;
                         this.accessToken = null;
@@ -3380,11 +3385,12 @@ var VssueStore = /** @class */ (function (_super) {
                             sort: 'desc'
                         };
                         // reset status
-                        this.status.isLoginRequired = false;
-                        this.status.isFailed = false;
-                        this.status.isLoadingComments = false;
-                        this.status.isCreatingComment = false;
-                        this.status.isUpdatingComment = false;
+                        this.isInitializing = true;
+                        this.isLoginRequired = false;
+                        this.isFailed = false;
+                        this.isLoadingComments = false;
+                        this.isCreatingComment = false;
+                        this.isUpdatingComment = false;
                         APIConstructor = this.options.api;
                         this.API = new APIConstructor({
                             baseURL: this.options.baseURL,
@@ -3403,7 +3409,7 @@ var VssueStore = /** @class */ (function (_super) {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        this.status.isInitializing = false;
+                        this.isInitializing = false;
                         return [7 /*endfinally*/];
                     case 3: return [2 /*return*/];
                 }
@@ -3465,11 +3471,11 @@ var VssueStore = /** @class */ (function (_super) {
                         _a.issue = _f.sent();
                         if (!!this.issue) return [3 /*break*/, 4];
                         // require login to create the issue
-                        if (!this.computedStatus.isLogined) {
+                        if (!this.isLogined) {
                             this.$emit('login');
                         }
                         // if current user is not admin, cannot create issue
-                        if (!this.computedStatus.isAdmin) {
+                        if (!this.isAdmin) {
                             throw Error('Failed to get comments');
                         }
                         // create the corresponding issue
@@ -3510,9 +3516,9 @@ var VssueStore = /** @class */ (function (_super) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, 3, 4]);
-                        if (!this.API || !this.issue || this.status.isLoadingComments)
+                        if (!this.API || !this.issue || this.isLoadingComments)
                             return [2 /*return*/];
-                        this.status.isLoadingComments = true;
+                        this.isLoadingComments = true;
                         return [4 /*yield*/, this.API.getComments({
                                 accessToken: this.accessToken,
                                 issueId: this.issue.id,
@@ -3530,8 +3536,8 @@ var VssueStore = /** @class */ (function (_super) {
                         return [3 /*break*/, 4];
                     case 2:
                         e_1 = _a.sent();
-                        if (e_1.response && [401, 403].includes(e_1.response.status) && !this.computedStatus.isLogined) {
-                            this.status.isLoginRequired = true;
+                        if (e_1.response && [401, 403].includes(e_1.response.status) && !this.isLogined) {
+                            this.isLoginRequired = true;
                         }
                         else {
                             this.$emit('error', e_1);
@@ -3539,7 +3545,7 @@ var VssueStore = /** @class */ (function (_super) {
                         }
                         return [3 /*break*/, 4];
                     case 3:
-                        this.status.isLoadingComments = false;
+                        this.isLoadingComments = false;
                         return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -3557,9 +3563,9 @@ var VssueStore = /** @class */ (function (_super) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, 3, 4]);
-                        if (!this.API || !this.issue || this.status.isCreatingComment)
+                        if (!this.API || !this.issue || this.isCreatingComment)
                             return [2 /*return*/];
-                        this.status.isCreatingComment = true;
+                        this.isCreatingComment = true;
                         return [4 /*yield*/, this.API.postComment({
                                 accessToken: this.accessToken,
                                 content: content,
@@ -3573,7 +3579,7 @@ var VssueStore = /** @class */ (function (_super) {
                         this.$emit('error', e_2);
                         throw e_2;
                     case 3:
-                        this.status.isCreatingComment = false;
+                        this.isCreatingComment = false;
                         return [7 /*endfinally*/];
                     case 4: return [2 /*return*/];
                 }
@@ -3820,9 +3826,9 @@ var Vssue = /** @class */ (function (_super) {
         this.vssue.setOptions(options);
     };
     /**
-     * Created hook. Check Options and init Vssue.
+     * beforeMount hook
      */
-    Vssue.prototype.created = function () {
+    Vssue.prototype.beforeMount = function () {
         // set options
         this.vssue.setOptions(this.options);
         // init vssue
@@ -3859,10 +3865,10 @@ var Vssue = /** @class */ (function (_super) {
                         e_1 = _a.sent();
                         if (e_1.response && [401, 403].includes(e_1.response.status)) {
                             // in some cases, require login to load comments
-                            this.vssue.status.isLoginRequired = true;
+                            this.vssue.isLoginRequired = true;
                         }
                         else {
-                            this.vssue.status.isFailed = true;
+                            this.vssue.isFailed = true;
                         }
                         console.error(e_1);
                         return [3 /*break*/, 7];
@@ -3949,7 +3955,7 @@ var __vue_render__$6 = function __vue_render__() {
       "target": "_blank",
       "title": "Vssue v" + _vm.vssue.version
     }
-  }, [_vm._v("\n        Vssue\n      ")])])]), _vm._v(" "), _c('TransitionFade', [_vm.vssue.status.isInitializing ? _c('VssueStatus', {
+  }, [_vm._v("\n        Vssue\n      ")])])]), _vm._v(" "), _c('TransitionFade', [_vm.vssue.isInitializing ? _c('VssueStatus', {
     key: "initializing",
     attrs: {
       "icon-name": "loading"
@@ -4003,7 +4009,7 @@ var VssueComponent = __vue_normalize__$a({
 
 var VssuePlugin = {
     get version() {
-        return "0.7.1";
+        return "0.7.2";
     },
     installed: false,
     install: function (Vue$$1, options) {
