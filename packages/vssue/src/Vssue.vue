@@ -137,9 +137,9 @@ export default class Vssue extends Vue {
   }
 
   /**
-   * Created hook. Check Options and init Vssue.
+   * beforeMount hook
    */
-  created (): void {
+  beforeMount (): void {
     // set options
     this.vssue.setOptions(this.options)
 
