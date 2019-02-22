@@ -127,7 +127,7 @@
             </span>
 
             <span
-              v-if="comment.author.username === currentUser"
+              v-if="comment.author.username === currentUser || vssue.isAdmin"
               v-show="!editMode"
               class="vssue-comment-operation"
               @click="deleteComment()"
