@@ -108,7 +108,7 @@ Although Vssue has tried to become SSR-friendly, there might be some issues to u
 
 So we suggest you to use `@vssue/vuepress-plugin-vssue` in Vuepress, which has already helped you make `<Vssue>` component client-only to avoid those issues.
 
-If you do not want to use the plugin we provided, you may need to wrap `<Vssue>` component into `<ClientOnly>` component to avoid some potential problems, i.e:
+If you do not want to use the plugin we provided, you may need to wrap `<Vssue>` component into `<ClientOnly>` component to avoid some potential problems, i.e. :
 
 ```vue
 <ClientOnly>
