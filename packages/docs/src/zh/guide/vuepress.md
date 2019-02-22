@@ -103,3 +103,19 @@ $accentColor = blue
 
 $vssue-theme-color = red
 ```
+
+## 不想使用我们提供的插件？
+
+虽然 Vssue 已经在尽量适配 SSR，但是直接在 Vuepress 中使用 Vssue 可能还是会有一些问题。
+
+所以我们建议你在 Vuepress 中通过 `@vssue/vuepress-plugin-vssue` 来使用 Vssue，该插件已经帮助你仅在客户端加载 Vssue 来避免这些问题。
+
+如果你不想使用我们提供的插件，你可能需要将 `<Vssue>` 组件放置在 `<ClientOnly>` 组件中来避免潜在的问题，即：
+
+```vue
+<ClientOnly>
+  <Vssue />
+</ClientOnly>
+```
+
+> 参考 Vuepress [内置的组件 - ClientOnly](https://vuepress.vuejs.org/zh/guide/using-vue.html#clientonly)

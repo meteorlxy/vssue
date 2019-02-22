@@ -101,3 +101,19 @@ If you want to override them, just set them in your `palette.styl`:
 
 $vssue-theme-color = red
 ```
+
+## Do not want to use our plugin?
+
+Although Vssue has tried to become SSR-friendly, there might be some issues to use Vssue directly in Vuepress.
+
+So we suggest you to use `@vssue/vuepress-plugin-vssue` in Vuepress, which has already helped you make `<Vssue>` component client-only to avoid those issues.
+
+If you do not want to use the plugin we provided, you may need to wrap `<Vssue>` component into `<ClientOnly>` component to avoid some potential problems, i.e:
+
+```vue
+<ClientOnly>
+  <Vssue />
+</ClientOnly>
+```
+
+> See [Built-in Components - ClientOnly](https://vuepress.vuejs.org/guide/using-vue.html#clientonly) of Vuepress
