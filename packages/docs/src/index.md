@@ -15,10 +15,14 @@ footer: MIT Licensed | Vssue
 
 ## Demo
 
+Demo of current page is for GitHub.
+
+Go to the [Demo Page](./demo/index.md) for all supported platforms.
+
 ::: tip
-After you comment on an issue, the platform will send you emails when new comments come.  The emails might be annoying when new users come and leave comments on this demo page.
+After you comment on an issue, the platform will send you emails when new comments come. The emails might be annoying when new users come and leave comments on this demo page.
 
 You can go to the [issue page](https://github.com/meteorlxy/vssue/issues/1) and unsubscribe the notifications.
 :::
 
-<Vssue :issue-id="1" />
+<VssueDemo platform="github" />
