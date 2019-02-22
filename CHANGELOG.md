@@ -1,3 +1,12 @@
+## [0.7.2](https://github.com/meteorlxy/vssue/compare/v0.7.1...v0.7.2) (2019-02-22)
+
+
+### Features
+
+* **$vssue:** allow admins delete comments ([d3ad13f](https://github.com/meteorlxy/vssue/commit/d3ad13f))
+
+
+
 ## [0.7.1](https://github.com/meteorlxy/vssue/compare/v0.7.0...v0.7.1) (2019-02-19)
 
 
