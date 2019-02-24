@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.7.2
+ * @version v0.7.3
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -225,6 +225,7 @@
 }
 .vssue .vssue-new-comment .vssue-new-comment-input:focus {
   background-color: #fff;
+  border-color: #9adbbe;
   -webkit-box-shadow: 0 0 1px 1px #9adbbe;
           box-shadow: 0 0 1px 1px #9adbbe;
 }
@@ -244,6 +245,7 @@
   margin: 15px 0;
 }
 .vssue .vssue-comments .vssue-comment.vssue-comment-edit-mode .vssue-comment-main {
+  border-color: #9adbbe;
   -webkit-box-shadow: 0 0 1px 1px #9adbbe;
           box-shadow: 0 0 1px 1px #9adbbe;
 }
@@ -262,10 +264,6 @@
   width: 50px;
   height: 50px;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body {
-  border: 1px solid #eaecef;
-  border-radius: 5px;
-}
 @media screen and (max-width: 576px) {
   .vssue .vssue-comments .vssue-comment .vssue-comment-body {
     margin-left: 60px;
@@ -276,53 +274,60 @@
     margin-left: 70px;
   }
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-header {
+.vssue .vssue-comments .vssue-comment .vssue-comment-header {
   padding: 10px 15px;
-  border-bottom: 1px solid #eaecef;
   overflow: hidden;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 1px solid #eaecef;
+  border-bottom: none;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-header .vssue-comment-created-at {
+.vssue .vssue-comments .vssue-comment .vssue-comment-header .vssue-comment-created-at {
   float: right;
   cursor: default;
   color: #a3aab1;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-main {
+.vssue .vssue-comments .vssue-comment .vssue-comment-main {
   padding: 15px;
+  border: 1px solid #eaecef;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-main .vssue-edit-comment-input {
+.vssue .vssue-comments .vssue-comment .vssue-comment-main .vssue-edit-comment-input {
   resize: none;
   outline: none;
   border: none;
   width: 100%;
   background: transparent;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer {
+.vssue .vssue-comments .vssue-comment .vssue-comment-footer {
   padding: 10px 15px;
-  border-top: 1px solid #eaecef;
   overflow: hidden;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 1px solid #eaecef;
+  border-top: none;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-hint {
+.vssue .vssue-comments .vssue-comment .vssue-comment-footer .vssue-comment-hint {
   cursor: default;
   color: #a3aab1;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-reactions .vssue-comment-reaction {
+.vssue .vssue-comments .vssue-comment .vssue-comment-footer .vssue-comment-reactions .vssue-comment-reaction {
   cursor: pointer;
   display: inline-block;
   margin-right: 8px;
   color: #3eaf7c;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-operations {
+.vssue .vssue-comments .vssue-comment .vssue-comment-footer .vssue-comment-operations {
   float: right;
   color: #3eaf7c;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation {
+.vssue .vssue-comments .vssue-comment .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation {
   cursor: pointer;
   margin-left: 8px;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation.vssue-comment-operation-muted {
+.vssue .vssue-comments .vssue-comment .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation.vssue-comment-operation-muted {
   color: #a3aab1;
 }
-.vssue .vssue-comments .vssue-comment .vssue-comment-body .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation.vssue-comment-operation-muted .vssue-icon {
+.vssue .vssue-comments .vssue-comment .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation.vssue-comment-operation-muted .vssue-icon {
   fill: #a3aab1;
 }
 .vssue .vssue-pagination {
