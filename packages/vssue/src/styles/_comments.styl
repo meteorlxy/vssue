@@ -3,6 +3,7 @@
     margin 15px 0
     &.vssue-comment-edit-mode
       .vssue-comment-main
+        border-color lighten($vssue-theme-color, 50%)
         box-shadow 0 0 1px 1px lighten($vssue-theme-color, 50%)
     &.vssue-comment-disabled
       pointer-events none
@@ -20,44 +21,49 @@
         margin-left 60px
       @media screen and (min-width $vssue-breakpoint-mobile + 1px)
         margin-left 70px
+    .vssue-comment-header
+      padding 10px 15px
+      overflow hidden
+      border-top-left-radius 5px
+      border-top-right-radius 5px
       border 1px solid $vssue-border-color
-      border-radius 5px
-      .vssue-comment-header
-        padding 10px 15px
-        border-bottom 1px solid $vssue-border-color
-        overflow hidden
-        .vssue-comment-created-at
-          float right
-          cursor default
-          color $vssue-text-light-color
-      .vssue-comment-main
-        padding 15px
-        .vssue-edit-comment-input
-          resize none
-          outline none
-          border none
-          width 100%
-          background transparent
-      .vssue-comment-footer
-        padding 10px 15px
-        border-top 1px solid $vssue-border-color
-        overflow hidden
-        .vssue-comment-hint
-          cursor default
-          color $vssue-text-light-color
-        .vssue-comment-reactions
-          .vssue-comment-reaction
-            cursor pointer
-            display inline-block
-            margin-right 8px
-            color $vssue-theme-color
-        .vssue-comment-operations
-          float right
+      border-bottom none
+      .vssue-comment-created-at
+        float right
+        cursor default
+        color $vssue-text-light-color
+    .vssue-comment-main
+      padding 15px
+      border 1px solid $vssue-border-color
+      .vssue-edit-comment-input
+        resize none
+        outline none
+        border none
+        width 100%
+        background transparent
+    .vssue-comment-footer
+      padding 10px 15px
+      overflow hidden
+      border-bottom-left-radius 5px
+      border-bottom-right-radius 5px
+      border 1px solid $vssue-border-color
+      border-top none
+      .vssue-comment-hint
+        cursor default
+        color $vssue-text-light-color
+      .vssue-comment-reactions
+        .vssue-comment-reaction
+          cursor pointer
+          display inline-block
+          margin-right 8px
           color $vssue-theme-color
-          .vssue-comment-operation
-            cursor pointer
-            margin-left 8px
-            &.vssue-comment-operation-muted
-              color $vssue-text-light-color
-              .vssue-icon
-                fill $vssue-text-light-color
+      .vssue-comment-operations
+        float right
+        color $vssue-theme-color
+        .vssue-comment-operation
+          cursor pointer
+          margin-left 8px
+          &.vssue-comment-operation-muted
+            color $vssue-text-light-color
+            .vssue-icon
+              fill $vssue-text-light-color
