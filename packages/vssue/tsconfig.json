@@ -3,10 +3,11 @@
   "compilerOptions": {
     "rootDir": "./src",
     "outDir": "./dist",
-    "declaration": false
+    "declaration": false,
+    "emitDecoratorMetadata": false
   },
   "include": [
     "src/**/*.ts",
-    "src/**/*.vue",
-  ],
+    "src/**/*.vue"
+  ]
 }

@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2017",
     "module": "es2015",
-    "lib": ["es2017", "es2018", "dom", "dom.iterable"],
+    "lib": ["es2018", "dom", "dom.iterable"],
     "newLine": "lf",
     "declaration": true,
     "sourceMap": true,

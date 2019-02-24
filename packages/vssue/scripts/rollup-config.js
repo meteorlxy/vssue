@@ -72,15 +72,19 @@ module.exports = [
       }),
       commonjs(),
       json(),
-      typescript(),
+      // https://github.com/rollup/rollup-plugin-typescript/issues/135
+      typescript(Object.assign({},
+        require('../../../tsconfig.base.json').compilerOptions,
+        require('../tsconfig.json').compilerOptions
+      )),
       vue(),
-      babel({
+      ...(opts.format !== 'es' ? [babel({
         babelrc: false,
         presets: ['@vue/app'],
         runtimeHelpers: true,
         extensions: ['.js', '.vue'],
         exclude: [/\/core-js\//, /@babel\/runtime/],
-      }),
+      })] : []),
       ...(minify ? [terser({
         output: {
           comments: /^!/,
