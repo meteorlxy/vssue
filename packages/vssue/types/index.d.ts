@@ -1,4 +1,3 @@
-import Vue from 'vue'
 import Vssue from './vssue'
 import VssueAPI from './api'
 

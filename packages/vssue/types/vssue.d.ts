@@ -1,4 +1,5 @@
 import Vue, { PluginObject } from 'vue'
+import 'vue-i18n'
 import { VssueAPI } from './api'
 
 export namespace Vssue {
