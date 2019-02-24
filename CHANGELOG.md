@@ -1,3 +1,17 @@
+## [0.7.3](https://github.com/meteorlxy/vssue/compare/v0.7.2...v0.7.3) (2019-02-24)
+
+
+### Bug Fixes
+
+* **$vssue:** import vue-i18n in types file ([208b1ef](https://github.com/meteorlxy/vssue/commit/208b1ef))
+
+
+### Performance Improvements
+
+* **$vssue:** better border when focus on textarea ([0ee3858](https://github.com/meteorlxy/vssue/commit/0ee3858))
+
+
+
 ## [0.7.2](https://github.com/meteorlxy/vssue/compare/v0.7.1...v0.7.2) (2019-02-22)
 
 
