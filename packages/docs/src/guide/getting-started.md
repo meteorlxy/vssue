@@ -129,7 +129,7 @@ npm install @vssue/api-bitbucket-v2
 
 By `import Vssue from 'vssue'` you will get a Vue plugin. Call `Vue.use()` to use it and set the options. A global component named `Vssue` will be registered.
 
-> For the details of options, see [Options Reference - Vssue Options](../options/index.md#vssue-options)
+> For the details of options, see [Options Reference - Vssue Options](../options/README.md#vssue-options)
 
 ```js
 // import vue
@@ -155,7 +155,7 @@ Vue.use(Vssue, {
 
 Then you can use Vssue Component in your [SFC](https://cn.vuejs.org/v2/guide/single-file-components.html):
 
-> For the details of component props, see [Options Reference - Component Props](../options/index.md#component-props)
+> For the details of component props, see [Options Reference - Component Props](../options/README.md#component-props)
 
 ```vue
 <template>
@@ -197,7 +197,7 @@ When you use Vssue as a Plugin by `Vue.use()`, this component has already been r
 
 If you don't want to register it globally, you can import it this way.
 
-Notice that if you only import the Vssue component, there is no "global" options set by `Vue.use()`, and you have to set all required Vssue Options via the prop `options`. See [Component Props - options](../options/index.md#options).
+Notice that if you only import the Vssue component, there is no "global" options set by `Vue.use()`, and you have to set all required Vssue Options via the prop `options`. See [Component Props - options](../options/README.md#options).
 :::
 
 ```vue

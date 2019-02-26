@@ -60,7 +60,7 @@ The only difference is that, you should set `platform` rather than the `api` pac
 ::: tip
 If you don't set the `locale` option, Vssue will use Vuepress's `$lang` as the language of current page.
 
-> See [locale](../options/index.md#locale) of Vssue and [$lang](https://vuepress.vuejs.org/guide/global-computed.html#lang) of Vuepress
+> See [locale](../options/README.md#locale) of Vssue and [$lang](https://vuepress.vuejs.org/guide/global-computed.html#lang) of Vuepress
 :::
 
 ### Use Vssue Component

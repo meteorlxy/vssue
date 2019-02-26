@@ -17,7 +17,7 @@ footer: MIT Licensed | Vssue
 
 当前页面 Demo 使用的是 GitHub 平台。
 
-你可以前往 [Demo 页面](./demo/index.md) 查看所有支持平台。
+你可以前往 [Demo 页面](./demo/README.md) 查看所有支持平台。
 
 ::: tip 提示
 在你评论了一个 Issue 之后，每当有新评论，平台都会给你发送邮件提醒。有新用户在这个演示页面留下评论时，这些提醒邮件可能会比较烦人。
