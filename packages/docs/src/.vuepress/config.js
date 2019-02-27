@@ -10,6 +10,11 @@ module.exports = {
       title: 'Vssue',
       description: 'Vue 驱动的、基于 Issue 的评论插件',
     },
+    '/pt-BR/': {
+      lang: 'pt-BR',
+      title: 'Vssue',
+      description: 'Plugin de comentários com Vue, baseado em Issues',
+    },
   },
 
   head: [
@@ -82,6 +87,34 @@ module.exports = {
         sidebar: {
           '/zh/demo/': sidebarDemo('Vssue Demo'),
           '/zh/guide/': sidebarGuide('Vssue 指南', '创建 OAuth App'),
+        },
+      },
+      '/pt-BR/': {
+        label: 'Português Brasil',
+        selectText: 'Linguagens',
+        editLinkText: 'Editar esta página no GitHub',
+        lastUpdated: 'Última Atualização',
+        nav: [
+          {
+            text: 'Demo',
+            link: '/pt-BR/demo/',
+          },
+          {
+            text: 'Guia',
+            link: '/pt-BR/guide/',
+          },
+          {
+            text: 'Configuração',
+            link: '/pt-BR/options/',
+          },
+          {
+            text: 'Log de mudanças',
+            link: 'https://github.com/meteorlxy/vssue/blob/master/CHANGELOG.md',
+          },
+        ],
+        sidebar: {
+          '/pt-BR/demo/': sidebarDemo('Vssue Demo'),
+          '/pt-BR/guide/': sidebarGuide('Vssue Guia', 'Configurar OAuth App'),
         },
       },
     },
