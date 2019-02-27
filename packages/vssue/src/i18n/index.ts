@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueI18n from 'vue-i18n'
-import enUS from './lang/en-US'
-import zhCN from './lang/zh-CN'
-import ptBR from './lang/pt-BR'
+import enUS from './langs/en-US'
+import zhCN from './langs/zh-CN'
+import ptBR from './langs/pt-BR'
 
 if (!Vue.prototype.hasOwnProperty('$i18n')) {
   Vue.use(VueI18n)
