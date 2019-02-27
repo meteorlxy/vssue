@@ -223,10 +223,11 @@ Vue.use(Vssue, {
   Vssue 使用 [vue-i18n](https://kazupon.github.io/vue-i18n/) 实现国际化，但是并不会影响你的 Vue 应用的其他部分。
   如果你在项目中已经使用了 vue-i18n，也不会对 Vssue 造成影响。
 
-  语言包在 `src/i18n/lang` 目录下。目前我们支持：
+  语言包在 [src/i18n/langs](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/src/i18n/langs) 目录下。目前我们支持：
 
   - `'en'` (`'en-US'`)
   - `'zh'` (`'zh-CN'`)
+  - `'pt'` (`'pt-BR'`)
 
   欢迎贡献代码帮助 Vssue 支持更多语言。
   :::

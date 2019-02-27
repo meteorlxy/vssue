@@ -226,7 +226,7 @@ Em plataformas diferentes, o nome para os `clientId` e `clientSecret` da __OAuth
   O Vssue usa [vue-i18n](https://kazupon.github.io/vue-i18n/) para internacionalização, mas isso não afetará outras partes do seu aplicativo Vue.
   E se você já tiver o vue-i18n em seu projeto, isso não afetará o Vssue.
 
-  Pacotes de idiomas localizados no diretório `src/i18n/lang`.
+  Pacotes de idiomas localizados no diretório [src/i18n/langs](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/src/i18n/langs).
 
   Atualmente, suportamos:
 
