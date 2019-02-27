@@ -1,3 +1,16 @@
+## [0.7.4](https://github.com/meteorlxy/vssue/compare/v0.7.3...v0.7.4) (2019-02-27)
+
+
+### Bug Fixes
+
+* **$vuepress-plugin-vssue:** avoid mutating options object ([331f272](https://github.com/meteorlxy/vssue/commit/331f272))
+
+
+### Features
+
+* **$vssue:** add language pt-BR ([#19](https://github.com/meteorlxy/vssue/issues/19)) ([9a1eefa](https://github.com/meteorlxy/vssue/commit/9a1eefa)) (thanks to [@tgmti](https://github.com/tgmti))
+
+
 ## [0.7.3](https://github.com/meteorlxy/vssue/compare/v0.7.2...v0.7.3) (2019-02-24)
 
 
