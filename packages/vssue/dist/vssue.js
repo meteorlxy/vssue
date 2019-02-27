@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.7.3
+ * @version v0.7.4
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -1144,6 +1144,48 @@ const messages$1 = {
     deleteFailed: '删除评论失败',
 };
 
+const messages$2 = {
+    // auth
+    login: 'Entrar com {platform}',
+    logout: 'Sair',
+    currentUser: 'Usuário Atual',
+    // comment input
+    loading: 'Carregando',
+    submit: 'Enviar',
+    submitting: 'Enviando',
+    submitComment: 'Enviar Comentário',
+    cancel: 'Cancelar',
+    edit: 'Editar',
+    editMode: 'Modo de Edição',
+    delete: 'Apagar',
+    reply: 'Responder',
+    // reactions
+    heart: 'Heart',
+    like: 'Like',
+    unlike: 'Unlike',
+    // pagination
+    perPage: 'Comentários por página',
+    sort: 'Clique para alterar a ordenação',
+    page: 'Página',
+    prev: 'Página Anterior',
+    next: 'Próxima Página',
+    // hint
+    comments: 'Comentários | {count} Comentários',
+    loginToComment: 'Entre com uma conta {platform} para deixar um comentário',
+    placeholder: 'Deixe um comentário. Estilos com Markdown suportados. Ctrl + Enter para enviar.',
+    noLoginPlaceHolder: 'Entre para deixar um comentário. Estilos com Markdown suportados. ',
+    // status
+    initializing: 'Inicializando...',
+    loadingComments: 'Carregando comentários...',
+    failed: 'Falha ao carregar comentários',
+    requireLogin: 'Entrar para visualizar comentários',
+    noComments: 'Nenhum comentário. Deixe o primeiro comentário!',
+    // alerts
+    reactionGiven: `Já reagiu com '{reaction}'`,
+    deleteConfirm: 'Apagar este comentário?',
+    deleteFailed: 'Falha ao apagar comentário',
+};
+
 if (!Vue.prototype.hasOwnProperty('$i18n')) {
     Vue.use(VueI18n);
 }
@@ -1155,6 +1197,8 @@ const i18n = new VueI18n({
         'en-US': messages,
         'zh': messages$1,
         'zh-CN': messages$1,
+        'pt': messages$2,
+        'pt-BR': messages$2,
     },
 });
 
@@ -1180,7 +1224,7 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "0.7.3";
+        return "0.7.4";
     }
     get isPending() {
         return this.isLoadingComments || this.isCreatingComment || this.isUpdatingComment;
@@ -1713,7 +1757,7 @@ var __vue_staticRenderFns__$6 = [];
 
 const VssuePlugin = {
     get version() {
-        return "0.7.3";
+        return "0.7.4";
     },
     installed: false,
     install(Vue$$1, options) {
