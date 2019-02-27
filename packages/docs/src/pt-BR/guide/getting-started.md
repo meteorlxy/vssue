@@ -94,7 +94,7 @@ Se você não está familiarizado com as diferentes distribuições do `Vue` (ex
 `Vssue` também fornece várias distribuições. Veja a seção [Explicacao-das-Distribuicoes](#explicacao-das-distribuicoes) para mais detalhes.
 :::
 
-## In Vue App
+## Em Aplicativos Vue
 
 Vssue é um Plugin / Componente Vue, portanto, pode ser importado em aplicativos Vue.
 
@@ -125,7 +125,7 @@ npm install @vssue/api-gitlab-v4
 npm install @vssue/api-bitbucket-v2
 ```
 
-### Usar como um Plugin Vue
+### Usando como um Plugin Vue
 
 Com `import Vssue from 'vssue'` você obtém um plugin Vue. Chame `Vue.use()` para usá-lo e defina as opções. Um componente global chamado `Vssue` será registrado.
 
