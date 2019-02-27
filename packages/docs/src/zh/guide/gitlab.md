@@ -2,7 +2,7 @@
 
 > 查看 [Gitlab 官方文档](https://docs.gitlab.com/ce/integration/oauth_provider.html#adding-an-application-through-the-profile) 作为参考。
 
-> Vssue 同样可以和自己搭建的 GitLab 一起工作。只需要将 `baseURL` 设置为你的 Gitlab URL 即可。查看 [配置参考 - baseURL](../options/index.md#baseurl)
+> Vssue 同样可以和自己搭建的 GitLab 一起工作。只需要将 `baseURL` 设置为你的 Gitlab URL 即可。查看 [配置参考 - baseURL](../options/README.md#baseurl)
 
 ## 创建一个新的 Application
 

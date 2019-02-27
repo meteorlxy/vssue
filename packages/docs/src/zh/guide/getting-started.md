@@ -129,7 +129,7 @@ npm install @vssue/api-bitbucket-v2
 
 通过 `import Vssue from 'vssue'` 你会得到一个 Vue 插件。调用 `Vue.use()` 来使用它并进行配置。这会注册一个名称为 `Vssue` 的全局组件。
 
-> 关于配置的详情，可以查看 [配置参考 - Vssue 配置](../options/index.md#vssue-配置)
+> 关于配置的详情，可以查看 [配置参考 - Vssue 配置](../options/README.md#vssue-配置)
 
 ```js
 // 引入 vue
@@ -155,7 +155,7 @@ Vue.use(Vssue, {
 
 然后你就可以在 [SFC](https://cn.vuejs.org/v2/guide/single-file-components.html) 中使用 Vssue 组件了：
 
-> 关于组件 Props 的详情，可以查看 [配置参考 - 组件 Props](../options/index.md#组件-props)
+> 关于组件 Props 的详情，可以查看 [配置参考 - 组件 Props](../options/README.md#组件-props)
 
 ```vue
 <template>
@@ -197,7 +197,7 @@ export default {
 
 如果你不想把它注册为全局组件，你可以通过这种方式引入它。
 
-需要注意的是，如果你只作为组件引入 Vssue，就没有通过 `Vue.use()` 设置的“全局”配置了，你必须通过 Prop `options` 传入所有必需的 Vssue 配置。参考 [组件 Props - options](../options/index.md#options)。
+需要注意的是，如果你只作为组件引入 Vssue，就没有通过 `Vue.use()` 设置的“全局”配置了，你必须通过 Prop `options` 传入所有必需的 Vssue 配置。参考 [组件 Props - options](../options/README.md#options)。
 :::
 
 ```vue
