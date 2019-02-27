@@ -1,4 +1,4 @@
-# GitLab Aplicação
+# GitLab Application
 
 > Veja a [Documentação oficial do Gitlab](https://docs.gitlab.com/ce/integration/oauth_provider.html#adding-an-application-through-the-profile) para referência.
 

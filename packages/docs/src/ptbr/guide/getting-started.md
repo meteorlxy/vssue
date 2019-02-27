@@ -2,7 +2,7 @@
 
 ## Escolha uma plataforma para usar
 
-O Vssue pode habilitar comentários para suas páginas estáticas através do `Issue System` do `Github`, `Gitlab` ou `Bitbucket`, e você pode escolher uma dessas plataformas.
+O Vssue pode habilitar comentários para suas páginas estáticas através do `Sistema de Issues` do `Github`, `Gitlab` ou `Bitbucket`, e você pode escolher uma dessas plataformas.
 
 Vá para [Plataformas Suportadas - Configurar Aplicativo OAuth](./supported-platforms.md) para obter instruções detalhadas.
 
@@ -172,11 +172,11 @@ export default {
 
   data () {
     return {
-      // here set the title of issue of current page
+      // aqui é definido o título da issue na página atual
       title: 'Vssue Demo',
 
-      // notice that, the options here will override the default options set by `Vue.use()` above
-      // if you do not want to change them, just set the `title` prop, and ignore the `options` prop
+      // observe que, as opções aqui irão sobrescrever as opções padrão definidas por `Vue.use()` acima
+      // se você não quiser alterá-los, apenas configure a prop `title` e ignore a prop `options`
       options: {
         // owner: 'OWNER_OF_REPO',
         // repo: 'NAME_OF_REPO',
@@ -197,8 +197,6 @@ Com `import { VssueComponent } from 'vssue'` você obtém um componente Vue.
 Quando você usa Vssue como Plugin com `Vue.use()`, este componente já está registrado como global, chamado `Vssue` via `Vue.component()`.
 
 Se você não quiser registrá-lo globalmente, poderá importá-lo dessa maneira.
-
-Notice that if you only import the Vssue component, there is no "global" options set by `Vue.use()`, and you have to set all required Vssue Options via the prop `options`. See [Component Props - options](../options/index.md#options).
 
 Observe que, se você importar apenas o componente Vssue, não haverá opções no componente global configurado por `Vue.use()`, e você terá que configurar todas as opções Vssue necessárias através da propriedade `options`. Veja [Configuração - opções](../options/index.md#options).
 
@@ -242,10 +240,9 @@ export default {
 
 ## Explicacao das Distribuições
 
-Similar to Vue, Vssue also provide different builds for different usage.
 Semelhante ao Vue, o Vssue também fornece distribuições diferentes para uso diferente.
 
-> See [different builds of Vue](https://br.vuejs.org/v2/guide/installation.html#Explicacao-das-Distribuicoes)
+> Veja [distribuições do Vue](https://br.vuejs.org/v2/guide/installation.html#Explicacao-das-Distribuicoes)
 
 Esses arquivos estão localizados na pasta [dist](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/dist):
 
@@ -255,6 +252,5 @@ Esses arquivos estão localizados na pasta [dist](https://github.com/meteorlxy/v
 - `vssue.gitlab.min.js`: distribuição [UMD](https://github.com/umdjs/umd) minificada da GitLab API V4, para uso diretamente no browser via tag `<script>`
 
 ::: tip Dica
-From v0.4.0, we do not provide [Commonjs](http://wiki.commonjs.org/wiki/Modules/1.1) build anymore. The ESM build is renamed to `vssue.js` as the `main` file in `package.json`.
 A partir da v0.4.0, não fornecemos mais a distribuição [Commonjs](http://wiki.commonjs.org/wiki/Modules/1.1). A compilação do ESM é renomeada para `vssue.js` como o arquivo `main` no `package.json`.
 :::
