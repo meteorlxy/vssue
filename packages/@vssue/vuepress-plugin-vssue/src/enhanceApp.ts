@@ -40,7 +40,9 @@ export default ({ Vue }: { Vue: VueConstructor}) => {
           data.attrs.options = {}
         }
         if (!data.attrs.options.locale) {
-          data.attrs.options.locale = parent.$lang || 'en'
+          data.attrs.options = Object.assign({
+            locale: parent.$lang || 'en',
+          }, data.attrs.options)
         }
       }
       if (parent._isMounted) {
