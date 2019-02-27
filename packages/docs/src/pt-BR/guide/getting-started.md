@@ -129,7 +129,7 @@ npm install @vssue/api-bitbucket-v2
 
 Com `import Vssue from 'vssue'` você obtém um plugin Vue. Chame `Vue.use()` para usá-lo e defina as opções. Um componente global chamado `Vssue` será registrado.
 
-> Para detalhes sobre as opções, consulte [Configuração - Opções do Vssue](../options/index.md#vssue-options)
+> Para detalhes sobre as opções, consulte [Configuração - Opções do Vssue](../options/README.md#vssue-options)
 
 ```js
 // import vue
@@ -156,7 +156,7 @@ Vue.use(Vssue, {
 
 Então você pode usar o Componente Vssue no seu [SFC](https://br.vuejs.org/v2/guide/single-file-components.html):
 
-> Para as propriedades do componente, consulte [Configuração - Component Props](../options/index.md#component-props)
+> Para as propriedades do componente, consulte [Configuração - Component Props](../options/README.md#component-props)
 
 ```vue
 <template>
@@ -198,7 +198,7 @@ Quando você usa Vssue como Plugin com `Vue.use()`, este componente já está re
 
 Se você não quiser registrá-lo globalmente, poderá importá-lo dessa maneira.
 
-Observe que, se você importar apenas o componente Vssue, não haverá opções no componente global configurado por `Vue.use()`, e você terá que configurar todas as opções Vssue necessárias através da propriedade `options`. Veja [Configuração - opções](../options/index.md#options).
+Observe que, se você importar apenas o componente Vssue, não haverá opções no componente global configurado por `Vue.use()`, e você terá que configurar todas as opções Vssue necessárias através da propriedade `options`. Veja [Configuração - opções](../options/README.md#options).
 
 :::
 

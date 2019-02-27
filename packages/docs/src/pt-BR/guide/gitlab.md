@@ -2,7 +2,7 @@
 
 > Veja a [Documentação oficial do Gitlab](https://docs.gitlab.com/ce/integration/oauth_provider.html#adding-an-application-through-the-profile) para referência.
 
-> Vssue também pode trabalhar com GitLab self-hosted (on-premisse). Configure a opção `baseURL` para sua URL Gitlab. Veja [Configuração - baseURL](../options/index.md#baseurl)
+> Vssue também pode trabalhar com GitLab self-hosted (on-premisse). Configure a opção `baseURL` para sua URL Gitlab. Veja [Configuração - baseURL](../options/README.md#baseurl)
 
 ## Criando uma nova Aplicação
 

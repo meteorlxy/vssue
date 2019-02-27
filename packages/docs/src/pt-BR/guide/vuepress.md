@@ -60,7 +60,7 @@ A única diferença é que você deve definir `platform` ao invés de `api`.
 ::: tip Dica
 Se você não definir a opção `locale`, o Vssue usará o `$lang` do Vuepress como o idioma da página atual.
 
-> Veja [locale](../options/index.md#locale) do Vssue e [$lang](https://vuepress.vuejs.org/guide/global-computed.html#lang) do Vuepress
+> Veja [locale](../options/README.md#locale) do Vssue e [$lang](https://vuepress.vuejs.org/guide/global-computed.html#lang) do Vuepress
 :::
 
 ### Usando Vssue como Componente

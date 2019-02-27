@@ -1,6 +1,6 @@
 # GitHub OAuth App
 
-> Vssue também pode trabalhar com self-hosted GitHub Enterprise Server (on-premisse). Configure a opção `baseURL` para sua URL GitHub. Veja [Configuração - baseURL](../options/index.md#baseurl)
+> Vssue também pode trabalhar com self-hosted GitHub Enterprise Server (on-premisse). Configure a opção `baseURL` para sua URL GitHub. Veja [Configuração - baseURL](../options/README.md#baseurl)
 
 ## Criando uma nova OAuth App
 
