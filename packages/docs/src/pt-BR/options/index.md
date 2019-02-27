@@ -46,7 +46,7 @@ Vue.use(Vssue, {
   ::: tip Dica
   De fato, a própria plataforma é "opaca" para o Vssue. O Vssue apenas carrega comentários por meio da instância da API e não se importa com o que a plataforma é e o que é a versão da API. É assim que o Vssue suporta diferentes plataformas.
 
-  Por isso, é fácil oferecer suporte a novas plataformas / novas versões da API criando novos pacotes de API. 
+  Por isso, é fácil oferecer suporte a novas plataformas / novas versões da API criando novos pacotes de API.
   :::
 
 ### owner
@@ -111,7 +111,7 @@ O padrão comum para URL de repositório é `` `${baseURL}/${owner}/${repo}`  ``
   - [Configurar OAuth App](../guide/supported-platforms.md)
   - [Segurança](../guide/security.md)
 
-- __Referência__: 
+- __Referência__:
 
 ::: tip Dica
 Em plataformas diferentes, o nome para os `clientId` e `clientSecret` da __OAuth App__ diferem::
@@ -151,7 +151,7 @@ Em plataformas diferentes, o nome para os `clientId` e `clientSecret` da __OAuth
 - __Detalhes__:
 
   O elemento `state` foi introduzido na [especificação OAuth2](https://tools.ietf.org/html/rfc6749#section-4.1.1).
-  
+
   O Vssue irá enviá-lo com o redirecionamento OAuth e verificar se ele é correspondido no retorno de chamada (callback).
 
    Ele foi projetado para evitar [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12), mas não é tão útil aqui, pois colocamos tudo em uma página estática. Então, simplesmente ignore ou defina como quiser.
@@ -227,12 +227,12 @@ Em plataformas diferentes, o nome para os `clientId` e `clientSecret` da __OAuth
   E se você já tiver o vue-i18n em seu projeto, isso não afetará o Vssue.
 
   Pacotes de idiomas localizados no diretório `src/i18n/lang`.
-  
+
   Atualmente, suportamos:
 
   - `'en'` (`'en-US'`)
   - `'zh'` (`'zh-CN'`)
-  - `'ptbr'` (`'pt-BR'`)
+  - `'pt-BR'` (`'pt-BR'`)
 
   Contribuições são bem-vindas para mais suporte a idiomas.
   :::
@@ -243,7 +243,7 @@ Em plataformas diferentes, o nome para os `clientId` e `clientSecret` da __OAuth
 - __Padrão__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
 - __Detalhes__:
 
-  A API de acesso via token das plataformas não suporta o CORS (consulte a [issue do GitHub](https://github.com/isaacs/github/issues/330)). 
+  A API de acesso via token das plataformas não suporta o CORS (consulte a [issue do GitHub](https://github.com/isaacs/github/issues/330)).
   Como o Vssue é um plugin de front-end puro, precisamos usar um proxy para solicitar o token de acesso.
 
   Por padrão, usamos um serviço de proxy CORS de código aberto [cors-anywhere](https://github.com/Rob--W/cors-anywhere) para isso.
@@ -294,7 +294,7 @@ Em plataformas diferentes, o nome para os `clientId` e `clientSecret` da __OAuth
 - __Padrão__: `` options => `${options.prefix}${document.title}` ``
 - __Detalhes__:
 
-  O título da issue usado por este componente do Vssue 
+  O título da issue usado por este componente do Vssue
 
   - Se o tipo for `string`, o título real da issue será `` `${prefix}${title}` ``.
   - Se o tipo for `Function`, o título real da issue será o valor de retorno da função. Observe que o primeiro parâmetro da função são as opções do Vssue, e você pode usá-las para gerar o título real.
@@ -303,7 +303,7 @@ Em plataformas diferentes, o nome para os `clientId` e `clientSecret` da __OAuth
   Quando está tentando carrregar os comentários, Vssue irá requisitar a issue correspondente de acordo com os `labels` e `title`. Se a issue não existir, Vssue tentará criar uma nova issue usando `title`, `issueContent` e `labels`.
 
   Em outras palavras, `labels` e `title` são os identificadores da issue correspondente.
-  
+
   Portanto, certifique-se de que o Vssue tenha diferentes `title`s em páginas diferentes. Vssue com o mesmo `title` corresponderá à mesma issue e compartilhará os mesmos comentários.
   :::
 

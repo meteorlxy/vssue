@@ -10,7 +10,7 @@ module.exports = {
       title: 'Vssue',
       description: 'Vue 驱动的、基于 Issue 的评论插件',
     },
-    '/ptbr/': {
+    '/pt-BR/': {
       lang: 'pt-BR',
       title: 'Vssue',
       description: 'Plugin de comentários com Vue, baseado em Issues',
@@ -89,7 +89,7 @@ module.exports = {
           '/zh/guide/': sidebarGuide('Vssue 指南', '创建 OAuth App'),
         },
       },
-      '/ptbr/': {
+      '/pt-BR/': {
         label: 'Português Brasil',
         selectText: 'Linguagens',
         editLinkText: 'Editar esta página no GitHub',
@@ -97,15 +97,15 @@ module.exports = {
         nav: [
           {
             text: 'Demo',
-            link: '/ptbr/demo/',
+            link: '/pt-BR/demo/',
           },
           {
             text: 'Guia',
-            link: '/ptbr/guide/',
+            link: '/pt-BR/guide/',
           },
           {
             text: 'Configuração',
-            link: '/ptbr/options/',
+            link: '/pt-BR/options/',
           },
           {
             text: 'Log de mudanças',
@@ -113,8 +113,8 @@ module.exports = {
           },
         ],
         sidebar: {
-          '/ptbr/demo/': sidebarDemo('Vssue Demo'),
-          '/ptbr/guide/': sidebarGuide('Vssue Guia', 'Configurar OAuth App'),
+          '/pt-BR/demo/': sidebarDemo('Vssue Demo'),
+          '/pt-BR/guide/': sidebarGuide('Vssue Guia', 'Configurar OAuth App'),
         },
       },
     },
