@@ -244,10 +244,10 @@ Semelhante ao Vue, o Vssue também fornece distribuições diferentes para uso d
 
 Esses arquivos estão localizados na pasta [dist](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/dist):
 
-| Filename                         | Type      | Minified | Polyfills | Usage                                  |
-|----------------------------------|-----------|----------|-----------|----------------------------------------|
-| vssue.js                         | ES Module | false    | false     | with bundler                           |
-| vssue.[platform].min.js          | UMD       | true     | false     | in modern browser via a `<script>` tag |
-| vssue.[platform].polyfill.min.js | UMD       | true     | true      | in old browser via a `<script>` tag    |
+| Arquivo                          | Tipo      | Minified | Polyfills | Uso                                        |
+|----------------------------------|-----------|----------|-----------|--------------------------------------------|
+| vssue.js                         | ES Module | false    | false     | com ferramentas de empacotamento (bundler) |
+| vssue.[platform].min.js          | UMD       | true     | false     | via tag `<script>` em navegadores modernos |
+| vssue.[platform].polyfill.min.js | UMD       | true     | true      | via tag `<script>` em navegadores antigos  |
 
 > Veja [distribuições do Vue](https://br.vuejs.org/v2/guide/installation.html#Explicacao-das-Distribuicoes)
