@@ -31,12 +31,28 @@ module.exports = [
     format: 'umd',
   },
   {
+    input: 'vssue.bitbucket.ts',
+    output: 'vssue.bitbucket.polyfill.min.js',
+    format: 'umd',
+  },
+  {
+    input: 'vssue.github.ts',
+    output: 'vssue.github.polyfill.min.js',
+    format: 'umd',
+  },
+  {
+    input: 'vssue.gitlab.ts',
+    output: 'vssue.gitlab.polyfill.min.js',
+    format: 'umd',
+  },
+  {
     input: 'main.ts',
     output: 'vssue.js',
     format: 'es',
   },
 ].map(opts => {
   const minify = Boolean(/min\.js$/.test(opts.output))
+  const polyfill = Boolean(/polyfill\.min\.js$/.test(opts.output))
 
   const config = {
     input: pathSrc(opts.input),
@@ -78,7 +94,7 @@ module.exports = [
         require('../tsconfig.json').compilerOptions
       )),
       vue(),
-      ...(opts.format !== 'es' ? [babel({
+      ...(opts.format !== 'es' && polyfill ? [babel({
         babelrc: false,
         presets: ['@vue/app'],
         runtimeHelpers: true,
