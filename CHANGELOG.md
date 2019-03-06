@@ -1,3 +1,12 @@
+## [0.7.5](https://github.com/meteorlxy/vssue/compare/v0.7.4...v0.7.5) (2019-03-06)
+
+
+### Features
+
+* **$vssue:** provide non-polyfill builds ([ccc435f](https://github.com/meteorlxy/vssue/commit/ccc435f))
+
+
+
 ## [0.7.4](https://github.com/meteorlxy/vssue/compare/v0.7.3...v0.7.4) (2019-02-27)
 
 
