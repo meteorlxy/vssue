@@ -240,15 +240,12 @@ export default {
 
 和 Vue 类似，Vssue 也提供了不同的构建版本以供使用。
 
-> 参考 [Vue 的不同构建版本](https://cn.vuejs.org/v2/guide/installation.html#%E5%AF%B9%E4%B8%8D%E5%90%8C%E6%9E%84%E5%BB%BA%E7%89%88%E6%9C%AC%E7%9A%84%E8%A7%A3%E9%87%8A)
-
 这些文件放置在 [dist](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/dist) 文件夹中：
 
-- `vssue.js`：[ES Module](http://exploringjs.com/es6/ch_modules.html) 版本
-- `vssue.github.min.js`：使用 GitHub API V3 的最小化 [UMD](https://github.com/umdjs/umd) 版本。通过 `<script>` 标签直接用在浏览器中。
-- `vssue.bitbucket.min.js`：使用 Bitbucket API V2 的最小化 [UMD](https://github.com/umdjs/umd) 版本。通过 `<script>` 标签直接用在浏览器中。
-- `vssue.gitlab.min.js`：使用 GitLab API V4 的最小化 [UMD](https://github.com/umdjs/umd) 版本。通过 `<script>` 标签直接用在浏览器中。
+| 文件名                            | 类型      | Minified | Polyfills | 用途                                  |
+|----------------------------------|-----------|----------|-----------|----------------------------------------|
+| vssue.js                         | ES Module | false    | false     | 使用构建工具                            |
+| vssue.[platform].min.js          | UMD       | true     | false     | 通过现代浏览器的 `<script>` 标签引入     |
+| vssue.[platform].polyfill.min.js | UMD       | true     | true      | 通过旧版浏览器的 `<script>` 标签引入     |
 
-::: tip
-从 v0.4.0 开始，我们不再提供 [Commonjs](http://wiki.commonjs.org/wiki/Modules/1.1) 版本。ESM 版本重命名为 `vssue.js`，并作为 `package.json` 的 `main` 文件。
-:::
+> 参考 [Vue 的不同构建版本](https://cn.vuejs.org/v2/guide/installation.html#%E5%AF%B9%E4%B8%8D%E5%90%8C%E6%9E%84%E5%BB%BA%E7%89%88%E6%9C%AC%E7%9A%84%E8%A7%A3%E9%87%8A)

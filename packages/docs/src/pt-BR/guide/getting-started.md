@@ -242,15 +242,12 @@ export default {
 
 Semelhante ao Vue, o Vssue também fornece distribuições diferentes para uso diferente.
 
-> Veja [distribuições do Vue](https://br.vuejs.org/v2/guide/installation.html#Explicacao-das-Distribuicoes)
-
 Esses arquivos estão localizados na pasta [dist](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/dist):
 
-- `vssue.js`: distribuição [ES Module](http://exploringjs.com/es6/ch_modules.html)
-- `vssue.github.min.js`: distribuição [UMD](https://github.com/umdjs/umd) minificada da GitHub API V3, para uso diretamente no browser via tag `<script>`
-- `vssue.bitbucket.min.js`: distribuição [UMD](https://github.com/umdjs/umd) minificada da Bitbucket API V2, para uso diretamente no browser via tag `<script>`
-- `vssue.gitlab.min.js`: distribuição [UMD](https://github.com/umdjs/umd) minificada da GitLab API V4, para uso diretamente no browser via tag `<script>`
+| Filename                         | Type      | Minified | Polyfills | Usage                                  |
+|----------------------------------|-----------|----------|-----------|----------------------------------------|
+| vssue.js                         | ES Module | false    | false     | with bundler                           |
+| vssue.[platform].min.js          | UMD       | true     | false     | in modern browser via a `<script>` tag |
+| vssue.[platform].polyfill.min.js | UMD       | true     | true      | in old browser via a `<script>` tag    |
 
-::: tip Dica
-A partir da v0.4.0, não fornecemos mais a distribuição [Commonjs](http://wiki.commonjs.org/wiki/Modules/1.1). A compilação do ESM é renomeada para `vssue.js` como o arquivo `main` no `package.json`.
-:::
+> Veja [distribuições do Vue](https://br.vuejs.org/v2/guide/installation.html#Explicacao-das-Distribuicoes)

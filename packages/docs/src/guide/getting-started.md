@@ -240,15 +240,12 @@ export default {
 
 Similar to Vue, Vssue also provide different builds for different usage.
 
-> See [different builds of Vue](https://vuejs.org/v2/guide/installation.html#Explanation-of-Different-Builds)
-
 These files are located in the [dist](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/dist) folder:
 
-- `vssue.js`: the [ES Module](http://exploringjs.com/es6/ch_modules.html) build
-- `vssue.github.min.js`: minified [UMD](https://github.com/umdjs/umd) build for GitHub API V3, to be used directly in the browser via a `<script>` tag
-- `vssue.bitbucket.min.js`: minified [UMD](https://github.com/umdjs/umd) build for Bitbucket API V2, to be used directly in the browser via a `<script>` tag
-- `vssue.gitlab.min.js`: minified [UMD](https://github.com/umdjs/umd) build for GitLab API V4, to be used directly in the browser via a `<script>` tag
+| Filename                         | Type      | Minified | Polyfills | Usage                                  |
+|----------------------------------|-----------|----------|-----------|----------------------------------------|
+| vssue.js                         | ES Module | false    | false     | with bundler                           |
+| vssue.[platform].min.js          | UMD       | true     | false     | in modern browser via a `<script>` tag |
+| vssue.[platform].polyfill.min.js | UMD       | true     | true      | in old browser via a `<script>` tag    |
 
-::: tip
-From v0.4.0, we do not provide [Commonjs](http://wiki.commonjs.org/wiki/Modules/1.1) build anymore. The ESM build is renamed to `vssue.js` as the `main` file in `package.json`.
-:::
+> See [different builds of Vue](https://vuejs.org/v2/guide/installation.html#Explanation-of-Different-Builds)
