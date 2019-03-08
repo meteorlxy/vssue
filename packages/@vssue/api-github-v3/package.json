@@ -28,5 +28,8 @@
   "dependencies": {
     "@vssue/utils": "^0.7.5",
     "axios": "^0.18.0"
+  },
+  "devDependencies": {
+    "axios-mock-adapter": "^1.16.0"
   }
 }
