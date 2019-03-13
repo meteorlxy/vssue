@@ -59,6 +59,15 @@ describe('methods', () => {
     mock.reset()
   })
 
+  test('error', async () => {
+    mock.onGet(new RegExp('/error')).reply(200, {
+      error: 'error',
+      error_description: 'error_description',
+    })
+
+    await expect(API.$http.get('/error')).rejects.toThrowError('error_description')
+  })
+
   test('redirectAuth', () => {
     // to make `window.location` writable
     const location = window.location
@@ -78,6 +87,15 @@ describe('methods', () => {
       mock.onPost(new RegExp('login/oauth/access_token')).reply(200, {
         access_token: mockToken,
       })
+    })
+
+    test('without code', async () => {
+      const url = `https://vssue.js.org/`
+      window.history.replaceState(null, '', url)
+      const token = await API.handleAuth()
+      expect(mock.history.post.length).toBe(0)
+      expect(window.location.href).toBe('https://vssue.js.org/')
+      expect(token).toBe(null)
     })
 
     test('with matched state', async () => {
@@ -146,38 +164,63 @@ describe('methods', () => {
     describe('with issue id', () => {
       const issueId = fixtures.issues[0].id
 
-      beforeEach(() => {
-        mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues/${issueId}`)).reply(200, fixtures.issue)
+      describe('issue exists', () => {
+        beforeEach(() => {
+          mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues/${issueId}$`)).reply(200, fixtures.issue)
+        })
+
+        test('login', async () => {
+          const issue = await API.getIssue({
+            issueId,
+            accessToken: mockToken,
+          }) as VssueAPI.Issue
+          expect(mock.history.get.length).toBe(1)
+          const request = mock.history.get[0]
+          expect(request.method).toBe('get')
+          expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
+          expect(issue.id).toBe(fixtures.issue.number)
+          expect(issue.title).toBe(fixtures.issue.title)
+          expect(issue.content).toBe(fixtures.issue.body)
+          expect(issue.link).toBe(fixtures.issue.html_url)
+        })
+
+        test('not login', async () => {
+          const issue = await API.getIssue({
+            issueId,
+            accessToken: null,
+          }) as VssueAPI.Issue
+          expect(mock.history.get.length).toBe(1)
+          const request = mock.history.get[0]
+          expect(request.method).toBe('get')
+          expect(request.headers['Authorization']).toBeUndefined()
+          expect(issue.id).toBe(fixtures.issue.number)
+          expect(issue.title).toBe(fixtures.issue.title)
+          expect(issue.content).toBe(fixtures.issue.body)
+          expect(issue.link).toBe(fixtures.issue.html_url)
+        })
       })
 
-      test('login', async () => {
-        const issue = await API.getIssue({
-          issueId,
-          accessToken: mockToken,
-        }) as VssueAPI.Issue
-        expect(mock.history.get.length).toBe(1)
-        const request = mock.history.get[0]
-        expect(request.method).toBe('get')
-        expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
-        expect(issue.id).toBe(fixtures.issue.number)
-        expect(issue.title).toBe(fixtures.issue.title)
-        expect(issue.content).toBe(fixtures.issue.body)
-        expect(issue.link).toBe(fixtures.issue.html_url)
-      })
-
-      test('not login', async () => {
+      test('issue does not exist', async () => {
+        mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues/${issueId}$`)).reply(404)
         const issue = await API.getIssue({
           issueId,
           accessToken: null,
-        }) as VssueAPI.Issue
+        })
         expect(mock.history.get.length).toBe(1)
         const request = mock.history.get[0]
         expect(request.method).toBe('get')
-        expect(request.headers['Authorization']).toBeUndefined()
-        expect(issue.id).toBe(fixtures.issue.number)
-        expect(issue.title).toBe(fixtures.issue.title)
-        expect(issue.content).toBe(fixtures.issue.body)
-        expect(issue.link).toBe(fixtures.issue.html_url)
+        expect(issue).toBe(null)
+      })
+
+      test('error', async () => {
+        mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues/${issueId}$`)).reply(500)
+        await expect(API.getIssue({
+          issueId,
+          accessToken: null,
+        })).rejects.toThrow()
+        expect(mock.history.get.length).toBe(1)
+        const request = mock.history.get[0]
+        expect(request.method).toBe('get')
       })
     })
 
@@ -185,7 +228,7 @@ describe('methods', () => {
       const issueTitle = fixtures.issues[0].title
 
       beforeEach(() => {
-        mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues`)).reply(200, fixtures.issues)
+        mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues$`)).reply(200, fixtures.issues)
       })
 
       test('login', async () => {
@@ -223,7 +266,7 @@ describe('methods', () => {
   test('postIssue', async () => {
     const title = fixtures.issue.title
     const content = fixtures.issue.body
-    mock.onPost(new RegExp(`repos/${options.owner}/${options.repo}/issues`)).reply(201, fixtures.issue)
+    mock.onPost(new RegExp(`repos/${options.owner}/${options.repo}/issues$`)).reply(201, fixtures.issue)
     const issue = await API.postIssue({
       title,
       content,
@@ -311,7 +354,7 @@ describe('methods', () => {
   test('postComment', async () => {
     const issueId = 1
     const content = fixtures.comment.body
-    mock.onPost(new RegExp(`repos/${options.owner}/${options.repo}/issues/${issueId}/comments`)).reply(201, fixtures.comment)
+    mock.onPost(new RegExp(`repos/${options.owner}/${options.repo}/issues/${issueId}/comments$`)).reply(201, fixtures.comment)
     const comment = await API.postComment({
       issueId,
       content,
@@ -333,15 +376,83 @@ describe('methods', () => {
     expect(comment.updatedAt).toBe(fixtures.comment.updated_at)
   })
 
-  // test('putComment', async () => {
-  // })
+  test('putComment', async () => {
+    const issueId = 1
+    const commentId = fixtures.comment.id
+    const content = fixtures.comment.body
+    mock.onPatch(new RegExp(`repos/${options.owner}/${options.repo}/issues/comments/${commentId}$`)).reply(201, fixtures.comment)
+    const comment = await API.putComment({
+      issueId,
+      commentId,
+      content,
+      accessToken: mockToken,
+    }) as VssueAPI.Comment
+    expect(mock.history.patch.length).toBe(1)
+    const request = mock.history.patch[0]
+    expect(request.method).toBe('patch')
+    expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
+    expect(request.headers['Accept']).toEqual(expect.arrayContaining([
+      'application/vnd.github.v3.raw+json',
+      'application/vnd.github.v3.html+json',
+      'application/vnd.github.squirrel-girl-preview',
+    ]))
+    expect(comment.id).toBe(fixtures.comment.id)
+    expect(comment.content).toBe(fixtures.comment.body_html)
+    expect(comment.contentRaw).toBe(fixtures.comment.body)
+    expect(comment.createdAt).toBe(fixtures.comment.created_at)
+    expect(comment.updatedAt).toBe(fixtures.comment.updated_at)
+  })
 
-  // test('deleteComment', async () => {
-  // })
+  test('deleteComment', async () => {
+    const issueId = 1
+    const commentId = fixtures.comment.id
+    mock.onDelete(new RegExp(`repos/${options.owner}/${options.repo}/issues/comments/${commentId}$`)).reply(204)
+    const success = await API.deleteComment({
+      issueId,
+      commentId,
+      accessToken: mockToken,
+    })
+    expect(mock.history.delete.length).toBe(1)
+    const request = mock.history.delete[0]
+    expect(request.method).toBe('delete')
+    expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
+    expect(success).toBe(true)
+  })
 
-  // test('getCommentReactions', async () => {
-  // })
+  test('getCommentReactions', async () => {
+    const issueId = 1
+    const commentId = fixtures.comment.id
+    mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues/comments/${commentId}$`)).reply(200, fixtures.comment)
+    const reactions = await API.getCommentReactions({
+      issueId,
+      commentId,
+      accessToken: mockToken,
+    }) as VssueAPI.Reactions
+    expect(mock.history.get.length).toBe(1)
+    const request = mock.history.get[0]
+    expect(request.method).toBe('get')
+    expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
+    expect(request.headers['Accept']).toBe('application/vnd.github.squirrel-girl-preview')
+    expect(reactions.like).toEqual(fixtures.comment.reactions['+1'])
+    expect(reactions.unlike).toEqual(fixtures.comment.reactions['-1'])
+    expect(reactions.heart).toEqual(fixtures.comment.reactions['heart'])
+  })
 
-  // test('postCommentReaction', async () => {
-  // })
+  test('postCommentReaction', async () => {
+    const issueId = 1
+    const commentId = fixtures.comment.id
+    mock.onPost(new RegExp(`repos/${options.owner}/${options.repo}/issues/comments/${commentId}/reactions$`)).reply(201)
+    const success = await API.postCommentReaction({
+      issueId,
+      commentId,
+      accessToken: mockToken,
+      reaction: 'like',
+    }) as VssueAPI.Reactions
+    expect(mock.history.post.length).toBe(1)
+    const request = mock.history.post[0]
+    expect(request.method).toBe('post')
+    expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
+    expect(request.headers['Accept']).toBe('application/vnd.github.squirrel-girl-preview')
+    expect(success).toBe(true)
+  })
 })
