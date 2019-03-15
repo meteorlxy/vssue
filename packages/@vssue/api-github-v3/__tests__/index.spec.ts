@@ -1,7 +1,13 @@
 import { VssueAPI } from 'vssue'
-import GithubV3 from '@vssue/api-github-v3'
 import MockAdapter from 'axios-mock-adapter'
 import fixtures from './fixtures'
+import GithubV3 from '../src/index'
+import {
+  normalizeUser,
+  normalizeIssue,
+  normalizeComment,
+  normalizeReactions,
+} from '../src/utils'
 
 const baseURL = 'https://github.com'
 const APIEndpoint = 'https://api.github.com'
@@ -122,7 +128,7 @@ describe('methods', () => {
         expect(mock.history.post.length).toBe(1)
         const request = mock.history.post[0]
         const data = JSON.parse(request.data)
-        expect(request.url).toBe(options.proxy('https://github.com/login/oauth/access_token'))
+        expect(request.url).toBe(options.proxy(`${baseURL}/login/oauth/access_token`))
         expect(request.method).toBe('post')
         expect(data['client_id']).toBe(options.clientId)
         expect(data['client_secret']).toBe(options.clientSecret)
@@ -131,7 +137,7 @@ describe('methods', () => {
       })
 
       test('with string proxy', async () => {
-        const proxy = 'https://string.proxy?target=https://github.com/login/oauth/access_token'
+        const proxy = `https://string.proxy?target=${baseURL}/login/oauth/access_token`
         API.proxy = proxy
         const token = await API.getAccessToken({ code: mockCode })
         expect(mock.history.post.length).toBe(1)
@@ -155,9 +161,7 @@ describe('methods', () => {
     const request = mock.history.get[0]
     expect(request.method).toBe('get')
     expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
-    expect(user.username).toBe(fixtures.user.login)
-    expect(user.avatar).toBe(fixtures.user.avatar_url)
-    expect(user.homepage).toBe(fixtures.user.html_url)
+    expect(user).toEqual(normalizeUser(fixtures.user))
   })
 
   describe('getIssue', () => {
@@ -178,10 +182,7 @@ describe('methods', () => {
           const request = mock.history.get[0]
           expect(request.method).toBe('get')
           expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
-          expect(issue.id).toBe(fixtures.issue.number)
-          expect(issue.title).toBe(fixtures.issue.title)
-          expect(issue.content).toBe(fixtures.issue.body)
-          expect(issue.link).toBe(fixtures.issue.html_url)
+          expect(issue).toEqual(normalizeIssue(fixtures.issue))
         })
 
         test('not login', async () => {
@@ -193,10 +194,7 @@ describe('methods', () => {
           const request = mock.history.get[0]
           expect(request.method).toBe('get')
           expect(request.headers['Authorization']).toBeUndefined()
-          expect(issue.id).toBe(fixtures.issue.number)
-          expect(issue.title).toBe(fixtures.issue.title)
-          expect(issue.content).toBe(fixtures.issue.body)
-          expect(issue.link).toBe(fixtures.issue.html_url)
+          expect(issue).toEqual(normalizeIssue(fixtures.issue))
         })
       })
 
@@ -240,10 +238,7 @@ describe('methods', () => {
         const request = mock.history.get[0]
         expect(request.method).toBe('get')
         expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
-        expect(issue.id).toBe(fixtures.issues[0].number)
-        expect(issue.title).toBe(fixtures.issues[0].title)
-        expect(issue.content).toBe(fixtures.issues[0].body)
-        expect(issue.link).toBe(fixtures.issues[0].html_url)
+        expect(issue).toEqual(normalizeIssue(fixtures.issues[0]))
       })
 
       test('not login', async () => {
@@ -255,10 +250,7 @@ describe('methods', () => {
         const request = mock.history.get[0]
         expect(request.method).toBe('get')
         expect(request.headers['Authorization']).toBeUndefined()
-        expect(issue.id).toBe(fixtures.issues[0].number)
-        expect(issue.title).toBe(fixtures.issues[0].title)
-        expect(issue.content).toBe(fixtures.issues[0].body)
-        expect(issue.link).toBe(fixtures.issues[0].html_url)
+        expect(issue).toEqual(normalizeIssue(fixtures.issues[0]))
       })
     })
   })
@@ -276,10 +268,7 @@ describe('methods', () => {
     const request = mock.history.post[0]
     expect(request.method).toBe('post')
     expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
-    expect(issue.id).toBe(fixtures.issue.number)
-    expect(issue.title).toBe(fixtures.issue.title)
-    expect(issue.content).toBe(fixtures.issue.body)
-    expect(issue.link).toBe(fixtures.issue.html_url)
+    expect(issue).toEqual(normalizeIssue(fixtures.issue))
   })
 
   describe('getComments', () => {
@@ -321,7 +310,7 @@ describe('methods', () => {
       expect(comments.count).toEqual(fixtures.comments.length)
       expect(comments.page).toEqual(query.page)
       expect(comments.perPage).toEqual(query.perPage)
-      expect(comments.data.length).toBeLessThanOrEqual(query.perPage)
+      expect(comments.data).toEqual(fixtures.comments.slice(0, query.perPage).map(normalizeComment))
     })
 
     test('not login', async () => {
@@ -347,7 +336,7 @@ describe('methods', () => {
       expect(comments.count).toEqual(fixtures.comments.length)
       expect(comments.page).toEqual(query.page)
       expect(comments.perPage).toEqual(query.perPage)
-      expect(comments.data.length).toBeLessThanOrEqual(query.perPage)
+      expect(comments.data).toEqual(fixtures.comments.slice(0, query.perPage).map(normalizeComment))
     })
   })
 
@@ -369,11 +358,7 @@ describe('methods', () => {
       'application/vnd.github.v3.html+json',
       'application/vnd.github.squirrel-girl-preview',
     ]))
-    expect(comment.id).toBe(fixtures.comment.id)
-    expect(comment.content).toBe(fixtures.comment.body_html)
-    expect(comment.contentRaw).toBe(fixtures.comment.body)
-    expect(comment.createdAt).toBe(fixtures.comment.created_at)
-    expect(comment.updatedAt).toBe(fixtures.comment.updated_at)
+    expect(comment).toEqual(normalizeComment(fixtures.comment))
   })
 
   test('putComment', async () => {
@@ -396,11 +381,7 @@ describe('methods', () => {
       'application/vnd.github.v3.html+json',
       'application/vnd.github.squirrel-girl-preview',
     ]))
-    expect(comment.id).toBe(fixtures.comment.id)
-    expect(comment.content).toBe(fixtures.comment.body_html)
-    expect(comment.contentRaw).toBe(fixtures.comment.body)
-    expect(comment.createdAt).toBe(fixtures.comment.created_at)
-    expect(comment.updatedAt).toBe(fixtures.comment.updated_at)
+    expect(comment).toEqual(normalizeComment(fixtures.comment))
   })
 
   test('deleteComment', async () => {
@@ -433,9 +414,7 @@ describe('methods', () => {
     expect(request.method).toBe('get')
     expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
     expect(request.headers['Accept']).toBe('application/vnd.github.squirrel-girl-preview')
-    expect(reactions.like).toEqual(fixtures.comment.reactions['+1'])
-    expect(reactions.unlike).toEqual(fixtures.comment.reactions['-1'])
-    expect(reactions.heart).toEqual(fixtures.comment.reactions['heart'])
+    expect(reactions).toEqual(normalizeReactions(fixtures.comment.reactions))
   })
 
   test('postCommentReaction', async () => {
