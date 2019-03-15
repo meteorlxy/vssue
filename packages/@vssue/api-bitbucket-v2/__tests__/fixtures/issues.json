@@ -1,0 +1,86 @@
+{
+  "pagelen": 20,
+  "values": [
+    {
+      "priority": "trivial",
+      "kind": "bug",
+      "repository": {
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test"
+          },
+          "html": {
+            "href": "https://bitbucket.org/meteorlxy/vssue-test"
+          },
+          "avatar": {
+            "href": "https://bytebucket.org/ravatar/%7B552a62de-fe50-4803-ab07-12aa2306d1e2%7D?ts=default"
+          }
+        },
+        "type": "repository",
+        "name": "vssue-test",
+        "full_name": "meteorlxy/vssue-test",
+        "uuid": "meteorlxy/vssue-test"
+      },
+      "links": {
+        "attachments": {
+          "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/3/attachments"
+        },
+        "self": {
+          "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/3"
+        },
+        "watch": {
+          "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/3/watch"
+        },
+        "comments": {
+          "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/3/comments"
+        },
+        "html": {
+          "href": "https://bitbucket.org/meteorlxy/vssue-test/issues/3/vssue-vssue-dev"
+        },
+        "vote": {
+          "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/3/vote"
+        }
+      },
+      "reporter": {
+        "username": "meteorlxy",
+        "display_name": "meteorlxy",
+        "account_id": "meteorlxy",
+        "links": {
+          "self": {
+            "href": "https://api.bitbucket.org/2.0/users/meteorlxy"
+          },
+          "html": {
+            "href": "https://bitbucket.org/meteorlxy/"
+          },
+          "avatar": {
+            "href": "https://bitbucket.org/account/meteorlxy/avatar/"
+          }
+        },
+        "nickname": "meteorlxy",
+        "type": "user",
+        "uuid": "meteorlxy"
+      },
+      "title": "[Vssue]Vssue Dev",
+      "component": null,
+      "votes": 0,
+      "watches": 1,
+      "content": {
+        "raw": "http://localhost:8080/",
+        "markup": "markdown",
+        "html": "<p><a href=\"http://localhost:8080/\" rel=\"nofollow\" class=\"ap-connect-link\">http://localhost:8080/</a></p>",
+        "type": "rendered"
+      },
+      "assignee": null,
+      "state": "new",
+      "version": null,
+      "edited_on": null,
+      "created_on": "2019-01-04T11:08:11.204939+00:00",
+      "milestone": null,
+      "updated_on": "2019-01-04T11:08:11.204939+00:00",
+      "type": "issue",
+      "id": 3
+    }
+  ],
+  "page": 1,
+  "size": 1
+}

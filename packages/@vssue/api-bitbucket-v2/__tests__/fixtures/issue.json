@@ -1,0 +1,79 @@
+{
+  "priority": "major",
+  "kind": "bug",
+  "repository": {
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test"
+      },
+      "html": {
+        "href": "https://bitbucket.org/meteorlxy/vssue-test"
+      },
+      "avatar": {
+        "href": "https://bytebucket.org/ravatar/%7B552a62de-fe50-4803-ab07-12aa2306d1e2%7D?ts=default"
+      }
+    },
+    "type": "repository",
+    "name": "vssue-test",
+    "full_name": "meteorlxy/vssue-test",
+    "uuid": "{552a62de-fe50-4803-ab07-12aa2306d1e2}"
+  },
+  "links": {
+    "attachments": {
+      "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/1/attachments"
+    },
+    "self": {
+      "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/1"
+    },
+    "watch": {
+      "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/1/watch"
+    },
+    "comments": {
+      "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/1/comments"
+    },
+    "html": {
+      "href": "https://bitbucket.org/meteorlxy/vssue-test/issues/1/test"
+    },
+    "vote": {
+      "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/1/vote"
+    }
+  },
+  "reporter": {
+    "username": "meteorlxy",
+    "display_name": "meteorlxy",
+    "account_id": "5b067b2e31fcef2607e2a380",
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/users/meteorlxy"
+      },
+      "html": {
+        "href": "https://bitbucket.org/meteorlxy/"
+      },
+      "avatar": {
+        "href": "https://bitbucket.org/account/meteorlxy/avatar/"
+      }
+    },
+    "nickname": "meteorlxy",
+    "type": "user",
+    "uuid": "{10e142be-4857-4ba6-a7de-7103496566d5}"
+  },
+  "title": "test",
+  "component": null,
+  "votes": 0,
+  "watches": 1,
+  "content": {
+    "raw": "",
+    "markup": "markdown",
+    "html": "",
+    "type": "rendered"
+  },
+  "assignee": null,
+  "state": "new",
+  "version": null,
+  "edited_on": null,
+  "created_on": "2018-06-23T17:43:56.173202+00:00",
+  "milestone": null,
+  "updated_on": "2018-06-23T17:45:49.073861+00:00",
+  "type": "issue",
+  "id": 1
+}

@@ -1,0 +1,41 @@
+{
+  "website": null,
+  "username": "meteorlxy",
+  "display_name": "meteorlxy",
+  "has_2fa_enabled": null,
+  "links": {
+    "hooks": {
+      "href": "https://api.bitbucket.org/2.0/users/meteorlxy/hooks"
+    },
+    "self": {
+      "href": "https://api.bitbucket.org/2.0/users/meteorlxy"
+    },
+    "repositories": {
+      "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy"
+    },
+    "html": {
+      "href": "https://bitbucket.org/meteorlxy/"
+    },
+    "followers": {
+      "href": "https://api.bitbucket.org/2.0/users/meteorlxy/followers"
+    },
+    "avatar": {
+      "href": "https://bitbucket.org/account/meteorlxy/avatar/"
+    },
+    "following": {
+      "href": "https://api.bitbucket.org/2.0/users/meteorlxy/following"
+    },
+    "snippets": {
+      "href": "https://api.bitbucket.org/2.0/snippets/meteorlxy"
+    }
+  },
+  "nickname": "meteorlxy",
+  "account_id": "meteorlxy",
+  "created_on": "2018-05-24T08:46:14.639309+00:00",
+  "is_staff": false,
+  "location": null,
+  "account_status": "active",
+  "type": "user",
+  "properties": {},
+  "uuid": "uuid"
+}

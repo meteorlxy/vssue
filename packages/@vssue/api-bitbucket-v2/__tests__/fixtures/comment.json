@@ -1,0 +1,66 @@
+{
+  "links": {
+    "self": {
+      "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/3/comments/51159371"
+    },
+    "html": {
+      "href": "https://bitbucket.org/meteorlxy/vssue-test/issues/3#comment-51159371"
+    }
+  },
+  "issue": {
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test/issues/3"
+      }
+    },
+    "type": "issue",
+    "id": 3,
+    "repository": {
+      "links": {
+        "self": {
+          "href": "https://api.bitbucket.org/2.0/repositories/meteorlxy/vssue-test"
+        },
+        "html": {
+          "href": "https://bitbucket.org/meteorlxy/vssue-test"
+        },
+        "avatar": {
+          "href": "https://bytebucket.org/ravatar/%7B552a62de-fe50-4803-ab07-12aa2306d1e2%7D?ts=default"
+        }
+      },
+      "type": "repository",
+      "name": "vssue-test",
+      "full_name": "meteorlxy/vssue-test",
+      "uuid": "meteorlxy/vssue-test"
+    },
+    "title": "[Vssue]Vssue Dev"
+  },
+  "content": {
+    "raw": "test",
+    "markup": "markdown",
+    "html": "<p>test</p>",
+    "type": "rendered"
+  },
+  "created_on": "2019-03-15T06:41:15.386829+00:00",
+  "user": {
+    "username": "meteorlxy",
+    "display_name": "meteorlxy",
+    "account_id": "meteorlxy",
+    "links": {
+      "self": {
+        "href": "https://api.bitbucket.org/2.0/users/meteorlxy"
+      },
+      "html": {
+        "href": "https://bitbucket.org/meteorlxy/"
+      },
+      "avatar": {
+        "href": "https://bitbucket.org/account/meteorlxy/avatar/"
+      }
+    },
+    "nickname": "meteorlxy",
+    "type": "user",
+    "uuid": "meteorlxy"
+  },
+  "updated_on": null,
+  "type": "issue_comment",
+  "id": 51159371
+}
