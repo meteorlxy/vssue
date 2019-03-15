@@ -31,7 +31,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   repo: string
   clientId: string
   clientSecret: string
-  state: string
   proxy: string | ((url: string) => string)
   $http: AxiosInstance
 
@@ -41,7 +40,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     repo,
     clientId,
     clientSecret,
-    state,
     proxy,
   }: VssueAPI.Options) {
     this.baseURL = baseURL
@@ -50,7 +48,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
 
     this.clientId = clientId
     this.clientSecret = clientSecret
-    this.state = state
     this.proxy = proxy
 
     this.$http = axios.create({
@@ -397,14 +394,14 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   /**
    * Bitbucket does not support reactions now
    */
-  async getCommentReactions (): Promise<VssueAPI.Reactions> {
+  async getCommentReactions (options): Promise<VssueAPI.Reactions> {
     throw new Error('501 Not Implemented')
   }
 
   /**
    * Bitbucket does not support reactions now
    */
-  async postCommentReaction (): Promise<boolean> {
+  async postCommentReaction (options): Promise<boolean> {
     throw new Error('501 Not Implemented')
   }
 }
