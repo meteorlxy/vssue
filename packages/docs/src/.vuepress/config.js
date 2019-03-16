@@ -127,8 +127,37 @@ module.exports = {
       serviceWorker: true,
       updatePopup: true,
     }],
+    ['@vuepress/google-analytics', {
+      'ga': 'UA-132770851-3',
+    }],
     '@vssue/vuepress-plugin-vssue',
   ],
+
+  chainWebpack: (config, isServer) => {
+    if (isServer === false) {
+      config.optimization.splitChunks({
+        maxInitialRequests: 5,
+        cacheGroups: {
+          2: {
+            test: /[\\/]node_modules[\\/](vue-i18n|vue-class-component|nprogress|@vuepress)[\\/]/,
+            name: 'vendor.2',
+            chunks: 'all',
+          },
+          1: {
+            test: /[\\/]node_modules[\\/](vue|vue-router)[\\/]/,
+            name: 'vendor.1',
+            chunks: 'all',
+          },
+          0: {
+            test: /[\\/]node_modules[\\/]/,
+            priority: -10,
+            name: 'vendor.0',
+            chunks: 'all',
+          },
+        },
+      })
+    }
+  },
 }
 
 function sidebarDemo (title) {

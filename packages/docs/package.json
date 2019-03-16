@@ -9,10 +9,11 @@
   "dependencies": {
     "@vssue/api-github-v3": "^0.7.5",
     "@vssue/vuepress-plugin-vssue": "^0.7.5",
-    "@vuepress/plugin-back-to-top": "^1.0.0-alpha.30",
-    "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.30",
-    "@vuepress/plugin-pwa": "^1.0.0-alpha.30",
+    "@vuepress/plugin-back-to-top": "^1.0.0-alpha.44",
+    "@vuepress/plugin-google-analytics": "1.0.0-alpha.44",
+    "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.44",
+    "@vuepress/plugin-pwa": "^1.0.0-alpha.44",
     "markdown-it-center-text": "^1.0.4",
-    "vuepress": "^1.0.0-alpha.30"
+    "vuepress": "^1.0.0-alpha.44"
   }
 }
