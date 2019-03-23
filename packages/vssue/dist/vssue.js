@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.8.0
+ * @version v0.8.1
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -1224,7 +1224,7 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "0.8.0";
+        return "0.8.1";
     }
     get isPending() {
         return this.isLoadingComments || this.isCreatingComment || this.isUpdatingComment;
@@ -1269,6 +1269,7 @@ let VssueStore = class VssueStore extends Vue$1 {
             perPage: 10,
             proxy: (url) => `https://cors-anywhere.herokuapp.com/${url}`,
             issueContent: ({ url }) => url,
+            autoCreateIssue: true,
         }, options);
         // check options
         const requiredOptions = [
@@ -1371,6 +1372,10 @@ let VssueStore = class VssueStore extends Vue$1 {
         });
         // if the issue of this page does not exist, try to create it
         if (!this.issue) {
+            // do not try to create issue when `autoCreateIssue = false`
+            if (!this.options.autoCreateIssue) {
+                throw Error('Failed to get comments');
+            }
             // require login to create the issue
             if (!this.isLogined) {
                 this.$emit('login');
@@ -1756,7 +1761,7 @@ var __vue_staticRenderFns__$6 = [];
 
 const VssuePlugin = {
     get version() {
-        return "0.8.0";
+        return "0.8.1";
     },
     installed: false,
     install(Vue$$1, options) {
