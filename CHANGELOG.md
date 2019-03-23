@@ -1,3 +1,17 @@
+# [0.8.0](https://github.com/meteorlxy/vssue/compare/v0.7.5...v0.8.0) (2019-03-23)
+
+
+### Bug Fixes
+
+* **$utils:** get correct clean url when hash only ([c53fcfb](https://github.com/meteorlxy/vssue/commit/c53fcfb))
+
+
+### Features
+
+* **$api-bitbucket-v2, $api-gitlab-v4:** use implicit grant type (close [#22](https://github.com/meteorlxy/vssue/issues/22)) ([78e6535](https://github.com/meteorlxy/vssue/commit/78e6535))
+
+
+
 ## [0.7.5](https://github.com/meteorlxy/vssue/compare/v0.7.4...v0.7.5) (2019-03-06)
 
 
