@@ -191,6 +191,8 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
   Array of username that has admin access to Vssue. The `owner` always has admin access.
 
+  Users with admin access can delete all comments, while other users can only delete their own comments.
+
   Only `admins` can auto create corresponding issue if it does not exist.
 
   ::: tip
@@ -283,6 +285,14 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   If the issue already exists, Vssue will not try to update the content.
   :::
 
+### autoCreateIssue <Badge text="v0.8.1+"/>
+
+- __Type__: `boolean`
+- __Default__: `true`
+- __Details__:
+
+  If `autoCreateIssue` is set to `false`, Vssue won't create issues for you, and you have to __create issues manually__.
+
 ## Component Props
 
 ### title
@@ -321,13 +331,13 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   
   If `issueId` is set, these parameters will be ignored:
 
-  - Options: `labels`, `prefix` and `issueContent`
+  - Options: `labels`, `prefix`, `issueContent` and `autoCreateIssue`
   - Props: `title`
 
   ::: danger ATTENSION
   If `issueId` is set, Vssue will use it to determine which issue to use directly, instead of requesting issues according to `labels` and `title`. This will make the initialization process of Vssue faster.
 
-  In this case, however, you have to __create issue manually__. If the corresponding issue is not found, Vssue will not try to create a new issue for you. 
+  In this case, however, you have to __create issues manually__. If the corresponding issue is not found, Vssue will not try to create a new issue for you. 
   :::
 
 ### options

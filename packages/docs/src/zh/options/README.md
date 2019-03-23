@@ -191,6 +191,8 @@ Vue.use(Vssue, {
 
   拥有 admin 权限的用户数组。`owner` 始终视为拥有 admin 权限。
 
+  拥有 admin 权限的用户可以删除所有用户的评论，而其他用户只能删除自己的评论。
+
   只有 `admins` 才能在存储评论的 Issue 不存在时自动创建它。
 
   ::: tip
@@ -283,6 +285,13 @@ Vue.use(Vssue, {
   如果对应的 Issue 已经存在，Vssue 不会更新 Issue 的内容。
   :::
 
+### autoCreateIssue <Badge text="v0.8.1+"/>
+
+- __类型__: `boolean`
+- __默认值__: `true`
+- __详细__:
+
+  如果 `autoCreateIssue` 设置为 `false`，Vssue 不会为你自动创建 Issue，你必须 __手动创建 Issue__。
 
 ## 组件 Props
 
@@ -322,7 +331,7 @@ Vue.use(Vssue, {
   
   如果设置了 `issueId`，下列参数将会被忽略：
 
-  - Options: `labels`, `preifx` 和 `issueContent`
+  - Options: `labels`, `preifx`, `issueContent` 和 `autoCreateIssue`
   - Props: `title`
 
   ::: danger 注意
