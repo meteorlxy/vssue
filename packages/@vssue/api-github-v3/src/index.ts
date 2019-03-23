@@ -241,6 +241,7 @@ export default class GithubV3 implements VssueAPI.Instance {
         labels: this.labels.join(','),
         sort: 'created',
         direction: 'asc',
+        state: 'all',
         // to avoid caching
         timestamp: Date.now(),
       }
