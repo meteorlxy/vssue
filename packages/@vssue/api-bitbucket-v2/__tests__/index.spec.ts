@@ -30,6 +30,7 @@ describe('properties', () => {
     expect(API.owner).toBe(options.owner)
     expect(API.repo).toBe(options.repo)
     expect(API.clientId).toBe(options.clientId)
+    expect(API.state).toBe(options.state)
     expect(API.platform.name).toBe('Bitbucket')
     expect(API.platform.version).toBe('v2')
   })
@@ -60,32 +61,39 @@ describe('methods', () => {
     window.location = location
   })
 
-  // error due to window.location.hash is undefined
-  // describe('handleAuth', () => {
-  //   test('without access_token', async () => {
-  //     const url = `https://vssue.js.org/`
-  //     window.history.replaceState(null, '', url)
-  //     const token = await API.handleAuth()
-  //     expect(window.location.href).toBe(url)
-  //     expect(token).toBe(null)
-  //   })
+  describe('handleAuth', () => {
+    test('without access_token', async () => {
+      const url = `https://vssue.js.org/`
+      window.history.replaceState(null, '', url)
+      const token = await API.handleAuth()
+      expect(window.location.href).toBe(url)
+      expect(token).toBe(null)
+    })
 
-  //   test('with matched state', async () => {
-  //     const url = `https://vssue.js.org/#access_token=${mockToken}&state=${options.state}`
-  //     window.history.replaceState(null, '', url)
-  //     const token = await API.handleAuth()
-  //     expect(window.location.href).toBe('https://vssue.js.org/')
-  //     expect(token).toBe(mockToken)
-  //   })
+    test('with matched state', async () => {
+      const url = `https://vssue.js.org/#access_token=${mockToken}&state=${options.state}`
+      window.history.replaceState(null, '', url)
+      const token = await API.handleAuth()
+      expect(window.location.href).toBe('https://vssue.js.org/')
+      expect(token).toBe(mockToken)
+    })
 
-  //   test('with matched state', async () => {
-  //     const url = `https://vssue.js.org/#access_token=${mockToken}&state=${options.state}-unmatched`
-  //     window.history.replaceState(null, '', url)
-  //     const token = await API.handleAuth()
-  //     expect(window.location.href).toBe(url)
-  //     expect(token).toBe(null)
-  //   })
-  // })
+    test('with unmatched state', async () => {
+      const url = `https://vssue.js.org/#access_token=${mockToken}&state=${options.state}-unmatched`
+      window.history.replaceState(null, '', url)
+      const token = await API.handleAuth()
+      expect(window.location.href).toBe(url)
+      expect(token).toBe(null)
+    })
+
+    test('with extra hash', async () => {
+      const url = `https://vssue.js.org/#access_token=${mockToken}&state=${options.state}&extra=hash`
+      window.history.replaceState(null, '', url)
+      const token = await API.handleAuth()
+      expect(window.location.href).toBe('https://vssue.js.org/#extra=hash')
+      expect(token).toBe(mockToken)
+    })
+  })
 
   test('getUser', async () => {
     mock.onGet(new RegExp('/user$')).reply(200, fixtures.user)
@@ -158,32 +166,46 @@ describe('methods', () => {
     describe('with issue title', () => {
       const issueTitle = fixtures.issues.values[0].title
 
-      beforeEach(() => {
-        mock.onGet(new RegExp(`repositories/${options.owner}/${options.repo}/issues$`)).reply(200, fixtures.issues)
+      describe('issue exists', () => {
+        beforeEach(() => {
+          mock.onGet(new RegExp(`repositories/${options.owner}/${options.repo}/issues$`)).reply(200, fixtures.issues)
+        })
+
+        test('login', async () => {
+          const issue = await API.getIssue({
+            issueTitle,
+            accessToken: mockToken,
+          }) as VssueAPI.Issue
+          expect(mock.history.get.length).toBe(1)
+          const request = mock.history.get[0]
+          expect(request.method).toBe('get')
+          expect(request.headers['Authorization']).toBe(`Bearer ${mockToken}`)
+          expect(issue).toEqual(normalizeIssue(fixtures.issues.values[0]))
+        })
+
+        test('not login', async () => {
+          const issue = await API.getIssue({
+            issueTitle,
+            accessToken: null,
+          }) as VssueAPI.Issue
+          expect(mock.history.get.length).toBe(1)
+          const request = mock.history.get[0]
+          expect(request.method).toBe('get')
+          expect(request.headers['Authorization']).toBeUndefined()
+          expect(issue).toEqual(normalizeIssue(fixtures.issues.values[0]))
+        })
       })
 
-      test('login', async () => {
-        const issue = await API.getIssue({
-          issueTitle,
-          accessToken: mockToken,
-        }) as VssueAPI.Issue
-        expect(mock.history.get.length).toBe(1)
-        const request = mock.history.get[0]
-        expect(request.method).toBe('get')
-        expect(request.headers['Authorization']).toBe(`Bearer ${mockToken}`)
-        expect(issue).toEqual(normalizeIssue(fixtures.issues.values[0]))
-      })
-
-      test('not login', async () => {
+      test('issue does not exist', async () => {
+        mock.onGet(new RegExp(`repositories/${options.owner}/${options.repo}/issues$`)).reply(200, [])
         const issue = await API.getIssue({
           issueTitle,
           accessToken: null,
-        }) as VssueAPI.Issue
+        })
         expect(mock.history.get.length).toBe(1)
         const request = mock.history.get[0]
         expect(request.method).toBe('get')
-        expect(request.headers['Authorization']).toBeUndefined()
-        expect(issue).toEqual(normalizeIssue(fixtures.issues.values[0]))
+        expect(issue).toBe(null)
       })
     })
   })
@@ -206,10 +228,6 @@ describe('methods', () => {
 
   describe('getComments', () => {
     const issueId = 1
-    const query = {
-      page: fixtures.comments.page,
-      perPage: fixtures.comments.pagelen,
-    }
 
     beforeEach(() => {
       mock
@@ -218,37 +236,79 @@ describe('methods', () => {
     })
 
     test('login', async () => {
-      const comments = await API.getComments({
+      /* eslint-disable-next-line no-unused-expressions */
+      await API.getComments({
         issueId,
         accessToken: mockToken,
-        query,
       }) as VssueAPI.Comments
       expect(mock.history.get.length).toBe(1)
 
       const request = mock.history.get[0]
       expect(request.method).toBe('get')
       expect(request.headers['Authorization']).toBe(`Bearer ${mockToken}`)
-      expect(comments.count).toEqual(fixtures.comments.values.length)
-      expect(comments.page).toEqual(query.page)
-      expect(comments.perPage).toEqual(query.perPage)
-      expect(comments.data).toEqual(fixtures.comments.values.slice(0, query.perPage).map(normalizeComment))
     })
 
     test('not login', async () => {
-      const comments = await API.getComments({
+      /* eslint-disable-next-line no-unused-expressions */
+      await API.getComments({
         issueId,
         accessToken: null,
-        query,
       }) as VssueAPI.Comments
       expect(mock.history.get.length).toBe(1)
 
       const request = mock.history.get[0]
       expect(request.method).toBe('get')
       expect(request.headers['Authorization']).toBeUndefined()
-      expect(comments.count).toEqual(fixtures.comments.values.length)
-      expect(comments.page).toEqual(query.page)
-      expect(comments.perPage).toEqual(query.perPage)
-      expect(comments.data).toEqual(fixtures.comments.values.slice(0, query.perPage).map(normalizeComment))
+    })
+
+    describe('query', () => {
+      const query = {
+        page: fixtures.comments.page,
+        perPage: fixtures.comments.pagelen,
+        sort: 'desc',
+      }
+
+      test('default value', async () => {
+        /* eslint-disable-next-line no-unused-expressions */
+        await API.getComments({
+          issueId,
+          accessToken: mockToken,
+          query: {},
+        }) as VssueAPI.Comments
+        const request = mock.history.get[0]
+        expect(request.params['page']).toBe(1)
+        expect(request.params['pagelen']).toBe(10)
+        expect(request.params['sort']).toBe('-created_on')
+      })
+
+      test('common', async () => {
+        const comments = await API.getComments({
+          issueId,
+          accessToken: mockToken,
+          query,
+        }) as VssueAPI.Comments
+        const request = mock.history.get[0]
+        expect(request.params['page']).toBe(query.page)
+        expect(request.params['pagelen']).toBe(query.perPage)
+        expect(request.params['sort']).toBe('-created_on')
+        expect(comments.count).toEqual(fixtures.comments.values.length)
+        expect(comments.page).toEqual(query.page)
+        expect(comments.perPage).toEqual(query.perPage)
+        expect(comments.data).toEqual(fixtures.comments.values.slice(0, query.perPage).map(normalizeComment))
+      })
+
+      test('sort asc', async () => {
+        /* eslint-disable-next-line no-unused-expressions */
+        await API.getComments({
+          issueId,
+          accessToken: mockToken,
+          query: {
+            sort: 'asc',
+          },
+        }) as VssueAPI.Comments
+        const request = mock.history.get[0]
+        expect(request.params['sort']).toBe('created_on')
+      })
     })
   })
 
