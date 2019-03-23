@@ -1,3 +1,18 @@
+## [0.8.1](https://github.com/meteorlxy/vssue/compare/v0.8.0...v0.8.1) (2019-03-23)
+
+
+### Bug Fixes
+
+* **$api-bitbucket-v2:** filter empty comments ([17a4da8](https://github.com/meteorlxy/vssue/commit/17a4da8))
+* **$apt-github-v3:** support closed issues ([ea7c1c0](https://github.com/meteorlxy/vssue/commit/ea7c1c0))
+
+
+### Features
+
+* **$vssue:** add auto-create-issue option ([47cd4d3](https://github.com/meteorlxy/vssue/commit/47cd4d3))
+
+
+
 # [0.8.0](https://github.com/meteorlxy/vssue/compare/v0.7.5...v0.8.0) (2019-03-23)
 
 
