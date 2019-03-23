@@ -24,6 +24,7 @@ const options: Partial<Vssue.Options> = {
   perPage: 5,
   proxy: url => `https://cors-anywhere.herokuapp.com/${url}`,
   issueContent: ({ url }) => url,
+  autoCreateIssue: true,
 }
 
 if (!onlyComponent) {

@@ -94,6 +94,7 @@ class VssueStore extends Vue implements Vssue.Store {
       perPage: 10,
       proxy: (url: string): string => `https://cors-anywhere.herokuapp.com/${url}`,
       issueContent: ({ url }): string => url,
+      autoCreateIssue: true,
     }, options)
 
     // check options
@@ -203,6 +204,11 @@ class VssueStore extends Vue implements Vssue.Store {
 
     // if the issue of this page does not exist, try to create it
     if (!this.issue) {
+      // do not try to create issue when `autoCreateIssue = false`
+      if (!this.options.autoCreateIssue) {
+        throw Error('Failed to get comments')
+      }
+
       // require login to create the issue
       if (!this.isLogined) {
         this.$emit('login')

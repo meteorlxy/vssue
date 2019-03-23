@@ -18,6 +18,7 @@ export namespace Vssue {
     locale: string
     proxy: string | ((url: string) => string)
     issueContent: ((param: { options: Vssue.Options, url: string }) => string | Promise<string>)
+    autoCreateIssue: boolean
   }
 
   export interface Plugin extends PluginObject<Partial<Vssue.Options>> {
