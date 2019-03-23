@@ -2,7 +2,7 @@
 
 > 查看 [Gitlab 官方文档](https://docs.gitlab.com/ce/integration/oauth_provider.html#adding-an-application-through-the-profile) 作为参考。
 
-> Vssue 同样可以和自己搭建的 GitLab 一起工作。只需要将 `baseURL` 设置为你的 Gitlab URL 即可。查看 [配置参考 - baseURL](../options/README.md#baseurl)
+> Vssue 同样可以配合自己搭建的 GitLab 使用。只需要将 `baseURL` 设置为你的 Gitlab URL 即可。查看 [配置参考 - baseURL](../options/README.md#baseurl)
 
 ## 创建一个新的 Application
 
@@ -16,15 +16,15 @@
 
 ->![配置 OAuth App - Gitlab 03](/assets/img/oauth-app-gitlab-03.png)<-
 
-## 获取 Client ID 和 Secret
+## 获取 Client ID
 
-现在你已经创建了一个新的 Application，并得到了相应的 __Application ID__ (`Client ID`) 和 __Secret__ (`Client Secret`)。
+现在你已经创建了一个新的 Application，并得到了相应的 __Application ID__ (`Client ID`)。
 
 ->![配置 OAuth App - Gitlab 04](/assets/img/oauth-app-gitlab-04.png)<-
 
 ## 配置并启动你的 Vssue
 
-复制 `Client ID` 和 `Client Secret`，并设置 `owner` 和 `repo`。
+复制 `Client ID`，并设置 `owner` 和 `repo`。
 
 > Gitlab repository 的 URL 模式为 `https://gitlab.com/${owner}/${repo}`
 

@@ -8,6 +8,7 @@ Guide: [Set up GitHub OAuth App](./github.md)
 
 - Vssue API package: [@vssue/api-github-v3](https://www.npmjs.com/package/@vssue/api-github-v3)
 - Features or drawbacks:
+  - [clientSecret](../options/README.md#clientsecret) is required
   - comments not sortable
   - comments editable
   - comments deletable
@@ -18,6 +19,7 @@ Guide: [Set up GitHub OAuth App](./github.md)
 
 - Vssue API package: [@vssue/api-github-v4](https://www.npmjs.com/package/@vssue/api-github-v4)
 - Features or drawbacks:
+  - [clientSecret](../options/README.md#clientsecret) is required
   - comments sortable
   - comments not editable (corresponding API has not been implemented by Github)
   - comments deletable
@@ -50,6 +52,5 @@ Guide: [Set up Bitbucket OAuth Cousumer](./bitbucket.md)
   - comments editable
   - comments deletable
   - can view comments without login
-  - after login, the access token expires in one hour
   - cannot post emoji reactions to comments (heart, like, unlike, etc.)
 - Developer Reference: [Official Docs](https://developer.atlassian.com/bitbucket/api/2/reference)

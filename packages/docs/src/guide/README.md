@@ -18,15 +18,15 @@ Here is the brief process about how Vssue works:
   │     Click Login      ├───────── redirect ────────>│ Authorization Page │
   └──────────────────────┘                            └──────────┬─────────┘
   ┌──────────────────────┐                                       │
-  │                      │<─── redirect with code ───────────────┘
+  │                      │<─── redirect with token / code ───────┘
   │ Handle Authorization │                            ┌────────────────────┐
-  │                      │<───── request token ──────>│                    │
+  │                      │<─── (may) request token ──>│                    │
   └──────────────────────┘                            │                    │
   ┌──────────────────────┐                            │                    │
   │     Get Comments     │<─── request with token ───>│    Platform  API   │
   └──────────────────────┘                            │                    │
   ┌──────────────────────┐                            │                    │
-  │     Post Comments    ├──── request with token ───>│                    │
+  │     Post Comments    │<─── request with token ───>│                    │
   └──────────────────────┘                            └────────────────────┘
           ......
 ```

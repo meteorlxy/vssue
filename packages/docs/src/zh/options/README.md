@@ -88,36 +88,34 @@ Vue.use(Vssue, {
 
   它是由平台分配的 client 标识符。你在创建 OAuth App 之后就可以得到它。
 
-  Vssue 将使用 `clientId` 和 `clientSecret` 来获取用户的 access token。
+  Vssue 将使用 `clientId` 来获取用户的 access token。
 
 - __参考__:
-  - [clientSecret](#clientsecret)
   - [创建 OAuth App](../guide/supported-platforms.md)
-  - [安全](../guide/security.md)
 
 ### clientSecret
 
 - __类型__: `string`
+- __默认值__: `undefined`
 - __详细__:
 
   在 [OAuth2 spec](https://tools.ietf.org/html/rfc6749#section-2.3.1) 中介绍的 `client_secret`。
 
   它是由平台生成的 client 密钥。你在创建 OAuth App 之后就可以得到它。
 
-  Vssue 将使用 `clientId` 和 `clientSecret` 来获取用户的 access token。
+  在和某些平台一起使用时， Vssue 将使用 `clientId` 和 `clientSecret` 来获取用户的 access token。
+
+  ::: tip
+  一些平台（如 Bitbucket 和 GitLab）支持 [Implicit Grant](https://tools.ietf.org/html/rfc6749#section-4.2)，所以在使用这些平台时不需要 `clientSecret`。
+
+  然而，有一些平台（如 GitHub）不支持它，所以在使用这些平台时 `clientSecret` 是必须的。
+  :::
 
 - __参考__:
   - [clientId](#clientid)
+  - [proxy](#proxy)
   - [创建 OAuth App](../guide/supported-platforms.md)
   - [安全](../guide/security.md)
-
-::: tip
-在不同平台上， __OAuth App__、`clientId` 和 `clientSecret` 的实际名称也不同：
-
-- Github: __OAuth App__, __Client ID__ 和 __Client Secret__
-- Gitlab: __Application__, __Application ID__ 和 __Secret__
-- Bitbucket: __OAuth consumer__, __Key__ 和 __Secret__
-:::
 
 ### baseURL
 
@@ -134,7 +132,7 @@ Vue.use(Vssue, {
   - Bitbucket 是`'https://bitbucket.org'`
 
   ::: warning 注意
-  只有在你要使用 __自行搭建的 Gitlab__ 时才需要设置这个选项。
+  只有在你要使用 __自行搭建的__ 平台时才需要设置这个选项。（比如 __GitLab Community / Enterprise Edition__ 或 __GitHub Enterprise Server__）
   :::
 
 - __参考__:
@@ -238,11 +236,15 @@ Vue.use(Vssue, {
 - __默认值__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
 - __详细__:
 
-  平台的 Access Token API 不支持 CORS （详见 [GitHub 的相关 Issue](https://github.com/isaacs/github/issues/330)）。由于 Vssue 是一个纯前端插件，我们必须要通过代理来请求 Access Token。
+  某些平台（如 GitHub）不支持 Implicity Grant，所以我们必须通过请求平台的 API 来获取 Access Token。
+
+  然而，平台的 Access Token API 不支持 CORS （详见 [GitHub 的相关 Issue](https://github.com/isaacs/github/issues/330)）。由于 Vssue 是一个纯前端插件，我们必须要通过代理来请求 Access Token。
 
   默认情况下，我们使用一个开源的 CORS 代理服务 [cors-anywhere](https://github.com/Rob--W/cors-anywhere)。
   
   如果你希望使用自己的代理，就需要设置这个选项。
+  
+  如果你使用的平台不需要设置 `clientSecret`，那么该选项会被忽略。
 
 - __示例__:
 
@@ -250,7 +252,9 @@ Vue.use(Vssue, {
   proxy: url => `https://your.cors.porxy?target=${url}`
   ```
 
-- __参考__: [安全](../guide/security.md)
+- __参考__:
+  - [clientSecret](#clientsecret)
+  - [安全](../guide/security.md)
 
 ### issueContent <Badge text="v0.7+"/>
 

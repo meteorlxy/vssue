@@ -16,15 +16,15 @@
 ->![配置 OAuth App - Bitbucket 04](/assets/img/oauth-app-bitbucket-04.png)<-
 ->![配置 OAuth App - Bitbucket 05](/assets/img/oauth-app-bitbucket-05.png)<-
 
-## 获取 Client ID 和 Secret
+## 获取 Client ID
 
-现在你已经创建了一个新的 OAuth Consumer，并得到了相应的  __Key__ (`Client ID`) 和 __Secret__ (`Client Secret`).
+现在你已经创建了一个新的 OAuth Consumer，并得到了相应的  __Key__ (`Client ID`).
 
 ->![配置 OAuth App - Bitbucket 06](/assets/img/oauth-app-bitbucket-06.png)<-
 
 ## 配置并启动你的 Vssue
 
-复制 `Client ID` 和 `Client Secret`，并设置 `owner` 和 `repo`。
+复制 `Client ID`，并设置 `owner` 和 `repo`。
 
 > Bitbucket repository 的 URL 模式为 `https://bitbucket.org/${owner}/${repo}`
 

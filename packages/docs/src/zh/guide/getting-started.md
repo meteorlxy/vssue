@@ -11,7 +11,7 @@ Vssue 支持通过 Github、Gitlab 或者 Bitbucket 的 Issue 系统来为你的
 - `owner`: 对应 repository 的拥有者帐号或者团队
 - `repo`: 用来存储评论的 repository
 - `clientId`: OAuth App 的 `client id`
-- `clientSecret`: OAuth App 的  `client secret`
+- `clientSecret`: OAuth App 的  `client secret` （只有在使用某些平台时需要）
 
 ## 在浏览器中使用
 
@@ -59,7 +59,7 @@ Vssue 可以在浏览器中通过 `<script>` 标签直接使用。由于 Vssue �
             owner: 'OWNER_OF_REPO',
             repo: 'NAME_OF_REPO',
             clientId: 'YOUR_CLIENT_ID',
-            clientSecret: 'YOUR_CLIENT_SECRET',
+            clientSecret: 'YOUR_CLIENT_SECRET', // 只有在使用某些平台时需要
           },
         }
       })
@@ -78,7 +78,7 @@ Vssue 可以在浏览器中通过 `<script>` 标签直接使用。由于 Vssue �
           owner: 'OWNER_OF_REPO',
           repo: 'NAME_OF_REPO',
           clientId: 'YOUR_CLIENT_ID',
-          clientSecret: 'YOUR_CLIENT_SECRET',
+          clientSecret: 'YOUR_CLIENT_SECRET', // 只有在使用某些平台时需要
         },
       },
 
@@ -149,7 +149,7 @@ Vue.use(Vssue, {
   owner: 'OWNER_OF_REPO',
   repo: 'NAME_OF_REPO',
   clientId: 'YOUR_CLIENT_ID',
-  clientSecret: 'YOUR_CLIENT_SECRET',
+  clientSecret: 'YOUR_CLIENT_SECRET', // 只有在使用某些平台时需要
 })
 ```
 
@@ -180,7 +180,7 @@ export default {
         // owner: 'OWNER_OF_REPO',
         // repo: 'NAME_OF_REPO',
         // clientId: 'YOUR_CLIENT_ID',
-        // clientSecret: 'YOUR_CLIENT_SECRET',
+        // clientSecret: 'YOUR_CLIENT_SECRET', // 只有在使用某些平台时需要
       },
     }
   },
@@ -228,7 +228,7 @@ export default {
         owner: 'OWNER_OF_REPO',
         repo: 'NAME_OF_REPO',
         clientId: 'YOUR_CLIENT_ID',
-        clientSecret: 'YOUR_CLIENT_SECRET',
+        clientSecret: 'YOUR_CLIENT_SECRET', // 只有在使用某些平台时需要
       },
     }
   },

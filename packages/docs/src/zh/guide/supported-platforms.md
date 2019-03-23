@@ -8,6 +8,7 @@
 
 - Vssue API 包： [@vssue/api-github-v3](https://www.npmjs.com/package/@vssue/api-github-v3)
 - 特点 / 缺点：
+  - 需要设置 [clientSecret](../options/README.md#clientsecret)
   - 评论无法排序
   - 评论可以编辑
   - 评论可以删除
@@ -18,6 +19,7 @@
 
 - Vssue API 包： [@vssue/api-github-v4](https://www.npmjs.com/package/@vssue/api-github-v4)
 - 特点 / 缺点：
+  - 需要设置 [clientSecret](../options/README.md#clientsecret)
   - 评论可以排序
   - 评论无法编辑 （Github 还没有实现相应的 API）
   - 评论可以删除
@@ -50,6 +52,5 @@
   - 评论可以编辑
   - 评论可以删除
   - 可以不登录浏览评论
-  - 登陆后 Access Token 在 1 小时后过期
   - 不能对评论做出 emoji 响应 （喜欢、点赞、踩 等）
 - 开发者参考： [官方文档](https://developer.atlassian.com/bitbucket/api/2/reference)

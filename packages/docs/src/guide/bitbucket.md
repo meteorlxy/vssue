@@ -16,15 +16,15 @@
 ->![Set up OAuth App - Bitbucket 04](/assets/img/oauth-app-bitbucket-04.png)<-
 ->![Set up OAuth App - Bitbucket 05](/assets/img/oauth-app-bitbucket-05.png)<-
 
-## Get the Client ID and Secret
+## Get the Client ID
 
-Then you've created a new OAuth Consumer, and here is your __Key__ (`Client ID`) and __Secret__ (`Client Secret`).
+Then you've created a new OAuth Consumer, and here is your __Key__ (`Client ID`).
 
 ->![Set up OAuth App - Bitbucket 06](/assets/img/oauth-app-bitbucket-06.png)<-
 
 ## Config and start your Vssue
 
-Copy the `Client ID` and `Client Secret`, and set `owner` and `repo`.
+Copy the `Client ID`, and set `owner` and `repo`.
 
 > The URL pattern of bitbucket repo is `https://bitbucket.org/${owner}/${repo}`
 

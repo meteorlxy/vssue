@@ -11,7 +11,7 @@ After this step, you will get `client id` and `client secret` of your OAuth App,
 - `owner`: the account / group that owns the repository
 - `repo`: the name of the repository to store comments
 - `clientId`: the `client id` of your oauth app
-- `clientSecret`: the `client secret` of your oauth app
+- `clientSecret`: the `client secret` of your oauth app (only required for some of the platforms)
 
 ## In Browser
 
@@ -59,7 +59,7 @@ Vssue can be used directly via a `<script>` tag in browser. As Vssue depends on 
             owner: 'OWNER_OF_REPO',
             repo: 'NAME_OF_REPO',
             clientId: 'YOUR_CLIENT_ID',
-            clientSecret: 'YOUR_CLIENT_SECRET',
+            clientSecret: 'YOUR_CLIENT_SECRET', // only required for some of the platforms
           },
         }
       })
@@ -78,7 +78,7 @@ Vssue can be used directly via a `<script>` tag in browser. As Vssue depends on 
           owner: 'OWNER_OF_REPO',
           repo: 'NAME_OF_REPO',
           clientId: 'YOUR_CLIENT_ID',
-          clientSecret: 'YOUR_CLIENT_SECRET',
+          clientSecret: 'YOUR_CLIENT_SECRET', // only required for some of the platforms
         },
       },
 
@@ -149,7 +149,7 @@ Vue.use(Vssue, {
   owner: 'OWNER_OF_REPO',
   repo: 'NAME_OF_REPO',
   clientId: 'YOUR_CLIENT_ID',
-  clientSecret: 'YOUR_CLIENT_SECRET',
+  clientSecret: 'YOUR_CLIENT_SECRET', // only required for some of the platforms
 })
 ```
 
@@ -180,7 +180,7 @@ export default {
         // owner: 'OWNER_OF_REPO',
         // repo: 'NAME_OF_REPO',
         // clientId: 'YOUR_CLIENT_ID',
-        // clientSecret: 'YOUR_CLIENT_SECRET',
+        // clientSecret: 'YOUR_CLIENT_SECRET', // only required for some of the platforms
       },
     }
   },
@@ -228,7 +228,7 @@ export default {
         owner: 'OWNER_OF_REPO',
         repo: 'NAME_OF_REPO',
         clientId: 'YOUR_CLIENT_ID',
-        clientSecret: 'YOUR_CLIENT_SECRET',
+        clientSecret: 'YOUR_CLIENT_SECRET', // only required for some of the platforms
       },
     }
   },

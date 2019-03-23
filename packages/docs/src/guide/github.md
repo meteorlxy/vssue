@@ -2,6 +2,9 @@
 
 > Vssue can also work with self-hosted GitHub Enterprise Server. Set the `baseURL` options to your Github URL. See [Options Reference - baseURL](../options/README.md#baseurl)
 
+> GitHub requires `clientSecret` because [GitHub does not support implicit grant type](https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/)
+> ![Set up OAuth App - Github 00](/assets/img/oauth-app-github-00.png)
+
 ## Create a new OAuth App
 
 - Go to [Settings - Developer Settings - OAuth Apps](https://github.com/settings/developers)

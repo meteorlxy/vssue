@@ -111,16 +111,6 @@ O padrão comum para URL de repositório é `` `${baseURL}/${owner}/${repo}`  ``
   - [Configurar OAuth App](../guide/supported-platforms.md)
   - [Segurança](../guide/security.md)
 
-- __Referência__:
-
-::: tip Dica
-Em plataformas diferentes, o nome para os `clientId` e `clientSecret` da __OAuth App__ diferem::
-
-- Github: __OAuth App__, __Client ID__ e __Client Secret__
-- Gitlab: __Application__, __Application ID__ e __Secret__
-- Bitbucket: __OAuth consumer__, __Key__ e __Secret__
-:::
-
 ### baseURL
 
 - __Tipo__: `string`
@@ -137,7 +127,7 @@ Em plataformas diferentes, o nome para os `clientId` e `clientSecret` da __OAuth
 
   ::: warning ATENÇÃO
 
-  Somente quando você usar uma plataforma __self-hosted__ deve configurar esta opção. (ex. __GitLab Community/Enterprise Edition__ ou __GitHub Enterprise Server__)
+  Somente quando você usar uma plataforma __self-hosted__ deve configurar esta opção. (ex. __GitLab Community / Enterprise Edition__ ou __GitHub Enterprise Server__)
   :::
 
 - __Referência__:
