@@ -3,11 +3,11 @@ export namespace VssueAPI {
     owner: string
     repo: string
     clientId: string
-    clientSecret: string
+    clientSecret?: string
     baseURL?: string
     state: string
     labels: Array<string>
-    proxy: string | ((url: string) => string)
+    proxy?: string | ((url: string) => string)
   }
 
   export type Platform = {
