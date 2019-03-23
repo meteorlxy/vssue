@@ -102,7 +102,6 @@ class VssueStore extends Vue implements Vssue.Store {
       'owner',
       'repo',
       'clientId',
-      'clientSecret',
     ]
     for (const opt of requiredOptions) {
       if (!this.options[opt]) {
