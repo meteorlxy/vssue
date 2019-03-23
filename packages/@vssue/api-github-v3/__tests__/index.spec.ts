@@ -100,7 +100,7 @@ describe('methods', () => {
       window.history.replaceState(null, '', url)
       const token = await API.handleAuth()
       expect(mock.history.post.length).toBe(0)
-      expect(window.location.href).toBe('https://vssue.js.org/')
+      expect(window.location.href).toBe(url)
       expect(token).toBe(null)
     })
 
