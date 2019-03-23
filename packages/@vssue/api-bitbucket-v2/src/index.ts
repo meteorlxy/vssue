@@ -30,8 +30,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   owner: string
   repo: string
   clientId: string
-  clientSecret: string
-  proxy: string | ((url: string) => string)
+  state: string
   $http: AxiosInstance
 
   constructor ({
@@ -39,16 +38,14 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     owner,
     repo,
     clientId,
-    clientSecret,
-    proxy,
+    state,
   }: VssueAPI.Options) {
     this.baseURL = baseURL
     this.owner = owner
     this.repo = repo
 
     this.clientId = clientId
-    this.clientSecret = clientSecret
-    this.proxy = proxy
+    this.state = state
 
     this.$http = axios.create({
       baseURL: 'https://api.bitbucket.org/2.0',
@@ -82,7 +79,8 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     window.location.href = buildURL(concatURL(this.baseURL, 'site/oauth2/authorize'), {
       client_id: this.clientId,
       redirect_uri: window.location.href,
-      response_type: 'code',
+      response_type: 'token',
+      state: this.state,
     })
   }
 
@@ -94,53 +92,24 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication#oauth-2
    *
    * @remarks
-   * If the `code` exists in the query, remove them from query, and try to get the access token.
+   * If the `access_token` and `state` exist in the query, and the `state` matches, remove them from query, and return the access token.
    */
   async handleAuth (): Promise<VssueAPI.AccessToken> {
-    const query = parseQuery(window.location.search)
-    if (query.code) {
-      const code = query.code
-      delete query.code
-      const replaceURL = buildURL(getCleanURL(window.location.href), query) + window.location.hash
-      window.history.replaceState(null, '', replaceURL)
-      const accessToken = await this.getAccessToken({ code })
-      return accessToken
+    const hash = parseQuery(window.location.hash.slice(1))
+    if (!hash.access_token || hash.state !== this.state) {
+      return null
     }
-    return null
-  }
-
-  /**
-   * Get user access token via `code`
-   *
-   * @param options.code - The code from the query
-   *
-   * @return User access token
-   *
-   * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication#oauth-2
-   */
-  async getAccessToken ({
-    code,
-  }: {
-    code: string
-  }): Promise<string> {
-    const originalURL = concatURL(this.baseURL, 'site/oauth2/access_token')
-    const proxyURL = typeof this.proxy === 'function'
-      ? this.proxy(originalURL)
-      : this.proxy
-    const { data } = await this.$http.post(proxyURL, buildQuery({
-      grant_type: 'authorization_code',
-      redirect_uri: window.location.href,
-      code,
-    }), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      auth: {
-        username: this.clientId,
-        password: this.clientSecret,
-      },
-    })
-    return data.access_token
+    const accessToken = hash.access_token
+    delete hash.access_token
+    delete hash.token_type
+    delete hash.expires_in
+    delete hash.state
+    delete hash.scopes
+    const hashString = buildQuery(hash)
+    const newHash = hashString ? `#${hashString}` : ''
+    const replaceURL = `${getCleanURL(window.location.href)}${window.location.search}${newHash}`
+    window.history.replaceState(null, '', replaceURL)
+    return accessToken
   }
 
   /**

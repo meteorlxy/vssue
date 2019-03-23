@@ -6,6 +6,7 @@ import axios, {
 } from 'axios'
 
 import {
+  buildQuery,
   buildURL,
   concatURL,
   getCleanURL,
@@ -32,9 +33,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
   repo: string
   labels: Array<string>
   clientId: string
-  clientSecret: string
   state: string
-  proxy: string | ((url: string) => string)
   $http: AxiosInstance
 
   private _encodedRepo: string
@@ -45,9 +44,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     repo,
     labels,
     clientId,
-    clientSecret,
     state,
-    proxy,
   }: VssueAPI.Options) {
     this.baseURL = baseURL
     this.owner = owner
@@ -55,9 +52,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     this.labels = labels
 
     this.clientId = clientId
-    this.clientSecret = clientSecret
     this.state = state
-    this.proxy = proxy
 
     // @see https://docs.gitlab.com/ce/api/README.html#namespaced-path-encoding
     this._encodedRepo = encodeURIComponent(`${this.owner}/${this.repo}`)
@@ -94,7 +89,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     window.location.href = buildURL(concatURL(this.baseURL, 'oauth/authorize'), {
       client_id: this.clientId,
       redirect_uri: window.location.href,
-      response_type: 'code',
+      response_type: 'token',
       state: this.state,
     })
   }
@@ -104,54 +99,26 @@ export default class GitlabV4 implements VssueAPI.Instance {
    *
    * @return A string for access token, `null` for no authorization code
    *
-   * @see https://docs.gitlab.com/ce/api/oauth2.html#supported-oauth2-flows
+   * @see https://docs.gitlab.com/ce/api/oauth2.html#implicit-grant-flow
    *
    * @remarks
-   * If the `code` and `state` exist in the query, and the `state` matches, remove them from query, and try to get the access token.
+   * If the `access_token` and `state` exist in the query, and the `state` matches, remove them from query, and return the access token.
    */
   async handleAuth (): Promise<VssueAPI.AccessToken> {
-    const query = parseQuery(window.location.search)
-    if (query.code) {
-      if (query.state !== this.state) {
-        return null
-      }
-      const code = query.code
-      delete query.code
-      delete query.state
-      const replaceURL = buildURL(getCleanURL(window.location.href), query) + window.location.hash
-      window.history.replaceState(null, '', replaceURL)
-      const accessToken = await this.getAccessToken({ code })
-      return accessToken
+    const hash = parseQuery(window.location.hash.slice(1))
+    if (!hash.access_token || hash.state !== this.state) {
+      return null
     }
-    return null
-  }
-
-  /**
-   * Get user access token via `code`
-   *
-   * @param options.code - The code from the query
-   *
-   * @return User access token
-   *
-   * @see https://docs.gitlab.com/ce/api/oauth2.html#2-requesting-access-token
-   */
-  async getAccessToken ({
-    code,
-  }: {
-    code: string
-  }): Promise<string> {
-    const originalURL = concatURL(this.baseURL, 'oauth/token')
-    const proxyURL = typeof this.proxy === 'function'
-      ? this.proxy(originalURL)
-      : this.proxy
-    const { data } = await this.$http.post(proxyURL, {
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-      code,
-      grant_type: 'authorization_code',
-      redirect_uri: window.location.href,
-    })
-    return data.access_token
+    const accessToken = hash.access_token
+    delete hash.access_token
+    delete hash.token_type
+    delete hash.expires_in
+    delete hash.state
+    const hashString = buildQuery(hash)
+    const newHash = hashString ? `#${hashString}` : ''
+    const replaceURL = `${getCleanURL(window.location.href)}${window.location.search}${newHash}`
+    window.history.replaceState(null, '', replaceURL)
+    return accessToken
   }
 
   /**
