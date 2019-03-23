@@ -16,7 +16,8 @@ export const concatURL = (baseURL: string, path: string): string => {
 }
 
 export const getCleanURL = (fullURL: string): string => {
-  const cleanURL = fullURL.split('?')[0] || ''
+  const noHash = fullURL.split('#')[0] || ''
+  const cleanURL = noHash.split('?')[0] || ''
   return cleanURL
 }
 
