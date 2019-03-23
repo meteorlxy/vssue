@@ -47,6 +47,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     state,
     proxy,
   }: VssueAPI.Options) {
+    /* istanbul ignore if */
     if (typeof clientSecret === 'undefined' || typeof proxy === 'undefined') {
       throw new Error('clientSecret and proxy is required for GitHub V3')
     }
@@ -352,12 +353,14 @@ export default class GithubV3 implements VssueAPI.Instance {
     // it's annoying that have to get the page and per_page from the `Link` header
     const linkHeader = commentsRes.headers['link'] || null
 
+    /* istanbul ignore next */
     const thisPage = /rel="next"/.test(linkHeader)
       ? Number(linkHeader.replace(/^.*[^_]page=(\d*).*rel="next".*$/, '$1')) - 1
       : /rel="prev"/.test(linkHeader)
         ? Number(linkHeader.replace(/^.*[^_]page=(\d*).*rel="prev".*$/, '$1')) + 1
         : 1
 
+    /* istanbul ignore next */
     const thisPerPage = linkHeader ? Number(linkHeader.replace(/^.*per_page=(\d*).*$/, '$1')) : perPage
 
     return {

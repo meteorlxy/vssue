@@ -225,32 +225,46 @@ describe('methods', () => {
     describe('with issue title', () => {
       const issueTitle = fixtures.issues[0].title
 
-      beforeEach(() => {
-        mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues$`)).reply(200, fixtures.issues)
+      describe('issue exists', () => {
+        beforeEach(() => {
+          mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues$`)).reply(200, fixtures.issues)
+        })
+
+        test('login', async () => {
+          const issue = await API.getIssue({
+            issueTitle,
+            accessToken: mockToken,
+          }) as VssueAPI.Issue
+          expect(mock.history.get.length).toBe(1)
+          const request = mock.history.get[0]
+          expect(request.method).toBe('get')
+          expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
+          expect(issue).toEqual(normalizeIssue(fixtures.issues[0]))
+        })
+
+        test('not login', async () => {
+          const issue = await API.getIssue({
+            issueTitle,
+            accessToken: null,
+          }) as VssueAPI.Issue
+          expect(mock.history.get.length).toBe(1)
+          const request = mock.history.get[0]
+          expect(request.method).toBe('get')
+          expect(request.headers['Authorization']).toBeUndefined()
+          expect(issue).toEqual(normalizeIssue(fixtures.issues[0]))
+        })
       })
 
-      test('login', async () => {
-        const issue = await API.getIssue({
-          issueTitle,
-          accessToken: mockToken,
-        }) as VssueAPI.Issue
-        expect(mock.history.get.length).toBe(1)
-        const request = mock.history.get[0]
-        expect(request.method).toBe('get')
-        expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
-        expect(issue).toEqual(normalizeIssue(fixtures.issues[0]))
-      })
-
-      test('not login', async () => {
+      test('issue does not exist', async () => {
+        mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues$`)).reply(200, [])
         const issue = await API.getIssue({
           issueTitle,
           accessToken: null,
-        }) as VssueAPI.Issue
+        })
         expect(mock.history.get.length).toBe(1)
         const request = mock.history.get[0]
         expect(request.method).toBe('get')
-        expect(request.headers['Authorization']).toBeUndefined()
-        expect(issue).toEqual(normalizeIssue(fixtures.issues[0]))
+        expect(issue).toBe(null)
       })
     })
   })
@@ -273,10 +287,6 @@ describe('methods', () => {
 
   describe('getComments', () => {
     const issueId = 1
-    const query = {
-      page: 1,
-      perPage: 10,
-    }
 
     beforeEach(() => {
       mock
@@ -288,10 +298,10 @@ describe('methods', () => {
     })
 
     test('login', async () => {
-      const comments = await API.getComments({
+      /* eslint-disable-next-line no-unused-expressions */
+      await API.getComments({
         issueId,
         accessToken: mockToken,
-        query,
       }) as VssueAPI.Comments
       expect(mock.history.get.length).toBe(2)
 
@@ -302,22 +312,13 @@ describe('methods', () => {
       const requestComments = mock.history.get[1]
       expect(requestComments.method).toBe('get')
       expect(requestComments.headers['Authorization']).toBe(`token ${mockToken}`)
-      expect(requestComments.headers['Accept']).toEqual(expect.arrayContaining([
-        'application/vnd.github.v3.raw+json',
-        'application/vnd.github.v3.html+json',
-        'application/vnd.github.squirrel-girl-preview',
-      ]))
-      expect(comments.count).toEqual(fixtures.comments.length)
-      expect(comments.page).toEqual(query.page)
-      expect(comments.perPage).toEqual(query.perPage)
-      expect(comments.data).toEqual(fixtures.comments.slice(0, query.perPage).map(normalizeComment))
     })
 
     test('not login', async () => {
-      const comments = await API.getComments({
+      /* eslint-disable-next-line no-unused-expressions */
+      await API.getComments({
         issueId,
         accessToken: null,
-        query,
       }) as VssueAPI.Comments
       expect(mock.history.get.length).toBe(2)
 
@@ -328,15 +329,48 @@ describe('methods', () => {
       const requestComments = mock.history.get[1]
       expect(requestComments.method).toBe('get')
       expect(requestComments.headers['Authorization']).toBeUndefined()
-      expect(requestComments.headers['Accept']).toEqual(expect.arrayContaining([
-        'application/vnd.github.v3.raw+json',
-        'application/vnd.github.v3.html+json',
-        'application/vnd.github.squirrel-girl-preview',
-      ]))
-      expect(comments.count).toEqual(fixtures.comments.length)
-      expect(comments.page).toEqual(query.page)
-      expect(comments.perPage).toEqual(query.perPage)
-      expect(comments.data).toEqual(fixtures.comments.slice(0, query.perPage).map(normalizeComment))
+    })
+
+    describe('query', () => {
+      const query = {
+        page: 1,
+        perPage: 10,
+      }
+
+      test('common', async () => {
+        const comments = await API.getComments({
+          issueId,
+          accessToken: mockToken,
+          query,
+        }) as VssueAPI.Comments
+        const request = mock.history.get[1]
+        expect(request.method).toBe('get')
+        expect(request.headers['Accept']).toEqual(expect.arrayContaining([
+          'application/vnd.github.v3.raw+json',
+          'application/vnd.github.v3.html+json',
+          'application/vnd.github.squirrel-girl-preview',
+        ]))
+        expect(request.params['page']).toBe(query.page)
+        expect(request.params['per_page']).toBe(query.perPage)
+        expect(request.params['sort']).toBeUndefined()
+        expect(comments.count).toEqual(fixtures.comments.length)
+        expect(comments.page).toEqual(query.page)
+        expect(comments.perPage).toEqual(query.perPage)
+        expect(comments.data).toEqual(fixtures.comments.slice(0, query.perPage).map(normalizeComment))
+      })
+
+      test('default value', async () => {
+        /* eslint-disable-next-line no-unused-expressions */
+        await API.getComments({
+          issueId,
+          accessToken: mockToken,
+          query: {},
+        }) as VssueAPI.Comments
+        const request = mock.history.get[1]
+        expect(request.params['page']).toBe(1)
+        expect(request.params['per_page']).toBe(10)
+        expect(request.params['sort']).toBeUndefined()
+      })
     })
   })
 
