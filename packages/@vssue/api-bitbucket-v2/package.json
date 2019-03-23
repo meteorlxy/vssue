@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-bitbucket-v2",
-  "version": "0.7.5",
+  "version": "0.8.0",
   "description": "Vssue api for bitbucket v2",
   "license": "MIT",
   "main": "lib/index.js",
@@ -26,7 +26,7 @@
     "build": "rimraf lib types && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vssue/utils": "^0.7.5",
+    "@vssue/utils": "^0.8.0",
     "axios": "^0.18.0"
   }
 }

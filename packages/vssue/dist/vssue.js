@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.7.5
+ * @version v0.8.0
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -1224,7 +1224,7 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "0.7.5";
+        return "0.8.0";
     }
     get isPending() {
         return this.isLoadingComments || this.isCreatingComment || this.isUpdatingComment;
@@ -1276,7 +1276,6 @@ let VssueStore = class VssueStore extends Vue$1 {
             'owner',
             'repo',
             'clientId',
-            'clientSecret',
         ];
         for (const opt of requiredOptions) {
             if (!this.options[opt]) {
@@ -1757,7 +1756,7 @@ var __vue_staticRenderFns__$6 = [];
 
 const VssuePlugin = {
     get version() {
-        return "0.7.5";
+        return "0.8.0";
     },
     installed: false,
     install(Vue$$1, options) {
