@@ -267,7 +267,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
       count: data.size,
       page: data.page,
       perPage: data.pagelen,
-      data: data.values.map(normalizeComment),
+      data: data.values.filter(item => item.content.raw !== null).map(normalizeComment),
     }
   }
 
