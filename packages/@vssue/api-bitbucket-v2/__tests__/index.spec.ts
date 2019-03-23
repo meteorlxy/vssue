@@ -268,19 +268,6 @@ describe('methods', () => {
         sort: 'desc',
       }
 
-      test('default value', async () => {
-        /* eslint-disable-next-line no-unused-expressions */
-        await API.getComments({
-          issueId,
-          accessToken: mockToken,
-          query: {},
-        }) as VssueAPI.Comments
-        const request = mock.history.get[0]
-        expect(request.params['page']).toBe(1)
-        expect(request.params['pagelen']).toBe(10)
-        expect(request.params['sort']).toBe('-created_on')
-      })
-
       test('common', async () => {
         const comments = await API.getComments({
           issueId,
@@ -295,6 +282,19 @@ describe('methods', () => {
         expect(comments.page).toEqual(query.page)
         expect(comments.perPage).toEqual(query.perPage)
         expect(comments.data).toEqual(fixtures.comments.values.slice(0, query.perPage).map(normalizeComment))
+      })
+
+      test('default value', async () => {
+        /* eslint-disable-next-line no-unused-expressions */
+        await API.getComments({
+          issueId,
+          accessToken: mockToken,
+          query: {},
+        }) as VssueAPI.Comments
+        const request = mock.history.get[0]
+        expect(request.params['page']).toBe(1)
+        expect(request.params['pagelen']).toBe(10)
+        expect(request.params['sort']).toBe('-created_on')
       })
 
       test('sort asc', async () => {
