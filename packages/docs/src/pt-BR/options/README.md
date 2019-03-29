@@ -222,7 +222,8 @@ O padrão comum para URL de repositório é `` `${baseURL}/${owner}/${repo}`  ``
 
   - `'en'` (`'en-US'`)
   - `'zh'` (`'zh-CN'`)
-  - `'pt-BR'` (`'pt-BR'`)
+  - `'pt'` (`'pt-BR'`)
+  - `'ja'` (`'ja-JP'`)
 
   Contribuições são bem-vindas para mais suporte a idiomas.
   :::
