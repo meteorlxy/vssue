@@ -1,3 +1,12 @@
+## [0.8.2](https://github.com/meteorlxy/vssue/compare/v0.8.1...v0.8.2) (2019-03-29)
+
+
+### Features
+
+* **$vssue:** add language ja-JP ([#23](https://github.com/meteorlxy/vssue/issues/23)) ([4d3c9b9](https://github.com/meteorlxy/vssue/commit/4d3c9b9))
+
+
+
 ## [0.8.1](https://github.com/meteorlxy/vssue/compare/v0.8.0...v0.8.1) (2019-03-23)
 
 
