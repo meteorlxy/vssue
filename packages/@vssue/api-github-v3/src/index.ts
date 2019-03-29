@@ -236,9 +236,11 @@ export default class GithubV3 implements VssueAPI.Instance {
           throw e
         }
       }
-    } else {
+    }
+
+    if (issueTitle) {
       options.params = {
-        labels: this.labels.join(','),
+        labels: this.labels.concat(issueTitle).join(','),
         sort: 'created',
         direction: 'asc',
         state: 'all',
@@ -249,6 +251,8 @@ export default class GithubV3 implements VssueAPI.Instance {
       const issue = data.map(normalizeIssue).find(item => item.title === issueTitle)
       return issue || null
     }
+
+    return null
   }
 
   /**
@@ -274,7 +278,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues`, {
       title,
       body: content,
-      labels: this.labels,
+      labels: this.labels.concat(title),
     }, {
       headers: { 'Authorization': `token ${accessToken}` },
     })

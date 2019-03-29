@@ -57,7 +57,7 @@ export default class GithubV4 implements VssueAPI.Instance {
     proxy,
   }: VssueAPI.Options) {
     if (typeof clientSecret === 'undefined' || typeof proxy === 'undefined') {
-      throw new Error('clientSecret and proxy is required for GitHub V3')
+      throw new Error('clientSecret and proxy is required for GitHub V4')
     }
     this.baseURL = baseURL
     this.owner = owner
@@ -278,12 +278,14 @@ query getIssueById {
           throw e
         }
       }
-    } else {
+    }
+
+    if (issueTitle) {
       const { data } = await this.$http.post(`graphql`, {
         variables: {
           owner: this.owner,
           repo: this.repo,
-          labels: this.labels,
+          labels: this.labels.concat(issueTitle),
         },
         query: `\
 query getIssueByTitle(
@@ -314,6 +316,8 @@ query getIssueByTitle(
       const issue = data.data.repository.issues.nodes.map(normalizeIssue).find(item => item.title === issueTitle)
       return issue || null
     }
+
+    return null
   }
 
   /**
@@ -346,7 +350,7 @@ query getIssueByTitle(
     const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues`, {
       title,
       body: content,
-      labels: this.labels,
+      labels: this.labels.concat(title),
     }, {
       headers: { 'Authorization': `token ${accessToken}` },
     })
