@@ -6,7 +6,6 @@
     "packages/docs"
   ],
   "scripts": {
-    "bootstrap": "lerna run build --stream --ignore docs --ignore vssue",
     "dev": "yarn workspace vssue dev",
     "staging": "yarn workspace vssue staging",
     "build": "lerna run build --stream --ignore docs",
@@ -14,7 +13,8 @@
     "build-docs": "yarn workspace docs build",
     "lint": "eslint --ext .js,.ts,.vue packages/",
     "test": "jest",
-    "release": "node scripts/release.js"
+    "release": "node scripts/release.js",
+    "postinstall": "lerna run build --stream --ignore docs --ignore vssue"
   },
   "husky": {
     "hooks": {
