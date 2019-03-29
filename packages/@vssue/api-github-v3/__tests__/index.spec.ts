@@ -267,6 +267,14 @@ describe('methods', () => {
         expect(issue).toBe(null)
       })
     })
+
+    test('without issue id or title', async () => {
+      const issue = await API.getIssue({
+        accessToken: null,
+      })
+      expect(mock.history.get.length).toBe(0)
+      expect(issue).toBe(null)
+    })
   })
 
   test('postIssue', async () => {
