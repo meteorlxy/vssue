@@ -32,7 +32,7 @@ const messages: VueI18n.LocaleMessageObject = {
   // hint
   comments: 'コメント | {count} コメント',
   loginToComment: 'コメントを残すには {platform} アカウントでログインしてください。',
-  placeholder: 'コメントを残してください。Markdown記法をサポートしています。 Ctrl + Enter で送信できます。',
+  placeholder: 'コメントを残してください。Markdown 記法をサポートしています。 Ctrl + Enter で送信できます。',
   noLoginPlaceHolder: 'コメントを残すにはログインしてください。マークダウン記法をサポートしています。',
 
   // status
