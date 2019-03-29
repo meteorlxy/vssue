@@ -228,6 +228,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   - `'en'` (`'en-US'`)
   - `'zh'` (`'zh-CN'`)
   - `'pt'` (`'pt-BR'`)
+  - `'ja'` (`'ja-JP'`)
 
   Contributions welcome for more languages support.
   :::
