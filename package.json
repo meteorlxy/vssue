@@ -14,7 +14,7 @@
     "lint": "eslint --ext .js,.ts,.vue packages/",
     "test": "jest",
     "release": "node scripts/release.js",
-    "postinstall": "lerna run build --stream --ignore docs --ignore vssue"
+    "postinstall": "lerna run build --stream --ignore docs --ignore vssue && opencollective-postinstall"
   },
   "husky": {
     "hooks": {
@@ -42,5 +42,13 @@
     "rimraf": "^2.6.2",
     "ts-jest": "23.x",
     "typescript": "~3.1.1"
+  },
+  "dependencies": {
+    "opencollective-postinstall": "^2.0.2",
+    "opencollective": "^1.0.3"
+  },
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/vssue"
   }
 }
