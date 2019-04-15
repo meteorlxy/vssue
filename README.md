@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img width="50" src="https://about.gitlab.com/images/press/logo/png/gitlab-icon-rgb.png" alt="GitLab">
+  <img width="50" src="https://about.gitlab.com/images/press/logo/jpg/gitlab-icon-rgb.jpg" alt="GitLab">
 
   <img width="50" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub">
 
@@ -52,9 +52,29 @@
 
 ##  Contributing
 
-:heart: Feel free to open issues following the issue templates if you have any problems or ideas.
+:scroll: Feel free to open issues following the issue templates if you have any problems or ideas.
 
-:wink: Contributions welcome!
+:heart: Contributions welcome!
+
+## Contributors
+
+:muscle: Thanks to all the developers who contribute to Vssue!
+
+<a href="https://github.com/meteorlxy/vssue/graphs/contributors">
+  <img src="https://opencollective.com/vssue/contributors.svg?width=890&button=false" />
+</a>
+
+## Sponsors & Backers
+
+:pray: Thanks to all our sponsors and backers!
+
+<a href="https://opencollective.com/vssue" target="_blank">
+  <img src="https://opencollective.com/vssue/sponsor.svg?width=890">
+</a>
+
+<a href="https://opencollective.com/vssue" target="_blank">
+  <img src="https://opencollective.com/vssue/backers.svg?width=890">
+</a>
 
 ## LICENSE
 
