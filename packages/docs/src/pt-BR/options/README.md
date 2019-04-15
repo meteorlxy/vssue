@@ -93,7 +93,6 @@ O padrão comum para URL de repositório é `` `${baseURL}/${owner}/${repo}`  ``
 - __Referência__:
   - [clientSecret](#clientsecret)
   - [Configurar OAuth App](../guide/supported-platforms.md)
-  - [Segurança](../guide/security.md)
 
 ### clientSecret
 
@@ -109,7 +108,6 @@ O padrão comum para URL de repositório é `` `${baseURL}/${owner}/${repo}`  ``
 - __Referência__:
   - [clientId](#clientid)
   - [Configurar OAuth App](../guide/supported-platforms.md)
-  - [Segurança](../guide/security.md)
 
 ### baseURL
 
@@ -246,8 +244,6 @@ O padrão comum para URL de repositório é `` `${baseURL}/${owner}/${repo}`  ``
   ```js
   proxy: url => `https://your.cors.porxy?target=${url}`
   ```
-
-- __Referência__: [Security](../guide/security.md)
 
 ### issueContent <Badge text="v0.7+"/>
 

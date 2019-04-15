@@ -115,7 +115,6 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   - [clientId](#clientid)
   - [proxy](#proxy)
   - [Set up OAuth App](../guide/supported-platforms.md)
-  - [Security](../guide/security.md)
 
 ### baseURL
 
@@ -257,7 +256,6 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
 - __Reference__:
   - [clientSecret](#clientsecret)
-  - [Security](../guide/security.md)
 
 ### issueContent <Badge text="v0.7+"/>
 

@@ -115,7 +115,6 @@ Vue.use(Vssue, {
   - [clientId](#clientid)
   - [proxy](#proxy)
   - [创建 OAuth App](../guide/supported-platforms.md)
-  - [安全](../guide/security.md)
 
 ### baseURL
 
@@ -257,7 +256,6 @@ Vue.use(Vssue, {
 
 - __参考__:
   - [clientSecret](#clientsecret)
-  - [安全](../guide/security.md)
 
 ### issueContent <Badge text="v0.7+"/>
 
