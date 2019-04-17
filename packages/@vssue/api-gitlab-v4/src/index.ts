@@ -463,6 +463,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
       // it could be a bug of gitlab
       // if a reaction (award emoji) has already existed, it returns a 404 response with a buggy message
       // have submitted an issue: https://gitlab.com/gitlab-org/gitlab-ce/issues/56147
+      /* istanbul ignore next */
       if (e.response && e.response.status === 404) {
         return false
       } else {
