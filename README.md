@@ -5,11 +5,17 @@
 </p>
 
 <p align="center">
-  <img width="50" src="https://about.gitlab.com/images/press/logo/jpg/gitlab-icon-rgb.jpg" alt="GitLab">
+  <a href="https://vssue.js.org/demo/gitlab.html" target="_blank">
+    <img width="50" src="https://about.gitlab.com/images/press/logo/jpg/gitlab-icon-rgb.jpg" alt="GitLab">
+  </a>
 
-  <img width="50" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub">
+  <a href="https://vssue.js.org/demo/github.html" target="_blank">
+    <img width="50" src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub">
+  </a>
 
-  <img width="50" src="https://slack-files2.s3-us-west-2.amazonaws.com/avatars/2018-03-21/334235045829_1d1db85d6877560365df_512.png" alt="Bitbucket">
+  <a href="https://vssue.js.org/demo/bitbucket.html" target="_blank">
+    <img width="50" src="https://slack-files2.s3-us-west-2.amazonaws.com/avatars/2018-03-21/334235045829_1d1db85d6877560365df_512.png" alt="Bitbucket">
+  </a>
 </p>
 
 <h1 align="center">
