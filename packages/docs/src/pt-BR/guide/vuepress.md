@@ -21,7 +21,8 @@ O Vuepress 1.x está no estágio alpha e não é estável, então nosso plugin t
 Instalar o `@vssue/vuepress-plugin-vssue` via NPM:
 
 ```bash
-npm install -D @vssue/vuepress-plugin-vssue
+npm install @vssue/vuepress-plugin-vssue
+npm install @vssue/api-github-v3
 ```
 
 ### Usando o plugin

@@ -18,10 +18,11 @@ Vuepress 1.x is in alpha stage and is not stable, so our plugin may also have po
 
 ### Installation
 
-Install `@vssue/vuepress-plugin-vssue` via NPM:
+Install `@vssue/vuepress-plugin-vssue` and API package via NPM:
 
 ```bash
-npm install -D @vssue/vuepress-plugin-vssue
+npm install @vssue/vuepress-plugin-vssue
+npm install @vssue/api-github-v3
 ```
 
 ### Use the plugin

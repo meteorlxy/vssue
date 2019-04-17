@@ -18,10 +18,11 @@ Vuepress v1.0+ 开始支持插件。
 
 ### 安装
 
-通过 NPM 安装 `@vssue/vuepress-plugin-vssue` ：
+通过 NPM 安装 `@vssue/vuepress-plugin-vssue` 和你需要使用的 API 包 ：
 
 ```bash
-npm install -D @vssue/vuepress-plugin-vssue
+npm install @vssue/vuepress-plugin-vssue
+npm install @vssue/api-github-v3
 ```
 
 ### 使用插件
