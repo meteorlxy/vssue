@@ -1,5 +1,4 @@
 import { VssueAPI } from 'vssue'
-import { buildQuery } from '@vssue/utils'
 import MockAdapter from 'axios-mock-adapter'
 import fixtures from './fixtures'
 import BitbucketV2 from '../src/index'
@@ -379,6 +378,7 @@ describe('methods', () => {
       issueId,
       commentId,
       accessToken: mockToken,
+      reaction: 'like',
     })).rejects.toThrowError('501 Not Implemented')
   })
 })
