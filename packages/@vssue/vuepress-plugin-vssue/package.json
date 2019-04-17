@@ -26,9 +26,6 @@
     "build": "rimraf lib types && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vssue/api-bitbucket-v2": "^0.8.2",
-    "@vssue/api-github-v3": "^0.8.2",
-    "@vssue/api-gitlab-v4": "^0.8.2",
     "vssue": "^0.8.2"
   },
   "peerDependencies": {
