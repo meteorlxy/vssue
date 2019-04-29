@@ -1,3 +1,12 @@
+## [0.9.1](https://github.com/meteorlxy/vssue/compare/v0.9.0...v0.9.1) (2019-04-29)
+
+
+### Bug Fixes
+
+* **$vssue:** wrong click handler of login button ([64a868d](https://github.com/meteorlxy/vssue/commit/64a868d))
+
+
+
 # [0.9.0](https://github.com/meteorlxy/vssue/compare/v0.8.2...v0.9.0) (2019-04-29)
 
 
