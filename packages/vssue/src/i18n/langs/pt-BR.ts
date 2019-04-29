@@ -38,6 +38,7 @@ const messages: VueI18n.LocaleMessageObject = {
   // status
   failed: 'Falha ao carregar comentários',
   initializing: 'Inicializando...',
+  issueNotCreated: 'Click to create issue',
   loadingComments: 'Carregando comentários...',
   loginRequired: 'Entrar para visualizar comentários',
   noComments: 'Nenhum comentário. Deixe o primeiro comentário!',

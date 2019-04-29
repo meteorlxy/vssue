@@ -101,7 +101,7 @@ class VssueStore extends Vue implements Vssue.Store {
       perPage: 10,
       proxy: (url: string): string => `https://cors-anywhere.herokuapp.com/${url}`,
       issueContent: ({ url }): string => url,
-      autoCreateIssue: true,
+      autoCreateIssue: false,
     }, options)
 
     // check options

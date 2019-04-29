@@ -38,6 +38,7 @@ const messages: VueI18n.LocaleMessageObject = {
   // status
   failed: 'コメントの読み込みに失敗しました',
   initializing: '初期化中...',
+  issueNotCreated: 'Click to create issue',
   loadingComments: 'コメントの読み込み中...',
   loginRequired: 'コメントを見るにはログインしてください',
   noComments: 'まだコメントがありません。最初のコメントを残しましょう！',

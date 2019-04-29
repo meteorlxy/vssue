@@ -12,7 +12,7 @@
 
       <p class="vssue-status-info">
         <Component
-          :is="['loginRequired'].includes(status) ? 'a' : 'span'"
+          :is="['issueNotCreated', 'loginRequired'].includes(status) ? 'a' : 'span'"
           @click="handleClick"
         >
           {{ vssue.$t(status) }}
@@ -42,6 +42,12 @@ export default class VssueStatus extends Vue {
       return 'failed'
     } else if (this.vssue.isInitializing) {
       return 'initializing'
+    } else if (this.vssue.isIssueNotCreated && !this.vssue.isCreatingIssue) {
+      if (this.vssue.isAdmin || !this.vssue.isLogined) {
+        return 'issueNotCreated'
+      } else {
+        return 'failed'
+      }
     } else if (this.vssue.isLoginRequired) {
       return 'loginRequired'
     } else if (!this.vssue.comments || this.vssue.isCreatingIssue) {
@@ -54,7 +60,9 @@ export default class VssueStatus extends Vue {
   }
 
   handleClick (): void {
-    if (this.status === 'loginRequired') {
+    if (this.status === 'issueNotCreated') {
+      this.vssue.postIssue()
+    } else if (this.status === 'loginRequired') {
       this.vssue.login()
     }
   }

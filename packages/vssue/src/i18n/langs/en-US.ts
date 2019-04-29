@@ -38,6 +38,7 @@ const messages: VueI18n.LocaleMessageObject = {
   // status
   failed: 'Failed to load comments',
   initializing: 'Initializing...',
+  issueNotCreated: 'Click to create issue',
   loadingComments: 'Loading comments...',
   loginRequired: 'Login to view comments',
   noComments: 'No comments yet. Leave the first comment !',

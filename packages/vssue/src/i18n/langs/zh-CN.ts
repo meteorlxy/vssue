@@ -38,6 +38,7 @@ const messages: VueI18n.LocaleMessageObject = {
   // status
   failed: '评论加载失败',
   initializing: '正在初始化...',
+  issueNotCreated: '点击创建 Issue',
   loadingComments: '正在加载评论...',
   loginRequired: '登录后查看评论',
   noComments: '还没有评论，来发表第一条评论吧！',
