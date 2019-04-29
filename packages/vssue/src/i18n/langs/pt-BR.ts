@@ -30,7 +30,7 @@ const messages: VueI18n.LocaleMessageObject = {
   next: 'Próxima Página',
 
   // hint
-  comments: 'Comentários | {count} Comentários',
+  comments: 'Comentários | {count} Comentário | {count} Comentários',
   loginToComment: 'Entre com uma conta {platform} para deixar um comentário',
   placeholder: 'Deixe um comentário. Estilos com Markdown suportados. Ctrl + Enter para enviar.',
   noLoginPlaceHolder: 'Entre para deixar um comentário. Estilos com Markdown suportados. ',
