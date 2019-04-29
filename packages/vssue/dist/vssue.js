@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.9.0
+ * @version v0.9.1
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -767,7 +767,7 @@ var script$7 = VssueNewComment;
             const __vue_script__$7 = script$7;
             
 /* template */
-var __vue_render__$4 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-new-comment"},[_c('div',{staticClass:"vssue-comment-avatar"},[(_vm.user)?_c('a',{attrs:{"href":_vm.user.homepage,"title":_vm.user.username,"target":"_blank"}},[_c('img',{attrs:{"src":_vm.user.avatar}})]):_c('VssueIcon',{attrs:{"name":_vm.platform.toLowerCase(),"title":_vm.vssue.$t('loginToComment', { platform: _vm.platform })},on:{"click":function($event){_vm.vssue.login();}}})],1),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-body"},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.content),expression:"content"}],ref:"input",staticClass:"vssue-new-comment-input",attrs:{"rows":_vm.inputRows,"disabled":!_vm.user || _vm.loading,"placeholder":_vm.vssue.$t(_vm.user ? 'placeholder' : 'noLoginPlaceHolder'),"spellcheck":false},domProps:{"value":(_vm.content)},on:{"keyup":function($event){if(!('button' in $event)&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }if(!$event.ctrlKey){ return null; }_vm.submit();},"input":function($event){if($event.target.composing){ return; }_vm.content=$event.target.value;}}})]),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-footer"},[(_vm.user)?_c('span',{staticClass:"vssue-current-user"},[_c('span',[_vm._v(_vm._s(_vm.vssue.$t('currentUser'))+" - "+_vm._s(_vm.user.username)+" - ")]),_vm._v(" "),_c('a',{staticClass:"vssue-logout",on:{"click":function($event){_vm.vssue.logout();}}},[_vm._v("\n        "+_vm._s(_vm.vssue.$t('logout'))+"\n      ")])]):_c('span',{staticClass:"vssue-current-user"},[_vm._v("\n      "+_vm._s(_vm.vssue.$t('loginToComment', { platform: _vm.platform }))+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-operations"},[(_vm.user)?_c('VssueButton',{staticClass:"vssue-button-submit-comment",attrs:{"type":"primary","disabled":_vm.disabled},on:{"click":function($event){_vm.submit();}}},[_c('VssueIcon',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],attrs:{"name":"loading"}}),_vm._v("\n\n        "+_vm._s(_vm.vssue.$t(_vm.loading ? 'submitting' : 'submitComment'))+"\n      ")],1):_c('VssueButton',{staticClass:"vssue-button-login",attrs:{"type":"primary","title":_vm.vssue.$t('loginToComment', { platform: _vm.platform })},on:{"click":function($event){_vm.vssue.$emit('login', { platform: _vm.platform });}}},[_vm._v("\n        "+_vm._s(_vm.vssue.$t('login', { platform: _vm.platform }))+"\n      ")])],1)])])};
+var __vue_render__$4 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-new-comment"},[_c('div',{staticClass:"vssue-comment-avatar"},[(_vm.user)?_c('a',{attrs:{"href":_vm.user.homepage,"title":_vm.user.username,"target":"_blank"}},[_c('img',{attrs:{"src":_vm.user.avatar}})]):_c('VssueIcon',{attrs:{"name":_vm.platform.toLowerCase(),"title":_vm.vssue.$t('loginToComment', { platform: _vm.platform })},on:{"click":function($event){_vm.vssue.login();}}})],1),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-body"},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.content),expression:"content"}],ref:"input",staticClass:"vssue-new-comment-input",attrs:{"rows":_vm.inputRows,"disabled":!_vm.user || _vm.loading,"placeholder":_vm.vssue.$t(_vm.user ? 'placeholder' : 'noLoginPlaceHolder'),"spellcheck":false},domProps:{"value":(_vm.content)},on:{"keyup":function($event){if(!('button' in $event)&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }if(!$event.ctrlKey){ return null; }_vm.submit();},"input":function($event){if($event.target.composing){ return; }_vm.content=$event.target.value;}}})]),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-footer"},[(_vm.user)?_c('span',{staticClass:"vssue-current-user"},[_c('span',[_vm._v(_vm._s(_vm.vssue.$t('currentUser'))+" - "+_vm._s(_vm.user.username)+" - ")]),_vm._v(" "),_c('a',{staticClass:"vssue-logout",on:{"click":function($event){_vm.vssue.logout();}}},[_vm._v("\n        "+_vm._s(_vm.vssue.$t('logout'))+"\n      ")])]):_c('span',{staticClass:"vssue-current-user"},[_vm._v("\n      "+_vm._s(_vm.vssue.$t('loginToComment', { platform: _vm.platform }))+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-operations"},[(_vm.user)?_c('VssueButton',{staticClass:"vssue-button-submit-comment",attrs:{"type":"primary","disabled":_vm.disabled},on:{"click":function($event){_vm.submit();}}},[_c('VssueIcon',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],attrs:{"name":"loading"}}),_vm._v("\n\n        "+_vm._s(_vm.vssue.$t(_vm.loading ? 'submitting' : 'submitComment'))+"\n      ")],1):_c('VssueButton',{staticClass:"vssue-button-login",attrs:{"type":"primary","title":_vm.vssue.$t('loginToComment', { platform: _vm.platform })},on:{"click":function($event){_vm.vssue.login();}}},[_vm._v("\n        "+_vm._s(_vm.vssue.$t('login', { platform: _vm.platform }))+"\n      ")])],1)])])};
 var __vue_staticRenderFns__$4 = [];
 
   /* style */
@@ -1442,7 +1442,7 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "0.9.0";
+        return "0.9.1";
     }
     get issueTitle() {
         if (this.options === null) {
@@ -1986,7 +1986,7 @@ var __vue_staticRenderFns__$9 = [];
 
 const VssuePlugin = {
     get version() {
-        return "0.9.0";
+        return "0.9.1";
     },
     installed: false,
     install(Vue$$1, options) {

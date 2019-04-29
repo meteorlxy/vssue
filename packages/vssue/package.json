@@ -1,6 +1,6 @@
 {
   "name": "vssue",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "A vue-powered issue-based comment plugin",
   "license": "MIT",
   "main": "dist/vssue.js",
