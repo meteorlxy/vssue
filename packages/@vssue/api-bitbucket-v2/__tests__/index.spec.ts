@@ -7,6 +7,7 @@ import {
   normalizeIssue,
   normalizeComment,
 } from '../src/utils'
+import { concatURL } from '@vssue/utils'
 
 const baseURL = 'https://bitbucket.org'
 const APIEndpoint = 'https://api.bitbucket.org/2.0'
@@ -222,7 +223,7 @@ describe('methods', () => {
     const request = mock.history.post[0]
     expect(request.method).toBe('post')
     expect(request.headers['Authorization']).toBe(`Bearer ${mockToken}`)
-    expect(issue).toEqual(normalizeIssue(fixtures.issue))
+    expect(issue).toEqual(normalizeIssue(Object.assign({}, fixtures.issue, { links: { html: { href: concatURL(baseURL, `${options.owner}/${options.repo}/issues/${fixtures.issue.id}`) } } })))
   })
 
   describe('getComments', () => {
