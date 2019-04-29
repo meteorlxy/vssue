@@ -74,7 +74,7 @@
           class="vssue-button-login"
           type="primary"
           :title="vssue.$t('loginToComment', { platform })"
-          @click="vssue.$emit('login', { platform })"
+          @click="vssue.login()"
         >
           {{ vssue.$t('login', { platform }) }}
         </VssueButton>
