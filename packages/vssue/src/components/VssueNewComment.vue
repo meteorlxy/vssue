@@ -14,7 +14,7 @@
         v-else
         :name="platform.toLowerCase()"
         :title="vssue.$t('loginToComment', { platform })"
-        @click="vssue.$emit('login')"
+        @click="vssue.login()"
       />
     </div><!-- .vssue-new-comment-avatar -->
 
@@ -40,7 +40,7 @@
 
         <a
           class="vssue-logout"
-          @click="vssue.$emit('logout')"
+          @click="vssue.logout()"
         >
           {{ vssue.$t('logout') }}
         </a>

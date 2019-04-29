@@ -36,10 +36,10 @@ const messages: VueI18n.LocaleMessageObject = {
   noLoginPlaceHolder: '登陆后才能发表评论丨支持 Markdown 语法',
 
   // status
+  failed: '评论加载失败',
   initializing: '正在初始化...',
   loadingComments: '正在加载评论...',
-  failed: '评论加载失败',
-  requireLogin: '登录后查看评论',
+  loginRequired: '登录后查看评论',
   noComments: '还没有评论，来发表第一条评论吧！',
 
   // alerts

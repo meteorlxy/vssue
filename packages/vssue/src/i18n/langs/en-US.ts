@@ -36,10 +36,10 @@ const messages: VueI18n.LocaleMessageObject = {
   noLoginPlaceHolder: 'Login to leave a comment. Styling with Markdown is supported. ',
 
   // status
+  failed: 'Failed to load comments',
   initializing: 'Initializing...',
   loadingComments: 'Loading comments...',
-  failed: 'Failed to load comments',
-  requireLogin: 'Login to view comments',
+  loginRequired: 'Login to view comments',
   noComments: 'No comments yet. Leave the first comment !',
 
   // alerts

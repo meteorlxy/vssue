@@ -36,10 +36,10 @@ const messages: VueI18n.LocaleMessageObject = {
   noLoginPlaceHolder: 'Entre para deixar um comentário. Estilos com Markdown suportados. ',
 
   // status
+  failed: 'Falha ao carregar comentários',
   initializing: 'Inicializando...',
   loadingComments: 'Carregando comentários...',
-  failed: 'Falha ao carregar comentários',
-  requireLogin: 'Entrar para visualizar comentários',
+  loginRequired: 'Entrar para visualizar comentários',
   noComments: 'Nenhum comentário. Deixe o primeiro comentário!',
 
   // alerts

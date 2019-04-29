@@ -30,7 +30,10 @@ export namespace Vssue {
   export type Component = typeof Vue
 
   export interface Store extends Vue {
-    readonly version: string
+    version: string
+    title: string | ((options: Vssue.Options) => string)
+    issueTitle: string
+    issueId: number | null
     options: Vssue.Options | null
     API: VssueAPI.Instance | null
     accessToken: string | null
@@ -39,25 +42,27 @@ export namespace Vssue {
     comments: VssueAPI.Comments | null
     query: VssueAPI.Query
     isInitializing: boolean
+    isIssueNotCreated: boolean
     isLoginRequired: boolean
     isFailed: boolean
+    isCreatingIssue: boolean
     isLoadingComments: boolean
     isCreatingComment: boolean
     isUpdatingComment: boolean
-    readonly isLogined: boolean
-    readonly isAdmin: boolean
-    readonly isPending: boolean
+    isLogined: boolean
+    isAdmin: boolean
+    isPending: boolean
     setOptions (options: Partial<Vssue.Options>): void
     init (): Promise<void>
-    initCommentsByIssueTitle(issueTitle: string): Promise<void>
-    initCommentsByIssueId(issueId: number | string): Promise<void>
-    handleAuth (): Promise<void>
+    postIssue (): Promise<VssueAPI.Issue | void>
     getComments (): Promise<VssueAPI.Comments | void>
     postComment (options: { content: string }): Promise<VssueAPI.Comment | void>
     deleteComment (options: { commentId: number | string }): Promise<boolean | void>
     putComment (options: { commentId: number | string, content: string }): Promise<VssueAPI.Comment | void>
     getCommentReactions (options: { commentId: number | string }): Promise<VssueAPI.Reactions | void>
     postCommentReaction (options: { commentId: number | string, reaction: keyof VssueAPI.Reactions }): Promise<boolean | void>
+    login (): void
+    logout (): void
   }
 }
 

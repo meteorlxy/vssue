@@ -9,6 +9,17 @@ class VssueStore extends Vue implements Vssue.Store {
     return <string>process.env.VUE_APP_VERSION
   }
 
+  title: string | ((options: Vssue.Options) => string) = options => `${options.prefix}${document.title}`
+
+  get issueTitle (): string {
+    if (this.options === null) {
+      return ''
+    }
+    return typeof this.title === 'function' ? this.title(this.options) : `${this.options.prefix}${this.title}`
+  }
+
+  issueId: number | null = null
+
   options: Vssue.Options | null = null
 
   API: VssueAPI.Instance | null = null
@@ -29,9 +40,13 @@ class VssueStore extends Vue implements Vssue.Store {
 
   isInitializing: boolean = true
 
+  isIssueNotCreated: boolean = false
+
   isLoginRequired: boolean = false
 
   isFailed: boolean = false
+
+  isCreatingIssue: boolean = false
 
   isLoadingComments: boolean = false
 
@@ -75,14 +90,6 @@ class VssueStore extends Vue implements Vssue.Store {
   }
 
   /**
-   * Created hook. Bind event listeners.
-   */
-  created () {
-    this.$on('login', this.handleLogin)
-    this.$on('logout', this.handleLogout)
-  }
-
-  /**
    * Set options of Vssue
    */
   setOptions (options: Partial<Vssue.Options>): void {
@@ -121,9 +128,30 @@ class VssueStore extends Vue implements Vssue.Store {
   }
 
   /**
-   * Init VssueStore
+   * Initialization
    */
   async init (): Promise<void> {
+    try {
+      // init VssueStore
+      await this.initStore()
+
+      // init comments
+      await this.initComments()
+    } catch (e) {
+      if (e.response && [401, 403].includes(e.response.status)) {
+        // in some cases, require login to load comments
+        this.isLoginRequired = true
+      } else {
+        this.isFailed = true
+      }
+      console.error(e)
+    }
+  }
+
+  /**
+   * Init VssueStore
+   */
+  async initStore (): Promise<void> {
     try {
       if (!this.options) throw new Error('Options are required to initialize Vssue')
 
@@ -141,8 +169,10 @@ class VssueStore extends Vue implements Vssue.Store {
 
       // reset status
       this.isInitializing = true
+      this.isIssueNotCreated = false
       this.isLoginRequired = false
       this.isFailed = false
+      this.isCreatingIssue = false
       this.isLoadingComments = false
       this.isCreatingComment = false
       this.isUpdatingComment = false
@@ -169,69 +199,84 @@ class VssueStore extends Vue implements Vssue.Store {
   }
 
   /**
-   * Init comments according to issue id
+   * Init comments
    */
-  async initCommentsByIssueId (issueId: number | string): Promise<void> {
-    if (!this.API) return
-    // if `issueId` is set, get the issue and comments in the mean time
-    // notice that will not create the issue if not found
-    const [issue, comments] = await Promise.all([
-      this.API.getIssue({
+  async initComments (): Promise<void> {
+    if (!this.API || !this.options) return
+
+    if (this.issueId) {
+      // if issueId is set, get the issue and comments in the mean time
+      // notice that vssue will not try to create the issue is not found
+      const [issue, comments] = await Promise.all([
+        this.API.getIssue({
+          accessToken: this.accessToken,
+          issueId: this.issueId,
+        }),
+        this.API.getComments({
+          accessToken: this.accessToken,
+          issueId: this.issueId,
+          query: this.query,
+        }),
+      ])
+      this.issue = issue
+      this.comments = comments
+    } else {
+      // get issue according to title
+      this.issue = await this.API.getIssue({
         accessToken: this.accessToken,
-        issueId: issueId,
-      }),
-      this.API.getComments({
-        accessToken: this.accessToken,
-        issueId: issueId,
-        query: this.query,
-      }),
-    ])
-    this.issue = issue
-    this.comments = comments
+        issueTitle: this.issueTitle,
+      })
+
+      if (this.issue === null) {
+        // if the issue of this page does not exist
+        this.isIssueNotCreated = true
+
+        // try to create issue when `autoCreateIssue = true`
+        if (this.options.autoCreateIssue) {
+          await this.postIssue()
+        }
+      } else {
+        // try to load comments
+        await this.getComments()
+      }
+    }
   }
 
   /**
-   * Init comments according to issue title
+   * Post a new issue
    */
-  async initCommentsByIssueTitle (issueTitle: string): Promise<void> {
-    if (!this.API || !this.options) return
+  async postIssue (): Promise<void> {
+    if (!this.API || !this.options || this.issue || this.issueId) return
 
-    // get issue according to title first
-    this.issue = await this.API.getIssue({
-      accessToken: this.accessToken,
-      issueTitle: issueTitle,
-    })
+    // login to create issue
+    if (!this.isLogined) {
+      this.login()
+    }
 
-    // if the issue of this page does not exist, try to create it
-    if (!this.issue) {
-      // do not try to create issue when `autoCreateIssue = false`
-      if (!this.options.autoCreateIssue) {
-        throw Error('Failed to get comments')
-      }
+    // only owner/admins can create issue
+    if (!this.isAdmin) return
 
-      // require login to create the issue
-      if (!this.isLogined) {
-        this.$emit('login')
-      }
+    try {
+      this.isCreatingIssue = true
 
-      // if current user is not admin, cannot create issue
-      if (!this.isAdmin) {
-        throw Error('Failed to get comments')
-      }
-
-      // create the corresponding issue
-      this.issue = await this.API.postIssue({
-        title: issueTitle,
+      const issue = await this.API.postIssue({
+        title: this.issueTitle,
         content: await this.options.issueContent({
           options: this.options,
           url: getCleanURL(window.location.href),
         }),
         accessToken: this.accessToken,
       })
-    }
 
-    // try to load comments
-    await this.getComments()
+      this.issue = issue
+      this.isIssueNotCreated = false
+
+      await this.getComments()
+    } catch (e) {
+      this.isFailed = true
+    } finally {
+      this.isCreatingIssue = false
+    }
   }
 
   /**
@@ -258,6 +303,8 @@ class VssueStore extends Vue implements Vssue.Store {
       if (this.query.perPage !== comments.perPage) {
         this.query.perPage = comments.perPage
       }
+
+      return comments
     } catch (e) {
       if (e.response && [401, 403].includes(e.response.status) && !this.isLogined) {
         this.isLoginRequired = true
@@ -401,23 +448,19 @@ class VssueStore extends Vue implements Vssue.Store {
   }
 
   /**
-   * Get access token from local storage
+   * Redirect to the platform's authorization page
    */
-  getAccessToken (): VssueAPI.AccessToken {
-    this.accessToken = window.localStorage.getItem(this.accessTokenKey)
-    return this.accessToken
+  login (): void {
+    if (!this.API) return
+    this.API.redirectAuth()
   }
 
   /**
-   * Save access token to local storage
+   * Clean the access token stored in local storage
    */
-  setAccessToken (token: VssueAPI.AccessToken): void {
-    if (token === null) {
-      window.localStorage.removeItem(this.accessTokenKey)
-    } else {
-      window.localStorage.setItem(this.accessTokenKey, token)
-    }
-    this.accessToken = token
+  logout (): void {
+    this.setAccessToken(null)
+    this.user = null
   }
 
   /**
@@ -444,19 +487,23 @@ class VssueStore extends Vue implements Vssue.Store {
   }
 
   /**
-   * Redirect to the platform's authorization page
+   * Get access token from local storage
    */
-  handleLogin (): void {
-    if (!this.API) return
-    this.API.redirectAuth()
+  getAccessToken (): VssueAPI.AccessToken {
+    this.accessToken = window.localStorage.getItem(this.accessTokenKey)
+    return this.accessToken
   }
 
   /**
-   * Clean the access token stored in local storage
+   * Save access token to local storage
    */
-  handleLogout (): void {
-    this.setAccessToken(null)
-    this.user = null
+  setAccessToken (token: VssueAPI.AccessToken): void {
+    if (token === null) {
+      window.localStorage.removeItem(this.accessTokenKey)
+    } else {
+      window.localStorage.setItem(this.accessTokenKey, token)
+    }
+    this.accessToken = token
   }
 }
 

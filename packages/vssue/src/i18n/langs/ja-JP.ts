@@ -36,10 +36,10 @@ const messages: VueI18n.LocaleMessageObject = {
   noLoginPlaceHolder: 'コメントを残すにはログインしてください。マークダウン記法をサポートしています。',
 
   // status
+  failed: 'コメントの読み込みに失敗しました',
   initializing: '初期化中...',
   loadingComments: 'コメントの読み込み中...',
-  failed: 'コメントの読み込みに失敗しました',
-  requireLogin: 'コメントを見るにはログインしてください',
+  loginRequired: 'コメントを見るにはログインしてください',
   noComments: 'まだコメントがありません。最初のコメントを残しましょう！',
 
   // alerts
