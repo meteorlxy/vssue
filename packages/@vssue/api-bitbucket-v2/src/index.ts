@@ -215,10 +215,13 @@ export default class BitbucketV2 implements VssueAPI.Instance {
         raw: content,
       },
       priority: 'trivial',
-      type: 'task',
+      kind: 'task',
     }, {
       headers: { 'Authorization': `Bearer ${accessToken}` },
     })
+    data.links.html = {
+      href: concatURL(this.baseURL, `${this.owner}/${this.repo}/issues/${data.id}`),
+    }
     return normalizeIssue(data)
   }
 
