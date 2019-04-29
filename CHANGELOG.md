@@ -1,3 +1,20 @@
+# [0.9.0](https://github.com/meteorlxy/vssue/compare/v0.8.2...v0.9.0) (2019-04-29)
+
+
+### Bug Fixes
+
+* **$api-bitbucket-v2:** kind and response of post-issue ([ed8ed76](https://github.com/meteorlxy/vssue/commit/ed8ed76))
+* **$vssue:** always show the top pagination ([349e75c](https://github.com/meteorlxy/vssue/commit/349e75c))
+* **$vssue:** pluralization with zero comments ([f68c26d](https://github.com/meteorlxy/vssue/commit/f68c26d))
+* **$vssue:** vue-i18n pluralization and tweaks ([69fba8c](https://github.com/meteorlxy/vssue/commit/69fba8c))
+
+
+### Features
+
+* **$vssue:** click to create issue (close [#35](https://github.com/meteorlxy/vssue/issues/35)) ([25d16b4](https://github.com/meteorlxy/vssue/commit/25d16b4))
+
+
+
 ## [0.8.2](https://github.com/meteorlxy/vssue/compare/v0.8.1...v0.8.2) (2019-03-29)
 
 
