@@ -284,13 +284,15 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   If the issue already exists, Vssue will not try to update the content.
   :::
 
-### autoCreateIssue <Badge text="v0.8.1+"/>
+### autoCreateIssue <Badge text="v0.8.1+"/><Badge type="warn" text="modified in v0.9.0"/>
 
 - __Type__: `boolean`
-- __Default__: `true`
+- __Default__: `false`
 - __Details__:
 
-  If `autoCreateIssue` is set to `false`, Vssue won't create issues for you, and you have to __create issues manually__.
+  If `autoCreateIssue` is set to `true`, Vssue will try to create an issue automatically when the corresponding issue does not exist. Notice that if you have not logined, Vssue will redirect to the authorization page automatically.
+
+  If `autoCreateIssue` is set to `false`, you need to create the issue manually.
 
 ## Component Props
 
@@ -365,7 +367,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   - Props: `title`
 
   ::: danger ATTENSION
-  If `issueId` is set, Vssue will use it to determine which issue to use directly, instead of requesting issues according to `labels` and `title`. This will make the initialization process of Vssue faster.
+  If `issueId` is set, Vssue will use it to determine which issue to use directly, instead of requesting issues according to `labels` and `title`. This will make the initialization process faster.
 
   In this case, however, you have to __create issues manually__. If the corresponding issue is not found, Vssue will not try to create a new issue for you. 
   :::

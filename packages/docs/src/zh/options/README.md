@@ -284,13 +284,15 @@ Vue.use(Vssue, {
   如果对应的 Issue 已经存在，Vssue 不会更新 Issue 的内容。
   :::
 
-### autoCreateIssue <Badge text="v0.8.1+"/>
+### autoCreateIssue <Badge text="v0.8.1+"/><Badge type="warn" text="modified in v0.9.0"/>
 
 - __类型__: `boolean`
-- __默认值__: `true`
+- __默认值__: `false`
 - __详细__:
 
-  如果 `autoCreateIssue` 设置为 `false`，Vssue 不会为你自动创建 Issue，你必须 __手动创建 Issue__。
+  如果 `autoCreateIssue` 设置为 `true`，在对应的 Issue 不存在时，Vssue 会自动尝试为你创建 Issue。注意，若你当前没有登录，则 Vssue 会自动跳转到平台的认证页面。
+
+  如果 `autoCreateIssue` 设置为 `false`，你必须手动创建 Issue。
 
 ## 组件 Props
 
@@ -365,7 +367,7 @@ Vue.use(Vssue, {
   - Props: `title`
 
   ::: danger 注意
-  如果设置了 `issueId`，Vssue 将会直接使用它来确定要使用哪个 Issue，而不是根据 `labels` 和 `title` 来查找对应的 Issue。这会加快 Vssue 的初始化过程、
+  如果设置了 `issueId`，Vssue 将会直接使用它来确定要使用哪个 Issue，而不是根据 `labels` 和 `title` 来查找对应的 Issue。这会加快 Vssue 的初始化过程。
 
   但是在这种情况下，你必须要 __手动创建 Issue__。如果对应的 Issue 不存在，Vssue 不会尝试为你创建一个新的 Issue。
   :::
