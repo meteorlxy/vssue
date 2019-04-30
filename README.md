@@ -70,6 +70,8 @@
   <img src="https://opencollective.com/vssue/contributors.svg?width=890&button=false" />
 </a>
 
+:vulcan_salute: Thanks to [@alolalo](https://github.com/alolalo) for inspiration of Logo design!
+
 ## Sponsors & Backers
 
 :pray: Thanks to all our sponsors and backers!
