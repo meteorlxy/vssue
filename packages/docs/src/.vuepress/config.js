@@ -206,6 +206,7 @@ function sidebarGuide (titleGuide, titleOAuthApp) {
         'supported-platforms',
         'styles',
         'vuepress',
+        'developer',
       ],
     },
     {

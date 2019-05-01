@@ -56,11 +56,11 @@
 
 :book: [**Live Demo and Docs here**](https://vssue.js.org)
 
-##  Contributing
+## Contributing
 
 :scroll: Feel free to open issues following the issue templates if you have any problems or ideas.
 
-:heart: Contributions welcome!
+:heart: Check the [Developer Guide](https://vssue.js.org/guide/developer.html). Contributions welcome!
 
 ## Contributors
 
