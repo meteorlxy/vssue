@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://vssue.js.org" target="_blank">
-    <img width="220" src="https://vssue.js.org/logo.png" alt="Vue Showdown logo">
+    <img width="220" src="https://vssue.js.org/logo.png" alt="Vssue Logo">
   </a>
 </p>
 
@@ -28,11 +28,7 @@
   </a>
 
   <a href="https://www.npmjs.com/package/vssue" target="_blank">
-    <img src="https://img.shields.io/npm/v/vssue/latest.svg?logo=npm">
-  </a>
-
-  <a href="https://unpkg.com/vssue/dist/vssue.github.min.js" target="_blank">
-    <img src="https://img.badgesize.io/meteorlxy/vssue/master/packages/vssue/dist/vssue.github.min.js.svg?label=min%20size">
+    <img src="https://img.shields.io/npm/v/vssue.svg?logo=npm">
   </a>
 
   <a href="https://unpkg.com/vssue/dist/vssue.github.min.js" target="_blank">
@@ -45,6 +41,10 @@
 
   <a href="https://github.com/meteorlxy/vssue/blob/master/LICENSE" target="_blank">
     <img src="https://img.shields.io/github/license/meteorlxy/vssue.svg">
+  </a>
+
+  <a href="https://t.me/joinchat/M1YGghUs080d1kdLxPzzbQ" target="_blank">
+    <img src="https://badgen.net/badge/telegram/join%20chat?icon=telegram">
   </a>
 </p>
 
