@@ -1,6 +1,6 @@
 # Introduction
 
-Vssue is a __Vue__ component / plugin, which can enable comments for your static pages.
+Vssue (/'vɪʃuː/, combined by "V" and "Issue") is a __Vue__ component / plugin, which can enable comments for your static pages.
 
 As your pages are "static", you don't have database nor backend APIs, but you still want users to login and post comments. With the help of OAuth API of the code hosting platforms (e.g. Github, Gitlab, Bitbucket, Coding, etc.), Vssue can help users to login with account of those platforms, store the comments in their __Issue__ System, and display the comments on current page.
 
