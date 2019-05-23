@@ -8,12 +8,13 @@ module.exports = ({
     'github': '@vssue/api-github-v3',
     'gitlab': '@vssue/api-gitlab-v4',
     'bitbucket': '@vssue/api-bitbucket-v2',
+    'gitee': '@vssue/api-gitee-v5',
   }
 
   const apiPkg = platformAPI[platform]
 
   if (!apiPkg) {
-    throw new Error(`[@vssue/vuepress-plugin-vssue] Platform '${platform}' is not supported. Available platforms: github, gitlab, bitbucket.`)
+    throw new Error(`[@vssue/vuepress-plugin-vssue] Platform '${platform}' is not supported. Available platforms: github, gitlab, bitbucket, gitee.`)
   }
 
   try {
