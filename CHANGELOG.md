@@ -1,3 +1,14 @@
+# [0.10.0](https://github.com/meteorlxy/vssue/compare/v0.9.1...v0.10.0) (2019-05-23)
+
+
+### Features
+
+* **$api-gitee-v5:** add gitee api v5 package ([#43](https://github.com/meteorlxy/vssue/issues/43)) ([3f0dde1](https://github.com/meteorlxy/vssue/commit/3f0dde1))
+* **$vssue:** support gitee api ([75e0210](https://github.com/meteorlxy/vssue/commit/75e0210))
+* **$vuepress-plugin-vssue:** add gitee api v5 ([98982cf](https://github.com/meteorlxy/vssue/commit/98982cf))
+
+
+
 ## [0.9.1](https://github.com/meteorlxy/vssue/compare/v0.9.0...v0.9.1) (2019-04-29)
 
 
