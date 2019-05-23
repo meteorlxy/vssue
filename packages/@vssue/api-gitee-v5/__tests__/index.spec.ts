@@ -311,6 +311,9 @@ describe('methods', () => {
 
       const request = mock.history.get[0]
       expect(request.method).toBe('get')
+      expect(request.headers['Accept']).toEqual(expect.arrayContaining([
+        'application/vnd.gitee.html+json',
+      ]))
       expect(request.params['access_token']).toBe(mockToken)
     })
 
@@ -377,6 +380,9 @@ describe('methods', () => {
     expect(mock.history.post.length).toBe(1)
     const request = mock.history.post[0]
     expect(request.method).toBe('post')
+    expect(request.headers['Accept']).toEqual(expect.arrayContaining([
+      'application/vnd.gitee.html+json',
+    ]))
     const data = JSON.parse(request.data)
     expect(data['access_token']).toBe(mockToken)
     expect(data['body']).toBe(content)
@@ -397,6 +403,9 @@ describe('methods', () => {
     expect(mock.history.patch.length).toBe(1)
     const request = mock.history.patch[0]
     expect(request.method).toBe('patch')
+    expect(request.headers['Accept']).toEqual(expect.arrayContaining([
+      'application/vnd.gitee.html+json',
+    ]))
     const data = JSON.parse(request.data)
     expect(data['access_token']).toBe(mockToken)
     expect(data['body']).toBe(content)

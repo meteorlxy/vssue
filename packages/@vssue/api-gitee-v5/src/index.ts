@@ -293,6 +293,9 @@ export default class GiteeV5 implements VssueAPI.Instance {
         // 'sort': 'created',
         // 'direction': sort,
       },
+      headers: {
+        Accept: ['application/vnd.gitee.html+json'],
+      },
     }
     if (accessToken) {
       options.params.access_token = accessToken
@@ -301,7 +304,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
     const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
 
     const count = response.headers['total_count']
-    console.log(response)
+
     return {
       count: Number(count),
       page: page,
@@ -333,6 +336,10 @@ export default class GiteeV5 implements VssueAPI.Instance {
     const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
       body: content,
       access_token: accessToken,
+    }, {
+      headers: {
+        Accept: ['application/vnd.gitee.html+json'],
+      },
     })
     return normalizeComment(data)
   }
@@ -361,6 +368,10 @@ export default class GiteeV5 implements VssueAPI.Instance {
     const { data } = await this.$http.patch(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}`, {
       body: content,
       access_token: accessToken,
+    }, {
+      headers: {
+        Accept: ['application/vnd.gitee.html+json'],
+      },
     })
     return normalizeComment(data)
   }
