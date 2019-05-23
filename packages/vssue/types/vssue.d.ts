@@ -33,7 +33,7 @@ export namespace Vssue {
     version: string
     title: string | ((options: Vssue.Options) => string)
     issueTitle: string
-    issueId: number | null
+    issueId: number | string | null
     options: Vssue.Options | null
     API: VssueAPI.Instance | null
     accessToken: string | null

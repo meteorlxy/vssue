@@ -21,6 +21,11 @@ module.exports = [
     format: 'umd',
   },
   {
+    input: 'vssue.gitee.ts',
+    output: 'vssue.gitee.min.js',
+    format: 'umd',
+  },
+  {
     input: 'vssue.github.ts',
     output: 'vssue.github.min.js',
     format: 'umd',
@@ -33,6 +38,11 @@ module.exports = [
   {
     input: 'vssue.bitbucket.ts',
     output: 'vssue.bitbucket.polyfill.min.js',
+    format: 'umd',
+  },
+  {
+    input: 'vssue.gitee.ts',
+    output: 'vssue.gitee.polyfill.min.js',
     format: 'umd',
   },
   {

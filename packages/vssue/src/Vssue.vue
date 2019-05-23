@@ -67,7 +67,7 @@ export default class Vssue extends Vue {
       this.vssue.title = this.title
     }
     if (this.issueId !== null) {
-      this.vssue.issueId = Number(this.issueId)
+      this.vssue.issueId = this.issueId
     }
 
     // set options

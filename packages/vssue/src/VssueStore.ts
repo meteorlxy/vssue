@@ -18,7 +18,7 @@ class VssueStore extends Vue implements Vssue.Store {
     return typeof this.title === 'function' ? this.title(this.options) : `${this.options.prefix}${this.title}`
   }
 
-  issueId: number | null = null
+  issueId: number | string | null = null
 
   options: Vssue.Options | null = null
 
