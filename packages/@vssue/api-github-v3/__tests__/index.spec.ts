@@ -282,6 +282,10 @@ describe('methods', () => {
     const request = mock.history.post[0]
     expect(request.method).toBe('post')
     expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
+    const data = JSON.parse(request.data)
+    expect(data['title']).toBe(title)
+    expect(data['body']).toBe(content)
+    expect(data['labels']).toEqual(options.labels)
     expect(issue).toEqual(normalizeIssue(fixtures.issue))
   })
 
@@ -392,6 +396,8 @@ describe('methods', () => {
       'application/vnd.github.v3.html+json',
       'application/vnd.github.squirrel-girl-preview',
     ]))
+    const data = JSON.parse(request.data)
+    expect(data['body']).toBe(content)
     expect(comment).toEqual(normalizeComment(fixtures.comment))
   })
 
@@ -415,6 +421,8 @@ describe('methods', () => {
       'application/vnd.github.v3.html+json',
       'application/vnd.github.squirrel-girl-preview',
     ]))
+    const data = JSON.parse(request.data)
+    expect(data['body']).toBe(content)
     expect(comment).toEqual(normalizeComment(fixtures.comment))
   })
 

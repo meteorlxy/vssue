@@ -225,6 +225,10 @@ describe('methods', () => {
     const request = mock.history.post[0]
     expect(request.method).toBe('post')
     expect(request.headers['Authorization']).toBe(`Bearer ${mockToken}`)
+    const data = JSON.parse(request.data)
+    expect(data['title']).toBe(title)
+    expect(data['description']).toBe(content)
+    expect(data['labels']).toBe(options.labels.join(','))
     expect(issue).toEqual(normalizeIssue(fixtures.issue))
   })
 
@@ -339,6 +343,8 @@ describe('methods', () => {
     const request = mock.history.post[0]
     expect(request.method).toBe('post')
     expect(request.headers['Authorization']).toBe(`Bearer ${mockToken}`)
+    const data = JSON.parse(request.data)
+    expect(data['body']).toBe(content)
     expect(comment).toEqual(normalizeComment(fixtures.comment))
   })
 
@@ -361,6 +367,8 @@ describe('methods', () => {
     const request = mock.history.put[0]
     expect(request.method).toBe('put')
     expect(request.headers['Authorization']).toBe(`Bearer ${mockToken}`)
+    const data = JSON.parse(request.data)
+    expect(data['body']).toBe(content)
     expect(comment).toEqual(normalizeComment(Object.assign({
       'body_html': '<p>Faked HTML body</p>',
       'reactions': normalizeReactions(fixtures.reactions),

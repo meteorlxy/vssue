@@ -223,6 +223,9 @@ describe('methods', () => {
     const request = mock.history.post[0]
     expect(request.method).toBe('post')
     expect(request.headers['Authorization']).toBe(`Bearer ${mockToken}`)
+    const data = JSON.parse(request.data)
+    expect(data['title']).toBe(title)
+    expect(data['content']['raw']).toBe(content)
     expect(issue).toEqual(normalizeIssue(Object.assign({}, fixtures.issue, { links: { html: { href: concatURL(baseURL, `${options.owner}/${options.repo}/issues/${fixtures.issue.id}`) } } })))
   })
 
@@ -325,6 +328,8 @@ describe('methods', () => {
     const request = mock.history.post[0]
     expect(request.method).toBe('post')
     expect(request.headers['Authorization']).toBe(`Bearer ${mockToken}`)
+    const data = JSON.parse(request.data)
+    expect(data['content']['raw']).toBe(content)
     expect(comment).toEqual(normalizeComment(fixtures.comment))
   })
 
@@ -343,6 +348,8 @@ describe('methods', () => {
     const request = mock.history.put[0]
     expect(request.method).toBe('put')
     expect(request.headers['Authorization']).toBe(`Bearer ${mockToken}`)
+    const data = JSON.parse(request.data)
+    expect(data['content']['raw']).toBe(content)
     expect(comment).toEqual(normalizeComment(fixtures.comment))
   })
 
