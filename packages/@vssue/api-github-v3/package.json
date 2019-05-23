@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-github-v3",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Vssue api for github v3",
   "license": "MIT",
   "main": "lib/index.js",
@@ -26,7 +26,7 @@
     "build": "rimraf lib types && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vssue/utils": "^0.9.0",
+    "@vssue/utils": "^0.10.0",
     "axios": "^0.18.0"
   },
   "devDependencies": {

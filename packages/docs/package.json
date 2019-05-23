@@ -1,14 +1,14 @@
 {
   "private": true,
   "name": "docs",
-  "version": "0.9.1",
+  "version": "0.10.0",
   "scripts": {
     "dev": "vuepress dev src",
     "build": "vuepress build src -d dist"
   },
   "dependencies": {
-    "@vssue/api-github-v3": "^0.9.0",
-    "@vssue/vuepress-plugin-vssue": "^0.9.1",
+    "@vssue/api-github-v3": "^0.10.0",
+    "@vssue/vuepress-plugin-vssue": "^0.10.0",
     "@vuepress/plugin-back-to-top": "^1.0.0-alpha.44",
     "@vuepress/plugin-google-analytics": "1.0.0-alpha.44",
     "@vuepress/plugin-medium-zoom": "^1.0.0-alpha.44",
