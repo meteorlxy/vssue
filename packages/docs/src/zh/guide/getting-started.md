@@ -41,6 +41,8 @@ Vssue 可以在浏览器中通过 `<script>` 标签直接使用。由于 Vssue �
   <script src="https://unpkg.com/vssue/dist/vssue.gitlab.min.js"></script>
   <!-- 或： Vssue Bitbucket 版  -->
   <script src="https://unpkg.com/vssue/dist/vssue.bitbucket.min.js"></script>
+  <!-- 或： Vssue Gitee 版  -->
+  <script src="https://unpkg.com/vssue/dist/vssue.gitee.min.js"></script>
 
   <!-- 将 Vssue 作为 Vue 组件使用 -->
 
@@ -123,6 +125,8 @@ npm install @vssue/api-github-v4
 npm install @vssue/api-gitlab-v4
 # 或：使用 Bitbucket V2
 npm install @vssue/api-bitbucket-v2
+# 或：使用 Gitee V5
+npm install @vssue/api-gitee-v5
 ```
 
 ### 作为 Vue 插件使用

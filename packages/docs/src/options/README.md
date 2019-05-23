@@ -77,6 +77,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 - Github: `https://github.com/${owner}/${repo}`
 - Gitlab: `https://gitlab.com/${owner}/${repo}`
 - Bitbucket: `https://bitbucket.org/${owner}/${repo}`
+- Gitee: `https://gitee.com/${owner}/${repo}`
 :::
 
 ### clientId
@@ -108,7 +109,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   ::: tip
   Some platforms (e.g. Bitbucket and GitLab) support [Implicit Grant](https://tools.ietf.org/html/rfc6749#section-4.2), so we don't need `clientSecret` for those platforms.
 
-  However, some platforms (e.g. GitHub) do not support it now, so `clientSecret` is required for those platforms.
+  However, some platforms (e.g. GitHub and Gitee) do not support it now, so `clientSecret` is required for those platforms.
   :::
 
 - __Reference__:
@@ -129,6 +130,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   - `'https://github.com'` for Github
   - `'https://gitlab.com'` for Gitlab
   - `'https://bitbucket.org'` for Bitbucket
+  - `'https://gitee.com'` for Gitee
 
   ::: warning ATTENSION
   Only when you choose to use __self-hosted__ platform should you set this option. (e.g. __GitLab Community / Enterprise Edition__ or __GitHub Enterprise Server__)
@@ -238,7 +240,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 - __Default__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
 - __Details__:
 
-  Some platforms do not support Implicity Grant, so we have to request the API of the platform to get the access token.
+  Some platforms (e.g. GitHub and Gitee) do not support Implicity Grant, so we have to request the API of the platform to get the access token.
   
   However, the access token API of the platforms do not support CORS (see [related issue of GitHub](https://github.com/isaacs/github/issues/330)). As Vssue is a pure front-end plugin, we have to use a proxy to request access token.
 
@@ -316,12 +318,12 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   So make sure that Vssue on different pages have different `title`s. Vssue with same `title` will correspond to the same issue, and share the same comments.
   :::
 
-  ::: danger GitHub's Limitation
-  GitHub API (both V3 and V4) does NOT support filtering issues with title.
+  ::: danger GitHub & Gitee Limitation
+  GitHub API (both V3 and V4) / Gitee API V5 does NOT support filtering issues with title.
 
   When you are using `title` to identify issues, Vssue will try to request all the issues with `labels`, and filter them in the client.
 
-  If there are too many (more than 50 or so) issues with `labels`, Vssue may not find the issue correctly, because GitHub won't return them all in one response.
+  If there are too many (more than 50 or so) issues with `labels`, Vssue may not find the issue correctly, because GitHub / Gitee won't return them all in one response.
 
   In this case, we suggest to you use unique `labels` for every single page. For example:
 

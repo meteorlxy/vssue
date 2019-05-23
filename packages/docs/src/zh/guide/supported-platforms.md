@@ -54,3 +54,19 @@
   - 可以不登录浏览评论
   - 不能对评论做出 emoji 响应 （喜欢、点赞、踩 等）
 - 开发者参考： [官方文档](https://developer.atlassian.com/bitbucket/api/2/reference)
+
+## Gitee
+
+指南： [创建 Gitee 第三方应用](./gitee.md)
+
+### Gitee API V5
+
+- Vssue API 包： [@vssue/api-gitee-v5](https://www.npmjs.com/package/@vssue/api-gitee-v5)
+- 特点 / 缺点：
+  - 需要设置 [clientSecret](../options/README.md#clientsecret)
+  - 评论无法排序
+  - 评论可以编辑
+  - 评论可以删除
+  - 可以不登录浏览评论，但 API 有调用频率限制
+  - 不能对评论做出 emoji 响应 （喜欢、点赞、踩 等）
+- 开发者参考： [官方文档](https://gitee.com/api/v5)

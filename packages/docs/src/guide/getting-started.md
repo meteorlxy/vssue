@@ -41,6 +41,8 @@ Vssue can be used directly via a `<script>` tag in browser. As Vssue depends on 
   <script src="https://unpkg.com/vssue/dist/vssue.gitlab.min.js"></script>
   <!-- OR: Vssue Bitbucket build -->
   <script src="https://unpkg.com/vssue/dist/vssue.bitbucket.min.js"></script>
+  <!-- OR: Vssue Gitee build -->
+  <script src="https://unpkg.com/vssue/dist/vssue.gitee.min.js"></script>
 
   <!-- Use Vssue as a Vue component -->
 
@@ -123,6 +125,8 @@ npm install @vssue/api-github-v4
 npm install @vssue/api-gitlab-v4
 # OR: use Bitbucket V2
 npm install @vssue/api-bitbucket-v2
+# OR: use Gitee V5
+npm install @vssue/api-gitee-v5
 ```
 
 ### Use as a Vue Plugin

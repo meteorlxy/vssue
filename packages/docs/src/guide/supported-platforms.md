@@ -54,3 +54,19 @@ Guide: [Set up Bitbucket OAuth Cousumer](./bitbucket.md)
   - can view comments without login
   - cannot post emoji reactions to comments (heart, like, unlike, etc.)
 - Developer Reference: [Official Docs](https://developer.atlassian.com/bitbucket/api/2/reference)
+
+## Gitee
+
+Guide: [Set up Gitee OAuth Application](./gitee.md)
+
+### Gitee API V5
+
+- Vssue API package: [@vssue/api-gitee-v5](https://www.npmjs.com/package/@vssue/api-gitee-v5)
+- Features or drawbacks:
+  - [clientSecret](../options/README.md#clientsecret) is required
+  - comments not sortable
+  - comments editable
+  - comments deletable
+  - can view comments without login
+  - cannot post emoji reactions to comments (heart, like, unlike, etc.)
+- Developer Reference: [Official Docs](https://gitee.com/api/v5)

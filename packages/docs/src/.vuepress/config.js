@@ -188,6 +188,7 @@ function sidebarDemo (title) {
       collapsable: false,
       children: [
         'bitbucket',
+        'gitee',
         'github',
         'gitlab',
       ],
@@ -216,6 +217,7 @@ function sidebarGuide (titleGuide, titleOAuthApp) {
         'github',
         'gitlab',
         'bitbucket',
+        'gitee',
       ],
     },
   ]
