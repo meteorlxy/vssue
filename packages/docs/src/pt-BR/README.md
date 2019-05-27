@@ -7,7 +7,7 @@ features:
 - title: Comentários
   details: Habilita suporte a comentários para páginas estáticas, baseado no sistema de issues dos serviços de hospedagem de código.
 - title: Multi-plataforma
-  details: Suporta múltiplos serviços de hospedagem de código, incluingo GitHub, GitLab e Bitbucket.
+  details: Suporta múltiplos serviços de hospedagem de código, incluingo GitHub, GitLab, Bitbucket e Gitee.
 - title: Use no Vue
   details: Use o Vssue como um plugin Vue, ele pode ser integrado em seu aplicativo Vue facilmente.
 footer: MIT Licensed | Vssue
