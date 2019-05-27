@@ -16,6 +16,10 @@
   <a href="https://vssue.js.org/demo/bitbucket.html" target="_blank">
     <img width="50" src="https://slack-files2.s3-us-west-2.amazonaws.com/avatars/2018-03-21/334235045829_1d1db85d6877560365df_512.png" alt="Bitbucket">
   </a>
+
+  <a href="https://vssue.js.org/demo/gitee.html" target="_blank">
+    <img width="50" src="https://pic3.zhimg.com/50/v2-59ebcea61c2d9e658a2e34b0b8d4b1b7_qhd.jpg" alt="Gitee">
+  </a>
 </p>
 
 <h1 align="center">
