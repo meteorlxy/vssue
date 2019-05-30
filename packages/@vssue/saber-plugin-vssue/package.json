@@ -1,0 +1,36 @@
+{
+  "name": "@vssue/saber-plugin-vssue",
+  "version": "0.10.0",
+  "description": "Saber plugin for vssue",
+  "license": "MIT",
+  "main": "lib/index.ts",
+  "types": "types/index.d.ts",
+  "keywords": [
+    "comment",
+    "issue",
+    "vue",
+    "saber",
+    "plugin"
+  ],
+  "author": "meteorlxy <meteor.lxy@foxmail.com>",
+  "homepage": "https://vssue.js.org",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meteorlxy/vssue.git"
+  },
+  "bugs": {
+    "url": "https://github.com/meteorlxy/vssue/issues"
+  },
+  "dependencies": {
+    "vssue": "^0.10.0"
+  },
+  "devDependencies": {
+    "saber": "^0.6.7"
+  },
+  "peerDependencies": {
+    "saber": "^0.6.7"
+  }
+}
