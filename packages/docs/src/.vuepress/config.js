@@ -143,7 +143,6 @@ module.exports = {
 
   plugins: [
     '@vuepress/plugin-back-to-top',
-    '@vuepress/medium-zoom',
     ['@vuepress/plugin-pwa', {
       serviceWorker: true,
       updatePopup: true,
@@ -152,6 +151,7 @@ module.exports = {
       'ga': 'UA-132770851-3',
     }],
     '@vssue/vuepress-plugin-vssue',
+    'vuepress-plugin-medium-zoom',
   ],
 
   chainWebpack: (config, isServer) => {
