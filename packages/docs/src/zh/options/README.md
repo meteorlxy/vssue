@@ -318,37 +318,6 @@ Vue.use(Vssue, {
   所以请确保不同页面的 Vssue 使用不同的 `title`。拥有相同 `title` 的 Vssue 会对应到同一个 Issue，也就会有同样的评论。
   :::
 
-  ::: danger GitHub & Gitee 的问题
-  GitHub API （V3 和 V4） / Gitee API V5 不支持根据标题来筛选 Issue。
-
-  当你使用 `title` 来对应 Issue 的时候，Vssue 会尝试获取对应 `labels` 下的所有 Issue，然后在客户端筛选它们。
-
-  如果当前 `labels` 有过多 Issue （超过50个左右），Vssue 可能无法正确获取对应 Issue，因为 GitHub / Gitee 不会在一次响应中返回全部 Issue。
-
-  在这种情况下，我们建议你给每个页面使用一个独特的 `labels`。例如：
-
-  ```vue
-  <template>
-    <Vssue
-      :title="vssueTitle"
-      :options="{
-        labels: ['Vssue', vssueTitle]
-      }"
-    />
-  </template>
-
-  <script>
-  export default {
-    data () {
-      return {
-        vssueTitle: '独特的标题',
-      }
-    },
-  }
-  </script>
-  ```
-  :::
-
 - __参考__:
   - [prefix](#prefix)
   - [labels](#labels)

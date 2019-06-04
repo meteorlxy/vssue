@@ -318,37 +318,6 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   So make sure that Vssue on different pages have different `title`s. Vssue with same `title` will correspond to the same issue, and share the same comments.
   :::
 
-  ::: danger GitHub & Gitee Limitation
-  GitHub API (both V3 and V4) / Gitee API V5 does NOT support filtering issues with title.
-
-  When you are using `title` to identify issues, Vssue will try to request all the issues with `labels`, and filter them in the client.
-
-  If there are too many (more than 50 or so) issues with `labels`, Vssue may not find the issue correctly, because GitHub / Gitee won't return them all in one response.
-
-  In this case, we suggest to you use unique `labels` for every single page. For example:
-
-  ```vue
-  <template>
-    <Vssue
-      :title="vssueTitle"
-      :options="{
-        labels: ['Vssue', vssueTitle]
-      }"
-    />
-  </template>
-
-  <script>
-  export default {
-    data () {
-      return {
-        vssueTitle: 'My unique title',
-      }
-    },
-  }
-  </script>
-  ```
-  :::
-
 - __Reference__:
   - [prefix](#prefix)
   - [labels](#labels)
