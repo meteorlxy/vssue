@@ -109,7 +109,7 @@ export default class VssueNewComment extends Vue {
   }
 
   get disabled (): boolean {
-    return this.content === '' || this.vssue.isPending
+    return this.content === '' || this.vssue.isPending || this.vssue.issue === null
   }
 
   get loading (): boolean {
