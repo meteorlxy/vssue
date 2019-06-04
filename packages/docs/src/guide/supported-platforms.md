@@ -69,4 +69,4 @@ Guide: [Set up Gitee OAuth Application](./gitee.md)
   - comments deletable
   - can view comments without login
   - cannot post emoji reactions to comments (heart, like, unlike, etc.)
-- Developer Reference: [Official Docs](https://gitee.com/api/v5)
+- Developer Reference: [Official Docs](https://gitee.com/api/v5/swagger)

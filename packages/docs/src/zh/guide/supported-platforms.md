@@ -69,4 +69,4 @@
   - 评论可以删除
   - 可以不登录浏览评论，但 API 有调用频率限制
   - 不能对评论做出 emoji 响应 （喜欢、点赞、踩 等）
-- 开发者参考： [官方文档](https://gitee.com/api/v5)
+- 开发者参考： [官方文档](https://gitee.com/api/v5/swagger)
