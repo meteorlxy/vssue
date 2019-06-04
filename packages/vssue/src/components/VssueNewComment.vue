@@ -23,7 +23,7 @@
         ref="input"
         class="vssue-new-comment-input"
         :rows="inputRows"
-        :disabled="!user || loading"
+        :disabled="isInputDisabled"
         :placeholder="vssue.$t(user ? 'placeholder' : 'noLoginPlaceHolder')"
         :spellcheck="false"
         v-model="content"
@@ -58,7 +58,7 @@
           v-if="user"
           class="vssue-button-submit-comment"
           type="primary"
-          :disabled="disabled"
+          :disabled="isSubmitDisabled"
           @click="submit()"
         >
           <VssueIcon
@@ -108,7 +108,11 @@ export default class VssueNewComment extends Vue {
     return this.vssue.API && this.vssue.API.platform.name
   }
 
-  get disabled (): boolean {
+  get isInputDisabled (): boolean {
+    return this.loading || this.user === null || this.vssue.issue === null
+  }
+
+  get isSubmitDisabled (): boolean {
     return this.content === '' || this.vssue.isPending || this.vssue.issue === null
   }
 
@@ -142,7 +146,7 @@ export default class VssueNewComment extends Vue {
   }
 
   async submit (): Promise<void> {
-    if (this.vssue.isPending) return
+    if (this.isSubmitDisabled) return
     await this.vssue.postComment({ content: this.content })
     this.content = ''
     await this.vssue.getComments()
