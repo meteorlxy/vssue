@@ -1,3 +1,19 @@
+# [1.0.0](https://github.com/meteorlxy/vssue/compare/v0.10.0...v1.0.0) (2019-06-04)
+
+
+### Bug Fixes
+
+* **$vssue:** disable submit button if issue is not ready (close [#45](https://github.com/meteorlxy/vssue/issues/45)) ([dd72b40](https://github.com/meteorlxy/vssue/commit/dd72b40))
+* **$vssue:** disable textarea if issue is not ready ([2ae723d](https://github.com/meteorlxy/vssue/commit/2ae723d))
+
+
+### Features
+
+* **$api-gitee-v5:** get issue by title via search api ([8eb4ebe](https://github.com/meteorlxy/vssue/commit/8eb4ebe))
+* **$api-github-v3:** get issue by title via search api ([6e21aae](https://github.com/meteorlxy/vssue/commit/6e21aae))
+
+
+
 # [0.10.0](https://github.com/meteorlxy/vssue/compare/v0.9.1...v0.10.0) (2019-05-23)
 
 
