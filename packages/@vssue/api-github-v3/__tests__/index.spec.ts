@@ -166,7 +166,7 @@ describe('methods', () => {
 
   describe('getIssue', () => {
     describe('with issue id', () => {
-      const issueId = fixtures.issues[0].id
+      const issueId = fixtures.issues.items[0].id
 
       describe('issue exists', () => {
         beforeEach(() => {
@@ -223,11 +223,11 @@ describe('methods', () => {
     })
 
     describe('with issue title', () => {
-      const issueTitle = fixtures.issues[0].title
+      const issueTitle = fixtures.issues.items[0].title
 
       describe('issue exists', () => {
         beforeEach(() => {
-          mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues$`)).reply(200, fixtures.issues)
+          mock.onGet(new RegExp(`search/issues$`)).reply(200, fixtures.issues)
         })
 
         test('login', async () => {
@@ -239,7 +239,8 @@ describe('methods', () => {
           const request = mock.history.get[0]
           expect(request.method).toBe('get')
           expect(request.headers['Authorization']).toBe(`token ${mockToken}`)
-          expect(issue).toEqual(normalizeIssue(fixtures.issues[0]))
+          expect(request.params['q']).toEqual(expect.stringContaining(issueTitle))
+          expect(issue).toEqual(normalizeIssue(fixtures.issues.items[0]))
         })
 
         test('not login', async () => {
@@ -251,12 +252,13 @@ describe('methods', () => {
           const request = mock.history.get[0]
           expect(request.method).toBe('get')
           expect(request.headers['Authorization']).toBeUndefined()
-          expect(issue).toEqual(normalizeIssue(fixtures.issues[0]))
+          expect(request.params['q']).toEqual(expect.stringContaining(issueTitle))
+          expect(issue).toEqual(normalizeIssue(fixtures.issues.items[0]))
         })
       })
 
       test('issue does not exist', async () => {
-        mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues$`)).reply(200, [])
+        mock.onGet(new RegExp(`search/issues$`)).reply(200, { items: [] })
         const issue = await API.getIssue({
           issueTitle,
           accessToken: null,

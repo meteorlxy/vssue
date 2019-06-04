@@ -203,6 +203,7 @@ export default class GithubV3 implements VssueAPI.Instance {
    * @see https://developer.github.com/v3/issues/#list-issues-for-a-repository
    * @see https://developer.github.com/v3/issues/#get-a-single-issue
    * @see https://developer.github.com/v3/#pagination
+   * @see https://developer.github.com/v3/search/#search-issues-and-pull-requests
    */
   async getIssue ({
     accessToken,
@@ -238,15 +239,18 @@ export default class GithubV3 implements VssueAPI.Instance {
       }
     } else {
       options.params = {
-        labels: this.labels.join(','),
-        sort: 'created',
-        direction: 'asc',
-        state: 'all',
-        // to avoid caching
-        timestamp: Date.now(),
+        q: [
+          `${issueTitle}`,
+          `is:issue`,
+          `in:title`,
+          `repo:${this.owner}/${this.repo}`,
+          `is:public`,
+          ...this.labels.map(label => `label:${label}`),
+        ].join(' '),
+        'per_page': 1,
       }
-      const { data } = await this.$http.get(`repos/${this.owner}/${this.repo}/issues`, options)
-      const issue = data.map(normalizeIssue).find(item => item.title === issueTitle)
+      const { data } = await this.$http.get(`search/issues`, options)
+      const issue = data.items.map(normalizeIssue).find(item => item.title === issueTitle)
       return issue || null
     }
   }
