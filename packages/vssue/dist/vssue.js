@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v0.10.0
+ * @version v1.0.0
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -38,9 +38,94 @@ var script = Vue.extend({
     name: 'Iconfont',
 });
 
+function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier
+/* server only */
+, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+  if (typeof shadowMode !== 'boolean') {
+    createInjectorSSR = createInjector;
+    createInjector = shadowMode;
+    shadowMode = false;
+  } // Vue.extend constructor export interop.
+
+
+  var options = typeof script === 'function' ? script.options : script; // render functions
+
+  if (template && template.render) {
+    options.render = template.render;
+    options.staticRenderFns = template.staticRenderFns;
+    options._compiled = true; // functional template
+
+    if (isFunctionalTemplate) {
+      options.functional = true;
+    }
+  } // scopedId
+
+
+  if (scopeId) {
+    options._scopeId = scopeId;
+  }
+
+  var hook;
+
+  if (moduleIdentifier) {
+    // server build
+    hook = function hook(context) {
+      // 2.3 injection
+      context = context || // cached call
+      this.$vnode && this.$vnode.ssrContext || // stateful
+      this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext; // functional
+      // 2.2 with runInNewContext: true
+
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__;
+      } // inject component styles
+
+
+      if (style) {
+        style.call(this, createInjectorSSR(context));
+      } // register component module identifier for async chunk inference
+
+
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier);
+      }
+    }; // used by ssr in case component is cached and beforeCreate
+    // never gets called
+
+
+    options._ssrRegister = hook;
+  } else if (style) {
+    hook = shadowMode ? function () {
+      style.call(this, createInjectorShadow(this.$root.$options.shadowRoot));
+    } : function (context) {
+      style.call(this, createInjector(context));
+    };
+  }
+
+  if (hook) {
+    if (options.functional) {
+      // register for functional component in vue file
+      var originalRender = options.render;
+
+      options.render = function renderWithStyleInjection(h, context) {
+        hook.call(context);
+        return originalRender(h, context);
+      };
+    } else {
+      // inject component registration as beforeCreate hook
+      var existing = options.beforeCreate;
+      options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+    }
+  }
+
+  return script;
+}
+
+var normalizeComponent_1 = normalizeComponent;
+
 /* script */
-            const __vue_script__ = script;
-            
+const __vue_script__ = script;
+
 /* template */
 var __vue_render__ = function (_h,_vm) {var _c=_vm._c;return _c('svg',{directives:[{name:"show",rawName:"v-show",value:(false),expression:"false"}]},[_c('symbol',{attrs:{"id":"vssue-icon-bitbucket","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M579.5522464 489.45249493q4.8371808 38.38537173-30.81752427 61.55702827t-67.95459093 3.66689493q-23.79580907-10.37653333-32.6119616-35.34262826t-0.31207573-50.01020907 31.67573333-35.34262827q21.92335253-11.00068587 44.1587808-7.33379093t39.00952427 21.61127573 16.77409493 41.1160384zM647.19476053 476.65737173q-8.50407573-65.22392427-68.8908192-99.9424t-120.07131413-7.9579424q-38.38537173 17.08617173-61.24495253 53.9111616t-21.0651424 78.95527574q2.41859093 55.4715424 47.20152426 94.48106666t100.87862827 34.1723424q55.4715424-4.8371808 92.60860907-51.18049493t30.50544746-102.43900907zM792.93434133 146.32472427q-12.17097173-16.4620192-34.1723424-27.15062827t-35.34262826-13.41927573-43.30057174-7.64586667q-177.33729493-28.63299093-345.00022826 1.24830507-26.2144 4.29104747-40.25782827 7.33379093t-33.54819093 13.41927573-30.50544747 26.2144q18.2564576 17.08617173 46.34331413 27.6967616t44.78293334 13.41927574 53.36502826 7.02171413q138.95192427 17.71032427 273.06666667 0.62415253 38.38537173-4.8371808 54.53531413-7.33379093t44.1587808-13.1072 45.7191616-28.32091413zM827.65281813 777.10872427q-4.8371808 15.83786667-9.44030506 46.65539093t-8.50407574 51.18049493-17.39824746 42.6764192-35.34262827 34.4064q-52.4288 29.2571424-115.46819093 43.61264747t-123.1140576 13.41927573-122.8019808-11.3127616q-28.0088384-4.8371808-49.69813334-11.00068586t-46.65539093-16.4620192-44.4708576-26.52647574-31.67573333-37.4491424q-15.21371413-58.51428587-34.71847574-177.96144746l3.66689494-9.7523808 11.00068586-5.46133334q135.9091808 90.1900192 308.72137174 90.1900192t309.34552426-90.1900192q12.79512427 3.66689493 14.5895616 14.04342827t-3.0427424 27.46270507-4.8371808 22.54750506zM937.97175147 191.41973333q-15.83786667 101.8148576-67.64251414 399.22346667-3.0427424 18.2564576-16.4620192 34.1723424t-26.52647573 24.3419424-33.23611413 18.88060907q-153.61950507 76.7707424-371.8387808 53.67710506-151.12289493-16.4620192-240.14262827-84.72868586-9.12822827-7.33379093-15.52579093-16.1499424t-10.37653334-21.2992-5.46133333-20.75306667-3.66689493-24.10788587-3.3548192-21.2992q-5.46133333-30.50544747-16.1499424-91.43832426t-17.08617174-98.4600384-14.35550506-89.8779424-13.41927574-96.27550507q1.7944384-15.83786667 10.68860907-29.5692192t19.19268587-22.8595808 27.46270506-18.2564576 28.0088384-13.73135253 29.2571424-11.3127616q76.22460907-28.0088384 190.75657174-39.00952427 231.0144-22.54750507 412.01859093 30.50544747 94.48106667 28.0088384 131.072 74.35215253 9.7523808 12.17097173 10.0644576 31.0515808t-3.3548192 32.9240384z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-gitee","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M978.404275 409.561604H455.061338c-25.117645 0-45.499734 20.382089-45.499734 45.499734l-0.031997 113.781333c0 25.117645 20.350092 45.499734 45.499734 45.531731h318.594132c25.117645 0 45.499734 20.382089 45.499734 45.499735v22.749867a136.5312 136.5312 0 0 1-136.5312 136.5312H250.248539a45.499734 45.499734 0 0 1-45.499734-45.499734V341.343999a136.5312 136.5312 0 0 1 136.5312-136.5312L978.308284 204.780802c25.117645 0 45.499734-20.350092 45.499734-45.467738L1023.904009 45.531731h0.031997A45.499734 45.499734 0 0 0 978.468269 0h-0.031997L341.343999 0.031997C152.84967 0.031997 0.031997 152.84967 0.031997 341.343999v637.092273c0 25.117645 20.382089 45.499734 45.499734 45.499734h671.233072a307.171203 307.171203 0 0 0 307.171203-307.171203v-261.671468c0-25.117645-20.382089-45.499734-45.499734-45.499734z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-github","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M512 20.4425c-278.334 0-504 225.6345-504 504 0 222.6735 144.4275 411.6105 344.673 478.233 25.2 4.662 34.461-10.9305 34.461-24.255 0-12.0015-0.4725-51.723-0.693-93.8385-140.238 30.492-169.8165-59.472-169.8165-59.472-22.932-58.2435-55.944-73.7415-55.944-73.7415-45.738-31.2795 3.465-30.6495 3.465-30.6495 50.589 3.5595 77.238 51.9435 77.238 51.9435 44.9505 77.049 117.9045 54.7785 146.664 41.895 4.5045-32.571 17.577-54.81 32.004-67.41-111.951-12.726-229.635-55.9755-229.635-249.0705 0-55.0305 19.6875-99.981 51.9435-135.2925-5.229-12.6945-22.491-63.945 4.8825-133.371 0 0 42.336-13.545 138.6315 51.66 40.194-11.1825 83.3175-16.758 126.1575-16.9785 42.8085 0.189 85.9635 5.796 126.252 16.9785 96.201-65.205 138.4425-51.66 138.4425-51.66 27.4365 69.426 10.1745 120.6765 4.9455 133.371 32.319 35.28 51.8805 80.262 51.8805 135.2925 0 193.5675-117.9045 236.187-230.139 248.6925 18.081 15.6555 34.1775 46.305 34.1775 93.3345 0 67.4415-0.5985 121.716-0.5985 138.3165 0 13.419 9.072 29.1375 34.6185 24.192 200.151-66.717 344.3895-255.5595 344.3895-478.17 0-278.3655-225.666-504-504-504z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-gitlab","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M66.61375986 405.11600042L512.11376028 976.03999972 23.84576 621.65599958a39.312 39.312 0 0 1-14.07600042-43.30799944l56.8080007-173.26800028z m259.88400014 0h371.26800014L512.14975986 976.03999972zM215.11376 60.88400042l111.384 344.232H66.61375986l111.384-344.232a19.72800014 19.72800014 0 0 1 37.11600014 0z m742.49999972 344.232l56.8080007 173.2679993a39.23999986 39.23999986 0 0 1-14.07600042 43.30800042l-488.26800028 354.38400014 445.50000042-570.92400028z m0 0h-259.88400014l111.384-344.232a19.72800014 19.72800014 0 0 1 37.11600014 0z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-loading","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M843.307 742.24c0 3.217 2.607 5.824 5.824 5.824s5.824-2.607 5.824-5.824a5.823 5.823 0 0 0-5.824-5.824 5.823 5.823 0 0 0-5.824 5.824zM714.731 874.912c0 6.398 5.186 11.584 11.584 11.584s11.584-5.186 11.584-11.584-5.186-11.584-11.584-11.584-11.584 5.186-11.584 11.584zM541.419 943.2c0 9.614 7.794 17.408 17.408 17.408s17.408-7.794 17.408-17.408-7.794-17.408-17.408-17.408-17.408 7.794-17.408 17.408z m-186.56-9.152c0 12.795 10.373 23.168 23.168 23.168s23.168-10.373 23.168-23.168-10.373-23.168-23.168-23.168-23.168 10.373-23.168 23.168zM189.355 849.12c0 16.012 12.98 28.992 28.992 28.992s28.992-12.98 28.992-28.992-12.98-28.992-28.992-28.992-28.992 12.98-28.992 28.992zM74.731 704.736c0 19.228 15.588 34.816 34.816 34.816s34.816-15.588 34.816-34.816-15.588-34.816-34.816-34.816-34.816 15.588-34.816 34.816z m-43.008-177.28c0 22.41 18.166 40.576 40.576 40.576s40.576-18.166 40.576-40.576-18.166-40.576-40.576-40.576-40.576 18.166-40.576 40.576z m35.392-176.128c0 25.626 20.774 46.4 46.4 46.4s46.4-20.774 46.4-46.4c0-25.626-20.774-46.4-46.4-46.4-25.626 0-46.4 20.774-46.4 46.4z m106.176-142.016c0 28.843 23.381 52.224 52.224 52.224s52.224-23.381 52.224-52.224c0-28.843-23.381-52.224-52.224-52.224-28.843 0-52.224 23.381-52.224 52.224z m155.904-81.344c0 32.024 25.96 57.984 57.984 57.984s57.984-25.96 57.984-57.984-25.96-57.984-57.984-57.984-57.984 25.96-57.984 57.984z m175.104-5.056c0 35.24 28.568 63.808 63.808 63.808s63.808-28.568 63.808-63.808c0-35.24-28.568-63.808-63.808-63.808-35.24 0-63.808 28.568-63.808 63.808z m160.32 72.128c0 38.421 31.147 69.568 69.568 69.568s69.568-31.147 69.568-69.568-31.147-69.568-69.568-69.568-69.568 31.147-69.568 69.568z m113.92 135.488c0 41.638 33.754 75.392 75.392 75.392s75.392-33.754 75.392-75.392-33.754-75.392-75.392-75.392-75.392 33.754-75.392 75.392z m45.312 175.488c0 44.854 36.362 81.216 81.216 81.216s81.216-36.362 81.216-81.216c0-44.854-36.362-81.216-81.216-81.216-44.854 0-81.216 36.362-81.216 81.216z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-like","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M885.9 533.7c16.8-22.2 26.1-49.4 26.1-77.7 0-44.9-25.1-87.4-65.5-111.1a67.67 67.67 0 0 0-34.3-9.3H572.4l6-122.9c1.4-29.7-9.1-57.9-29.5-79.4-20.5-21.5-48.1-33.4-77.9-33.4-52 0-98 35-111.8 85.1l-85.9 311H144c-17.7 0-32 14.3-32 32v364c0 17.7 14.3 32 32 32h601.3c9.2 0 18.2-1.8 26.5-5.4 47.6-20.3 78.3-66.8 78.3-118.4 0-12.6-1.8-25-5.4-37 16.8-22.2 26.1-49.4 26.1-77.7 0-12.6-1.8-25-5.4-37 16.8-22.2 26.1-49.4 26.1-77.7-0.2-12.6-2-25.1-5.6-37.1zM184 852V568h81v284h-81z m636.4-353l-21.9 19 13.9 25.4c4.6 8.4 6.9 17.6 6.9 27.3 0 16.5-7.2 32.2-19.6 43l-21.9 19 13.9 25.4c4.6 8.4 6.9 17.6 6.9 27.3 0 16.5-7.2 32.2-19.6 43l-21.9 19 13.9 25.4c4.6 8.4 6.9 17.6 6.9 27.3 0 22.4-13.2 42.6-33.6 51.8H329V564.8l99.5-360.5c5.2-18.9 22.5-32.2 42.2-32.3 7.6 0 15.1 2.2 21.1 6.7 9.9 7.4 15.2 18.6 14.6 30.5l-9.6 198.4h314.4C829 418.5 840 436.9 840 456c0 16.5-7.2 32.1-19.6 43z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-unlike","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M885.9 490.3c3.6-12 5.4-24.4 5.4-37 0-28.3-9.3-55.5-26.1-77.7 3.6-12 5.4-24.4 5.4-37 0-28.3-9.3-55.5-26.1-77.7 3.6-12 5.4-24.4 5.4-37 0-51.6-30.7-98.1-78.3-118.4-8.3-3.6-17.2-5.4-26.5-5.4H144c-17.7 0-32 14.3-32 32v364c0 17.7 14.3 32 32 32h129.3l85.8 310.8C372.9 889 418.9 924 470.9 924c29.7 0 57.4-11.8 77.9-33.4 20.5-21.5 31-49.7 29.5-79.4l-6-122.9h239.9c12.1 0 23.9-3.2 34.3-9.3 40.4-23.5 65.5-66.1 65.5-111 0-28.3-9.3-55.5-26.1-77.7zM184 456V172h81v284h-81z m627.2 160.4H496.8l9.6 198.4c0.6 11.9-4.7 23.1-14.6 30.5-6.1 4.5-13.6 6.8-21.1 6.7-19.6-0.1-36.9-13.4-42.2-32.3L329 459.2V172h415.4c20.4 9.2 33.6 29.4 33.6 51.8 0 9.7-2.3 18.9-6.9 27.3l-13.9 25.4 21.9 19c12.5 10.8 19.6 26.5 19.6 43 0 9.7-2.3 18.9-6.9 27.3l-13.9 25.4 21.9 19c12.5 10.8 19.6 26.5 19.6 43 0 9.7-2.3 18.9-6.9 27.3l-14 25.5 21.9 19c12.5 10.8 19.6 26.5 19.6 43 0 19.1-11 37.5-28.8 48.4z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-heart","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M923 283.6c-13.4-31.1-32.6-58.9-56.9-82.8-24.3-23.8-52.5-42.4-84-55.5-32.5-13.5-66.9-20.3-102.4-20.3-49.3 0-97.4 13.5-139.2 39-10 6.1-19.5 12.8-28.5 20.1-9-7.3-18.5-14-28.5-20.1-41.8-25.5-89.9-39-139.2-39-35.5 0-69.9 6.8-102.4 20.3-31.4 13-59.7 31.7-84 55.5-24.4 23.9-43.5 51.7-56.9 82.8-13.9 32.3-21 66.6-21 101.9 0 33.3 6.8 68 20.3 103.3 11.3 29.5 27.5 60.1 48.2 91 32.8 48.9 77.9 99.9 133.9 151.6 92.8 85.7 184.7 144.9 188.6 147.3l23.7 15.2c10.5 6.7 24 6.7 34.5 0l23.7-15.2c3.9-2.5 95.7-61.6 188.6-147.3 56-51.7 101.1-102.7 133.9-151.6 20.7-30.9 37-61.5 48.2-91 13.5-35.3 20.3-70 20.3-103.3 0.1-35.3-7-69.6-20.9-101.9zM512 814.8S156 586.7 156 385.5C156 283.6 240.3 201 344.3 201c73.1 0 136.5 40.8 167.7 100.4C543.2 241.8 606.6 201 679.7 201c104 0 188.3 82.6 188.3 184.5 0 201.2-356 429.3-356 429.3z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-edit","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M723.2 917.76H286.72c-65.28 0-118.4-51.2-118.4-113.92V261.76C168.32 198.4 221.44 147.2 286.72 147.2h375.04c17.92 0 32 14.08 32 32s-14.08 32-32 32H286.72c-30.08 0-54.4 22.4-54.4 49.92v542.08c0 27.52 24.32 49.92 54.4 49.92H723.2c30.08 0 54.4-22.4 54.4-49.92V440.32c0-17.92 14.08-32 32-32s32 14.08 32 32v363.52c0 62.72-53.12 113.92-118.4 113.92z"}}),_vm._v(" "),_c('path',{attrs:{"d":"M499.84 602.24c-7.68 0-14.72-2.56-21.12-7.68-13.44-11.52-14.72-32-3.2-45.44L780.16 198.4c11.52-13.44 32-14.72 45.44-3.2s14.72 32 3.2 45.44L524.16 591.36c-6.4 7.04-15.36 10.88-24.32 10.88z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-delete","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M677.647059 256l0-90.352941c0-37.436235-23.461647-60.235294-61.771294-60.235294L408.094118 105.411765c-38.249412 0-61.741176 22.799059-61.741176 60.235294l0 90.352941-180.705882 0 0 60.235294 60.235294 0 0 512c0 54.272 33.972706 90.352941 90.352941 90.352941l391.529412 0c55.085176 0 90.352941-33.490824 90.352941-90.352941l0-512 60.235294 0 0-60.235294L677.647059 256zM406.588235 165.647059l210.823529 0-1.264941 90.352941L406.588235 256 406.588235 165.647059zM737.882353 858.352941l-451.764706 0 0-542.117647 451.764706 0L737.882353 858.352941zM466.823529 376.470588l-58.729412 0-1.505882 391.529412 60.235294 0L466.823529 376.470588zM617.411765 376.470588l-60.235294 0 0 391.529412 60.235294 0L617.411765 376.470588z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-reply","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M426.666667 384 426.666667 213.333333 128 512 426.666667 810.666667 426.666667 635.733333C640 635.733333 789.333333 704 896 853.333333 853.333333 640 725.333333 426.666667 426.666667 384Z"}})]),_vm._v(" "),_c('symbol',{attrs:{"id":"vssue-icon-error","viewBox":"0 0 1024 1024"}},[_c('path',{attrs:{"d":"M512 720m-48 0a48 48 0 1 0 96 0 48 48 0 1 0-96 0Z"}}),_vm._v(" "),_c('path',{attrs:{"d":"M480 416v184c0 4.4 3.6 8 8 8h48c4.4 0 8-3.6 8-8V416c0-4.4-3.6-8-8-8h-48c-4.4 0-8 3.6-8 8z"}}),_vm._v(" "),_c('path',{attrs:{"d":"M955.7 856l-416-720c-6.2-10.7-16.9-16-27.7-16s-21.6 5.3-27.7 16l-416 720C56 877.4 71.4 904 96 904h832c24.6 0 40-26.6 27.7-48z m-783.5-27.9L512 239.9l339.8 588.2H172.2z"}})])])};
 var __vue_staticRenderFns__ = [];
@@ -53,36 +138,13 @@ var __vue_staticRenderFns__ = [];
   const __vue_module_identifier__ = undefined;
   /* functional template */
   const __vue_is_functional_template__ = true;
-  /* component normalizer */
-  function __vue_normalize__(
-    template, style, script$$1,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script$$1 === 'function' ? script$$1.options : script$$1) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "Iconfont.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var Iconfont = __vue_normalize__(
+  var Iconfont = normalizeComponent_1(
     { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
     __vue_inject_styles__,
     __vue_script__,
@@ -115,8 +177,8 @@ var script$1 = Vue.extend({
 });
 
 /* script */
-            const __vue_script__$1 = script$1;
-            
+const __vue_script__$1 = script$1;
+
 /* template */
 
   /* style */
@@ -127,36 +189,13 @@ var script$1 = Vue.extend({
   const __vue_module_identifier__$1 = undefined;
   /* functional template */
   const __vue_is_functional_template__$1 = undefined;
-  /* component normalizer */
-  function __vue_normalize__$1(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "TransitionFade.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var TransitionFade = __vue_normalize__$1(
+  var TransitionFade = normalizeComponent_1(
     {},
     __vue_inject_styles__$1,
     __vue_script__$1,
@@ -199,8 +238,8 @@ var script$2 = Vue.extend({
 });
 
 /* script */
-            const __vue_script__$2 = script$2;
-            
+const __vue_script__$2 = script$2;
+
 /* template */
 
   /* style */
@@ -211,36 +250,13 @@ var script$2 = Vue.extend({
   const __vue_module_identifier__$2 = undefined;
   /* functional template */
   const __vue_is_functional_template__$2 = undefined;
-  /* component normalizer */
-  function __vue_normalize__$2(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "VssueIcon.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssueIcon = __vue_normalize__$2(
+  var VssueIcon = normalizeComponent_1(
     {},
     __vue_inject_styles__$2,
     __vue_script__$2,
@@ -398,13 +414,13 @@ VssueComment = __decorate([
 var script$3 = VssueComment;
 
 /* script */
-            const __vue_script__$3 = script$3;
-            
+const __vue_script__$3 = script$3;
+
 /* template */
 var __vue_render__$1 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-comment",class:{
     'vssue-comment-edit-mode': _vm.editMode,
     'vssue-comment-disabled': _vm.isDeletingComment || _vm.isPutingComment,
-  }},[_c('div',{staticClass:"vssue-comment-avatar"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_c('img',{attrs:{"src":_vm.author.avatar}})])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-body"},[_vm._t("body",[_c('div',{staticClass:"vssue-comment-header"},[_c('span',{staticClass:"vssue-comment-author"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_vm._v("\n            "+_vm._s(_vm.author.username)+"\n          ")])]),_vm._v(" "),_c('span',{staticClass:"vssue-comment-created-at"},[_vm._v("\n          "+_vm._s(_vm.createdAt)+"\n        ")])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-main"},[(_vm.editMode)?_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.editContent),expression:"editContent"}],ref:"input",staticClass:"vssue-edit-comment-input",attrs:{"rows":_vm.editInputRows},domProps:{"value":(_vm.editContent)},on:{"keyup":function($event){if(!('button' in $event)&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }if(!$event.ctrlKey){ return null; }_vm.putComment();},"input":function($event){if($event.target.composing){ return; }_vm.editContent=$event.target.value;}}}):_c('article',{staticClass:"markdown-body",domProps:{"innerHTML":_vm._s(_vm.content)}})]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-footer"},[(_vm.editMode)?_c('span',{staticClass:"vssue-comment-hint"},[_vm._v("\n          "+_vm._s(_vm.vssue.$t('editMode'))+"\n        ")]):_vm._e(),_vm._v(" "),(_vm.showReactions)?_c('span',{staticClass:"vssue-comment-reactions"},_vm._l((_vm.reactionKeys),function(reaction){return _c('span',{key:reaction,staticClass:"vssue-comment-reaction",attrs:{"title":_vm.vssue.$t(_vm.creatingReactions.includes(reaction) ? 'loading' : reaction)},on:{"click":function($event){_vm.postReaction({ reaction: reaction });}}},[_c('VssueIcon',{attrs:{"name":_vm.creatingReactions.includes(reaction) ? 'loading' : reaction,"title":_vm.vssue.$t(_vm.creatingReactions.includes(reaction) ? 'loading' : reaction)}}),_vm._v(" "),_c('span',{staticClass:"vssue-comment-reaction-number"},[_vm._v("\n              "+_vm._s(_vm.comment.reactions[reaction])+"\n            ")])],1)}),0):_vm._e(),_vm._v(" "),_c('span',{staticClass:"vssue-comment-operations"},[(_vm.comment.author.username === _vm.currentUser && _vm.editMode)?_c('span',{staticClass:"vssue-comment-operation",class:{ 'vssue-comment-operation-muted': _vm.isPutingComment },attrs:{"title":_vm.vssue.$t(_vm.isPutingComment ? 'loading' : 'submit')},on:{"click":function($event){_vm.putComment();}}},[_c('VssueIcon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isPutingComment),expression:"isPutingComment"}],attrs:{"name":"loading","title":_vm.vssue.$t('loading')}}),_vm._v("\n\n            "+_vm._s(_vm.vssue.$t('submit'))+"\n          ")],1):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser && _vm.editMode)?_c('span',{staticClass:"vssue-comment-operation vssue-comment-operation-muted",attrs:{"title":_vm.vssue.$t('cancel')},on:{"click":function($event){_vm.resetEdit();}}},[_vm._v("\n            "+_vm._s(_vm.vssue.$t('cancel'))+"\n          ")]):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser)?_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){_vm.enterEdit();}}},[_c('VssueIcon',{attrs:{"name":"edit","title":_vm.vssue.$t('edit')}})],1):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser || _vm.vssue.isAdmin)?_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){_vm.deleteComment();}}},[_c('VssueIcon',{attrs:{"name":_vm.isDeletingComment ? 'loading' : 'delete',"title":_vm.vssue.$t(_vm.isDeletingComment ? 'loading' : 'delete')}})],1):_vm._e(),_vm._v(" "),_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){_vm.vssue.$emit('reply-comment', _vm.comment);}}},[_c('VssueIcon',{attrs:{"name":"reply","title":_vm.vssue.$t('reply')}})],1)])])])],2)])};
+  }},[_c('div',{staticClass:"vssue-comment-avatar"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_c('img',{attrs:{"src":_vm.author.avatar}})])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-body"},[_vm._t("body",[_c('div',{staticClass:"vssue-comment-header"},[_c('span',{staticClass:"vssue-comment-author"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_vm._v("\n            "+_vm._s(_vm.author.username)+"\n          ")])]),_vm._v(" "),_c('span',{staticClass:"vssue-comment-created-at"},[_vm._v("\n          "+_vm._s(_vm.createdAt)+"\n        ")])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-main"},[(_vm.editMode)?_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.editContent),expression:"editContent"}],ref:"input",staticClass:"vssue-edit-comment-input",attrs:{"rows":_vm.editInputRows},domProps:{"value":(_vm.editContent)},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }if(!$event.ctrlKey){ return null; }return _vm.putComment()},"input":function($event){if($event.target.composing){ return; }_vm.editContent=$event.target.value;}}}):_c('article',{staticClass:"markdown-body",domProps:{"innerHTML":_vm._s(_vm.content)}})]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-footer"},[(_vm.editMode)?_c('span',{staticClass:"vssue-comment-hint"},[_vm._v("\n          "+_vm._s(_vm.vssue.$t('editMode'))+"\n        ")]):_vm._e(),_vm._v(" "),(_vm.showReactions)?_c('span',{staticClass:"vssue-comment-reactions"},_vm._l((_vm.reactionKeys),function(reaction){return _c('span',{key:reaction,staticClass:"vssue-comment-reaction",attrs:{"title":_vm.vssue.$t(_vm.creatingReactions.includes(reaction) ? 'loading' : reaction)},on:{"click":function($event){return _vm.postReaction({ reaction: reaction })}}},[_c('VssueIcon',{attrs:{"name":_vm.creatingReactions.includes(reaction) ? 'loading' : reaction,"title":_vm.vssue.$t(_vm.creatingReactions.includes(reaction) ? 'loading' : reaction)}}),_vm._v(" "),_c('span',{staticClass:"vssue-comment-reaction-number"},[_vm._v("\n              "+_vm._s(_vm.comment.reactions[reaction])+"\n            ")])],1)}),0):_vm._e(),_vm._v(" "),_c('span',{staticClass:"vssue-comment-operations"},[(_vm.comment.author.username === _vm.currentUser && _vm.editMode)?_c('span',{staticClass:"vssue-comment-operation",class:{ 'vssue-comment-operation-muted': _vm.isPutingComment },attrs:{"title":_vm.vssue.$t(_vm.isPutingComment ? 'loading' : 'submit')},on:{"click":function($event){return _vm.putComment()}}},[_c('VssueIcon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isPutingComment),expression:"isPutingComment"}],attrs:{"name":"loading","title":_vm.vssue.$t('loading')}}),_vm._v("\n\n            "+_vm._s(_vm.vssue.$t('submit'))+"\n          ")],1):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser && _vm.editMode)?_c('span',{staticClass:"vssue-comment-operation vssue-comment-operation-muted",attrs:{"title":_vm.vssue.$t('cancel')},on:{"click":function($event){return _vm.resetEdit()}}},[_vm._v("\n            "+_vm._s(_vm.vssue.$t('cancel'))+"\n          ")]):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser)?_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){return _vm.enterEdit()}}},[_c('VssueIcon',{attrs:{"name":"edit","title":_vm.vssue.$t('edit')}})],1):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser || _vm.vssue.isAdmin)?_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){return _vm.deleteComment()}}},[_c('VssueIcon',{attrs:{"name":_vm.isDeletingComment ? 'loading' : 'delete',"title":_vm.vssue.$t(_vm.isDeletingComment ? 'loading' : 'delete')}})],1):_vm._e(),_vm._v(" "),_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){return _vm.vssue.$emit('reply-comment', _vm.comment)}}},[_c('VssueIcon',{attrs:{"name":"reply","title":_vm.vssue.$t('reply')}})],1)])])])],2)])};
 var __vue_staticRenderFns__$1 = [];
 
   /* style */
@@ -415,36 +431,13 @@ var __vue_staticRenderFns__$1 = [];
   const __vue_module_identifier__$3 = undefined;
   /* functional template */
   const __vue_is_functional_template__$3 = false;
-  /* component normalizer */
-  function __vue_normalize__$3(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "VssueComment.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssueComment$1 = __vue_normalize__$3(
+  var VssueComment$1 = normalizeComponent_1(
     { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
     __vue_inject_styles__$3,
     __vue_script__$3,
@@ -500,8 +493,8 @@ VssuePagination = __decorate([
 var script$4 = VssuePagination;
 
 /* script */
-            const __vue_script__$4 = script$4;
-            
+const __vue_script__$4 = script$4;
+
 /* template */
 var __vue_render__$2 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-pagination"},[_c('div',{staticClass:"vssue-pagination-per-page"},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.perPage),expression:"perPage"}],staticClass:"vssue-pagination-select",attrs:{"disabled":_vm.disabled},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.perPage=$event.target.multiple ? $$selectedVal : $$selectedVal[0];}}},_vm._l((_vm.perPageOptions),function(val){return _c('option',{key:val,domProps:{"value":val}},[_vm._v("\n        "+_vm._s(val)+"\n      ")])}),0),_vm._v(" "),_c('span',[_vm._v("\n      "+_vm._s(_vm.vssue.$t('perPage'))+"\n    ")]),_vm._v(" "),(_vm.vssue.API.platform.meta.sortable)?_c('span',{class:{
         'vssue-pagination-link': true,
@@ -523,36 +516,13 @@ var __vue_staticRenderFns__$2 = [];
   const __vue_module_identifier__$4 = undefined;
   /* functional template */
   const __vue_is_functional_template__$4 = false;
-  /* component normalizer */
-  function __vue_normalize__$4(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "VssuePagination.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssuePagination$1 = __vue_normalize__$4(
+  var VssuePagination$1 = normalizeComponent_1(
     { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
     __vue_inject_styles__$4,
     __vue_script__$4,
@@ -580,8 +550,8 @@ VssueComments = __decorate([
 var script$5 = VssueComments;
 
 /* script */
-            const __vue_script__$5 = script$5;
-            
+const __vue_script__$5 = script$5;
+
 /* template */
 var __vue_render__$3 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-comments"},[_c('VssuePagination'),_vm._v(" "),_c('TransitionFade',{attrs:{"group":""}},_vm._l((_vm.vssue.comments.data),function(comment){return _c('VssueComment',{key:comment.id,attrs:{"comment":comment}})}),1),_vm._v(" "),_c('VssuePagination',{directives:[{name:"show",rawName:"v-show",value:(_vm.vssue.comments.data.length > 5),expression:"vssue.comments.data.length > 5"}]})],1)};
 var __vue_staticRenderFns__$3 = [];
@@ -594,36 +564,13 @@ var __vue_staticRenderFns__$3 = [];
   const __vue_module_identifier__$5 = undefined;
   /* functional template */
   const __vue_is_functional_template__$5 = false;
-  /* component normalizer */
-  function __vue_normalize__$5(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "VssueComments.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssueComments$1 = __vue_normalize__$5(
+  var VssueComments$1 = normalizeComponent_1(
     { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
     __vue_inject_styles__$5,
     __vue_script__$5,
@@ -653,8 +600,8 @@ var script$6 = Vue.extend({
 });
 
 /* script */
-            const __vue_script__$6 = script$6;
-            
+const __vue_script__$6 = script$6;
+
 /* template */
 
   /* style */
@@ -665,36 +612,13 @@ var script$6 = Vue.extend({
   const __vue_module_identifier__$6 = undefined;
   /* functional template */
   const __vue_is_functional_template__$6 = undefined;
-  /* component normalizer */
-  function __vue_normalize__$6(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "VssueButton.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssueButton = __vue_normalize__$6(
+  var VssueButton = normalizeComponent_1(
     {},
     __vue_inject_styles__$6,
     __vue_script__$6,
@@ -716,8 +640,11 @@ let VssueNewComment = class VssueNewComment extends Vue$1 {
     get platform() {
         return this.vssue.API && this.vssue.API.platform.name;
     }
-    get disabled() {
-        return this.content === '' || this.vssue.isPending;
+    get isInputDisabled() {
+        return this.loading || this.user === null || this.vssue.issue === null;
+    }
+    get isSubmitDisabled() {
+        return this.content === '' || this.vssue.isPending || this.vssue.issue === null;
     }
     get loading() {
         return this.vssue.isCreatingComment;
@@ -743,7 +670,7 @@ let VssueNewComment = class VssueNewComment extends Vue$1 {
         this.$refs.input.focus();
     }
     async submit() {
-        if (this.vssue.isPending)
+        if (this.isSubmitDisabled)
             return;
         await this.vssue.postComment({ content: this.content });
         this.content = '';
@@ -764,10 +691,10 @@ VssueNewComment = __decorate([
 var script$7 = VssueNewComment;
 
 /* script */
-            const __vue_script__$7 = script$7;
-            
+const __vue_script__$7 = script$7;
+
 /* template */
-var __vue_render__$4 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-new-comment"},[_c('div',{staticClass:"vssue-comment-avatar"},[(_vm.user)?_c('a',{attrs:{"href":_vm.user.homepage,"title":_vm.user.username,"target":"_blank"}},[_c('img',{attrs:{"src":_vm.user.avatar}})]):_c('VssueIcon',{attrs:{"name":_vm.platform.toLowerCase(),"title":_vm.vssue.$t('loginToComment', { platform: _vm.platform })},on:{"click":function($event){_vm.vssue.login();}}})],1),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-body"},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.content),expression:"content"}],ref:"input",staticClass:"vssue-new-comment-input",attrs:{"rows":_vm.inputRows,"disabled":!_vm.user || _vm.loading,"placeholder":_vm.vssue.$t(_vm.user ? 'placeholder' : 'noLoginPlaceHolder'),"spellcheck":false},domProps:{"value":(_vm.content)},on:{"keyup":function($event){if(!('button' in $event)&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }if(!$event.ctrlKey){ return null; }_vm.submit();},"input":function($event){if($event.target.composing){ return; }_vm.content=$event.target.value;}}})]),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-footer"},[(_vm.user)?_c('span',{staticClass:"vssue-current-user"},[_c('span',[_vm._v(_vm._s(_vm.vssue.$t('currentUser'))+" - "+_vm._s(_vm.user.username)+" - ")]),_vm._v(" "),_c('a',{staticClass:"vssue-logout",on:{"click":function($event){_vm.vssue.logout();}}},[_vm._v("\n        "+_vm._s(_vm.vssue.$t('logout'))+"\n      ")])]):_c('span',{staticClass:"vssue-current-user"},[_vm._v("\n      "+_vm._s(_vm.vssue.$t('loginToComment', { platform: _vm.platform }))+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-operations"},[(_vm.user)?_c('VssueButton',{staticClass:"vssue-button-submit-comment",attrs:{"type":"primary","disabled":_vm.disabled},on:{"click":function($event){_vm.submit();}}},[_c('VssueIcon',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],attrs:{"name":"loading"}}),_vm._v("\n\n        "+_vm._s(_vm.vssue.$t(_vm.loading ? 'submitting' : 'submitComment'))+"\n      ")],1):_c('VssueButton',{staticClass:"vssue-button-login",attrs:{"type":"primary","title":_vm.vssue.$t('loginToComment', { platform: _vm.platform })},on:{"click":function($event){_vm.vssue.login();}}},[_vm._v("\n        "+_vm._s(_vm.vssue.$t('login', { platform: _vm.platform }))+"\n      ")])],1)])])};
+var __vue_render__$4 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-new-comment"},[_c('div',{staticClass:"vssue-comment-avatar"},[(_vm.user)?_c('a',{attrs:{"href":_vm.user.homepage,"title":_vm.user.username,"target":"_blank"}},[_c('img',{attrs:{"src":_vm.user.avatar}})]):_c('VssueIcon',{attrs:{"name":_vm.platform.toLowerCase(),"title":_vm.vssue.$t('loginToComment', { platform: _vm.platform })},on:{"click":function($event){return _vm.vssue.login()}}})],1),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-body"},[_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.content),expression:"content"}],ref:"input",staticClass:"vssue-new-comment-input",attrs:{"rows":_vm.inputRows,"disabled":_vm.isInputDisabled,"placeholder":_vm.vssue.$t(_vm.user ? 'placeholder' : 'noLoginPlaceHolder'),"spellcheck":false},domProps:{"value":(_vm.content)},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }if(!$event.ctrlKey){ return null; }return _vm.submit()},"input":function($event){if($event.target.composing){ return; }_vm.content=$event.target.value;}}})]),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-footer"},[(_vm.user)?_c('span',{staticClass:"vssue-current-user"},[_c('span',[_vm._v(_vm._s(_vm.vssue.$t('currentUser'))+" - "+_vm._s(_vm.user.username)+" - ")]),_vm._v(" "),_c('a',{staticClass:"vssue-logout",on:{"click":function($event){return _vm.vssue.logout()}}},[_vm._v("\n        "+_vm._s(_vm.vssue.$t('logout'))+"\n      ")])]):_c('span',{staticClass:"vssue-current-user"},[_vm._v("\n      "+_vm._s(_vm.vssue.$t('loginToComment', { platform: _vm.platform }))+"\n    ")]),_vm._v(" "),_c('div',{staticClass:"vssue-new-comment-operations"},[(_vm.user)?_c('VssueButton',{staticClass:"vssue-button-submit-comment",attrs:{"type":"primary","disabled":_vm.isSubmitDisabled},on:{"click":function($event){return _vm.submit()}}},[_c('VssueIcon',{directives:[{name:"show",rawName:"v-show",value:(_vm.loading),expression:"loading"}],attrs:{"name":"loading"}}),_vm._v("\n\n        "+_vm._s(_vm.vssue.$t(_vm.loading ? 'submitting' : 'submitComment'))+"\n      ")],1):_c('VssueButton',{staticClass:"vssue-button-login",attrs:{"type":"primary","title":_vm.vssue.$t('loginToComment', { platform: _vm.platform })},on:{"click":function($event){return _vm.vssue.login()}}},[_vm._v("\n        "+_vm._s(_vm.vssue.$t('login', { platform: _vm.platform }))+"\n      ")])],1)])])};
 var __vue_staticRenderFns__$4 = [];
 
   /* style */
@@ -778,36 +705,13 @@ var __vue_staticRenderFns__$4 = [];
   const __vue_module_identifier__$7 = undefined;
   /* functional template */
   const __vue_is_functional_template__$7 = false;
-  /* component normalizer */
-  function __vue_normalize__$7(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "VssueNewComment.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssueNewComment$1 = __vue_normalize__$7(
+  var VssueNewComment$1 = normalizeComponent_1(
     { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
     __vue_inject_styles__$7,
     __vue_script__$7,
@@ -922,13 +826,13 @@ VssueNotice = __decorate([
 var script$8 = VssueNotice;
 
 /* script */
-            const __vue_script__$8 = script$8;
-            
+const __vue_script__$8 = script$8;
+
 /* template */
 var __vue_render__$5 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-notice"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.progress.show),expression:"progress.show"}],staticClass:"vssue-progress",style:({
       'width': ((_vm.progress.percent) + "%"),
       'transition': ("all " + (_vm.progress.speed) + "ms linear"),
-    })}),_vm._v(" "),_c('TransitionFade',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.alert.show),expression:"alert.show"}],staticClass:"vssue-alert",domProps:{"textContent":_vm._s(_vm.alert.message)},on:{"click":function($event){_vm.alertHide();}}})])],1)};
+    })}),_vm._v(" "),_c('TransitionFade',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.alert.show),expression:"alert.show"}],staticClass:"vssue-alert",domProps:{"textContent":_vm._s(_vm.alert.message)},on:{"click":function($event){return _vm.alertHide()}}})])],1)};
 var __vue_staticRenderFns__$5 = [];
 
   /* style */
@@ -939,36 +843,13 @@ var __vue_staticRenderFns__$5 = [];
   const __vue_module_identifier__$8 = undefined;
   /* functional template */
   const __vue_is_functional_template__$8 = false;
-  /* component normalizer */
-  function __vue_normalize__$8(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "VssueNotice.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssueNotice$1 = __vue_normalize__$8(
+  var VssueNotice$1 = normalizeComponent_1(
     { render: __vue_render__$5, staticRenderFns: __vue_staticRenderFns__$5 },
     __vue_inject_styles__$8,
     __vue_script__$8,
@@ -1031,8 +912,8 @@ VssueStatus = __decorate([
 var script$9 = VssueStatus;
 
 /* script */
-            const __vue_script__$9 = script$9;
-            
+const __vue_script__$9 = script$9;
+
 /* template */
 var __vue_render__$6 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('TransitionFade',[(_vm.status)?_c('div',{key:_vm.status,staticClass:"vssue-status"},[(['failed', 'loadingComments', 'initializing'].includes(_vm.status))?_c('VssueIcon',{attrs:{"name":_vm.status === 'failed' ? 'error' : 'loading'}}):_vm._e(),_vm._v(" "),_c('p',{staticClass:"vssue-status-info"},[_c(['issueNotCreated', 'loginRequired'].includes(_vm.status) ? 'a' : 'span',{tag:"Component",on:{"click":_vm.handleClick}},[_vm._v("\n        "+_vm._s(_vm.vssue.$t(_vm.status))+"\n      ")])],1)],1):_vm._e()])};
 var __vue_staticRenderFns__$6 = [];
@@ -1045,36 +926,13 @@ var __vue_staticRenderFns__$6 = [];
   const __vue_module_identifier__$9 = undefined;
   /* functional template */
   const __vue_is_functional_template__$9 = false;
-  /* component normalizer */
-  function __vue_normalize__$9(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "VssueStatus.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssueStatus$1 = __vue_normalize__$9(
+  var VssueStatus$1 = normalizeComponent_1(
     { render: __vue_render__$6, staticRenderFns: __vue_staticRenderFns__$6 },
     __vue_inject_styles__$9,
     __vue_script__$9,
@@ -1105,8 +963,8 @@ VssueBody = __decorate([
 var script$a = VssueBody;
 
 /* script */
-            const __vue_script__$a = script$a;
-            
+const __vue_script__$a = script$a;
+
 /* template */
 var __vue_render__$7 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('TransitionFade',[(!_vm.vssue.isInitializing)?_c('div',{staticClass:"vssue-body"},[(_vm.vssue.API)?_c('VssueNewComment'):_vm._e(),_vm._v(" "),_c('VssueNotice'),_vm._v(" "),_c('TransitionFade',[(_vm.vssue.comments && _vm.vssue.comments.data.length > 0)?_c('VssueComments'):_c('VssueStatus')],1)],1):_c('VssueStatus')],1)};
 var __vue_staticRenderFns__$7 = [];
@@ -1119,36 +977,13 @@ var __vue_staticRenderFns__$7 = [];
   const __vue_module_identifier__$a = undefined;
   /* functional template */
   const __vue_is_functional_template__$a = false;
-  /* component normalizer */
-  function __vue_normalize__$a(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "VssueBody.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssueBody$1 = __vue_normalize__$a(
+  var VssueBody$1 = normalizeComponent_1(
     { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
     __vue_inject_styles__$a,
     __vue_script__$a,
@@ -1170,8 +1005,8 @@ VssueHeader = __decorate([
 var script$b = VssueHeader;
 
 /* script */
-            const __vue_script__$b = script$b;
-            
+const __vue_script__$b = script$b;
+
 /* template */
 var __vue_render__$8 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-header"},[_c('a',{staticClass:"vssue-header-comments-count",attrs:{"href":_vm.vssue.issue ? _vm.vssue.issue.link : null,"target":"_blank"}},[_c('span',[_vm._v("\n      "+_vm._s(_vm.vssue.comments
         ? _vm.vssue.$tc('comments', _vm.vssue.comments.count, { count: _vm.vssue.comments.count })
@@ -1186,36 +1021,13 @@ var __vue_staticRenderFns__$8 = [];
   const __vue_module_identifier__$b = undefined;
   /* functional template */
   const __vue_is_functional_template__$b = false;
-  /* component normalizer */
-  function __vue_normalize__$b(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "VssueHeader.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssueHeader$1 = __vue_normalize__$b(
+  var VssueHeader$1 = normalizeComponent_1(
     { render: __vue_render__$8, staticRenderFns: __vue_staticRenderFns__$8 },
     __vue_inject_styles__$b,
     __vue_script__$b,
@@ -1442,7 +1254,7 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "0.10.0";
+        return "1.0.0";
     }
     get issueTitle() {
         if (this.options === null) {
@@ -1930,8 +1742,8 @@ Vssue = __decorate([
 var script$c = Vssue;
 
 /* script */
-            const __vue_script__$c = script$c;
-            
+const __vue_script__$c = script$c;
+
 /* template */
 var __vue_render__$9 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue"},[_c('Iconfont'),_vm._v(" "),_c('VssueHeader'),_vm._v(" "),_c('VssueBody')],1)};
 var __vue_staticRenderFns__$9 = [];
@@ -1944,36 +1756,13 @@ var __vue_staticRenderFns__$9 = [];
   const __vue_module_identifier__$c = undefined;
   /* functional template */
   const __vue_is_functional_template__$c = false;
-  /* component normalizer */
-  function __vue_normalize__$c(
-    template, style, script,
-    scope, functional, moduleIdentifier,
-    createInjector, createInjectorSSR
-  ) {
-    const component = (typeof script === 'function' ? script.options : script) || {};
-
-    // For security concerns, we use only base name in production mode.
-    component.__file = "Vssue.vue";
-
-    if (!component.render) {
-      component.render = template.render;
-      component.staticRenderFns = template.staticRenderFns;
-      component._compiled = true;
-
-      if (functional) component.functional = true;
-    }
-
-    component._scopeId = scope;
-
-    return component
-  }
   /* style inject */
   
   /* style inject SSR */
   
 
   
-  var VssueComponent = __vue_normalize__$c(
+  var VssueComponent = normalizeComponent_1(
     { render: __vue_render__$9, staticRenderFns: __vue_staticRenderFns__$9 },
     __vue_inject_styles__$c,
     __vue_script__$c,
@@ -1986,15 +1775,15 @@ var __vue_staticRenderFns__$9 = [];
 
 const VssuePlugin = {
     get version() {
-        return "0.10.0";
+        return "1.0.0";
     },
     installed: false,
-    install(Vue$$1, options) {
+    install(Vue, options) {
         if (this.installed) {
             return false;
         }
         this.installed = true;
-        Vue$$1.component('Vssue', {
+        Vue.component('Vssue', {
             functional: true,
             props: {
                 title: {

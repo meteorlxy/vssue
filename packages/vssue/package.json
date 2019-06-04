@@ -1,6 +1,6 @@
 {
   "name": "vssue",
-  "version": "0.10.0",
+  "version": "1.0.0",
   "description": "A vue-powered issue-based comment plugin",
   "license": "MIT",
   "main": "dist/vssue.js",
@@ -31,7 +31,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "@vssue/utils": "^0.10.0",
+    "@vssue/utils": "^1.0.0",
     "github-markdown-css": "^3.0.1",
     "vue": "^2.6.10",
     "vue-i18n": "^8.11.2",
@@ -40,10 +40,10 @@
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "@vssue/api-bitbucket-v2": "^0.10.0",
-    "@vssue/api-github-v3": "^0.10.0",
-    "@vssue/api-github-v4": "^0.10.0",
-    "@vssue/api-gitlab-v4": "^0.10.0",
+    "@vssue/api-bitbucket-v2": "^1.0.0",
+    "@vssue/api-github-v3": "^1.0.0",
+    "@vssue/api-github-v4": "^1.0.0",
+    "@vssue/api-gitlab-v4": "^1.0.0",
     "@vue/babel-preset-app": "^3.8.0",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",

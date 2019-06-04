@@ -1,6 +1,6 @@
 {
   "name": "@vssue/vuepress-plugin-vssue",
-  "version": "0.10.0",
+  "version": "1.0.0",
   "description": "Vuepress plugin for vssue",
   "license": "MIT",
   "main": "lib/index.js",
@@ -26,7 +26,7 @@
     "build": "rimraf lib types && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "vssue": "^0.10.0"
+    "vssue": "^1.0.0"
   },
   "peerDependencies": {
     "vuepress": "^1.0.0-beta.1"
