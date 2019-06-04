@@ -202,7 +202,7 @@ Vue.use(Vssue, {
 
 - __参考__: [owner](#owner)
 
-### perPage <Badge text="v0.2+"/>
+### perPage
 
 - __类型__: `number`
 - __默认值__: `10`
@@ -210,7 +210,7 @@ Vue.use(Vssue, {
 
   默认每页显示的评论数。
 
-### locale <Badge text="v0.5+"/>
+### locale
 
 - __类型__: `string`
 - __默认值__: `undefined`
@@ -234,7 +234,7 @@ Vue.use(Vssue, {
   欢迎贡献代码帮助 Vssue 支持更多语言。
   :::
 
-### proxy <Badge text="v0.6+"/>
+### proxy
 
 - __类型__: `string | ((url: string) => string)`
 - __默认值__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
@@ -259,7 +259,7 @@ Vue.use(Vssue, {
 - __参考__:
   - [clientSecret](#clientsecret)
 
-### issueContent <Badge text="v0.7+"/>
+### issueContent
 
 - __类型__: `((param: { options: Vssue.Options, url: string }) => string | Promise<string>)`
 - __默认值__: `({ url }) => url`
@@ -286,7 +286,7 @@ Vue.use(Vssue, {
   如果对应的 Issue 已经存在，Vssue 不会更新 Issue 的内容。
   :::
 
-### autoCreateIssue <Badge text="v0.8.1+"/><Badge type="warn" text="modified in v0.9.0"/>
+### autoCreateIssue
 
 - __类型__: `boolean`
 - __默认值__: `false`
@@ -323,7 +323,7 @@ Vue.use(Vssue, {
   - [labels](#labels)
   - [issueContent](#issuecontent)
 
-### issueId <Badge text="v0.2+"/>
+### issueId
 
 - __类型__: `string | number`
 - __是否必须__: `false`

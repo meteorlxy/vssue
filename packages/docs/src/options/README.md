@@ -202,7 +202,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
 - __Reference__: [owner](#owner)
 
-### perPage <Badge text="v0.2+"/>
+### perPage
 
 - __Type__: `number`
 - __Default__: `10`
@@ -210,7 +210,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
   The default value of how many comments to show per page.
 
-### locale <Badge text="v0.5+"/>
+### locale
 
 - __Type__: `string`
 - __Default__: `undefined`
@@ -234,7 +234,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   Contributions welcome for more languages support.
   :::
 
-### proxy <Badge text="v0.6+"/>
+### proxy
 
 - __Type__: `string | ((url: string) => string)`
 - __Default__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
@@ -259,7 +259,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 - __Reference__:
   - [clientSecret](#clientsecret)
 
-### issueContent <Badge text="v0.7+"/>
+### issueContent
 
 - __Type__: `((param: { options: Vssue.Options, url: string }) => string | Promise<string>)`
 - __Default__: `({ url }) => url`
@@ -286,7 +286,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   If the issue already exists, Vssue will not try to update the content.
   :::
 
-### autoCreateIssue <Badge text="v0.8.1+"/><Badge type="warn" text="modified in v0.9.0"/>
+### autoCreateIssue
 
 - __Type__: `boolean`
 - __Default__: `false`
@@ -323,7 +323,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   - [labels](#labels)
   - [issueContent](#issuecontent)
 
-### issueId <Badge text="v0.2+"/>
+### issueId
 
 - __Type__: `string | number`
 - __Required__: `false`
