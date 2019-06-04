@@ -2,7 +2,7 @@ const replace = require('rollup-plugin-replace')
 const resolve = require('rollup-plugin-node-resolve')
 const commonjs = require('rollup-plugin-commonjs')
 const json = require('rollup-plugin-json')
-const vue = require('rollup-plugin-vue').default
+const vue = require('rollup-plugin-vue')
 const typescript = require('rollup-plugin-typescript')
 const babel = require('rollup-plugin-babel')
 const { terser } = require('rollup-plugin-terser')
@@ -68,9 +68,8 @@ module.exports = [
     input: pathSrc(opts.input),
 
     output: {
-      file: opts.output,
+      file: pathDist(opts.output),
       format: opts.format,
-      dir: pathDist(),
       name: 'Vssue',
       banner,
       globals: {

@@ -29,6 +29,6 @@
     "vssue": "^0.10.0"
   },
   "peerDependencies": {
-    "vuepress": "^1.0.0-alpha.30"
+    "vuepress": "^1.0.0-beta.1"
   }
 }
