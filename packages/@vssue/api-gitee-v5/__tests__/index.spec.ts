@@ -229,7 +229,7 @@ describe('methods', () => {
 
       describe('issue exists', () => {
         beforeEach(() => {
-          mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues$`)).reply(200, fixtures.issues)
+          mock.onGet(new RegExp(`search/issues$`)).reply(200, fixtures.issues)
         })
 
         test('login', async () => {
@@ -241,6 +241,8 @@ describe('methods', () => {
           const request = mock.history.get[0]
           expect(request.method).toBe('get')
           expect(request.params['access_token']).toBe(mockToken)
+          expect(request.params['q']).toBe(issueTitle)
+          expect(request.params['repo']).toBe(`${options.owner}/${options.repo}`)
           expect(issue).toEqual(normalizeIssue(fixtures.issues[0]))
         })
 
@@ -253,12 +255,14 @@ describe('methods', () => {
           const request = mock.history.get[0]
           expect(request.method).toBe('get')
           expect(request.params['access_token']).toBeUndefined()
+          expect(request.params['q']).toBe(issueTitle)
+          expect(request.params['repo']).toBe(`${options.owner}/${options.repo}`)
           expect(issue).toEqual(normalizeIssue(fixtures.issues[0]))
         })
       })
 
       test('issue does not exist', async () => {
-        mock.onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues$`)).reply(200, [])
+        mock.onGet(new RegExp(`search/issues$`)).reply(200, [])
         const issue = await API.getIssue({
           issueTitle,
           accessToken: null,

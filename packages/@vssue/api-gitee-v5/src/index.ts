@@ -187,6 +187,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
    *
    * @see https://gitee.com/api/v5/swagger#/getV5ReposOwnerRepoIssues
    * @see https://gitee.com/api/v5/swagger#/getV5ReposOwnerRepoIssuesNumber
+   * @see https://gitee.com/api/v5/swagger#/getV5SearchIssues
    */
   async getIssue ({
     accessToken,
@@ -216,13 +217,11 @@ export default class GiteeV5 implements VssueAPI.Instance {
       }
     } else {
       Object.assign(options.params, {
-        labels: this.labels.join(','),
-        sort: 'created',
-        direction: 'asc',
-        state: 'all',
-        per_page: 100,
+        q: issueTitle,
+        repo: `${this.owner}/${this.repo}`,
+        per_page: 1,
       })
-      const { data } = await this.$http.get(`repos/${this.owner}/${this.repo}/issues`, options)
+      const { data } = await this.$http.get(`search/issues`, options)
       const issue = data.map(normalizeIssue).find(item => item.title === issueTitle)
       return issue || null
     }
