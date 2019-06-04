@@ -233,7 +233,7 @@ export default class VssueComment extends Vue {
       })
 
       if (!success) {
-        this.vssue.$emit('error', new Error(<string> this.vssue.$t('reactionGiven', { reaction: this.vssue.$t(reaction) })))
+        this.vssue.$emit('error', new Error(this.vssue.$t('reactionGiven', { reaction: this.vssue.$t(reaction) }) as string))
       }
 
       // always refresh reactions even already given
@@ -289,7 +289,7 @@ export default class VssueComment extends Vue {
     try {
       if (this.vssue.isPending) return
 
-      if (!window.confirm(<string> this.vssue.$t('deleteConfirm'))) return
+      if (!window.confirm(this.vssue.$t('deleteConfirm') as string)) return
 
       this.isDeletingComment = true
       this.vssue.isUpdatingComment = true
@@ -314,7 +314,7 @@ export default class VssueComment extends Vue {
           await this.vssue.getComments()
         }
       } else {
-        this.vssue.$emit('error', new Error(<string> this.vssue.$t('deleteFailed')))
+        this.vssue.$emit('error', new Error(this.vssue.$t('deleteFailed') as string))
       }
     } finally {
       this.isDeletingComment = false
