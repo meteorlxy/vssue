@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v1.0.0
+ * @version v1.0.1
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -1010,7 +1010,7 @@ const __vue_script__$b = script$b;
 /* template */
 var __vue_render__$8 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-header"},[_c('a',{staticClass:"vssue-header-comments-count",attrs:{"href":_vm.vssue.issue ? _vm.vssue.issue.link : null,"target":"_blank"}},[_c('span',[_vm._v("\n      "+_vm._s(_vm.vssue.comments
         ? _vm.vssue.$tc('comments', _vm.vssue.comments.count, { count: _vm.vssue.comments.count })
-        : _vm.vssue.$tc('comments', 0))+"\n    ")])]),_vm._v(" "),_c('span',{staticClass:"vssue-header-powered-by"},[_c('span',[_vm._v("Powered by")]),_vm._v(" "),(_vm.vssue.API)?_c('span',[_c('a',{attrs:{"href":_vm.vssue.API.platform.link,"target":"_blank","title":((_vm.vssue.API.platform.name) + " API " + (_vm.vssue.API.platform.version))}},[_vm._v("\n        "+_vm._s(_vm.vssue.API.platform.name)+"\n      ")]),_vm._v(" "),_c('span',[_vm._v("&")])]):_vm._e(),_vm._v(" "),_c('a',{attrs:{"href":"https://github.com/meteorlxy/vssue","target":"_blank","title":("Vssue v" + (_vm.vssue.version))}},[_vm._v("\n      Vssue\n    ")])])])};
+        : _vm.vssue.$tc('comments', 0))+"\n    ")])]),_vm._v(" "),_c('span',{staticClass:"vssue-header-powered-by"},[_c('span',[_vm._v("Powered by")]),_vm._v(" "),(_vm.vssue.API)?_c('span',[_c('a',{attrs:{"href":_vm.vssue.API.platform.link,"target":"_blank","title":((_vm.vssue.API.platform.name) + " API " + (_vm.vssue.API.platform.version))}},[_vm._v("\n        "+_vm._s(_vm.vssue.API.platform.name)+"\n      ")]),_vm._v(" "),_c('span',[_vm._v("&")])]):_c('span'),_vm._v(" "),_c('a',{attrs:{"href":"https://github.com/meteorlxy/vssue","target":"_blank","title":("Vssue v" + (_vm.vssue.version))}},[_vm._v("\n      Vssue\n    ")])])])};
 var __vue_staticRenderFns__$8 = [];
 
   /* style */
@@ -1254,7 +1254,7 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "1.0.0";
+        return "1.0.1";
     }
     get issueTitle() {
         if (this.options === null) {
@@ -1775,7 +1775,7 @@ var __vue_staticRenderFns__$9 = [];
 
 const VssuePlugin = {
     get version() {
-        return "1.0.0";
+        return "1.0.1";
     },
     installed: false,
     install(Vue, options) {
