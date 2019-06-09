@@ -1,18 +1,10 @@
-# Integration with Vuepress
+# Integration with VuePress
 
-> [Vuepress](https://vuepress.vuejs.org/) is a Vue-powered Static Site Generator
+> [VuePress](https://vuepress.vuejs.org/) is a Vue-powered Static Site Generator
 
-## Vuepress Plugin
+## VuePress Plugin
 
-Vssue provides a [Vuepress Plugin](https://vuepress.vuejs.org/plugin/) - [@vssue/vuepress-plugin-vssue](https://www.npmjs.com/package/@vssue/vuepress-plugin-vssue) - to help use Vssue in Vuepress quickly.
-
-::: tip
-Vuepress v1.0+ supports plugins.
-:::
-
-::: warning ATTENSION
-Vuepress 1.x is in alpha stage and is not stable, so our plugin may also have potential problems with different version of Vuepress.
-:::
+Vssue provides a [VuePress Plugin](https://vuepress.vuejs.org/plugin/) - [@vssue/vuepress-plugin-vssue](https://www.npmjs.com/package/@vssue/vuepress-plugin-vssue) - to help use Vssue in VuePress quickly.
 
 ## Usage
 
@@ -27,7 +19,7 @@ npm install @vssue/api-github-v3
 
 ### Use the plugin
 
-> See [Vuepress Offical Docs](https://vuepress.vuejs.org/plugin/using-a-plugin.html) for how to use a plugin in detail
+> See [VuePress Offical Docs](https://vuepress.vuejs.org/plugin/using-a-plugin.html) for how to use a plugin in detail
 
 ```js
 // .vuepress/config.js
@@ -56,17 +48,18 @@ The only difference is that, you should set `platform` rather than the `api` pac
 - platform `github` - api package `@vssue/api-github-v3`
 - platform `gitlab` - api package `@vssue/api-gitlab-v4`
 - platform `bitbucket` - api package `@vssue/api-bitbucket-v2`
+- platform `gitee` - api package `@vssue/api-gitee-v5`
 :::
 
 ::: tip
-If you don't set the `locale` option, Vssue will use Vuepress's `$lang` as the language of current page.
+If you don't set the `locale` option, Vssue will use VuePress's `$lang` as the language of current page.
 
-> See [locale](../options/README.md#locale) of Vssue and [$lang](https://vuepress.vuejs.org/guide/global-computed.html#lang) of Vuepress
+> See [locale](../options/README.md#locale) of Vssue and [$lang](https://vuepress.vuejs.org/guide/global-computed.html#lang) of VuePress
 :::
 
 ### Use Vssue Component
 
-`Vssue` has already been registered as a Vue component, and can be used in your Vuepress markdown directly.
+`Vssue` has already been registered as a Vue component, and can be used in your VuePress markdown directly.
 
 ```md
 <!-- README.md -->
@@ -82,9 +75,9 @@ You can go to the repo [meteorlxy/vssue-demo](https://github.com/meteorlxy/vssue
 
 ## Custom Style Variables
 
-With the power of [palette.styl](https://vuepress.vuejs.org/config/#palette-styl) of Vuepress, you can set the [Variables of Vssue Style](./styles.md#use-variables-to-customize-vssue) easily.
+With the power of [palette.styl](https://vuepress.vuejs.org/config/#palette-styl) of VuePress, you can set the [Variables of Vssue Style](./styles.md#use-variables-to-customize-vssue) easily.
 
-By default, those Vssue variables are set to Vuepress variables:
+By default, those Vssue variables are set to VuePress variables:
 
 ```stylus
 // @vssue/vuepress-plugin-vssue/styles/index.styl
@@ -105,11 +98,11 @@ $vssue-theme-color = red
 
 ## Do not want to use our plugin?
 
-Although Vssue has tried to become SSR-friendly, there might be some issues to use Vssue directly in Vuepress.
+Vssue has tried to be SSR-friendly, so you can import Vssue directly in VuePress like other vue plugins / components without `@vssue/vuepress-plugin-vssue` (especially if you have [customized the styles of Vssue](./styles.md#use-source-code-of-vssue-styles)).
 
-So we suggest you to use `@vssue/vuepress-plugin-vssue` in Vuepress, which has already helped you make `<Vssue>` component client-only to avoid those issues.
+But we still suggest you to use `@vssue/vuepress-plugin-vssue` in VuePress, which has already helped you make `<Vssue>` component client-only to avoid some potential issues.
 
-If you do not want to use the plugin we provided, you may need to wrap `<Vssue>` component into `<ClientOnly>` component to avoid some potential problems, i.e. :
+If you do not want to use the plugin we provided, you may need to wrap `<Vssue>` component into `<ClientOnly>` component to avoid those potential issues, i.e. :
 
 ```vue
 <ClientOnly>
@@ -117,4 +110,4 @@ If you do not want to use the plugin we provided, you may need to wrap `<Vssue>`
 </ClientOnly>
 ```
 
-> See [Built-in Components - ClientOnly](https://vuepress.vuejs.org/guide/using-vue.html#clientonly) of Vuepress
+> See [Built-in Components - ClientOnly](https://vuepress.vuejs.org/guide/using-vue.html#clientonly) of VuePress

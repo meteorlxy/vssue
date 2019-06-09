@@ -1,18 +1,10 @@
-# 在 Vuepress 中使用
+# 在 VuePress 中使用
 
-> [Vuepress](https://vuepress.vuejs.org/zh/) 是 Vue 驱动的静态网站生成器
+> [VuePress](https://vuepress.vuejs.org/zh/) 是 Vue 驱动的静态网站生成器
 
-## Vuepress 插件
+## VuePress 插件
 
-Vssue 提供了一个 [Vuepress 插件](https://vuepress.vuejs.org/zh/plugin/) - [@vssue/vuepress-plugin-vssue](https://www.npmjs.com/package/@vssue/vuepress-plugin-vssue) - 来帮助你在 Vuepress 中快速使用 Vssue。
-
-::: tip
-Vuepress v1.0+ 开始支持插件。
-:::
-
-::: warning 注意
-现在 Vuepress 1.x 版本还处于 alpha 测试阶段，并不稳定，所以我们的插件在不同版本的 Vuepress 下可能会存在潜在的问题。
-:::
+Vssue 提供了一个 [VuePress 插件](https://vuepress.vuejs.org/zh/plugin/) - [@vssue/vuepress-plugin-vssue](https://www.npmjs.com/package/@vssue/vuepress-plugin-vssue) - 来帮助你在 VuePress 中快速使用 Vssue。
 
 ## 使用方法
 
@@ -27,7 +19,7 @@ npm install @vssue/api-github-v3
 
 ### 使用插件
 
-> 通过 [Vuepress 官方文档](https://vuepress.vuejs.org/zh/plugin/using-a-plugin.html) 查看使用插件的详细方法
+> 通过 [VuePress 官方文档](https://vuepress.vuejs.org/zh/plugin/using-a-plugin.html) 查看使用插件的详细方法
 
 ```js
 // .vuepress/config.js
@@ -56,17 +48,18 @@ module.exports = {
 - platform `github` - api 包 `@vssue/api-github-v3`
 - platform `gitlab` - api 包 `@vssue/api-gitlab-v4`
 - platform `bitbucket` - api 包 `@vssue/api-bitbucket-v2`
+- platform `gitee` - api 包 `@vssue/api-gitee-v5`
 :::
 
 ::: tip
-如果你不设置 `locale`，Vssue 会自动使用 Vuepress 的 `$lang` 作为当前页面的语言。
+如果你不设置 `locale`，Vssue 会自动使用 VuePress 的 `$lang` 作为当前页面的语言。
 
-> 参考 Vssue 的 [locale](../options/README.md#locale) 设置，以及 Vuepress 的 [$lang](https://vuepress.vuejs.org/zh/guide/global-computed.html#lang) 属性。
+> 参考 Vssue 的 [locale](../options/README.md#locale) 设置，以及 VuePress 的 [$lang](https://vuepress.vuejs.org/zh/guide/global-computed.html#lang) 属性。
 :::
 
 ### 使用 Vssue 组件
 
-`Vssue` 已经注册为 Vue 组件，你可以在你的 Vuepress Markdown 文件中直接使用它。
+`Vssue` 已经注册为 Vue 组件，你可以在你的 VuePress Markdown 文件中直接使用它。
 
 ```md
 <!-- README.md -->
@@ -82,9 +75,9 @@ module.exports = {
 
 ## 自定义样式变量
 
-通过 Vuepress 的 [palette.styl](https://vuepress.vuejs.org/zh/config/#palette-styl)，你可以很轻松地修改 [Vssue 的样式变量](./styles.md#使用样式变量来自定义-vssue)。
+通过 VuePress 的 [palette.styl](https://vuepress.vuejs.org/zh/config/#palette-styl)，你可以很轻松地修改 [Vssue 的样式变量](./styles.md#使用样式变量来自定义-vssue)。
 
-默认情况下，下面这些 Vssue 的样式变量与 Vuepress 的样式变量相等：
+默认情况下，下面这些 Vssue 的样式变量与 VuePress 的样式变量相等：
 
 ```stylus
 // @vssue/vuepress-plugin-vssue/styles/index.styl
@@ -107,11 +100,11 @@ $vssue-theme-color = red
 
 ## 不想使用我们提供的插件？
 
-虽然 Vssue 已经在尽量适配 SSR，但是直接在 Vuepress 中使用 Vssue 可能还是会有一些问题。
+Vssue 是适配 SSR 的，所以你可以不使用 `@vssue/vuepress-plugin-vssue`，而是像其他 Vue 插件 / 组件一样，在 VuePress 中直接引入 Vssue（尤其是在你[对 Vssue 的样式进行了自定义](./styles.md#use-source-code-of-vssue-styles)的时候）。
 
-所以我们建议你在 Vuepress 中通过 `@vssue/vuepress-plugin-vssue` 来使用 Vssue，该插件已经帮助你仅在客户端加载 Vssue 来避免这些问题。
+但是我们仍然建议你在 VuePress 中通过 `@vssue/vuepress-plugin-vssue` 来使用 Vssue，该插件已经帮助你仅在客户端加载 Vssue 来避免一些潜在的问题。
 
-如果你不想使用我们提供的插件，你可能需要将 `<Vssue>` 组件放置在 `<ClientOnly>` 组件中来避免潜在的问题，即：
+如果你不想使用我们提供的插件，你可能需要将 `<Vssue>` 组件放置在 `<ClientOnly>` 组件中来避免这些潜在的问题，即：
 
 ```vue
 <ClientOnly>
@@ -119,4 +112,4 @@ $vssue-theme-color = red
 </ClientOnly>
 ```
 
-> 参考 Vuepress [内置的组件 - ClientOnly](https://vuepress.vuejs.org/zh/guide/using-vue.html#clientonly)
+> 参考 VuePress [内置的组件 - ClientOnly](https://vuepress.vuejs.org/zh/guide/using-vue.html#clientonly)
