@@ -2,8 +2,8 @@
   <TransitionFade>
     <div
       v-if="status"
-      class="vssue-status"
       :key="status"
+      class="vssue-status"
     >
       <VssueIcon
         v-if="['failed', 'loadingComments', 'initializing'].includes(status)"
