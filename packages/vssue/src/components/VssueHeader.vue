@@ -29,6 +29,9 @@
         <span>&</span>
       </span>
 
+      <!-- https://github.com/nuxt/nuxt.js/issues/1552#issuecomment-500148063 -->
+      <span v-else />
+
       <a
         href="https://github.com/meteorlxy/vssue"
         target="_blank"
