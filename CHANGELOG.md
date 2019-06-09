@@ -1,3 +1,12 @@
+## [1.0.1](https://github.com/meteorlxy/vssue/compare/v1.0.0...v1.0.1) (2019-06-09)
+
+
+### Bug Fixes
+
+* **$vssue:** ssr bug caused by v-if (close [#47](https://github.com/meteorlxy/vssue/issues/47)) ([d4af607](https://github.com/meteorlxy/vssue/commit/d4af607))
+
+
+
 # [1.0.0](https://github.com/meteorlxy/vssue/compare/v0.10.0...v1.0.0) (2019-06-04)
 
 
