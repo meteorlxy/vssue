@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-bitbucket-v2",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Vssue api for bitbucket v2",
   "license": "MIT",
   "main": "lib/index.js",

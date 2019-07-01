@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v1.0.1
+ * @version v1.0.2
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -1254,7 +1254,7 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "1.0.1";
+        return "1.0.2";
     }
     get issueTitle() {
         if (this.options === null) {
@@ -1775,7 +1775,7 @@ var __vue_staticRenderFns__$9 = [];
 
 const VssuePlugin = {
     get version() {
-        return "1.0.1";
+        return "1.0.2";
     },
     installed: false,
     install(Vue, options) {
