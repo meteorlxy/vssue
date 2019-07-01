@@ -2,7 +2,7 @@ import { VssueAPI } from 'vssue'
 
 export function normalizeUser (user): VssueAPI.User {
   return {
-    username: user.username,
+    username: user.nickname,
     avatar: user.links.avatar.href,
     homepage: user.links.html.href,
   }
