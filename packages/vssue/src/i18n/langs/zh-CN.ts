@@ -33,7 +33,7 @@ const messages: VueI18n.LocaleMessageObject = {
   comments: '评论 | {count} 条评论 | {count} 条评论',
   loginToComment: '使用 {platform} 帐号登录后发表评论',
   placeholder: '留下你的评论丨支持 Markdown 语法丨Ctrl + Enter 发表评论',
-  noLoginPlaceHolder: '登陆后才能发表评论丨支持 Markdown 语法',
+  noLoginPlaceHolder: '登录后才能发表评论丨支持 Markdown 语法',
 
   // status
   failed: '评论加载失败',
