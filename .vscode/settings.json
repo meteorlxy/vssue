@@ -1,14 +1,14 @@
 {
-  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
   "editor.insertSpaces": true,
+  "editor.tabSize": 2,
   "files.encoding": "utf8",
   "files.eol": "\n",
+  "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
   "[markdown]": {
     "files.trimTrailingWhitespace": false
   },
-  "files.trimFinalNewlines": true,
-  "eslint.packageManager": "yarn",
   "eslint.validate": [
     "javascript",
     "javascriptreact",
