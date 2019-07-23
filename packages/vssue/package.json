@@ -3,10 +3,6 @@
   "version": "1.0.2",
   "description": "A vue-powered issue-based comment plugin",
   "license": "MIT",
-  "main": "dist/vssue.js",
-  "module": "dist/vssue.js",
-  "unpkg": "dist/vssue.github.min.js",
-  "types": "types/index.d.ts",
   "keywords": [
     "comment",
     "issue",
@@ -14,9 +10,6 @@
   ],
   "author": "meteorlxy <meteor.lxy@foxmail.com>",
   "homepage": "https://vssue.js.org",
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/meteorlxy/vssue.git"
@@ -24,11 +17,23 @@
   "bugs": {
     "url": "https://github.com/meteorlxy/vssue/issues"
   },
+  "files": [
+    "dist/",
+    "src/styles/",
+    "types/"
+  ],
+  "main": "dist/vssue.js",
+  "module": "dist/vssue.js",
+  "unpkg": "dist/vssue.github.min.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "dev": "cross-env NODE_ENV=development vue-cli-service serve ./dev/main.ts --mode development",
     "staging": "cross-env NODE_ENV=production vue-cli-service serve ./dev/main.ts --mode staging",
     "build": "cross-env NODE_ENV=production gulp",
     "lint": "vue-cli-service lint"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "@vssue/utils": "^1.0.0",

@@ -3,8 +3,6 @@
   "version": "1.0.2",
   "description": "Vuepress plugin for vssue",
   "license": "MIT",
-  "main": "lib/index.js",
-  "types": "types/index.d.ts",
   "keywords": [
     "comment",
     "issue",
@@ -12,9 +10,6 @@
   ],
   "author": "meteorlxy <meteor.lxy@foxmail.com>",
   "homepage": "https://vssue.js.org",
-  "publishConfig": {
-    "access": "public"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/meteorlxy/vssue.git"
@@ -22,8 +17,18 @@
   "bugs": {
     "url": "https://github.com/meteorlxy/vssue/issues"
   },
+  "files": [
+    "lib/",
+    "styles/",
+    "types/"
+  ],
+  "main": "lib/index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "build": "rimraf lib types && tsc -p tsconfig.json"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "dependencies": {
     "vssue": "^1.0.2"
