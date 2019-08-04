@@ -5,10 +5,10 @@ Vssue 使用 [TypeScript](https://www.typescriptlang.org/) 开发，代码仓库
 所有 Packages 均位于 `packages/` 目录下：
 
 - `vssue`：Vssue 的主要 Package，包含了 Vssue 组件；
-- `docs`：文档网站 [vssue.js.org](https://vssue.js.org) 的源代码，由 [Vuepress](https://github.com/vuejs/vuepress) 驱动；
+- `docs`：文档网站 [vssue.js.org](https://vssue.js.org) 的源代码，由 [VuePress](https://github.com/vuejs/vuepress) 驱动；
 - `@vssue/api-{platform}-{version}`：不同平台和不同版本 API 对应的 API Packages；
 - `@vssue/utils`：一些供 Vssue 和 API Packages 使用的工具函数；
-- `@vssue/vuepress-plugin-vssue`：Vuepress 插件。
+- `@vssue/vuepress-plugin-vssue`：VuePress 插件。
 
 ## 开发
 
@@ -49,7 +49,7 @@ VUE_APP_CLIENT_SECRET=
 VUE_APP_ONLY_COMPONENT=false
 ```
 
-你可以在 `packages/vssue/vue.config.js` 和 `packages/vssue/main.ts` 中查看这些变量是如何工作的。
+你可以在 `packages/vssue/vue.config.js` 和 `packages/vssue/dev/main.ts` 中查看这些变量是如何工作的。
 
 运行开发脚本：
 

@@ -5,10 +5,10 @@ Vssue is developed by [TypeScript](https://www.typescriptlang.org/), and the rep
 All the packages are located in the `packages/` directory:
 
 - `vssue`: the main package of Vssue, containing the Vssue component.
-- `docs`: the source code of [vssue.js.org](https://vssue.js.org), powered by [Vuepress](https://github.com/vuejs/vuepress).
+- `docs`: the source code of [vssue.js.org](https://vssue.js.org), powered by [VuePress](https://github.com/vuejs/vuepress).
 - `@vssue/api-{platform}-{version}`: the API packages for different platforms and different version of API.
 - `@vssue/utils`: some util functions that used by Vssue and the API packages.
-- `@vssue/vuepress-plugin-vssue`: the plugin for Vuepress
+- `@vssue/vuepress-plugin-vssue`: the plugin for VuePress
 
 ## Develop
 
@@ -49,7 +49,7 @@ VUE_APP_CLIENT_SECRET=
 VUE_APP_ONLY_COMPONENT=false
 ```
 
-You can check how these variables work in `packages/vssue/vue.config.js` and `packages/vssue/main.ts`.
+You can check how these variables work in `packages/vssue/vue.config.js` and `packages/vssue/dev/main.ts`.
 
 Run the dev script:
 
