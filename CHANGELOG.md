@@ -1,3 +1,13 @@
+## [1.0.3](https://github.com/meteorlxy/vssue/compare/v1.0.2...v1.0.3) (2019-08-31)
+
+
+### Bug Fixes
+
+* **$vssue:** better style of select element ([#56](https://github.com/meteorlxy/vssue/issues/56)) ([f2182fb](https://github.com/meteorlxy/vssue/commit/f2182fb))
+* **$vssue:** typo in zh-CN translation ([#50](https://github.com/meteorlxy/vssue/issues/50)) ([c14b9f3](https://github.com/meteorlxy/vssue/commit/c14b9f3))
+
+
+
 ## [1.0.2](https://github.com/meteorlxy/vssue/compare/v1.0.1...v1.0.2) (2019-07-01)
 
 
