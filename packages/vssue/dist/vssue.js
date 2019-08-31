@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v1.0.2
+ * @version v1.0.3
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2019 meteorlxy
@@ -1110,7 +1110,7 @@ const messages$1 = {
     comments: '评论 | {count} 条评论 | {count} 条评论',
     loginToComment: '使用 {platform} 帐号登录后发表评论',
     placeholder: '留下你的评论丨支持 Markdown 语法丨Ctrl + Enter 发表评论',
-    noLoginPlaceHolder: '登陆后才能发表评论丨支持 Markdown 语法',
+    noLoginPlaceHolder: '登录后才能发表评论丨支持 Markdown 语法',
     // status
     failed: '评论加载失败',
     initializing: '正在初始化...',
@@ -1254,7 +1254,7 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "1.0.2";
+        return "1.0.3";
     }
     get issueTitle() {
         if (this.options === null) {
@@ -1775,7 +1775,7 @@ var __vue_staticRenderFns__$9 = [];
 
 const VssuePlugin = {
     get version() {
-        return "1.0.2";
+        return "1.0.3";
     },
     installed: false,
     install(Vue, options) {

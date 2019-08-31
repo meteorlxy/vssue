@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-gitee-v5",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Vssue api for gitee v5",
   "license": "MIT",
   "keywords": [
@@ -30,7 +30,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@vssue/utils": "^1.0.0",
+    "@vssue/utils": "^1.0.3",
     "axios": "^0.18.1"
   },
   "devDependencies": {

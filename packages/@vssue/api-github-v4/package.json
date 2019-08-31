@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-github-v4",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Vssue api for github v4",
   "license": "MIT",
   "keywords": [
@@ -30,7 +30,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@vssue/utils": "^1.0.0",
+    "@vssue/utils": "^1.0.3",
     "axios": "^0.18.1"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-bitbucket-v2",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Vssue api for bitbucket v2",
   "license": "MIT",
   "keywords": [
@@ -30,7 +30,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@vssue/utils": "^1.0.0",
+    "@vssue/utils": "^1.0.3",
     "axios": "^0.18.1"
   }
 }
