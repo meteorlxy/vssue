@@ -27,9 +27,9 @@ Then you've created a new Third Party Application, and here is your `Client ID` 
 
 Copy the `Client ID` and `Client Secret`, and set `owner` and `repo`.
 
-> The URL pattern of github repo is `https://gitee.com/${owner}/${repo}`
+> The URL pattern of gitee repo is `https://gitee.com/${owner}/${repo}`
 
-Here we take `https://github.com/meteor_lxy/vssue-demo` for example, and set the `title` of issue to `Vssue Demo`.
+Here we take `https://gitee.com/meteor_lxy/vssue-demo` for example, and set the `title` of issue to `Vssue Demo`.
 
 Then run `anywhere -h localhost 8080` to serve the `index.html` on `localhost:8080`.
 

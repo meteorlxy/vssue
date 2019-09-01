@@ -2,7 +2,7 @@
 
 > Vssue 同样可以配合自己搭建的 Gitee 企业版 使用。只需要将 `baseURL` 设置为你的 Gitee URL 即可。查看 [配置参考 - baseURL](../options/README.md#baseurl)
 
-> Gitee 需要设置 `clientSecret`，因为 GitHub 目前还不支持 implicit grant type
+> Gitee 需要设置 `clientSecret`，因为 Gitee 目前还不支持 implicit grant type
 
 ## 创建一个新的第三方应用
 
@@ -29,7 +29,7 @@
 
 > Gitee repository 的 URL 模式为 `https://gitee.com/${owner}/${repo}`
 
-这里我们以 `https://github.com/meteor_lxy/vssue-demo` 为例，并把 issue 的 `title` 设置为 `Vssue Demo`。
+这里我们以 `https://gitee.com/meteor_lxy/vssue-demo` 为例，并把 issue 的 `title` 设置为 `Vssue Demo`。
 
 然后运行 `anywhere -h localhost 8080`，在 `localhost:8080` 监听一个 http server 并返回 `index.html`。
 
