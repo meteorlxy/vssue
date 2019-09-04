@@ -25,6 +25,10 @@
     "*.{js,ts,vue}": [
       "eslint --fix",
       "git add"
+    ],
+    "package.json": [
+      "sort-package-json",
+      "git add"
     ]
   },
   "devDependencies": {
@@ -40,6 +44,7 @@
     "lerna": "^3.14.1",
     "lint-staged": "^8.1.7",
     "rimraf": "^2.6.3",
+    "sort-package-json": "^1.22.1",
     "ts-jest": "^24.0.2",
     "typescript": "~3.4.5"
   }
