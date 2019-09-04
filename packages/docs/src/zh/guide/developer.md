@@ -57,7 +57,7 @@ VUE_APP_ONLY_COMPONENT=false
 # 开发 Vssue 组件
 yarn dev
 # 开发文档
-yarn dev-docs
+yarn dev:docs
 ```
 
 ## 流程图

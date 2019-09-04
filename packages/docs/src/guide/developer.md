@@ -57,7 +57,7 @@ Run the dev script:
 # For Vssue component
 yarn dev
 # For docs
-yarn dev-docs
+yarn dev:docs
 ```
 
 ## Flow Chart
