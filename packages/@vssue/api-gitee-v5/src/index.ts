@@ -65,7 +65,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
 
     this.$http.interceptors.response.use(response => response, error => {
       if (error.response.data && error.response.data.message) {
-        return Promise.reject(new Error(error.response.data.message))
+        error.message = error.response.data.message
       }
       return Promise.reject(error)
     })
