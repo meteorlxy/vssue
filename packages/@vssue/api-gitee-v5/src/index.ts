@@ -296,20 +296,13 @@ export default class GiteeV5 implements VssueAPI.Instance {
         Accept: ['application/vnd.gitee.html+json'],
       },
     }
-    const issueOptions: AxiosRequestConfig = { params: {} }
     if (accessToken) {
       options.params.access_token = accessToken
-      issueOptions.params.access_token = accessToken
     }
 
-    // total_count of comments is not available now, so we have to request issue to get the count
-    const [response, issueResponse] = await Promise.all([
-      this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, options),
-      this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}`, issueOptions),
-    ])
+    const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
 
-    const count = Number(issueResponse.data.comments)
-    // const count = Number(response.headers['total_count'])
+    const count = Number(response.headers['total_count'])
 
     return {
       count: count,
