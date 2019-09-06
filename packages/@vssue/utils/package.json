@@ -2,21 +2,21 @@
   "name": "@vssue/utils",
   "version": "1.0.3",
   "description": "Vssue internal utils",
-  "license": "MIT",
   "keywords": [
     "comment",
     "issue",
     "vue"
   ],
-  "author": "meteorlxy <meteor.lxy@foxmail.com>",
   "homepage": "https://vssue.js.org",
+  "bugs": {
+    "url": "https://github.com/meteorlxy/vssue/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/meteorlxy/vssue.git"
   },
-  "bugs": {
-    "url": "https://github.com/meteorlxy/vssue/issues"
-  },
+  "license": "MIT",
+  "author": "meteorlxy <meteor.lxy@foxmail.com>",
   "files": [
     "lib/",
     "types/"
@@ -26,14 +26,14 @@
   "scripts": {
     "build": "rimraf lib types && tsc -p tsconfig.json"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "date-fns": "^1.29.0",
     "qs": "^6.6.0"
   },
   "devDependencies": {
     "@types/qs": "^6.5.1"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

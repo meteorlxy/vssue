@@ -1,10 +1,10 @@
 {
-  "private": true,
   "name": "docs",
   "version": "1.0.3",
+  "private": true,
   "scripts": {
-    "dev": "vuepress dev src",
-    "build": "vuepress build src -d dist"
+    "build": "vuepress build src -d dist",
+    "dev": "vuepress dev src"
   },
   "dependencies": {
     "@vssue/api-github-v3": "^1.0.3",

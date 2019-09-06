@@ -2,21 +2,21 @@
   "name": "@vssue/api-gitee-v5",
   "version": "1.0.3",
   "description": "Vssue api for gitee v5",
-  "license": "MIT",
   "keywords": [
     "comment",
     "issue",
     "vue"
   ],
-  "author": "meteorlxy <meteor.lxy@foxmail.com>",
   "homepage": "https://vssue.js.org",
+  "bugs": {
+    "url": "https://github.com/meteorlxy/vssue/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/meteorlxy/vssue.git"
   },
-  "bugs": {
-    "url": "https://github.com/meteorlxy/vssue/issues"
-  },
+  "license": "MIT",
+  "author": "meteorlxy <meteor.lxy@foxmail.com>",
   "files": [
     "lib/",
     "types/"
@@ -26,14 +26,14 @@
   "scripts": {
     "build": "rimraf lib types && tsc -p tsconfig.json"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "dependencies": {
     "@vssue/utils": "^1.0.3",
     "axios": "^0.18.1"
   },
   "devDependencies": {
     "axios-mock-adapter": "^1.16.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

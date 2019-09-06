@@ -2,38 +2,35 @@
   "name": "vssue",
   "version": "1.0.3",
   "description": "A vue-powered issue-based comment plugin",
-  "license": "MIT",
   "keywords": [
     "comment",
     "issue",
     "vue"
   ],
-  "author": "meteorlxy <meteor.lxy@foxmail.com>",
   "homepage": "https://vssue.js.org",
+  "bugs": {
+    "url": "https://github.com/meteorlxy/vssue/issues"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/meteorlxy/vssue.git"
   },
-  "bugs": {
-    "url": "https://github.com/meteorlxy/vssue/issues"
-  },
+  "license": "MIT",
+  "author": "meteorlxy <meteor.lxy@foxmail.com>",
   "files": [
     "dist/",
     "src/styles/",
     "types/"
   ],
   "main": "dist/vssue.js",
-  "module": "dist/vssue.js",
   "unpkg": "dist/vssue.github.min.js",
+  "module": "dist/vssue.js",
   "types": "types/index.d.ts",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development vue-cli-service serve ./dev/main.ts --mode development",
-    "staging": "cross-env NODE_ENV=production vue-cli-service serve ./dev/main.ts --mode staging",
     "build": "cross-env NODE_ENV=production gulp",
-    "lint": "vue-cli-service lint"
-  },
-  "publishConfig": {
-    "access": "public"
+    "dev": "cross-env NODE_ENV=development vue-cli-service serve ./dev/main.ts --mode development",
+    "lint": "vue-cli-service lint",
+    "staging": "cross-env NODE_ENV=production vue-cli-service serve ./dev/main.ts --mode staging"
   },
   "dependencies": {
     "@vssue/utils": "^1.0.3",
@@ -77,5 +74,8 @@
     "tslib": "^1.9.3",
     "vue-template-compiler": "^2.6.10",
     "webpack": "^4.28.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
