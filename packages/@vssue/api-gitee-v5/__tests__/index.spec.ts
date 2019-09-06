@@ -301,9 +301,6 @@ describe('methods', () => {
 
     beforeEach(() => {
       mock
-        .onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues/${issueId}$`))
-        .reply(200, fixtures.issue)
-      mock
         .onGet(new RegExp(`repos/${options.owner}/${options.repo}/issues/${issueId}/comments$`))
         .reply(200, fixtures.comments, { 'total_count': fixtures.comments.length })
     })
@@ -314,7 +311,7 @@ describe('methods', () => {
         issueId,
         accessToken: mockToken,
       }) as VssueAPI.Comments
-      expect(mock.history.get.length).toBe(2)
+      expect(mock.history.get.length).toBe(1)
 
       const request = mock.history.get[0]
       expect(request.method).toBe('get')
@@ -330,7 +327,7 @@ describe('methods', () => {
         issueId,
         accessToken: null,
       }) as VssueAPI.Comments
-      expect(mock.history.get.length).toBe(2)
+      expect(mock.history.get.length).toBe(1)
 
       const request = mock.history.get[0]
       expect(request.method).toBe('get')
