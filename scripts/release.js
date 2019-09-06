@@ -21,15 +21,15 @@ const release = async () => {
     const tag = `v${version}`
 
     await run('git', 'add', '-A')
-    await run('git', 'commit', '-m', `version ${version}`)
-    await run('git', 'tag', tag, '-m', `version ${version}`)
+    await run('git', 'commit', '-m', `release: version ${version}`)
+    await run('git', 'tag', tag, '-m', `release: version ${version}`)
     await run('yarn', 'conventional-changelog', '-p', 'angular', '-i', 'CHANGELOG.md', '-s', '-r', '2')
 
     const inFile = fs.readFileSync('CHANGELOG.md').toString()
     fs.writeFileSync('CHANGELOG.md', inFile.split('\n').slice(4).join('\n'))
 
     await run('git', 'add', 'CHANGELOG.md')
-    await run('git', 'commit', '-m', `chore: version ${version} changelog`)
+    await run('git', 'commit', '-m', `release: version ${version} changelog`)
     await run('yarn', 'lerna', 'publish', 'from-package')
     await run('git', 'push', 'origin', 'master:master', '--tags')
   } catch (err) {
