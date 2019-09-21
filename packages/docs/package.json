@@ -14,7 +14,7 @@
     "@vuepress/plugin-pwa": "^1.0.0",
     "markdown-it-center-text": "^1.0.4",
     "vue-server-renderer": "^2.6.10",
-    "vuepress": "^1.0.0",
-    "vuepress-plugin-medium-zoom": "^1.1.1"
+    "vuepress": "^1.1.0",
+    "vuepress-plugin-medium-zoom": "^1.1.3"
   }
 }
