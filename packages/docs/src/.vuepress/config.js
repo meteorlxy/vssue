@@ -60,11 +60,11 @@ module.exports = {
             link: '/demo/',
           },
           {
-            text: 'Vssue Guide',
+            text: 'Guide',
             link: '/guide/',
           },
           {
-            text: 'Options Reference',
+            text: 'Options',
             link: '/options/',
           },
           {
@@ -73,8 +73,8 @@ module.exports = {
           },
         ],
         sidebar: {
-          '/demo/': sidebarDemo('Vssue Demo'),
-          '/guide/': sidebarGuide('Vssue Guide', 'Set up OAuth App'),
+          '/demo/': sidebarDemo('Demo'),
+          '/guide/': sidebarGuide('Guide', 'Set up OAuth App'),
         },
       },
       '/zh/': {
@@ -84,15 +84,15 @@ module.exports = {
         lastUpdated: '上次更新',
         nav: [
           {
-            text: 'Demo',
+            text: '演示',
             link: '/zh/demo/',
           },
           {
-            text: 'Vssue 指南',
+            text: '指南',
             link: '/zh/guide/',
           },
           {
-            text: '配置参考',
+            text: '配置',
             link: '/zh/options/',
           },
           {
@@ -101,8 +101,8 @@ module.exports = {
           },
         ],
         sidebar: {
-          '/zh/demo/': sidebarDemo('Vssue Demo'),
-          '/zh/guide/': sidebarGuide('Vssue 指南', '创建 OAuth App'),
+          '/zh/demo/': sidebarDemo('演示'),
+          '/zh/guide/': sidebarGuide('指南', '创建 OAuth App'),
         },
       },
     },
