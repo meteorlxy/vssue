@@ -554,8 +554,6 @@ query getComments(
     commentId: string | number
     content: string
   }): Promise<VssueAPI.Comment> {
-    throw new Error('Edit comments in Github V4 has not been implemented')
-    /* eslint-disable-next-line no-unreachable */
     const { data } = await this.$http.post(`graphql`, {
       variables: {
         commentId,
@@ -570,24 +568,22 @@ mutation putComment(
     id: $commentId
     body: $content
   }) {
-    commentEdge {
-      node {
-        id
-        body
-        bodyHTML
-        createdAt
-        updatedAt
-        author {
-          avatarUrl
-          login
-          url
+    issueComment {
+      id
+      body
+      bodyHTML
+      createdAt
+      updatedAt
+      author {
+        avatarUrl
+        login
+        url
+      }
+      reactionGroups {
+        users (first: 0) {
+          totalCount
         }
-        reactionGroups {
-          users (first: 0) {
-            totalCount
-          }
-          content
-        }
+        content
       }
     }
   }
@@ -597,7 +593,7 @@ mutation putComment(
         'Authorization': `token ${accessToken}`,
       },
     })
-    return normalizeComment(data)
+    return normalizeComment(data.data.updateIssueComment.issueComment)
   }
 
   /**
@@ -622,8 +618,6 @@ mutation putComment(
     issueId: string | number
     commentId: string | number
   }): Promise<boolean> {
-    throw new Error('Delete comments in Github V4 has not been implemented')
-    /* eslint-disable-next-line no-unreachable */
     await this.$http.post(`graphql`, {
       variables: {
         commentId,
