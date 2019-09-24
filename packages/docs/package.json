@@ -1,14 +1,14 @@
 {
   "name": "docs",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "private": true,
   "scripts": {
     "build": "vuepress build src -d dist",
     "dev": "vuepress dev src"
   },
   "dependencies": {
-    "@vssue/api-github-v3": "^1.0.3",
-    "@vssue/vuepress-plugin-vssue": "^1.0.3",
+    "@vssue/api-github-v3": "^1.1.0",
+    "@vssue/vuepress-plugin-vssue": "^1.1.0",
     "@vuepress/plugin-back-to-top": "^1.0.0",
     "@vuepress/plugin-google-analytics": "1.0.0",
     "@vuepress/plugin-pwa": "^1.0.0",

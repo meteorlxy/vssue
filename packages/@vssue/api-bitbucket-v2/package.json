@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-bitbucket-v2",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Vssue api for bitbucket v2",
   "keywords": [
     "comment",
@@ -27,7 +27,7 @@
     "build": "rimraf lib types && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vssue/utils": "^1.0.3",
+    "@vssue/utils": "^1.1.0",
     "axios": "^0.18.1"
   },
   "publishConfig": {
