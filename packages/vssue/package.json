@@ -42,10 +42,6 @@
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "@vssue/api-bitbucket-v2": "^1.1.0",
-    "@vssue/api-github-v3": "^1.1.0",
-    "@vssue/api-github-v4": "^1.1.0",
-    "@vssue/api-gitlab-v4": "^1.1.0",
     "@vue/babel-preset-app": "^3.8.0",
     "@vue/cli-plugin-babel": "^3.8.0",
     "@vue/cli-plugin-eslint": "^3.8.0",
