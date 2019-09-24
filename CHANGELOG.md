@@ -1,3 +1,18 @@
+# [1.1.0](https://github.com/meteorlxy/vssue/compare/v1.0.3...v1.1.0) (2019-09-24)
+
+
+### Bug Fixes
+
+* **$api-gitee-v5:** get comments count from headers ([#46](https://github.com/meteorlxy/vssue/issues/46)) ([b07d745](https://github.com/meteorlxy/vssue/commit/b07d745))
+* **api-gitee-v5:** reject axios error as is ([acad392](https://github.com/meteorlxy/vssue/commit/acad392))
+
+
+### Features
+
+* **api-github-v4:** edit and delete comments ([aeb1a3f](https://github.com/meteorlxy/vssue/commit/aeb1a3f))
+
+
+
 ## [1.0.3](https://github.com/meteorlxy/vssue/compare/v1.0.2...v1.0.3) (2019-08-31)
 
 
