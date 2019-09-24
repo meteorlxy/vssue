@@ -15,13 +15,13 @@
   - 可以不登录浏览评论，但 API 有调用频率限制
 - 开发者参考： [官方文档](https://developer.github.com/v3)
 
-### Github GraphQL API V4 <Badge text="preview" type="error"/>
+### Github GraphQL API V4
 
 - Vssue API 包： [@vssue/api-github-v4](https://www.npmjs.com/package/@vssue/api-github-v4)
 - 特点 / 缺点：
   - 需要设置 [clientSecret](../options/README.md#clientsecret)
   - 评论可以排序
-  - 评论无法编辑 （Github 还没有实现相应的 API）
+  - 评论可以编辑
   - 评论可以删除
   - 要求登陆后才能浏览评论
 - 开发者参考： [官方文档](https://developer.github.com/v4)

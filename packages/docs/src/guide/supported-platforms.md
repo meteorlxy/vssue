@@ -15,13 +15,13 @@ Guide: [Set up GitHub OAuth App](./github.md)
   - can view comments without login, but has API rate limitation
 - Developer Reference: [Official Docs](https://developer.github.com/v3)
 
-### Github GraphQL API V4 <Badge text="preview" type="error"/>
+### Github GraphQL API V4
 
 - Vssue API package: [@vssue/api-github-v4](https://www.npmjs.com/package/@vssue/api-github-v4)
 - Features or drawbacks:
   - [clientSecret](../options/README.md#clientsecret) is required
   - comments sortable
-  - comments not editable (corresponding API has not been implemented by Github)
+  - comments editable
   - comments deletable
   - requires login to view comments
 - Developer Reference: [Official Docs](https://developer.github.com/v4)
