@@ -4,6 +4,7 @@ import enUS from './langs/en-US'
 import zhCN from './langs/zh-CN'
 import ptBR from './langs/pt-BR'
 import jaJP from './langs/ja-JP'
+import heIL from './langs/he-IL'
 
 if (!Vue.prototype.hasOwnProperty('$i18n')) {
   Vue.use(VueI18n)
@@ -21,6 +22,8 @@ const i18n: VueI18n = new VueI18n({
     'pt-BR': ptBR,
     'ja': jaJP,
     'ja-JP': jaJP,
+    'he': heIL,
+    'he-IL': heIL,
   },
 })
 

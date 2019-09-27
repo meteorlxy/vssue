@@ -1210,6 +1210,49 @@ const messages$3 = {
     deleteFailed: 'コメントの削除に失敗しました',
 };
 
+const messages$4 = {
+    // auth
+    login: 'התחברו עם {platform}',
+    logout: 'התנתקו',
+    currentUser: 'משתמש/ת נוכחי/ת',
+    // comment input
+    loading: 'טוען',
+    submit: 'שליחה',
+    submitting: 'שולח',
+    submitComment: 'שליחת תגובה',
+    cancel: 'ביטל',
+    edit: 'עריכה',
+    editMode: 'מצב עריכה',
+    delete: 'מחיקה',
+    reply: 'תשובה',
+    // reactions
+    heart: 'לב',
+    like: 'לייק',
+    unlike: 'אנלייק',
+    // pagination
+    perPage: 'תגובות לדף',
+    sort: 'לחצו כדי לשנות את כיוון המיון',
+    page: 'דף',
+    prev: 'הדף הקודם',
+    next: 'הדף הבא',
+    // hint
+    comments: 'תגובות | {count} תגובה | {count} תגובות',
+    loginToComment: 'התחברו עם חשבון {platform} כדי להשאיר תגובה',
+    placeholder: 'השאירו תגובה. יש תמיכה בעיצוב בעזרת Markdown. Ctrl + Enter כדי לשלוח.',
+    noLoginPlaceHolder: 'התחברו כדי להשאיר תגובה. יש תמיכה בעיצוב בעזרת Markdown. ',
+    // status
+    failed: 'כשלון בטעינת התגובות',
+    initializing: 'מאתחל...',
+    issueNotCreated: 'לחצו ליצירת issue',
+    loadingComments: 'טוען תגובות...',
+    loginRequired: 'התחברו כדי לצפות בתגובות',
+    noComments: 'עדיין אין תגובות. השאירו תגובה ראשונה !',
+    // alerts
+    reactionGiven: `כבר ניתן חיווי '{reaction}'`,
+    deleteConfirm: 'בטוחים במחיקת התגובה ?',
+    deleteFailed: 'כשלון במחיקת התגובה'
+};
+
 if (!Vue.prototype.hasOwnProperty('$i18n')) {
     Vue.use(VueI18n);
 }
@@ -1225,6 +1268,8 @@ const i18n = new VueI18n({
         'pt-BR': messages$2,
         'ja': messages$3,
         'ja-JP': messages$3,
+        'he': messages$4,
+        'he-IL': messages$4,
     },
 });
 
