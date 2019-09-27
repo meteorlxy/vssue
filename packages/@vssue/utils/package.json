@@ -18,13 +18,12 @@
   "license": "MIT",
   "author": "meteorlxy <meteor.lxy@foxmail.com>",
   "files": [
-    "lib/",
-    "types/"
+    "lib"
   ],
   "main": "lib/index.js",
-  "types": "types/index.d.ts",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "build": "rimraf lib types && tsc -p tsconfig.json"
+    "build": "rimraf lib && tsc -p tsconfig.json"
   },
   "dependencies": {
     "date-fns": "^1.29.0",
