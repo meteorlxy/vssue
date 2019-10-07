@@ -240,7 +240,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     } else {
       options.params = {
         q: [
-          `${issueTitle}`,
+          `"${issueTitle}"`,
           `is:issue`,
           `in:title`,
           `repo:${this.owner}/${this.repo}`,
