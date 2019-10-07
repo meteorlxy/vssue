@@ -14,10 +14,5 @@
     "javascriptreact",
     "vue"
   ],
-  "vetur.validation.template": false,
-  "cSpell.words": [
-    "reactable",
-    "repos",
-    "vssue"
-  ]
+  "vetur.validation.template": false
 }
