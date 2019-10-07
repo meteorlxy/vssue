@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import VssuePlguin, {
+import VssuePlugin, {
   Vssue,
   VssueComponent,
 } from 'vssue'
@@ -28,7 +28,7 @@ const options: Partial<Vssue.Options> = {
 }
 
 if (!onlyComponent) {
-  Vue.use(VssuePlguin, options)
+  Vue.use(VssuePlugin, options)
 } else {
   Vue.component('Vssue', VssueComponent)
 }
