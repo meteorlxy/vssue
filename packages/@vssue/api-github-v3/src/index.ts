@@ -172,7 +172,7 @@ export default class GithubV3 implements VssueAPI.Instance {
   }
 
   /**
-   * Get the logined user with access token.
+   * Get the logged-in user with access token.
    *
    * @param options.accessToken - User access token
    *
@@ -297,7 +297,7 @@ export default class GithubV3 implements VssueAPI.Instance {
    * @see https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
    * @see https://developer.github.com/v3/#pagination
    *
-   * @reamrks
+   * @remarks
    * Github V3 does not support sort for issue comments now.
    * Github V3 have to request the parent issue to get the count of comments.
    */
