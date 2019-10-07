@@ -1,6 +1,6 @@
 {
   "name": "vssue",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A vue-powered issue-based comment plugin",
   "keywords": [
     "comment",
@@ -33,7 +33,7 @@
     "staging": "cross-env NODE_ENV=production vue-cli-service serve ./dev/main.ts --mode staging"
   },
   "dependencies": {
-    "@vssue/utils": "^1.1.0",
+    "@vssue/utils": "^1.1.1",
     "github-markdown-css": "^3.0.1",
     "vue": "^2.6.10",
     "vue-i18n": "^8.11.2",
