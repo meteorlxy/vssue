@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/meteorlxy/vssue/compare/v1.1.1...v1.1.2) (2019-10-07)
+
+
+### Bug Fixes
+
+* **api-github-v3:** remove page limitation when searching issues ([669dd0f](https://github.com/meteorlxy/vssue/commit/669dd0f))
+
+
+
 ## [1.1.1](https://github.com/meteorlxy/vssue/compare/v1.1.0...v1.1.1) (2019-10-07)
 
 
