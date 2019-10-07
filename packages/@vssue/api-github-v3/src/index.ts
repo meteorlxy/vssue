@@ -247,7 +247,6 @@ export default class GithubV3 implements VssueAPI.Instance {
           `is:public`,
           ...this.labels.map(label => `label:${label}`),
         ].join(' '),
-        'per_page': 1,
       }
       const { data } = await this.$http.get(`search/issues`, options)
       const issue = data.items.map(normalizeIssue).find(item => item.title === issueTitle)
