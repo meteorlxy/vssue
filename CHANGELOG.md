@@ -1,3 +1,12 @@
+## [1.1.1](https://github.com/meteorlxy/vssue/compare/v1.1.0...v1.1.1) (2019-10-07)
+
+
+### Bug Fixes
+
+* **api-github-v3:** use quotation marks for queries ([b7a56f2](https://github.com/meteorlxy/vssue/commit/b7a56f2))
+
+
+
 # [1.1.0](https://github.com/meteorlxy/vssue/compare/v1.0.3...v1.1.0) (2019-09-24)
 
 
