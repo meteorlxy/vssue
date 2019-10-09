@@ -16,42 +16,42 @@ const {
 
 module.exports = [
   {
-    input: 'vssue.bitbucket.ts',
+    input: 'browser/vssue.bitbucket.ts',
     output: 'vssue.bitbucket.min.js',
     format: 'umd',
   },
   {
-    input: 'vssue.gitee.ts',
+    input: 'browser/vssue.gitee.ts',
     output: 'vssue.gitee.min.js',
     format: 'umd',
   },
   {
-    input: 'vssue.github.ts',
+    input: 'browser/vssue.github.ts',
     output: 'vssue.github.min.js',
     format: 'umd',
   },
   {
-    input: 'vssue.gitlab.ts',
+    input: 'browser/vssue.gitlab.ts',
     output: 'vssue.gitlab.min.js',
     format: 'umd',
   },
   {
-    input: 'vssue.bitbucket.ts',
+    input: 'browser/vssue.bitbucket.ts',
     output: 'vssue.bitbucket.polyfill.min.js',
     format: 'umd',
   },
   {
-    input: 'vssue.gitee.ts',
+    input: 'browser/vssue.gitee.ts',
     output: 'vssue.gitee.polyfill.min.js',
     format: 'umd',
   },
   {
-    input: 'vssue.github.ts',
+    input: 'browser/vssue.github.ts',
     output: 'vssue.github.polyfill.min.js',
     format: 'umd',
   },
   {
-    input: 'vssue.gitlab.ts',
+    input: 'browser/vssue.gitlab.ts',
     output: 'vssue.gitlab.polyfill.min.js',
     format: 'umd',
   },
