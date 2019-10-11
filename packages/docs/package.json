@@ -7,7 +7,11 @@
     "dev": "vuepress dev src"
   },
   "dependencies": {
+    "@vssue/api-bitbucket-v2": "^1.1.1",
+    "@vssue/api-gitee-v5": "^1.1.1",
     "@vssue/api-github-v3": "^1.1.2",
+    "@vssue/api-github-v4": "^1.1.1",
+    "@vssue/api-gitlab-v4": "^1.1.1",
     "@vssue/vuepress-plugin-vssue": "^1.1.1",
     "@vuepress/plugin-back-to-top": "^1.0.0",
     "@vuepress/plugin-google-analytics": "1.0.0",

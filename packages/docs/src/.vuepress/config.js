@@ -157,6 +157,7 @@ function sidebarDemo (title) {
         'bitbucket',
         'gitee',
         'github',
+        'github-v4',
         'gitlab',
       ],
     },

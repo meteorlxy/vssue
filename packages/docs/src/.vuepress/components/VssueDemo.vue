@@ -9,6 +9,7 @@
 import BitbucketV2 from '@vssue/api-bitbucket-v2'
 import GiteeV5 from '@vssue/api-gitee-v5'
 import GithubV3 from '@vssue/api-github-v3'
+import GithubV4 from '@vssue/api-github-v4'
 import GitlabV4 from '@vssue/api-gitlab-v4'
 
 const platforms = {
@@ -34,6 +35,16 @@ const platforms = {
   'github': {
     options: {
       api: GithubV3,
+      owner: 'meteorlxy',
+      repo: 'vssue',
+      clientId: 'a1097b7751127c6d1194',
+      clientSecret: '5c95e2f890b6a2b80dbda17656e9b1db9e87a07b',
+    },
+    issueId: 1,
+  },
+  'github-v4': {
+    options: {
+      api: GithubV4,
       owner: 'meteorlxy',
       repo: 'vssue',
       clientId: 'a1097b7751127c6d1194',
