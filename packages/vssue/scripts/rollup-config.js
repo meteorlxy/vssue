@@ -14,47 +14,28 @@ const {
   banner,
 } = require('./util')
 
+const browserEntries = [
+  'vssue.bitbucket',
+  'vssue.gitee',
+  'vssue.github',
+  'vssue.github-v4',
+  'vssue.gitlab',
+]
+
 module.exports = [
-  {
-    input: 'browser/vssue.bitbucket.ts',
-    output: 'vssue.bitbucket.min.js',
-    format: 'umd',
-  },
-  {
-    input: 'browser/vssue.gitee.ts',
-    output: 'vssue.gitee.min.js',
-    format: 'umd',
-  },
-  {
-    input: 'browser/vssue.github.ts',
-    output: 'vssue.github.min.js',
-    format: 'umd',
-  },
-  {
-    input: 'browser/vssue.gitlab.ts',
-    output: 'vssue.gitlab.min.js',
-    format: 'umd',
-  },
-  {
-    input: 'browser/vssue.bitbucket.ts',
-    output: 'vssue.bitbucket.polyfill.min.js',
-    format: 'umd',
-  },
-  {
-    input: 'browser/vssue.gitee.ts',
-    output: 'vssue.gitee.polyfill.min.js',
-    format: 'umd',
-  },
-  {
-    input: 'browser/vssue.github.ts',
-    output: 'vssue.github.polyfill.min.js',
-    format: 'umd',
-  },
-  {
-    input: 'browser/vssue.gitlab.ts',
-    output: 'vssue.gitlab.polyfill.min.js',
-    format: 'umd',
-  },
+  // Browser iife
+  ...browserEntries.map(item => ({
+    input: `browser/${item}.ts`,
+    output: `${item}.min.js`,
+    format: 'iife',
+  })),
+  // Browser iife with polyfill
+  ...browserEntries.map(item => ({
+    input: `browser/${item}.ts`,
+    output: `${item}.polyfill.min.js`,
+    format: 'iife',
+  })),
+  // ES Module
   {
     input: 'main.ts',
     output: 'vssue.js',

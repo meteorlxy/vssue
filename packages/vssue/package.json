@@ -45,6 +45,7 @@
     "@vssue/api-bitbucket-v2": "^1.1.1",
     "@vssue/api-gitee-v5": "^1.1.1",
     "@vssue/api-github-v3": "^1.1.2",
+    "@vssue/api-github-v4": "^1.1.1",
     "@vssue/api-gitlab-v4": "^1.1.1",
     "@vue/babel-preset-app": "^3.8.0",
     "@vue/cli-plugin-babel": "^3.8.0",
