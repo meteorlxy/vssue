@@ -18,6 +18,7 @@
   font-size: 16px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   padding: 10px;
+  direction: rtl;
 }
 .vssue .vssue-button {
   outline: none;
@@ -430,6 +431,65 @@
   border-top: 1px solid #eaecef;
   margin: 1.2rem 0;
   padding: 0;
+}
+.vssue .vssue-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eaecef;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.vssue .vssue-header .vssue-header-powered-by {
+  float: left;
+}
+.vssue .vssue-comments .vssue-comment .vssue-comment-avatar {
+  float: right;
+}
+@media screen and (max-width: 576px) {
+  .vssue .vssue-comments .vssue-comment .vssue-comment-body {
+    margin-right: 60px;
+  }
+}
+@media screen and (min-width: 577px) {
+  .vssue .vssue-comments .vssue-comment .vssue-comment-body {
+    margin-right: 70px;
+  }
+}
+.vssue .vssue-comments .vssue-comment .vssue-comment-header .vssue-comment-created-at {
+  float: left;
+}
+.vssue .vssue-comments .vssue-comment .vssue-comment-footer .vssue-comment-operations {
+  float: left;
+}
+.vssue .vssue-comments .vssue-comment .vssue-comment-footer .vssue-comment-operations .vssue-comment-operation {
+  margin-right: 8px;
+}
+.vssue .vssue-new-comment .vssue-comment-avatar {
+  float: right;
+}
+.vssue .vssue-new-comment .vssue-new-comment-body {
+  position: relative;
+}
+@media screen and (max-width: 576px) {
+  .vssue .vssue-new-comment .vssue-new-comment-body {
+    margin-right: 60px;
+  }
+}
+@media screen and (min-width: 577px) {
+  .vssue .vssue-new-comment .vssue-new-comment-body {
+    margin-right: 70px;
+  }
+}
+@media screen and (min-width: 577px) {
+  .vssue .vssue-new-comment .vssue-new-comment-footer {
+    margin-right: 70px;
+    text-align: left;
+  }
+  .vssue .vssue-new-comment .vssue-new-comment-footer .vssue-current-user {
+    float: right;
+  }
+  .vssue .vssue-new-comment .vssue-new-comment-footer .vssue-new-comment-operations {
+    float: left;
+  }
 }
 
 @font-face {
