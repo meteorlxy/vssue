@@ -1,3 +1,4 @@
+const path = require('path')
 const gulp = require('gulp')
 const rollup = require('rollup')
 const rimraf = require('rimraf')
@@ -25,14 +26,14 @@ gulp.task('clean', () => new Promise((resolve, reject) => {
 }))
 
 function makeRollupTask (config) {
-  async function buildTask () {
+  async function rollupTask () {
     const bundle = await rollup.rollup(config)
     return bundle.write(config.output)
   }
 
-  buildTask.displayName = `rollup:${config.output.file}`
+  rollupTask.displayName = `rollup:${path.basename(config.output.file)}`
 
-  return buildTask
+  return rollupTask
 }
 
 gulp.task('rollup', gulp.series(
@@ -41,27 +42,40 @@ gulp.task('rollup', gulp.series(
   ),
 ))
 
-gulp.task('style', () => {
-  return gulp.src([
-    pathSrc('styles/index.styl'),
-    require.resolve('github-markdown-css'),
-  ]).pipe(stylus())
-    .pipe(postcss([
-      autoprefixer(),
-    ]))
-    .pipe(concat('vssue.css'))
-    .pipe(through.obj(function (file, encoding, callback) {
-      file.contents = Buffer.concat([Buffer.from(banner), file.contents])
-      this.push(file)
-      return callback()
-    }))
-    .pipe(gulp.dest(pathDist()))
-    .pipe(postcss([
-      cssnano(),
-    ]))
-    .pipe(rename('vssue.min.css'))
-    .pipe(gulp.dest(pathDist()))
-})
+function makeStyleTask (input, output) {
+  async function styleTask () {
+    return gulp.src([
+      pathSrc(`styles/${input}.styl`),
+      require.resolve('github-markdown-css'),
+    ]).pipe(stylus())
+      .pipe(postcss([
+        autoprefixer(),
+      ]))
+      .pipe(concat(`${output}.css`))
+      .pipe(through.obj(function (file, encoding, callback) {
+        file.contents = Buffer.concat([Buffer.from(banner), file.contents])
+        this.push(file)
+        return callback()
+      }))
+      .pipe(gulp.dest(pathDist()))
+      .pipe(postcss([
+        cssnano(),
+      ]))
+      .pipe(rename(`${output}.min.css`))
+      .pipe(gulp.dest(pathDist()))
+  }
+
+  styleTask.displayName = `style:${output}`
+
+  return styleTask
+}
+
+gulp.task('style', gulp.series(
+  gulp.parallel([
+    makeStyleTask('index', 'vssue'),
+    makeStyleTask('index.rtl', 'vssue.rtl'),
+  ]),
+))
 
 gulp.task('default', gulp.series(
   'clean',
