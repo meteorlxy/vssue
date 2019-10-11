@@ -1,6 +1,15 @@
 import { VssueAPI } from 'vssue'
 
 export function normalizeUser (user: any): VssueAPI.User {
+  // workaround for deleted user
+  // @see https://github.community/t5/GitHub-API-Development-and/Keep-deleted-issue-author-as-ghost/td-p/15456
+  if (user === null) {
+    return {
+      username: 'ghost',
+      avatar: 'https://avatars3.githubusercontent.com/u/10137?v=4',
+      homepage: 'https://github.com/ghost',
+    }
+  }
   return {
     username: user.login,
     avatar: user.avatarUrl,
