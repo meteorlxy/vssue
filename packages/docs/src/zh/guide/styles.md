@@ -61,9 +61,6 @@ $vssue-direction
 // 先设置变量
 $vssue-theme-color = red
 
-// 如果你使用从右至左的语言（希伯来语等）
-$vssue-direction = rtl
-
 // 引入 Vssue 的样式主文件和 github-markdown-css
 @import '~vssue/src/styles/index'
 @import '~github-markdown-css/github-markdown.css'
