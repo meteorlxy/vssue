@@ -57,7 +57,7 @@ export default class GithubV4 implements VssueAPI.Instance {
     proxy,
   }: VssueAPI.Options) {
     if (typeof clientSecret === 'undefined' || typeof proxy === 'undefined') {
-      throw new Error('clientSecret and proxy is required for GitHub V3')
+      throw new Error('clientSecret and proxy is required for GitHub V4')
     }
     this.baseURL = baseURL
     this.owner = owner
@@ -539,10 +539,6 @@ query getComments(
    *
    * @see https://developer.github.com/v4/mutation/updateissuecomment/
    * @see https://developer.github.com/v4/input_object/updateissuecommentinput/
-   *
-   * @remarks
-   * This mutation is listed in the docs, but has not been implemented for now
-   * As the commentId of v4 and v3 is different, cannot fallback to v3, throw an error instead
    */
   async putComment ({
     accessToken,
@@ -605,10 +601,6 @@ mutation putComment(
    * @return `true` if succeed, `false` if failed
    *
    * @see https://developer.github.com/v4/mutation/deleteissuecomment/
-   *
-   * @remarks
-   * This mutation is listed in the docs, but has not been implemented for now
-   * As the commentId of v4 and v3 is different, cannot fallback to v3, throw an error instead
    */
   async deleteComment ({
     accessToken,
@@ -623,15 +615,15 @@ mutation putComment(
         commentId,
       },
       query: `\
-  mutation deleteComment(
-    $commentId: ID!,
-  ) {
-    deleteIssueComment(input: {
-      id: $commentId
-    }) {
-      clientMutationId
-    }
-  }`,
+mutation deleteComment(
+  $commentId: ID!,
+) {
+  deleteIssueComment(input: {
+    id: $commentId
+  }) {
+    clientMutationId
+  }
+}`,
     }, {
       headers: {
         'Authorization': `token ${accessToken}`,
