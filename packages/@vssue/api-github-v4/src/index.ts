@@ -350,6 +350,7 @@ query getIssueByTitle(
     }, {
       headers: { 'Authorization': `token ${accessToken}` },
     })
+    data.url = data.html_url
     return normalizeIssue(data)
   }
 
