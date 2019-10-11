@@ -48,6 +48,9 @@ $vssue-font-family
 
 // the mobile breakpoint
 $vssue-breakpoint-mobile
+
+// the text direction (ltr / rtl) (used for RTL languages, e.g. Hebrew)
+$vssue-direction
 ```
 
 For example, Vssue use a "Vue green" (`#3eaf7c`) as the theme color, which is defined as the default value of variable `$vssue-theme-color`. You can change the theme color by setting `$vssue-theme-color` before import `vssue/src/styles/index.styl`.

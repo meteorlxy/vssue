@@ -48,6 +48,9 @@ $vssue-font-family
 
 // 切换为移动端模式的屏幕宽度
 $vssue-breakpoint-mobile
+
+// 文字方向 (ltr / rtl) （为 RTL 语言使用，如希伯来语等）
+$vssue-direction
 ```
 
 举例来说，Vssue 默认使用一个“Vue 绿色”（`#3eaf7c`）作为主题颜色，并将其设置为 `$vssue-theme-color` 的默认值。你可以在引入 `vssue/src/styles/index.styl` 之前设置 `$vssue-theme-color` 的值来改变主题颜色。
@@ -57,6 +60,9 @@ $vssue-breakpoint-mobile
 ```stylus
 // 先设置变量
 $vssue-theme-color = red
+
+// 如果你使用从右至左的语言（希伯来语等）
+$vssue-direction = rtl
 
 // 引入 Vssue 的样式主文件和 github-markdown-css
 @import '~vssue/src/styles/index'
