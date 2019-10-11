@@ -1,3 +1,26 @@
+# [1.2.0](https://github.com/meteorlxy/vssue/compare/v1.1.2...v1.2.0) (2019-10-11)
+
+
+### Bug Fixes
+
+* **api-github-v4:** workaround for deleted user ([2b3d5d2](https://github.com/meteorlxy/vssue/commit/2b3d5d2))
+* **api-github-v4:** wrong issue link after create new issue ([ae43ba0](https://github.com/meteorlxy/vssue/commit/ae43ba0))
+
+
+### Features
+
+* **api-github-v4:** get issue by title via search api ([8713fca](https://github.com/meteorlxy/vssue/commit/8713fca))
+* **api-github-v4:** use graphql to post comments ([e807685](https://github.com/meteorlxy/vssue/commit/e807685))
+* **vssue:** add he-IL language and RTL support ([#64](https://github.com/meteorlxy/vssue/issues/64)) ([2b843e7](https://github.com/meteorlxy/vssue/commit/2b843e7))
+* **vuepress-plugin-vssue:** support github-v4 ([d0b7171](https://github.com/meteorlxy/vssue/commit/d0b7171))
+
+
+### Reverts
+
+* docs: mix github v3 and v4 in homepage ([45429e8](https://github.com/meteorlxy/vssue/commit/45429e8))
+
+
+
 ## [1.1.2](https://github.com/meteorlxy/vssue/compare/v1.1.1...v1.1.2) (2019-10-07)
 
 
