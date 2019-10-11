@@ -279,28 +279,29 @@ query getIssueById {
         }
       }
     } else {
+      const query = [
+        `"${issueTitle}"`,
+        `in:title`,
+        `repo:${this.owner}/${this.repo}`,
+        `is:public`,
+        ...this.labels.map(label => `label:${label}`),
+      ].join(' ')
+
       const { data } = await this.$http.post(`graphql`, {
         variables: {
-          owner: this.owner,
-          repo: this.repo,
-          labels: this.labels,
+          query,
         },
         query: `\
 query getIssueByTitle(
-  $owner: String!
-  $repo: String!
-  $labels: [String!]!
+  $query: String!
 ) {
-  repository(owner: $owner, name: $repo) {
-    issues(
-      orderBy: {
-        field: CREATED_AT
-        direction: ASC
-      }
-      labels: $labels
-      first: 100
+  search(
+    query: $query
+    type: ISSUE
+    first: 20
     ) {
       nodes {
+      ... on Issue {
         id
         number
         title
@@ -311,7 +312,7 @@ query getIssueByTitle(
   }
 }`,
       }, options)
-      const issue = data.data.repository.issues.nodes.map(normalizeIssue).find(item => item.title === issueTitle)
+      const issue = data.data.search.nodes.map(normalizeIssue).find(item => item.title === issueTitle)
       return issue || null
     }
   }
