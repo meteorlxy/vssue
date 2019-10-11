@@ -1,10 +1,8 @@
+import { VueConstructor } from 'vue'
 import Vssue from 'vssue'
 // @ts-ignore
 import VssueAPI from '@vssue/api'
-
 import '../styles/index.styl'
-
-import { VueConstructor } from 'vue'
 
 declare const VSSUE_OPTIONS: string
 
