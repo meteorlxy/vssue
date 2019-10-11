@@ -15,11 +15,6 @@
 * **vuepress-plugin-vssue:** support github-v4 ([d0b7171](https://github.com/meteorlxy/vssue/commit/d0b7171))
 
 
-### Reverts
-
-* docs: mix github v3 and v4 in homepage ([45429e8](https://github.com/meteorlxy/vssue/commit/45429e8))
-
-
 
 ## [1.1.2](https://github.com/meteorlxy/vssue/compare/v1.1.1...v1.1.2) (2019-10-07)
 
