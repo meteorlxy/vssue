@@ -16,6 +16,7 @@ const {
   pathSrc,
   pathDist,
   banner,
+  arrayToChunks,
 } = require('./util')
 
 gulp.task('clean', () => new Promise((resolve, reject) => {
@@ -36,10 +37,11 @@ function makeRollupTask (config) {
   return rollupTask
 }
 
+const rollupTasks = rollupConfig.map(config => makeRollupTask(config))
+const rollupTasksChunks = arrayToChunks(rollupTasks, 4)
+
 gulp.task('rollup', gulp.series(
-  gulp.parallel(
-    ...rollupConfig.map(config => makeRollupTask(config)),
-  ),
+  ...rollupTasksChunks.map(item => gulp.parallel(...item))
 ))
 
 function makeStyleTask (input, output) {
