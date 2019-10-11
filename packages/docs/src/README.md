@@ -15,9 +15,9 @@ footer: MIT Licensed | Vssue
 
 ## Demo
 
-Demo of current page is for GitHub.
+Demo of current page is for GitHub. Before login, it's GitHub API V3. After login, it's GitHub API V4.
 
-Go to the [Demo Page](./demo/README.md) for all supported platforms.
+Go to the [Demo Page](./demo/README.md) for all supported platforms and API.
 
 ::: tip
 After you comment on an issue, the platform will send you emails when new comments come. The emails might be annoying when new users come and leave comments on this demo page.
@@ -25,4 +25,4 @@ After you comment on an issue, the platform will send you emails when new commen
 You can go to the [issue page](https://github.com/meteorlxy/vssue/issues/1) and unsubscribe the notifications.
 :::
 
-<VssueDemo platform="github" />
+<VssueDemoHome />
