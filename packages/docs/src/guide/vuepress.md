@@ -46,6 +46,7 @@ The only difference is that, you should set `platform` rather than the `api` pac
 `@vssue/vuepress-plugin-vssue` will auto resolve the corresponding api package according to the value of `platform`:
 
 - platform `github` - api package `@vssue/api-github-v3`
+- platform `github-v4` - api package `@vssue/api-github-v4`
 - platform `gitlab` - api package `@vssue/api-gitlab-v4`
 - platform `bitbucket` - api package `@vssue/api-bitbucket-v2`
 - platform `gitee` - api package `@vssue/api-gitee-v5`

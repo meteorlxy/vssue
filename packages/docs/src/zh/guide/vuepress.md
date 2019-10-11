@@ -46,6 +46,7 @@ module.exports = {
 `@vssue/vuepress-plugin-vssue` 会自动根据你设置的 `platform` 为你解析对应的 api 包：
 
 - platform `github` - api 包 `@vssue/api-github-v3`
+- platform `github-v4` - api 包 `@vssue/api-github-v4`
 - platform `gitlab` - api 包 `@vssue/api-gitlab-v4`
 - platform `bitbucket` - api 包 `@vssue/api-bitbucket-v2`
 - platform `gitee` - api 包 `@vssue/api-gitee-v5`
