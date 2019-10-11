@@ -46,6 +46,8 @@ export default class GithubV4 implements VssueAPI.Instance {
     perPage: number | null
   }
 
+  private _issueNodeId: string | null
+
   constructor ({
     baseURL = 'https://github.com',
     owner,
@@ -76,6 +78,8 @@ export default class GithubV4 implements VssueAPI.Instance {
       sort: null,
       perPage: null,
     }
+
+    this._issueNodeId = null
 
     this.$http = axios.create({
       baseURL: baseURL === 'https://github.com' ? 'https://api.github.com' : concatURL(baseURL, 'api'),
@@ -312,8 +316,14 @@ query getIssueByTitle(
   }
 }`,
       }, options)
-      const issue = data.data.search.nodes.map(normalizeIssue).find(item => item.title === issueTitle)
-      return issue || null
+      const issue = data.data.search.nodes.find(item => item.title === issueTitle)
+
+      // postComment needs issue NodeId, so we store it internally
+      if (issue) {
+        this._issueNodeId = issue.id
+        return normalizeIssue(issue)
+      }
+      return null
     }
   }
 
@@ -330,10 +340,11 @@ query getIssueByTitle(
    * @see https://developer.github.com/v4/input_object/createissueinput/
    *
    * @remarks
-   * Create issue requires repositoryId, which should be requested in the first request.
-   * Create issue with labels requires labelIds, which is difficult to get.
+   * Creating issue requires repositoryId, which should be requested in an extra request.
+   * Creating issue with labels requires labelIds, which should be requested in an extra request, or create the label if it does not exist.
+   * Endpoints for creating labels has not been implemented by GitHub yet (see https://developer.github.com/v4/mutation/createlabel/)
    *
-   * Emmmm... Let's fallback to v3 for now
+   * For these reasons, fallback to v3 for now
    */
   async postIssue ({
     accessToken,
@@ -351,7 +362,11 @@ query getIssueByTitle(
     }, {
       headers: { 'Authorization': `token ${accessToken}` },
     })
+    // `html_url` in v3
+    // `url` in v4
     data.url = data.html_url
+    // postComment needs issue NodeId, so we store it internally
+    this._issueNodeId = data.node_id
     return normalizeIssue(data)
   }
 
@@ -485,10 +500,6 @@ query getComments(
    *
    * @see https://developer.github.com/v4/mutation/addcomment/
    * @see https://developer.github.com/v4/input_object/addcommentinput/
-   *
-   * @remarks
-   * Create comment requires the Node ID of issue, which is different with the issue "id"
-   * Fallback to v3 for now
    */
   async postComment ({
     accessToken,
@@ -499,35 +510,51 @@ query getComments(
     issueId: string | number
     content: string
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(`${this.baseURL === 'https://github.com' ? '' : 'v3/'}repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
-      body: content,
+    const { data } = await this.$http.post(`graphql`, {
+      variables: {
+        // postComment needs issue NodeId, so we store it internally
+        issueNodeId: this._issueNodeId,
+        content,
+      },
+      query: `\
+mutation postComment(
+  $issueNodeId: ID!
+  $content: String!
+) {
+  addComment(
+    input: {
+      subjectId: $issueNodeId
+      body: $content
+    }
+  ) {
+    commentEdge {
+      node {
+        id
+        body
+        bodyHTML
+        createdAt
+        updatedAt
+        author {
+          avatarUrl
+          login
+          url
+        }
+        reactionGroups {
+          users (first: 0) {
+            totalCount
+          }
+          content
+        }
+      }
+    }
+  }
+}`,
     }, {
       headers: {
         'Authorization': `token ${accessToken}`,
-        'Accept': [
-          'application/vnd.github.v3.raw+json',
-          'application/vnd.github.v3.html+json',
-          'application/vnd.github.squirrel-girl-preview',
-        ],
       },
     })
-    return {
-      id: data.id,
-      content: data.body_html,
-      contentRaw: data.body,
-      author: {
-        username: data.user.login,
-        avatar: data.avatar_url,
-        homepage: data.html_url,
-      },
-      createdAt: data.created_at,
-      updatedAt: data.updated_at,
-      reactions: {
-        like: data.reactions['+1'],
-        unlike: data.reactions['-1'],
-        heart: data.reactions['heart'],
-      },
-    }
+    return normalizeComment(data.data.addComment.commentEdge.node)
   }
 
   /**
