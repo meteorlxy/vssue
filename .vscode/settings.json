@@ -10,9 +10,26 @@
     "files.trimTrailingWhitespace": false
   },
   "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "vue"
+    {
+      "language": "javascript",
+      "autoFix": true
+    },
+    {
+      "language": "javascriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "typescript",
+      "autoFix": true
+    },
+    {
+      "language": "typescriptreact",
+      "autoFix": true
+    },
+    {
+      "language": "vue",
+      "autoFix": true
+    }
   ],
   "vetur.validation.template": false
 }
