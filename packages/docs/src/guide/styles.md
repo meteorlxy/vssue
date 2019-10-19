@@ -16,7 +16,7 @@ As our comments support markdown syntax, we need to set the style of the parsed 
 
 Currently, Vssue use [github-markdown-css](https://github.com/sindresorhus/github-markdown-css) as the preset. You may notice that all the content of comments in Vssue is wrapped in `class="markdown-body"`.
 
-However, the css file of `github-markdown-css` is not included in Vssue's stylus code. Instead, it is concat to the complied CSS file at build time.
+However, the css file of `github-markdown-css` is not included in the stylus code of Vssue. Instead, it is concat to the complied CSS file at build time.
 
 So if you want to use the source code of Vssue styles, remember to import `github-markdown-css`, or add your own style under `.markdown-body`.
 

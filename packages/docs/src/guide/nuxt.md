@@ -15,7 +15,7 @@ npm install @vssue/api-github-v3
 
 ### Create Nuxt Plugin
 
-> See [Nuxt Offical Docs](https://nuxtjs.org/guide/plugins#vue-plugins) for how to create and use a plugin in detail
+> See [Nuxt Official Docs](https://nuxtjs.org/guide/plugins#vue-plugins) for how to create and use a plugin in detail
 
 Create the file `plugins/vssue.js`:
 

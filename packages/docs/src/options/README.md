@@ -28,7 +28,7 @@ Vue.use(Vssue, {
 
   The name of VssueAPI packages format as `@vssue/api-${platform}-${version}`, for different API version of different platforms.
 
-  Check [Supported Platforms](../guide/supported-platforms.md) for available VssueAPI pacakges.
+  Check [Supported Platforms](../guide/supported-platforms.md) for available VssueAPI packages.
 
 - __Example__:
 
@@ -132,7 +132,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   - `'https://bitbucket.org'` for Bitbucket
   - `'https://gitee.com'` for Gitee
 
-  ::: warning ATTENSION
+  ::: warning ATTENTION
   Only when you choose to use __self-hosted__ platform should you set this option. (e.g. __GitLab Community / Enterprise Edition__ or __GitHub Enterprise Server__)
   :::
 
@@ -240,7 +240,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 - __Default__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
 - __Details__:
 
-  Some platforms (e.g. GitHub and Gitee) do not support Implicity Grant, so we have to request the API of the platform to get the access token.
+  Some platforms (e.g. GitHub and Gitee) do not support Implicit Grant, so we have to request the API of the platform to get the access token.
   
   However, the access token API of the platforms do not support CORS (see [related issue of GitHub](https://github.com/isaacs/github/issues/330)). As Vssue is a pure front-end plugin, we have to use a proxy to request access token.
 
@@ -281,7 +281,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   ```
 
   ::: tip
-  The `issueContent` option is only used to auto create the corresonpding issue when it does not exist.
+  The `issueContent` option is only used to auto create the corresponding issue when it does not exist.
 
   If the issue already exists, Vssue will not try to update the content.
   :::
@@ -292,7 +292,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 - __Default__: `false`
 - __Details__:
 
-  If `autoCreateIssue` is set to `true`, Vssue will try to create an issue automatically when the corresponding issue does not exist. Notice that if you have not logined, Vssue will redirect to the authorization page automatically.
+  If `autoCreateIssue` is set to `true`, Vssue will try to create an issue automatically when the corresponding issue does not exist. Notice that if you have not logged-in, Vssue will redirect to the authorization page automatically.
 
   If `autoCreateIssue` is set to `false`, you need to create the issue manually.
 
@@ -310,7 +310,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   - If the type is `string`, the actual title of issue is `` `${prefix}${title}` ``.
   - If the type is `Function`, the actual title of issue is the return value of the function. Notice that the first parameter of the function is the options of Vssue, and you can use them to generate the actual title.
 
-  ::: warning ATTENSION
+  ::: warning ATTENTION
   When trying to load comments, Vssue will request the corresponding issue according to `labels` and `title`. If the issue does not exist, Vssue will try to create a new issue with `title`, `issueContent` and `labels`.
 
   In other words, `labels` and `title` is the identifier of the corresponding issue.
@@ -337,7 +337,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   - Options: `labels`, `prefix`, `issueContent` and `autoCreateIssue`
   - Props: `title`
 
-  ::: danger ATTENSION
+  ::: danger ATTENTION
   If `issueId` is set, Vssue will use it to determine which issue to use directly, instead of requesting issues according to `labels` and `title`. This will make the initialization process faster.
 
   In this case, however, you have to __create issues manually__. If the corresponding issue is not found, Vssue will not try to create a new issue for you. 

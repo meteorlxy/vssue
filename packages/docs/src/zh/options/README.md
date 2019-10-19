@@ -240,7 +240,7 @@ Vue.use(Vssue, {
 - __默认值__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
 - __详细__:
 
-  某些平台（如 GitHub 和 Gitee）不支持 Implicity Grant，所以我们必须通过请求平台的 API 来获取 Access Token。
+  某些平台（如 GitHub 和 Gitee）不支持 Implicit Grant，所以我们必须通过请求平台的 API 来获取 Access Token。
 
   然而，平台的 Access Token API 不支持 CORS （详见 [GitHub 的相关 Issue](https://github.com/isaacs/github/issues/330)）。由于 Vssue 是一个纯前端插件，我们必须要通过代理来请求 Access Token。
 
@@ -334,7 +334,7 @@ Vue.use(Vssue, {
   
   如果设置了 `issueId`，下列参数将会被忽略：
 
-  - Options: `labels`, `preifx`, `issueContent` 和 `autoCreateIssue`
+  - Options: `labels`, `prefix`, `issueContent` 和 `autoCreateIssue`
   - Props: `title`
 
   ::: danger 注意

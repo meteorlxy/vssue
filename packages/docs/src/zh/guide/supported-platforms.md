@@ -42,7 +42,7 @@
 
 ## Bitbucket
 
-指南： [创建 Bitbucket OAuth Cousumer](./bitbucket.md)
+指南： [创建 Bitbucket OAuth Consumer](./bitbucket.md)
 
 ### Bitbucket API V2
 

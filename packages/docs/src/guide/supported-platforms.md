@@ -42,7 +42,7 @@ Guide: [Set up GitLab Application](./gitlab.md)
 
 ## Bitbucket
 
-Guide: [Set up Bitbucket OAuth Cousumer](./bitbucket.md)
+Guide: [Set up Bitbucket OAuth Consumer](./bitbucket.md)
 
 ### Bitbucket API V2
 

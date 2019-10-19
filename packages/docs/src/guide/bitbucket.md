@@ -45,7 +45,7 @@ Redirect to Bitbucket Authorization page. Click `Grant access` to login.
 ->![Set up OAuth App - Bitbucket 09](/assets/img/oauth-app-bitbucket-09.png)<-
 ->![Set up OAuth App - Bitbucket 10](/assets/img/oauth-app-bitbucket-10.png)<-
 
-Oops, falied to load comments. Your repo should enable the __Issue Tracker__ to make Vssue works.
+Oops, failed to load comments. Your repo should enable the __Issue Tracker__ to make Vssue works.
 
 ->![Set up OAuth App - Bitbucket 11](/assets/img/oauth-app-bitbucket-11.png)<-
 
