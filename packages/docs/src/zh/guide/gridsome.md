@@ -37,7 +37,7 @@ export default function (Vue) {
 
 ### 在页面中使用 Vssue
 
-创建页面 `pages/Index.vue` ，使用 `<Vssue>` 组件即可:
+创建页面 `src/pages/Index.vue` ，使用 `<Vssue>` 组件即可:
 
 ```vue
 <template>
