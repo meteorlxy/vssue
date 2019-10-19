@@ -1,4 +1,4 @@
-# Integration with Nuxt
+# Nuxt
 
 > [Nuxt.js](https://nuxtjs.org) is a framework for creating Vue.js applications
 

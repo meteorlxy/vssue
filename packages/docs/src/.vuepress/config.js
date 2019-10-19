@@ -74,7 +74,7 @@ module.exports = {
         ],
         sidebar: {
           '/demo/': sidebarDemo('Demo'),
-          '/guide/': sidebarGuide('Guide', 'Set up OAuth App'),
+          '/guide/': sidebarGuide('Guide', 'Set up OAuth App', 'Static Site Tools'),
         },
       },
       '/zh/': {
@@ -102,7 +102,7 @@ module.exports = {
         ],
         sidebar: {
           '/zh/demo/': sidebarDemo('演示'),
-          '/zh/guide/': sidebarGuide('指南', '创建 OAuth App'),
+          '/zh/guide/': sidebarGuide('指南', '创建 OAuth App', '静态网站工具'),
         },
       },
     },
@@ -164,7 +164,7 @@ function sidebarDemo (title) {
   ]
 }
 
-function sidebarGuide (titleGuide, titleOAuthApp) {
+function sidebarGuide (titleGuide, titleOAuthApp, titleSiteTools) {
   return [
     {
       title: titleGuide,
@@ -174,8 +174,6 @@ function sidebarGuide (titleGuide, titleOAuthApp) {
         'getting-started',
         'supported-platforms',
         'styles',
-        'vuepress',
-        'nuxt',
         'developer',
       ],
     },
@@ -187,6 +185,15 @@ function sidebarGuide (titleGuide, titleOAuthApp) {
         'gitlab',
         'bitbucket',
         'gitee',
+      ],
+    },
+    {
+      title: titleSiteTools,
+      collapsable: false,
+      children: [
+        'vuepress',
+        'nuxt',
+        'gridsome',
       ],
     },
   ]

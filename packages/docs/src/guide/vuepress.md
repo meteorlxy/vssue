@@ -1,4 +1,4 @@
-# Integration with VuePress
+# VuePress
 
 > [VuePress](https://vuepress.vuejs.org/) is a Vue-powered Static Site Generator
 
@@ -19,7 +19,7 @@ npm install @vssue/api-github-v3
 
 ### Use the plugin
 
-> See [VuePress Offical Docs](https://vuepress.vuejs.org/plugin/using-a-plugin.html) for how to use a plugin in detail
+> See [VuePress Official Docs](https://vuepress.vuejs.org/plugin/using-a-plugin.html) for how to use a plugin in detail
 
 ```js
 // .vuepress/config.js

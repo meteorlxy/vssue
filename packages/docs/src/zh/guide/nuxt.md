@@ -1,4 +1,4 @@
-# 在 Nuxt 中使用
+# Nuxt
 
 > [Nuxt.js](https://zh.nuxtjs.org/) 是一个基于 Vue.js 的服务端渲染框架。
 
