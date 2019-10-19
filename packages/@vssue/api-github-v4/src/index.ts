@@ -195,7 +195,7 @@ export default class GithubV4 implements VssueAPI.Instance {
   }
 
   /**
-   * Get the logined user with access token.
+   * Get the logged-in user with access token.
    *
    * @param options.accessToken - User access token
    *
@@ -381,7 +381,7 @@ query getIssueByTitle(
    *
    * @see https://developer.github.com/v4/object/issuecommentconnection/
    *
-   * @reamrks
+   * @remarks
    * No offset implemented, so it's difficult to implement REST-like pagination
    * For now, we use an internal `_pageInfo` var to hack that
    */

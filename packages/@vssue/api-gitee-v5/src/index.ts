@@ -157,7 +157,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
   }
 
   /**
-   * Get the logined user with access token.
+   * Get the logged-in user with access token.
    *
    * @param options.accessToken - User access token
    *
@@ -268,8 +268,8 @@ export default class GiteeV5 implements VssueAPI.Instance {
    *
    * @see https://gitee.com/api/v5/swagger#/getV5ReposOwnerRepoIssuesNumberComments
    *
-   * @reamrks
-   * Gittee V3 does not support sort for issue comments now.
+   * @remarks
+   * Gitee V3 does not support sort for issue comments now.
    */
   async getComments ({
     accessToken,

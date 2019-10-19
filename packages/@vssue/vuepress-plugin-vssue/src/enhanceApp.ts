@@ -29,7 +29,7 @@ export default ({ Vue }: { Vue: VueConstructor}) => {
 
     /* eslint-disable-next-line vue/require-render-return */
     render (h, { parent, data }) {
-      // if locale is not set by user, use Vupress `$lang`
+      // if locale is not set by user, use Vuepress `$lang`
       if (!vpOptions.locale) {
         if (!data.attrs) {
           data.attrs = {}

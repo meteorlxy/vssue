@@ -122,7 +122,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
   }
 
   /**
-   * Get the logined user with access token.
+   * Get the logged-in user with access token.
    *
    * @param options.accessToken - User access token
    *
