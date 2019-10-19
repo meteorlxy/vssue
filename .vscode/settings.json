@@ -31,5 +31,25 @@
       "autoFix": true
     }
   ],
-  "vetur.validation.template": false
+  "vetur.validation.template": false,
+  "cSpell.words": [
+    "CSRF",
+    "Gitalk",
+    "Gitment",
+    "Preact",
+    "bitbucket",
+    "deletable",
+    "gitee",
+    "github",
+    "gitlab",
+    "gridsome",
+    "nuxt",
+    "pagelen",
+    "reactable",
+    "repos",
+    "styl",
+    "thumbsdown",
+    "thumbsup",
+    "vuepress"
+  ]
 }
