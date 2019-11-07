@@ -1,3 +1,12 @@
+## [1.2.1](https://github.com/meteorlxy/vssue/compare/v1.2.0...v1.2.1) (2019-11-07)
+
+
+### Bug Fixes
+
+* **api-github-v4:** store issue node-id when using issue-id ([8f2065d](https://github.com/meteorlxy/vssue/commit/8f2065d))
+
+
+
 # [1.2.0](https://github.com/meteorlxy/vssue/compare/v1.1.2...v1.2.0) (2019-10-11)
 
 
