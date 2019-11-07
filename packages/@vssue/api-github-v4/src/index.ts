@@ -274,6 +274,8 @@ query getIssueById {
   }
 }`,
         }, options)
+        // postComment needs issue NodeId, so we store it internally
+        this._issueNodeId = data.data.repository.issue.id
         return normalizeIssue(data.data.repository.issue)
       } catch (e) {
         if (e.response && e.response.status === 404) {
