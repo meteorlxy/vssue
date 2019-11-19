@@ -1,3 +1,12 @@
+## [1.2.2](https://github.com/meteorlxy/vssue/compare/v1.2.1...v1.2.2) (2019-11-19)
+
+
+### Bug Fixes
+
+* **vssue:** avoid side effect in beforeMount hook ([ec99580](https://github.com/meteorlxy/vssue/commit/ec99580))
+
+
+
 ## [1.2.1](https://github.com/meteorlxy/vssue/compare/v1.2.0...v1.2.1) (2019-11-07)
 
 
