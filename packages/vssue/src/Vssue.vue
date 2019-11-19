@@ -59,9 +59,9 @@ export default class Vssue extends Vue {
   }
 
   /**
-   * beforeMount hook
+   * mounted hook
    */
-  beforeMount (): void {
+  mounted (): void {
     // set issue title and issue id
     if (this.title !== null) {
       this.vssue.title = this.title
