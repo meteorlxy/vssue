@@ -39,6 +39,7 @@
     "Preact",
     "bitbucket",
     "deletable",
+    "gitea",
     "gitee",
     "github",
     "gitlab",
