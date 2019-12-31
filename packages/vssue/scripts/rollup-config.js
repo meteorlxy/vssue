@@ -16,6 +16,7 @@ const {
 
 const browserEntries = [
   'vssue.bitbucket',
+  'vssue.gitea',
   'vssue.gitee',
   'vssue.github',
   'vssue.github-v4',
