@@ -1,0 +1,35 @@
+{
+  "name": "@vssue/api-gitea-v1",
+  "version": "1.2.2",
+  "description": "Vssue api for gitea v1",
+  "keywords": [
+    "comment",
+    "issue",
+    "vue"
+  ],
+  "homepage": "https://vssue.js.org",
+  "bugs": {
+    "url": "https://github.com/meteorlxy/vssue/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meteorlxy/vssue.git"
+  },
+  "license": "MIT",
+  "author": "meteorlxy <meteor.lxy@foxmail.com>",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "rimraf lib types && tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@vssue/utils": "1.1.1",
+    "axios": "^0.18.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
