@@ -155,6 +155,7 @@ function sidebarDemo (title) {
       collapsable: false,
       children: [
         'bitbucket',
+        'gitea',
         'gitee',
         'github',
         'github-v4',
