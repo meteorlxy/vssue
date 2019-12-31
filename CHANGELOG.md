@@ -1,3 +1,13 @@
+# [1.3.0](https://github.com/meteorlxy/vssue/compare/v1.2.2...v1.3.0) (2019-12-31)
+
+
+### Features
+
+* **api-gitea-v1:** add gitea api v1 package ([b905e34](https://github.com/meteorlxy/vssue/commit/b905e34))
+* **vssue:** add gitea api v1 package ([f6792f3](https://github.com/meteorlxy/vssue/commit/f6792f3))
+
+
+
 ## [1.2.2](https://github.com/meteorlxy/vssue/compare/v1.2.1...v1.2.2) (2019-11-19)
 
 
