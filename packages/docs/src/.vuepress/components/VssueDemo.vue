@@ -7,6 +7,7 @@
 
 <script>
 import BitbucketV2 from '@vssue/api-bitbucket-v2'
+import GiteaV1 from '@vssue/api-gitea-v1'
 import GiteeV5 from '@vssue/api-gitee-v5'
 import GithubV3 from '@vssue/api-github-v3'
 import GithubV4 from '@vssue/api-github-v4'
@@ -19,6 +20,16 @@ const platforms = {
       owner: 'meteorlxy',
       repo: 'vssue',
       clientId: '6tKVqDXYzuvmzCnbGw',
+    },
+    issueId: 1,
+  },
+  'gitea': {
+    options: {
+      api: GiteaV1,
+      owner: 'meteorlxy',
+      repo: 'vssue',
+      clientId: '99538deb-58c4-4b50-8589-c81a41049f79',
+      clientSecret: 'Wx37eLAWTWMZMq7mZNblwoI5nRAm1AL5n9iEU-npmcs=',
     },
     issueId: 1,
   },
