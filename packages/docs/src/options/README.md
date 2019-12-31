@@ -78,6 +78,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 - Gitlab: `https://gitlab.com/${owner}/${repo}`
 - Bitbucket: `https://bitbucket.org/${owner}/${repo}`
 - Gitee: `https://gitee.com/${owner}/${repo}`
+- Gitea: `https://gitea.com/${owner}/${repo}`
 :::
 
 ### clientId
@@ -109,7 +110,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   ::: tip
   Some platforms (e.g. Bitbucket and GitLab) support [Implicit Grant](https://tools.ietf.org/html/rfc6749#section-4.2), so we don't need `clientSecret` for those platforms.
 
-  However, some platforms (e.g. GitHub and Gitee) do not support it now, so `clientSecret` is required for those platforms.
+  However, some platforms (e.g. GitHub, Gitee and Gitea) do not support it now, so `clientSecret` is required for those platforms.
   :::
 
 - __Reference__:
@@ -131,6 +132,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   - `'https://gitlab.com'` for Gitlab
   - `'https://bitbucket.org'` for Bitbucket
   - `'https://gitee.com'` for Gitee
+  - `'https://gitea.com'` for Gitea
 
   ::: warning ATTENTION
   Only when you choose to use __self-hosted__ platform should you set this option. (e.g. __GitLab Community / Enterprise Edition__ or __GitHub Enterprise Server__)
@@ -240,7 +242,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 - __Default__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
 - __Details__:
 
-  Some platforms (e.g. GitHub and Gitee) do not support Implicit Grant, so we have to request the API of the platform to get the access token.
+  Some platforms (e.g. GitHub, Gitee and Gitea) do not support Implicit Grant, so we have to request the API of the platform to get the access token.
   
   However, the access token API of the platforms do not support CORS (see [related issue of GitHub](https://github.com/isaacs/github/issues/330)). As Vssue is a pure front-end plugin, we have to use a proxy to request access token.
 

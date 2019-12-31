@@ -50,6 +50,7 @@ The only difference is that, you should set `platform` rather than the `api` pac
 - platform `gitlab` - api package `@vssue/api-gitlab-v4`
 - platform `bitbucket` - api package `@vssue/api-bitbucket-v2`
 - platform `gitee` - api package `@vssue/api-gitee-v5`
+- platform `gitea` - api package `@vssue/api-gitea-v1`
 :::
 
 ::: tip

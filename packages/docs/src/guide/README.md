@@ -24,6 +24,6 @@ Then Vssue could get the users' info and get the comments of this page. And user
 
 __Vssue__ is inspired by [__Gitment__](https://github.com/imsun/gitment) and [__Gitalk__](https://github.com/gitalk/gitalk), with some differences:
 
-- __Vssue__ supports Github, Gitlab and Bitbucket, and can be extended to other platform easily. __Gitment__ and __Gitalk__ only support Github.
+- __Vssue__ supports Github, Gitlab, Bitbucket, Gitee and Gitea, and can be extended to other platform easily. __Gitment__ and __Gitalk__ only support Github.
 - __Vssue__ can post, edit and delete comments. __Gitment__ and __Gitalk__ can only post comments.
 - __Vssue__ is based on [Vue.js](https://vuejs.org) so can be integrated into Vue projects, and provides a [VuePress Plugin](./vuepress.md). __Gitment__ is based on vanilla javascript, and __Gitalk__ is based on [Preact](https://github.com/developit/preact).

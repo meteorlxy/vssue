@@ -24,6 +24,6 @@ Vssue 获取 `token` 后，会将 `token` 存储在 localstorage 中，于是用
 
 __Vssue__ 的灵感来自于 [__Gitment__](https://github.com/imsun/gitment) 和 [__Gitalk__](https://github.com/gitalk/gitalk)，但是和它们有些区别：
 
-- __Vssue__ 支持 Github、Gitlab 和 Bitbucket，并且很容易扩展到其它平台。__Gitment__ 和 __Gitalk__ 仅支持 Github。
+- __Vssue__ 支持 Github, Gitlab, Bitbucket, Gitee 和 Gitea，并且很容易扩展到其它平台。__Gitment__ 和 __Gitalk__ 仅支持 Github。
 - __Vssue__ 可以发表、编辑、删除评论。__Gitment__ 和 __Gitalk__ 仅能发表评论。
 - __Vssue__ 是基于 [Vue.js](https://vuejs.org) 开发的，可以集成到 Vue 项目中，并且提供了一个 [VuePress 插件](./vuepress.md)。 __Gitment__ 基于原生JS，而 __Gitalk__ 基于 [Preact](https://github.com/developit/preact)。

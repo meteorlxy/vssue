@@ -186,6 +186,7 @@ function sidebarGuide (titleGuide, titleOAuthApp, titleSiteTools) {
         'gitlab',
         'bitbucket',
         'gitee',
+        'gitea',
       ],
     },
     {

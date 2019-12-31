@@ -2,7 +2,7 @@
 
 ## 选择你要使用的代码托管平台
 
-Vssue 支持通过 Github, Gitlab, Bitbucket 或者 Gitee 的 Issue 系统来为你的静态页面提供评论功能，你可以选择其中之一来使用。
+Vssue 支持通过 Github, Gitlab, Bitbucket, Gitee 或者 Gitea 的 Issue 系统来为你的静态页面提供评论功能，你可以选择其中之一来使用。
 
 前往 [支持的代码托管平台 - 创建 OAuth App](./supported-platforms.md) 查看详细指引。
 
@@ -43,6 +43,8 @@ Vssue 可以在浏览器中通过 `<script>` 标签直接使用。由于 Vssue �
   <script src="https://unpkg.com/vssue/dist/vssue.bitbucket.min.js"></script>
   <!-- 或： Vssue Gitee 版  -->
   <script src="https://unpkg.com/vssue/dist/vssue.gitee.min.js"></script>
+  <!-- 或： Vssue Gitea 版  -->
+  <script src="https://unpkg.com/vssue/dist/vssue.gitea.min.js"></script>
 
   <!-- 将 Vssue 作为 Vue 组件使用 -->
 
@@ -127,6 +129,8 @@ npm install @vssue/api-gitlab-v4
 npm install @vssue/api-bitbucket-v2
 # 或：使用 Gitee V5
 npm install @vssue/api-gitee-v5
+# 或：使用 Gitea V1
+npm install @vssue/api-gitea-v1
 ```
 
 ### 作为 Vue 插件使用

@@ -78,6 +78,7 @@ Vue.use(Vssue, {
 - Gitlab: `https://gitlab.com/${owner}/${repo}`
 - Bitbucket: `https://bitbucket.org/${owner}/${repo}`
 - Gitee: `https://gitee.com/${owner}/${repo}`
+- Gitea: `https://gitea.com/${owner}/${repo}`
 :::
 
 ### clientId
@@ -109,7 +110,7 @@ Vue.use(Vssue, {
   ::: tip
   一些平台（如 Bitbucket 和 GitLab）支持 [Implicit Grant](https://tools.ietf.org/html/rfc6749#section-4.2)，所以在使用这些平台时不需要 `clientSecret`。
 
-  然而，有一些平台（如 GitHub 和 Gitee）不支持它，所以在使用这些平台时 `clientSecret` 是必须的。
+  然而，有一些平台（如 GitHub, Gitee 和 Gitea）不支持它，所以在使用这些平台时 `clientSecret` 是必须的。
   :::
 
 - __参考__:
@@ -131,6 +132,7 @@ Vue.use(Vssue, {
   - Gitlab 是 `'https://gitlab.com'`
   - Bitbucket 是`'https://bitbucket.org'`
   - Gitee 是`'https://gitee.com'`
+  - Gitea 是`'https://gitea.com'`
 
   ::: warning 注意
   只有在你要使用 __自行搭建的__ 平台时才需要设置这个选项。（比如 __GitLab Community / Enterprise Edition__ 或 __GitHub Enterprise Server__）
@@ -240,7 +242,7 @@ Vue.use(Vssue, {
 - __默认值__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
 - __详细__:
 
-  某些平台（如 GitHub 和 Gitee）不支持 Implicit Grant，所以我们必须通过请求平台的 API 来获取 Access Token。
+  某些平台（如 GitHub, Gitee 和 Gitea）不支持 Implicit Grant，所以我们必须通过请求平台的 API 来获取 Access Token。
 
   然而，平台的 Access Token API 不支持 CORS （详见 [GitHub 的相关 Issue](https://github.com/isaacs/github/issues/330)）。由于 Vssue 是一个纯前端插件，我们必须要通过代理来请求 Access Token。
 

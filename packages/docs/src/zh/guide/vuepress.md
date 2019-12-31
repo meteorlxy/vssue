@@ -50,6 +50,7 @@ module.exports = {
 - platform `gitlab` - api 包 `@vssue/api-gitlab-v4`
 - platform `bitbucket` - api 包 `@vssue/api-bitbucket-v2`
 - platform `gitee` - api 包 `@vssue/api-gitee-v5`
+- platform `gitea` - api 包 `@vssue/api-gitea-v1`
 :::
 
 ::: tip

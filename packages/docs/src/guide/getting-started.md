@@ -2,7 +2,7 @@
 
 ## Choose a platform to use
 
-Vssue can enable comments for your static pages via the `Issue System` of `Github`, `Gitlab`, `Bitbucket` or `Gitee`, and you can choose one of those platforms.
+Vssue can enable comments for your static pages via the `Issue System` of `Github`, `Gitlab`, `Bitbucket`, `Gitee` or `Gitea`, and you can choose one of those platforms.
 
 Go to [Supported Platforms - Set up OAuth App](./supported-platforms.md) for detailed instructions.
 
@@ -43,6 +43,8 @@ Vssue can be used directly via a `<script>` tag in browser. As Vssue depends on 
   <script src="https://unpkg.com/vssue/dist/vssue.bitbucket.min.js"></script>
   <!-- OR: Vssue Gitee build -->
   <script src="https://unpkg.com/vssue/dist/vssue.gitee.min.js"></script>
+  <!-- OR: Vssue Gitea build -->
+  <script src="https://unpkg.com/vssue/dist/vssue.gitea.min.js"></script>
 
   <!-- Use Vssue as a Vue component -->
 
@@ -127,6 +129,8 @@ npm install @vssue/api-gitlab-v4
 npm install @vssue/api-bitbucket-v2
 # OR: use Gitee V5
 npm install @vssue/api-gitee-v5
+# OR: use Gitea V1
+npm install @vssue/api-gitea-v1
 ```
 
 ### Use as a Vue Plugin
