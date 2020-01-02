@@ -462,7 +462,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     } catch (e) {
       // it could be a bug of gitlab
       // if a reaction (award emoji) has already existed, it returns a 404 response with a buggy message
-      // have submitted an issue: https://gitlab.com/gitlab-org/gitlab-ce/issues/56147
+      // have submitted an issue: https://gitlab.com/gitlab-org/gitlab/issues/26060
       /* istanbul ignore next */
       if (e.response && e.response.status === 404) {
         return false
@@ -471,6 +471,34 @@ export default class GitlabV4 implements VssueAPI.Instance {
       }
     }
   }
+
+  /**
+   * Delete a reaction of a comment
+   *
+   * @see https://docs.gitlab.com/ce/api/award_emoji.html#award-a-new-emoji
+   *
+   * @remarks
+   * Currently we cannot determine if a reaction is already token, so comment this method for now
+   */
+  // async deleteCommentReaction ({
+  //   issueId,
+  //   commentId,
+  //   reactionId,
+  //   accessToken,
+  // }: {
+  //   accessToken: VssueAPI.AccessToken
+  //   issueId: string | number
+  //   commentId: string | number
+  //   reactionId: string | number
+  // }): Promise<boolean> {
+  //   const response = await this.$http.delete(
+  //     `projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji/${reactionId}`,
+  //     {
+  //       headers: { 'Authorization': `Bearer ${accessToken}` },
+  //     }
+  //   )
+  //   return response.status === 204
+  // }
 
   /**
    * Get the parse HTML of markdown content

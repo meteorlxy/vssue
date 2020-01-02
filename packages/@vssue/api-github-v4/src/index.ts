@@ -779,6 +779,49 @@ mutation postCommentReaction(
     return true
   }
 
+  /**
+   * Delete a reaction of a comment
+   *
+   * @see https://developer.github.com/v4/mutation/removereaction/
+   * @see https://developer.github.com/v4/input_object/removereactioninput/
+   *
+   * @remarks
+   * Currently we cannot determine if a reaction is already token, so comment this method for now
+   */
+  //   async deleteCommentReaction ({
+  //     accessToken,
+  //     commentId,
+  //     reaction,
+  //   }: {
+  //     accessToken: VssueAPI.AccessToken
+  //     commentId: string | number
+  //     reaction: keyof VssueAPI.Reactions
+  //   }): Promise<boolean> {
+  //     await this.$http.post(`graphql`, {
+  //       variables: {
+  //         commentId,
+  //         content: mapReactionName(reaction),
+  //       },
+  //       query: `\
+  // mutation deleteCommentReaction(
+  //   $commentId: ID!,
+  //   $content: ReactionContent!,
+  // ) {
+  //   removeReaction(input: {
+  //     subjectId: $commentId
+  //     content: $content
+  //   }) {
+  //     reaction {
+  //       databaseId
+  //     }
+  //   }
+  // }`,
+  //     }, {
+  //       headers: { 'Authorization': `token ${accessToken}` },
+  //     })
+  //     return true
+  //   }
+
   private _getQueryParams ({
     page = this._pageInfo.page,
     sort = this._pageInfo.sort,
