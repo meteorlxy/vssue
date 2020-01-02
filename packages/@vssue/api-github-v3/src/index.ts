@@ -531,6 +531,38 @@ export default class GithubV3 implements VssueAPI.Instance {
         'Accept': 'application/vnd.github.squirrel-girl-preview',
       },
     })
+
+    // 200 OK if the reaction is already token
+    if (response.status === 200) {
+      return this.deleteCommentReaction({
+        accessToken,
+        reactionId: response.data.id,
+      })
+    }
+
+    // 201 CREATED
     return response.status === 201
+  }
+
+  /**
+   * Delete a reaction of a comment
+   *
+   * @see https://developer.github.com/v3/reactions/#delete-a-reaction
+   */
+  async deleteCommentReaction ({
+    accessToken,
+    reactionId,
+  }: {
+    accessToken: VssueAPI.AccessToken
+    reactionId: string | number
+  }): Promise<boolean> {
+    const response = await this.$http.delete(
+      `reactions/${reactionId}`, {
+        headers: {
+          'Authorization': `token ${accessToken}`,
+          'Accept': 'application/vnd.github.squirrel-girl-preview',
+        },
+      })
+    return response.status === 204
   }
 }
