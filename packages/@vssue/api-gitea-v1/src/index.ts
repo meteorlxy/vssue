@@ -474,11 +474,38 @@ export default class GiteaV1 implements VssueAPI.Instance {
     } catch (e) {
       // https://github.com/go-gitea/gitea/issues/9544
       if (e.response && e.response.status === 500) {
-        return false
+        return this.deleteCommentReaction({
+          accessToken,
+          commentId,
+          reaction,
+        })
       } else {
         throw e
       }
     }
+  }
+
+  /**
+   * Create a new reaction of a comment
+   *
+   * @see https://gitea.com/api/swagger#/issue/issueDeleteCommentReaction
+   */
+  async deleteCommentReaction ({
+    commentId,
+    reaction,
+    accessToken,
+  }: {
+    accessToken: VssueAPI.AccessToken
+    commentId: string | number
+    reaction: keyof VssueAPI.Reactions
+  }): Promise<boolean> {
+    const response = await this.$http.request({
+      url: `repos/${this.owner}/${this.repo}/issues/comments/${commentId}/reactions`,
+      method: 'delete',
+      data: { content: mapReactionName(reaction) },
+      headers: { 'Authorization': `bearer ${accessToken}` },
+    })
+    return response.status === 200
   }
 
   /**
