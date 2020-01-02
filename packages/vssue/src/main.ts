@@ -1,18 +1,18 @@
-import { Vssue } from 'vssue'
-import VssueComponent from './Vssue.vue'
+import { Vssue } from 'vssue';
+import VssueComponent from './Vssue.vue';
 
 const VssuePlugin: Vssue.Plugin = {
-  get version () {
-    return <string>process.env.VUE_APP_VERSION
+  get version() {
+    return process.env.VUE_APP_VERSION as string;
   },
 
   installed: false,
 
-  install (Vue, options?: Partial<Vssue.Options>) {
+  install(Vue, options?: Partial<Vssue.Options>) {
     if (this.installed) {
-      return false
+      return false;
     }
-    this.installed = true
+    this.installed = true;
 
     Vue.component('Vssue', {
       functional: true,
@@ -35,7 +35,7 @@ const VssuePlugin: Vssue.Plugin = {
         },
       },
 
-      render (h, { data, props }) {
+      render(h, { data, props }) {
         return h(VssueComponent, {
           ...data,
           props: {
@@ -43,13 +43,13 @@ const VssuePlugin: Vssue.Plugin = {
             issueId: props.issueId,
             options: Object.assign({}, options, props.options),
           },
-        })
+        });
       },
-    })
+    });
   },
 
   VssueComponent: VssueComponent,
-}
+};
 
-export { VssueComponent }
-export default VssuePlugin
+export { VssueComponent };
+export default VssuePlugin;

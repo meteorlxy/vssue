@@ -1,18 +1,18 @@
-const replace = require('rollup-plugin-replace')
-const resolve = require('rollup-plugin-node-resolve')
-const commonjs = require('rollup-plugin-commonjs')
-const json = require('rollup-plugin-json')
-const vue = require('rollup-plugin-vue')
-const typescript = require('rollup-plugin-typescript')
-const babel = require('rollup-plugin-babel')
-const { terser } = require('rollup-plugin-terser')
+const replace = require('@rollup/plugin-replace');
+const resolve = require('@rollup/plugin-node-resolve');
+const commonjs = require('@rollup/plugin-commonjs');
+const json = require('@rollup/plugin-json');
+const vue = require('rollup-plugin-vue');
+const typescript = require('@rollup/plugin-typescript');
+const babel = require('rollup-plugin-babel');
+const { terser } = require('rollup-plugin-terser');
 
 const {
   pkg: { version },
   pathSrc,
   pathDist,
   banner,
-} = require('./util')
+} = require('./util');
 
 const browserEntries = [
   'vssue.bitbucket',
@@ -21,7 +21,7 @@ const browserEntries = [
   'vssue.github',
   'vssue.github-v4',
   'vssue.gitlab',
-]
+];
 
 module.exports = [
   // Browser iife
@@ -43,8 +43,8 @@ module.exports = [
     format: 'es',
   },
 ].map(opts => {
-  const minify = Boolean(/min\.js$/.test(opts.output))
-  const polyfill = Boolean(/polyfill\.min\.js$/.test(opts.output))
+  const minify = Boolean(/min\.js$/.test(opts.output));
+  const polyfill = Boolean(/polyfill\.min\.js$/.test(opts.output));
 
   const config = {
     input: pathSrc(opts.input),
@@ -55,17 +55,15 @@ module.exports = [
       name: 'Vssue',
       banner,
       globals: {
-        'vue': 'Vue',
+        vue: 'Vue',
       },
     },
 
     external: [
       'vue',
-      ...(opts.format === 'es' ? [
-        '@vssue/utils',
-        'vue-i18n',
-        'vue-property-decorator',
-      ] : []),
+      ...(opts.format === 'es'
+        ? ['@vssue/utils', 'vue-i18n', 'vue-property-decorator']
+        : []),
     ],
 
     plugins: [
@@ -80,24 +78,35 @@ module.exports = [
       commonjs(),
       json(),
       // https://github.com/rollup/rollup-plugin-typescript/issues/135
-      typescript(Object.assign({},
-        require('../../../tsconfig.base.json').compilerOptions,
-        require('../tsconfig.json').compilerOptions
-      )),
+      typescript(
+        Object.assign(
+          {},
+          require('../../../tsconfig.base.json').compilerOptions,
+          require('../tsconfig.json').compilerOptions
+        )
+      ),
       vue(),
-      ...(opts.format !== 'es' && polyfill ? [babel({
-        babelrc: false,
-        presets: ['@vue/app'],
-        runtimeHelpers: true,
-        extensions: ['.js', '.vue'],
-        exclude: [/\/core-js\//, /@babel\/runtime/],
-      })] : []),
-      ...(minify ? [terser({
-        output: {
-          comments: /^!/,
-        },
-      })] : []),
+      ...(opts.format !== 'es' && polyfill
+        ? [
+            babel({
+              babelrc: false,
+              presets: ['@vue/app'],
+              runtimeHelpers: true,
+              extensions: ['.js', '.vue'],
+              exclude: [/\/core-js\//, /@babel\/runtime/],
+            }),
+          ]
+        : []),
+      ...(minify
+        ? [
+            terser({
+              output: {
+                comments: /^!/,
+              },
+            }),
+          ]
+        : []),
     ],
-  }
-  return config
-})
+  };
+  return config;
+});

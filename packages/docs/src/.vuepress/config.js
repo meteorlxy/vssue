@@ -19,22 +19,61 @@ module.exports = {
     // <meta name="theme-color" content="#34c88a">
     ['meta', { name: 'theme-color', content: '#34c88a' }],
     // <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png">
-    ['link', { rel: 'icon', type: 'image/png', sizes: '32x32', href: `/assets/icons/favicon-32x32.png` }],
+    [
+      'link',
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: `/assets/icons/favicon-32x32.png`,
+      },
+    ],
     // <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/favicon-16x16.png">
-    ['link', { rel: 'icon', type: 'image/png', sizes: '16x16', href: `/assets/icons/favicon-16x16.png` }],
+    [
+      'link',
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        href: `/assets/icons/favicon-16x16.png`,
+      },
+    ],
     // <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png">
-    ['link', { rel: 'apple-touch-icon', sizes: '180x180', href: `/assets/icons/apple-touch-icon.png` }],
+    [
+      'link',
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: `/assets/icons/apple-touch-icon.png`,
+      },
+    ],
     // <meta name="application-name" content="Vssue">
     ['meta', { name: 'application-name', content: 'Vssue' }],
     // <meta name="apple-mobile-web-app-title" content="Vssue">
     ['meta', { name: 'apple-mobile-web-app-title', content: 'Vssue' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
-    ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
+    [
+      'meta',
+      { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
+    ],
     // <meta name="msapplication-TileColor" content="#34c88a">
     ['meta', { name: 'msapplication-TileColor', content: '#34c88a' }],
-    ['meta', { name: 'msapplication-TileImage', content: '/assets/icons/mstile-150x150.png' }],
+    [
+      'meta',
+      {
+        name: 'msapplication-TileImage',
+        content: '/assets/icons/mstile-150x150.png',
+      },
+    ],
     // <link rel="mask-icon" href="/assets/icons/safari-pinned-tab.svg" color="#34c88a">
-    ['link', { rel: 'mask-icon', href: '/assets/icons/safari-pinned-tab.svg', color: '#34c88a' }],
+    [
+      'link',
+      {
+        rel: 'mask-icon',
+        href: '/assets/icons/safari-pinned-tab.svg',
+        color: '#34c88a',
+      },
+    ],
   ],
 
   markdown: {
@@ -74,7 +113,11 @@ module.exports = {
         ],
         sidebar: {
           '/demo/': sidebarDemo('Demo'),
-          '/guide/': sidebarGuide('Guide', 'Set up OAuth App', 'Static Site Tools'),
+          '/guide/': sidebarGuide(
+            'Guide',
+            'Set up OAuth App',
+            'Static Site Tools'
+          ),
         },
       },
       '/zh/': {
@@ -110,13 +153,19 @@ module.exports = {
 
   plugins: [
     '@vuepress/plugin-back-to-top',
-    ['@vuepress/plugin-pwa', {
-      serviceWorker: true,
-      updatePopup: true,
-    }],
-    ['@vuepress/google-analytics', {
-      'ga': 'UA-132770851-3',
-    }],
+    [
+      '@vuepress/plugin-pwa',
+      {
+        serviceWorker: true,
+        updatePopup: true,
+      },
+    ],
+    [
+      '@vuepress/google-analytics',
+      {
+        ga: 'UA-132770851-3',
+      },
+    ],
     '@vssue/vuepress-plugin-vssue',
     'vuepress-plugin-medium-zoom',
   ],
@@ -143,12 +192,12 @@ module.exports = {
             chunks: 'all',
           },
         },
-      })
+      });
     }
   },
-}
+};
 
-function sidebarDemo (title) {
+function sidebarDemo(title) {
   return [
     {
       title,
@@ -162,10 +211,10 @@ function sidebarDemo (title) {
         'gitlab',
       ],
     },
-  ]
+  ];
 }
 
-function sidebarGuide (titleGuide, titleOAuthApp, titleSiteTools) {
+function sidebarGuide(titleGuide, titleOAuthApp, titleSiteTools) {
   return [
     {
       title: titleGuide,
@@ -181,22 +230,12 @@ function sidebarGuide (titleGuide, titleOAuthApp, titleSiteTools) {
     {
       title: titleOAuthApp,
       collapsable: false,
-      children: [
-        'github',
-        'gitlab',
-        'bitbucket',
-        'gitee',
-        'gitea',
-      ],
+      children: ['github', 'gitlab', 'bitbucket', 'gitee', 'gitea'],
     },
     {
       title: titleSiteTools,
       collapsable: false,
-      children: [
-        'vuepress',
-        'nuxt',
-        'gridsome',
-      ],
+      children: ['vuepress', 'nuxt', 'gridsome'],
     },
-  ]
+  ];
 }

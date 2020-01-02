@@ -3,3 +3,5 @@ dist/
 lib/
 **/@vssue/*/types/
 !.vuepress/
+!.eslintrc.js
+!.commitlintrc.js

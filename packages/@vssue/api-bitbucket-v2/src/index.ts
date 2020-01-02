@@ -1,9 +1,6 @@
-import { VssueAPI } from 'vssue'
+import { VssueAPI } from 'vssue';
 
-import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-} from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 import {
   buildQuery,
@@ -11,13 +8,9 @@ import {
   concatURL,
   getCleanURL,
   parseQuery,
-} from '@vssue/utils'
+} from '@vssue/utils';
 
-import {
-  normalizeUser,
-  normalizeIssue,
-  normalizeComment,
-} from './utils'
+import { normalizeUser, normalizeIssue, normalizeComment } from './utils';
 
 /**
  * Bitbucket API V2
@@ -26,39 +19,39 @@ import {
  * @see https://confluence.atlassian.com/bitbucket/oauth-on-bitbucket-cloud-238027431.html
  */
 export default class BitbucketV2 implements VssueAPI.Instance {
-  baseURL: string
-  owner: string
-  repo: string
-  clientId: string
-  state: string
-  $http: AxiosInstance
+  baseURL: string;
+  owner: string;
+  repo: string;
+  clientId: string;
+  state: string;
+  $http: AxiosInstance;
 
-  constructor ({
+  constructor({
     baseURL = 'https://bitbucket.org',
     owner,
     repo,
     clientId,
     state,
   }: VssueAPI.Options) {
-    this.baseURL = baseURL
-    this.owner = owner
-    this.repo = repo
+    this.baseURL = baseURL;
+    this.owner = owner;
+    this.repo = repo;
 
-    this.clientId = clientId
-    this.state = state
+    this.clientId = clientId;
+    this.state = state;
 
     this.$http = axios.create({
       baseURL: 'https://api.bitbucket.org/2.0',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
       },
-    })
+    });
   }
 
   /**
    * The platform api info
    */
-  get platform (): VssueAPI.Platform {
+  get platform(): VssueAPI.Platform {
     return {
       name: 'Bitbucket',
       link: this.baseURL,
@@ -67,7 +60,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
         reactable: false,
         sortable: true,
       },
-    }
+    };
   }
 
   /**
@@ -75,13 +68,16 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication#oauth-2
    */
-  redirectAuth (): void {
-    window.location.href = buildURL(concatURL(this.baseURL, 'site/oauth2/authorize'), {
-      client_id: this.clientId,
-      redirect_uri: window.location.href,
-      response_type: 'token',
-      state: this.state,
-    })
+  redirectAuth(): void {
+    window.location.href = buildURL(
+      concatURL(this.baseURL, 'site/oauth2/authorize'),
+      {
+        client_id: this.clientId,
+        redirect_uri: window.location.href,
+        response_type: 'token',
+        state: this.state,
+      }
+    );
   }
 
   /**
@@ -94,22 +90,24 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    * @remarks
    * If the `access_token` and `state` exist in the query, and the `state` matches, remove them from query, and return the access token.
    */
-  async handleAuth (): Promise<VssueAPI.AccessToken> {
-    const hash = parseQuery(window.location.hash.slice(1))
+  async handleAuth(): Promise<VssueAPI.AccessToken> {
+    const hash = parseQuery(window.location.hash.slice(1));
     if (!hash.access_token || hash.state !== this.state) {
-      return null
+      return null;
     }
-    const accessToken = hash.access_token
-    delete hash.access_token
-    delete hash.token_type
-    delete hash.expires_in
-    delete hash.state
-    delete hash.scopes
-    const hashString = buildQuery(hash)
-    const newHash = hashString ? `#${hashString}` : ''
-    const replaceURL = `${getCleanURL(window.location.href)}${window.location.search}${newHash}`
-    window.history.replaceState(null, '', replaceURL)
-    return accessToken
+    const accessToken = hash.access_token;
+    delete hash.access_token;
+    delete hash.token_type;
+    delete hash.expires_in;
+    delete hash.state;
+    delete hash.scopes;
+    const hashString = buildQuery(hash);
+    const newHash = hashString ? `#${hashString}` : '';
+    const replaceURL = `${getCleanURL(window.location.href)}${
+      window.location.search
+    }${newHash}`;
+    window.history.replaceState(null, '', replaceURL);
+    return accessToken;
   }
 
   /**
@@ -121,15 +119,15 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/user
    */
-  async getUser ({
+  async getUser({
     accessToken,
   }: {
-    accessToken: VssueAPI.AccessToken
+    accessToken: VssueAPI.AccessToken;
   }): Promise<VssueAPI.User> {
     const { data } = await this.$http.get('user', {
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-    })
-    return normalizeUser(data)
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    return normalizeUser(data);
   }
 
   /**
@@ -145,21 +143,21 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues#get
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/pagination
    */
-  async getIssue ({
+  async getIssue({
     accessToken,
     issueId,
     issueTitle,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId?: string | number
-    issueTitle?: string
+    accessToken: VssueAPI.AccessToken;
+    issueId?: string | number;
+    issueTitle?: string;
   }): Promise<VssueAPI.Issue | null> {
-    const options: AxiosRequestConfig = {}
+    const options: AxiosRequestConfig = {};
 
     if (accessToken) {
       options.headers = {
-        'Authorization': `Bearer ${accessToken}`,
-      }
+        Authorization: `Bearer ${accessToken}`,
+      };
     }
 
     if (issueId) {
@@ -167,14 +165,17 @@ export default class BitbucketV2 implements VssueAPI.Instance {
         options.params = {
           // to avoid caching
           timestamp: Date.now(),
-        }
-        const { data } = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues/${issueId}`, options)
-        return normalizeIssue(data)
+        };
+        const { data } = await this.$http.get(
+          `repositories/${this.owner}/${this.repo}/issues/${issueId}`,
+          options
+        );
+        return normalizeIssue(data);
       } catch (e) {
         if (e.response && e.response.status === 404) {
-          return null
+          return null;
         } else {
-          throw e
+          throw e;
         }
       }
     } else {
@@ -183,9 +184,12 @@ export default class BitbucketV2 implements VssueAPI.Instance {
         q: `title="${issueTitle}"`,
         // to avoid caching
         timestamp: Date.now(),
-      }
-      const { data } = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues`, options)
-      return data.size > 0 ? normalizeIssue(data.values[0]) : null
+      };
+      const { data } = await this.$http.get(
+        `repositories/${this.owner}/${this.repo}/issues`,
+        options
+      );
+      return data.size > 0 ? normalizeIssue(data.values[0]) : null;
     }
   }
 
@@ -200,29 +204,36 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues#post
    */
-  async postIssue ({
+  async postIssue({
     accessToken,
     title,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    title: string
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    title: string;
+    content: string;
   }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(`repositories/${this.owner}/${this.repo}/issues`, {
-      title,
-      content: {
-        raw: content,
+    const { data } = await this.$http.post(
+      `repositories/${this.owner}/${this.repo}/issues`,
+      {
+        title,
+        content: {
+          raw: content,
+        },
+        priority: 'trivial',
+        kind: 'task',
       },
-      priority: 'trivial',
-      kind: 'task',
-    }, {
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-    })
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
     data.links.html = {
-      href: concatURL(this.baseURL, `${this.owner}/${this.repo}/issues/${data.id}`),
-    }
-    return normalizeIssue(data)
+      href: concatURL(
+        this.baseURL,
+        `${this.owner}/${this.repo}/issues/${data.id}`
+      ),
+    };
+    return normalizeIssue(data);
   }
 
   /**
@@ -237,41 +248,42 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments#get
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/pagination
    */
-  async getComments ({
+  async getComments({
     accessToken,
     issueId,
-    query: {
-      page = 1,
-      perPage = 10,
-      sort = 'desc',
-    } = {},
+    query: { page = 1, perPage = 10, sort = 'desc' } = {},
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    query?: Partial<VssueAPI.Query>
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    query?: Partial<VssueAPI.Query>;
   }): Promise<VssueAPI.Comments> {
     const options: AxiosRequestConfig = {
       params: {
         // pagination
-        'page': page,
-        'pagelen': perPage,
-        'sort': sort === 'desc' ? '-created_on' : 'created_on',
+        page: page,
+        pagelen: perPage,
+        sort: sort === 'desc' ? '-created_on' : 'created_on',
         // to avoid caching
         timestamp: Date.now(),
       },
-    }
+    };
     if (accessToken) {
       options.headers = {
-        'Authorization': `Bearer ${accessToken}`,
-      }
+        Authorization: `Bearer ${accessToken}`,
+      };
     }
-    const { data } = await this.$http.get(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
+    const { data } = await this.$http.get(
+      `repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`,
+      options
+    );
     return {
       count: data.size,
       page: data.page,
       perPage: data.pagelen,
-      data: data.values.filter(item => item.content.raw !== null).map(normalizeComment),
-    }
+      data: data.values
+        .filter(item => item.content.raw !== null)
+        .map(normalizeComment),
+    };
   }
 
   /**
@@ -285,23 +297,27 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments#post
    */
-  async postComment ({
+  async postComment({
     accessToken,
     issueId,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
-      content: {
-        raw: content,
+    const { data } = await this.$http.post(
+      `repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`,
+      {
+        content: {
+          raw: content,
+        },
       },
-    }, {
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-    })
-    return normalizeComment(data)
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+    return normalizeComment(data);
   }
 
   /**
@@ -316,25 +332,29 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments/%7Bcomment_id%7D#put
    */
-  async putComment ({
+  async putComment({
     accessToken,
     issueId,
     commentId,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
+    content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.put(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`, {
-      content: {
-        raw: content,
+    const { data } = await this.$http.put(
+      `repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`,
+      {
+        content: {
+          raw: content,
+        },
       },
-    }, {
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-    })
-    return normalizeComment(data)
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+    return normalizeComment(data);
   }
 
   /**
@@ -348,32 +368,35 @@ export default class BitbucketV2 implements VssueAPI.Instance {
    *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments/%7Bcomment_id%7D#delete
    */
-  async deleteComment ({
+  async deleteComment({
     accessToken,
     issueId,
     commentId,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
   }): Promise<boolean> {
-    const { status } = await this.$http.delete(`repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`, {
-      headers: { 'Authorization': `Bearer ${accessToken}` },
-    })
-    return status === 204
+    const { status } = await this.$http.delete(
+      `repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
+    return status === 204;
   }
 
   /**
    * Bitbucket does not support reactions now
    */
-  async getCommentReactions (options): Promise<VssueAPI.Reactions> {
-    throw new Error('501 Not Implemented')
+  async getCommentReactions(options): Promise<VssueAPI.Reactions> {
+    throw new Error('501 Not Implemented');
   }
 
   /**
    * Bitbucket does not support reactions now
    */
-  async postCommentReaction (options): Promise<boolean> {
-    throw new Error('501 Not Implemented')
+  async postCommentReaction(options): Promise<boolean> {
+    throw new Error('501 Not Implemented');
   }
 }

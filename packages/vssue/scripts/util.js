@@ -1,8 +1,8 @@
-const path = require('path')
-const pkg = require('../package.json')
+const path = require('path');
+const pkg = require('../package.json');
 
-const pathSrc = (...args) => path.resolve(__dirname, '../src', ...args)
-const pathDist = (...args) => path.resolve(__dirname, '../dist', ...args)
+const pathSrc = (...args) => path.resolve(__dirname, '../src', ...args);
+const pathDist = (...args) => path.resolve(__dirname, '../dist', ...args);
 
 const banner = `\
 /*!
@@ -13,15 +13,15 @@ const banner = `\
  * @license ${pkg.license}
  * @copyright 2018-${new Date().getFullYear()} meteorlxy
  */
-`
+`;
 
 const arrayToChunks = (array, chunkSize) => {
-  const chunks = []
+  const chunks = [];
   for (let i = 0; i < array.length; i += chunkSize) {
-    chunks.push(array.slice(i, i + chunkSize))
+    chunks.push(array.slice(i, i + chunkSize));
   }
-  return chunks
-}
+  return chunks;
+};
 
 module.exports = {
   pkg,
@@ -29,4 +29,4 @@ module.exports = {
   pathDist,
   banner,
   arrayToChunks,
-}
+};

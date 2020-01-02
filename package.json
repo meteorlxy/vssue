@@ -27,29 +27,47 @@
       "eslint --fix",
       "git add"
     ],
+    "*.{json,md,yml}": [
+      "prettier --write",
+      "git add"
+    ],
     "package.json": [
       "sort-package-json",
       "git add"
     ]
   },
+  "prettier": {
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5"
+  },
   "devDependencies": {
-    "@commitlint/cli": "^8.1.0",
-    "@commitlint/config-conventional": "^8.1.0",
-    "@commitlint/config-lerna-scopes": "^8.1.0",
-    "@types/jest": "^24.0.13",
-    "@vue/eslint-config-standard": "^4.0.0",
-    "@vue/eslint-config-typescript": "^4.0.0",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@commitlint/config-lerna-scopes": "^8.2.0",
+    "@types/jest": "^24.0.25",
+    "@typescript-eslint/eslint-plugin": "^2.14.0",
+    "@typescript-eslint/parser": "^2.14.0",
     "conventional-changelog-cli": "^2.0.21",
-    "eslint": "^5.16.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
     "eslint-plugin-vue": "^5.2.2",
     "execa": "^1.0.0",
     "husky": "^2.3.0",
     "jest": "^24.8.0",
     "lerna": "^3.14.1",
     "lint-staged": "^8.1.7",
+    "prettier": "^1.19.1",
     "rimraf": "^2.6.3",
     "sort-package-json": "^1.22.1",
-    "ts-jest": "^24.0.2",
-    "typescript": "~3.4.5"
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.4"
   }
 }

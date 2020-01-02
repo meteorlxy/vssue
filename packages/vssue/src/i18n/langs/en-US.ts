@@ -1,4 +1,4 @@
-import VueI18n from 'vue-i18n'
+import VueI18n from 'vue-i18n';
 
 const messages: VueI18n.LocaleMessageObject = {
   // auth
@@ -32,8 +32,10 @@ const messages: VueI18n.LocaleMessageObject = {
   // hint
   comments: 'Comments | {count} Comment | {count} Comments',
   loginToComment: 'Login with {platform} account to leave a comment',
-  placeholder: 'Leave a comment. Styling with Markdown is supported. Ctrl + Enter to submit.',
-  noLoginPlaceHolder: 'Login to leave a comment. Styling with Markdown is supported. ',
+  placeholder:
+    'Leave a comment. Styling with Markdown is supported. Ctrl + Enter to submit.',
+  noLoginPlaceHolder:
+    'Login to leave a comment. Styling with Markdown is supported. ',
 
   // status
   failed: 'Failed to load comments',
@@ -47,6 +49,6 @@ const messages: VueI18n.LocaleMessageObject = {
   reactionGiven: `Already given '{reaction}' reaction`,
   deleteConfirm: 'Confirm to delete this comment ?',
   deleteFailed: 'Failed to delete comment',
-}
+};
 
-export default messages
+export default messages;

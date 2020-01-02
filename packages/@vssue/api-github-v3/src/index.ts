@@ -1,16 +1,8 @@
-import { VssueAPI } from 'vssue'
+import { VssueAPI } from 'vssue';
 
-import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-} from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-import {
-  buildURL,
-  concatURL,
-  getCleanURL,
-  parseQuery,
-} from '@vssue/utils'
+import { buildURL, concatURL, getCleanURL, parseQuery } from '@vssue/utils';
 
 import {
   normalizeUser,
@@ -18,7 +10,7 @@ import {
   normalizeComment,
   normalizeReactions,
   mapReactionName,
-} from './utils'
+} from './utils';
 
 /**
  * Github REST API v3
@@ -27,17 +19,17 @@ import {
  * @see https://developer.github.com/apps/building-oauth-apps/
  */
 export default class GithubV3 implements VssueAPI.Instance {
-  baseURL: string
-  owner: string
-  repo: string
-  labels: Array<string>
-  clientId: string
-  clientSecret: string
-  state: string
-  proxy: string | ((url: string) => string)
-  $http: AxiosInstance
+  baseURL: string;
+  owner: string;
+  repo: string;
+  labels: Array<string>;
+  clientId: string;
+  clientSecret: string;
+  state: string;
+  proxy: string | ((url: string) => string);
+  $http: AxiosInstance;
 
-  constructor ({
+  constructor({
     baseURL = 'https://github.com',
     owner,
     repo,
@@ -49,37 +41,40 @@ export default class GithubV3 implements VssueAPI.Instance {
   }: VssueAPI.Options) {
     /* istanbul ignore if */
     if (typeof clientSecret === 'undefined' || typeof proxy === 'undefined') {
-      throw new Error('clientSecret and proxy is required for GitHub V3')
+      throw new Error('clientSecret and proxy is required for GitHub V3');
     }
-    this.baseURL = baseURL
-    this.owner = owner
-    this.repo = repo
-    this.labels = labels
+    this.baseURL = baseURL;
+    this.owner = owner;
+    this.repo = repo;
+    this.labels = labels;
 
-    this.clientId = clientId
-    this.clientSecret = clientSecret
-    this.state = state
-    this.proxy = proxy
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
+    this.state = state;
+    this.proxy = proxy;
 
     this.$http = axios.create({
-      baseURL: baseURL === 'https://github.com' ? 'https://api.github.com' : concatURL(baseURL, 'api/v3'),
+      baseURL:
+        baseURL === 'https://github.com'
+          ? 'https://api.github.com'
+          : concatURL(baseURL, 'api/v3'),
       headers: {
-        'Accept': 'application/vnd.github.v3+json',
+        Accept: 'application/vnd.github.v3+json',
       },
-    })
+    });
 
     this.$http.interceptors.response.use(response => {
       if (response.data && response.data.error) {
-        return Promise.reject(new Error(response.data.error_description))
+        return Promise.reject(new Error(response.data.error_description));
       }
-      return response
-    })
+      return response;
+    });
   }
 
   /**
    * The platform api info
    */
-  get platform (): VssueAPI.Platform {
+  get platform(): VssueAPI.Platform {
     return {
       name: 'GitHub',
       link: this.baseURL,
@@ -88,7 +83,7 @@ export default class GithubV3 implements VssueAPI.Instance {
         reactable: true,
         sortable: false,
       },
-    }
+    };
   }
 
   /**
@@ -96,13 +91,16 @@ export default class GithubV3 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#1-request-a-users-github-identity
    */
-  redirectAuth (): void {
-    window.location.href = buildURL(concatURL(this.baseURL, 'login/oauth/authorize'), {
-      client_id: this.clientId,
-      redirect_uri: window.location.href,
-      scope: 'public_repo',
-      state: this.state,
-    })
+  redirectAuth(): void {
+    window.location.href = buildURL(
+      concatURL(this.baseURL, 'login/oauth/authorize'),
+      {
+        client_id: this.clientId,
+        redirect_uri: window.location.href,
+        scope: 'public_repo',
+        state: this.state,
+      }
+    );
   }
 
   /**
@@ -115,21 +113,23 @@ export default class GithubV3 implements VssueAPI.Instance {
    * @remarks
    * If the `code` and `state` exist in the query, and the `state` matches, remove them from query, and try to get the access token.
    */
-  async handleAuth (): Promise<VssueAPI.AccessToken> {
-    const query = parseQuery(window.location.search)
+  async handleAuth(): Promise<VssueAPI.AccessToken> {
+    const query = parseQuery(window.location.search);
     if (query.code) {
       if (query.state !== this.state) {
-        return null
+        return null;
       }
-      const code = query.code
-      delete query.code
-      delete query.state
-      const replaceURL = buildURL(getCleanURL(window.location.href), query) + window.location.hash
-      window.history.replaceState(null, '', replaceURL)
-      const accessToken = await this.getAccessToken({ code })
-      return accessToken
+      const code = query.code;
+      delete query.code;
+      delete query.state;
+      const replaceURL =
+        buildURL(getCleanURL(window.location.href), query) +
+        window.location.hash;
+      window.history.replaceState(null, '', replaceURL);
+      const accessToken = await this.getAccessToken({ code });
+      return accessToken;
     }
-    return null
+    return null;
   }
 
   /**
@@ -141,34 +141,33 @@ export default class GithubV3 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github
    */
-  async getAccessToken ({
-    code,
-  }: {
-    code: string
-  }): Promise<string> {
+  async getAccessToken({ code }: { code: string }): Promise<string> {
     /**
      * access_token api does not support cors
      * @see https://github.com/isaacs/github/issues/330
      */
-    const originalURL = concatURL(this.baseURL, 'login/oauth/access_token')
-    const proxyURL = typeof this.proxy === 'function'
-      ? this.proxy(originalURL)
-      : this.proxy
-    const { data } = await this.$http.post(proxyURL, {
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-      code,
-      /**
-       * useless but mentioned in docs
-       */
-      // redirect_uri: window.location.href,
-      // state: this.state,
-    }, {
-      headers: {
-        'Accept': 'application/json',
+    const originalURL = concatURL(this.baseURL, 'login/oauth/access_token');
+    const proxyURL =
+      typeof this.proxy === 'function' ? this.proxy(originalURL) : this.proxy;
+    const { data } = await this.$http.post(
+      proxyURL,
+      {
+        client_id: this.clientId,
+        client_secret: this.clientSecret,
+        code,
+        /**
+         * useless but mentioned in docs
+         */
+        // redirect_uri: window.location.href,
+        // state: this.state,
       },
-    })
-    return data.access_token
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      }
+    );
+    return data.access_token;
   }
 
   /**
@@ -180,15 +179,15 @@ export default class GithubV3 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/v3/users/#get-the-authenticated-user
    */
-  async getUser ({
+  async getUser({
     accessToken,
   }: {
-    accessToken: VssueAPI.AccessToken
+    accessToken: VssueAPI.AccessToken;
   }): Promise<VssueAPI.User> {
     const { data } = await this.$http.get('user', {
-      headers: { 'Authorization': `token ${accessToken}` },
-    })
-    return normalizeUser(data)
+      headers: { Authorization: `token ${accessToken}` },
+    });
+    return normalizeUser(data);
   }
 
   /**
@@ -205,21 +204,21 @@ export default class GithubV3 implements VssueAPI.Instance {
    * @see https://developer.github.com/v3/#pagination
    * @see https://developer.github.com/v3/search/#search-issues-and-pull-requests
    */
-  async getIssue ({
+  async getIssue({
     accessToken,
     issueId,
     issueTitle,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId?: string | number
-    issueTitle?: string
+    accessToken: VssueAPI.AccessToken;
+    issueId?: string | number;
+    issueTitle?: string;
   }): Promise<VssueAPI.Issue | null> {
-    const options: AxiosRequestConfig = {}
+    const options: AxiosRequestConfig = {};
 
     if (accessToken) {
       options.headers = {
-        'Authorization': `token ${accessToken}`,
-      }
+        Authorization: `token ${accessToken}`,
+      };
     }
 
     if (issueId) {
@@ -227,14 +226,17 @@ export default class GithubV3 implements VssueAPI.Instance {
         options.params = {
           // to avoid caching
           timestamp: Date.now(),
-        }
-        const { data } = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}`, options)
-        return normalizeIssue(data)
+        };
+        const { data } = await this.$http.get(
+          `repos/${this.owner}/${this.repo}/issues/${issueId}`,
+          options
+        );
+        return normalizeIssue(data);
       } catch (e) {
         if (e.response && e.response.status === 404) {
-          return null
+          return null;
         } else {
-          throw e
+          throw e;
         }
       }
     } else {
@@ -247,10 +249,12 @@ export default class GithubV3 implements VssueAPI.Instance {
           `is:public`,
           ...this.labels.map(label => `label:${label}`),
         ].join(' '),
-      }
-      const { data } = await this.$http.get(`search/issues`, options)
-      const issue = data.items.map(normalizeIssue).find(item => item.title === issueTitle)
-      return issue || null
+      };
+      const { data } = await this.$http.get(`search/issues`, options);
+      const issue = data.items
+        .map(normalizeIssue)
+        .find(item => item.title === issueTitle);
+      return issue || null;
     }
   }
 
@@ -265,23 +269,27 @@ export default class GithubV3 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/v3/issues/#create-an-issue
    */
-  async postIssue ({
+  async postIssue({
     accessToken,
     title,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    title: string
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    title: string;
+    content: string;
   }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues`, {
-      title,
-      body: content,
-      labels: this.labels,
-    }, {
-      headers: { 'Authorization': `token ${accessToken}` },
-    })
-    return normalizeIssue(data)
+    const { data } = await this.$http.post(
+      `repos/${this.owner}/${this.repo}/issues`,
+      {
+        title,
+        body: content,
+        labels: this.labels,
+      },
+      {
+        headers: { Authorization: `token ${accessToken}` },
+      }
+    );
+    return normalizeIssue(data);
   }
 
   /**
@@ -300,30 +308,26 @@ export default class GithubV3 implements VssueAPI.Instance {
    * Github V3 does not support sort for issue comments now.
    * Github V3 have to request the parent issue to get the count of comments.
    */
-  async getComments ({
+  async getComments({
     accessToken,
     issueId,
-    query: {
-      page = 1,
-      perPage = 10,
-      sort = 'desc',
-    } = {},
+    query: { page = 1, perPage = 10, sort = 'desc' } = {},
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    query?: Partial<VssueAPI.Query>
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    query?: Partial<VssueAPI.Query>;
   }): Promise<VssueAPI.Comments> {
     const issueOptions: AxiosRequestConfig = {
       params: {
         // to avoid caching
         timestamp: Date.now(),
       },
-    }
+    };
     const commentsOptions: AxiosRequestConfig = {
       params: {
         // pagination
-        'page': page,
-        'per_page': perPage,
+        page: page,
+        per_page: perPage,
         /**
          * github v3 api does not support sort for issue comments
          * have sent feedback to github support
@@ -331,48 +335,56 @@ export default class GithubV3 implements VssueAPI.Instance {
         // 'sort': 'created',
         // 'direction': sort,
         // to avoid caching
-        'timestamp': Date.now(),
+        timestamp: Date.now(),
       },
       headers: {
-        'Accept': [
+        Accept: [
           'application/vnd.github.v3.raw+json',
           'application/vnd.github.v3.html+json',
           'application/vnd.github.squirrel-girl-preview',
         ],
       },
-    }
+    };
     if (accessToken) {
       issueOptions.headers = {
-        'Authorization': `token ${accessToken}`,
-      }
-      commentsOptions.headers['Authorization'] = `token ${accessToken}`
+        Authorization: `token ${accessToken}`,
+      };
+      commentsOptions.headers.Authorization = `token ${accessToken}`;
     }
 
     // github v3 have to get the total count of comments by requesting the issue
     const [issueRes, commentsRes] = await Promise.all([
-      this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}`, issueOptions),
-      this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, commentsOptions),
-    ])
+      this.$http.get(
+        `repos/${this.owner}/${this.repo}/issues/${issueId}`,
+        issueOptions
+      ),
+      this.$http.get(
+        `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
+        commentsOptions
+      ),
+    ]);
 
     // it's annoying that have to get the page and per_page from the `Link` header
-    const linkHeader = commentsRes.headers['link'] || null
+    const linkHeader = commentsRes.headers.link || null;
 
     /* istanbul ignore next */
     const thisPage = /rel="next"/.test(linkHeader)
       ? Number(linkHeader.replace(/^.*[^_]page=(\d*).*rel="next".*$/, '$1')) - 1
       : /rel="prev"/.test(linkHeader)
-        ? Number(linkHeader.replace(/^.*[^_]page=(\d*).*rel="prev".*$/, '$1')) + 1
-        : 1
+      ? Number(linkHeader.replace(/^.*[^_]page=(\d*).*rel="prev".*$/, '$1')) + 1
+      : 1;
 
     /* istanbul ignore next */
-    const thisPerPage = linkHeader ? Number(linkHeader.replace(/^.*per_page=(\d*).*$/, '$1')) : perPage
+    const thisPerPage = linkHeader
+      ? Number(linkHeader.replace(/^.*per_page=(\d*).*$/, '$1'))
+      : perPage;
 
     return {
       count: Number(issueRes.data.comments),
       page: thisPage,
       perPage: thisPerPage,
       data: commentsRes.data.map(normalizeComment),
-    }
+    };
   }
 
   /**
@@ -386,28 +398,32 @@ export default class GithubV3 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/v3/issues/comments/#create-a-comment
    */
-  async postComment ({
+  async postComment({
     accessToken,
     issueId,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
-      body: content,
-    }, {
-      headers: {
-        'Authorization': `token ${accessToken}`,
-        'Accept': [
-          'application/vnd.github.v3.raw+json',
-          'application/vnd.github.v3.html+json',
-          'application/vnd.github.squirrel-girl-preview',
-        ],
+    const { data } = await this.$http.post(
+      `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
+      {
+        body: content,
       },
-    })
-    return normalizeComment(data)
+      {
+        headers: {
+          Authorization: `token ${accessToken}`,
+          Accept: [
+            'application/vnd.github.v3.raw+json',
+            'application/vnd.github.v3.html+json',
+            'application/vnd.github.squirrel-girl-preview',
+          ],
+        },
+      }
+    );
+    return normalizeComment(data);
   }
 
   /**
@@ -421,29 +437,33 @@ export default class GithubV3 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/v3/issues/comments/#edit-a-comment
    */
-  async putComment ({
+  async putComment({
     accessToken,
     commentId,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
+    content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.patch(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}`, {
-      body: content,
-    }, {
-      headers: {
-        'Authorization': `token ${accessToken}`,
-        'Accept': [
-          'application/vnd.github.v3.raw+json',
-          'application/vnd.github.v3.html+json',
-          'application/vnd.github.squirrel-girl-preview',
-        ],
+    const { data } = await this.$http.patch(
+      `repos/${this.owner}/${this.repo}/issues/comments/${commentId}`,
+      {
+        body: content,
       },
-    })
-    return normalizeComment(data)
+      {
+        headers: {
+          Authorization: `token ${accessToken}`,
+          Accept: [
+            'application/vnd.github.v3.raw+json',
+            'application/vnd.github.v3.html+json',
+            'application/vnd.github.squirrel-girl-preview',
+          ],
+        },
+      }
+    );
+    return normalizeComment(data);
   }
 
   /**
@@ -456,18 +476,21 @@ export default class GithubV3 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/v3/issues/comments/#delete-a-comment
    */
-  async deleteComment ({
+  async deleteComment({
     accessToken,
     commentId,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
   }): Promise<boolean> {
-    const { status } = await this.$http.delete(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}`, {
-      headers: { 'Authorization': `token ${accessToken}` },
-    })
-    return status === 204
+    const { status } = await this.$http.delete(
+      `repos/${this.owner}/${this.repo}/issues/comments/${commentId}`,
+      {
+        headers: { Authorization: `token ${accessToken}` },
+      }
+    );
+    return status === 204;
   }
 
   /**
@@ -485,21 +508,24 @@ export default class GithubV3 implements VssueAPI.Instance {
    * The `List reactions for an issue comment` API also returns author of each reaction.
    * As we only need the count, use the `Get a single comment` API is much simpler.
    */
-  async getCommentReactions ({
+  async getCommentReactions({
     accessToken,
     commentId,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
   }): Promise<VssueAPI.Reactions> {
-    const { data } = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}`, {
-      headers: {
-        'Authorization': `token ${accessToken}`,
-        'Accept': 'application/vnd.github.squirrel-girl-preview',
-      },
-    })
-    return normalizeReactions(data.reactions)
+    const { data } = await this.$http.get(
+      `repos/${this.owner}/${this.repo}/issues/comments/${commentId}`,
+      {
+        headers: {
+          Authorization: `token ${accessToken}`,
+          Accept: 'application/vnd.github.squirrel-girl-preview',
+        },
+      }
+    );
+    return normalizeReactions(data.reactions);
   }
 
   /**
@@ -513,35 +539,39 @@ export default class GithubV3 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/v3/reactions/#create-reaction-for-an-issue-comment
    */
-  async postCommentReaction ({
+  async postCommentReaction({
     accessToken,
     commentId,
     reaction,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
-    reaction: keyof VssueAPI.Reactions
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
+    reaction: keyof VssueAPI.Reactions;
   }): Promise<boolean> {
-    const response = await this.$http.post(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}/reactions`, {
-      content: mapReactionName(reaction),
-    }, {
-      headers: {
-        'Authorization': `token ${accessToken}`,
-        'Accept': 'application/vnd.github.squirrel-girl-preview',
+    const response = await this.$http.post(
+      `repos/${this.owner}/${this.repo}/issues/comments/${commentId}/reactions`,
+      {
+        content: mapReactionName(reaction),
       },
-    })
+      {
+        headers: {
+          Authorization: `token ${accessToken}`,
+          Accept: 'application/vnd.github.squirrel-girl-preview',
+        },
+      }
+    );
 
     // 200 OK if the reaction is already token
     if (response.status === 200) {
       return this.deleteCommentReaction({
         accessToken,
         reactionId: response.data.id,
-      })
+      });
     }
 
     // 201 CREATED
-    return response.status === 201
+    return response.status === 201;
   }
 
   /**
@@ -549,20 +579,19 @@ export default class GithubV3 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/v3/reactions/#delete-a-reaction
    */
-  async deleteCommentReaction ({
+  async deleteCommentReaction({
     accessToken,
     reactionId,
   }: {
-    accessToken: VssueAPI.AccessToken
-    reactionId: string | number
+    accessToken: VssueAPI.AccessToken;
+    reactionId: string | number;
   }): Promise<boolean> {
-    const response = await this.$http.delete(
-      `reactions/${reactionId}`, {
-        headers: {
-          'Authorization': `token ${accessToken}`,
-          'Accept': 'application/vnd.github.squirrel-girl-preview',
-        },
-      })
-    return response.status === 204
+    const response = await this.$http.delete(`reactions/${reactionId}`, {
+      headers: {
+        Authorization: `token ${accessToken}`,
+        Accept: 'application/vnd.github.squirrel-girl-preview',
+      },
+    });
+    return response.status === 204;
   }
 }

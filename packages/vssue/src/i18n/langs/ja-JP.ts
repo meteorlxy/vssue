@@ -1,4 +1,4 @@
-import VueI18n from 'vue-i18n'
+import VueI18n from 'vue-i18n';
 
 const messages: VueI18n.LocaleMessageObject = {
   // auth
@@ -31,9 +31,12 @@ const messages: VueI18n.LocaleMessageObject = {
 
   // hint
   comments: 'コメント | {count} コメント | {count} コメント',
-  loginToComment: 'コメントを残すには {platform} アカウントでログインしてください。',
-  placeholder: 'コメントを残してください。Markdown 記法をサポートしています。 Ctrl + Enter で送信できます。',
-  noLoginPlaceHolder: 'コメントを残すにはログインしてください。マークダウン記法をサポートしています。',
+  loginToComment:
+    'コメントを残すには {platform} アカウントでログインしてください。',
+  placeholder:
+    'コメントを残してください。Markdown 記法をサポートしています。 Ctrl + Enter で送信できます。',
+  noLoginPlaceHolder:
+    'コメントを残すにはログインしてください。マークダウン記法をサポートしています。',
 
   // status
   failed: 'コメントの読み込みに失敗しました',
@@ -47,6 +50,6 @@ const messages: VueI18n.LocaleMessageObject = {
   reactionGiven: `既に '{reaction}' のリアクションをしています`,
   deleteConfirm: '本当にコメントを削除してもいいですか？',
   deleteFailed: 'コメントの削除に失敗しました',
-}
+};
 
-export default messages
+export default messages;

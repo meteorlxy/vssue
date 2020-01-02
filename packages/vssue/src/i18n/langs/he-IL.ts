@@ -1,4 +1,4 @@
-import VueI18n from 'vue-i18n'
+import VueI18n from 'vue-i18n';
 
 const messages: VueI18n.LocaleMessageObject = {
   // auth
@@ -49,6 +49,6 @@ const messages: VueI18n.LocaleMessageObject = {
   reactionGiven: `כבר ניתן חיווי '{reaction}'`,
   deleteConfirm: 'בטוחים במחיקת התגובה ?',
   deleteFailed: 'כשלון במחיקת התגובה',
-}
+};
 
-export default messages
+export default messages;

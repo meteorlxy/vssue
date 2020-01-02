@@ -1,5 +1,5 @@
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   name: 'TransitionFade',
@@ -14,7 +14,7 @@ export default Vue.extend({
     },
   },
 
-  render (h, { props, children }) {
+  render(h, { props, children }) {
     return h(
       props.group ? 'TransitionGroup' : 'Transition',
       {
@@ -24,8 +24,8 @@ export default Vue.extend({
           appear: true,
         },
       },
-      children,
-    )
+      children
+    );
   },
-})
+});
 </script>

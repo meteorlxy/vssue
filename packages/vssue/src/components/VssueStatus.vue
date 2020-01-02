@@ -1,10 +1,6 @@
 <template>
   <TransitionFade>
-    <div
-      v-if="status"
-      :key="status"
-      class="vssue-status"
-    >
+    <div v-if="status" :key="status" class="vssue-status">
       <VssueIcon
         v-if="['failed', 'loadingComments', 'initializing'].includes(status)"
         :name="status === 'failed' ? 'error' : 'loading'"
@@ -12,7 +8,9 @@
 
       <p class="vssue-status-info">
         <Component
-          :is="['issueNotCreated', 'loginRequired'].includes(status) ? 'a' : 'span'"
+          :is="
+            ['issueNotCreated', 'loginRequired'].includes(status) ? 'a' : 'span'
+          "
           @click="handleClick"
         >
           {{ vssue.$t(status) }}
@@ -23,10 +21,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Inject } from 'vue-property-decorator'
-import { Vssue } from 'vssue'
-import TransitionFade from './TransitionFade.vue'
-import VssueIcon from './VssueIcon.vue'
+import { Vue, Component, Inject } from 'vue-property-decorator';
+import { Vssue } from 'vssue';
+import TransitionFade from './TransitionFade.vue';
+import VssueIcon from './VssueIcon.vue';
 
 @Component({
   components: {
@@ -35,35 +33,35 @@ import VssueIcon from './VssueIcon.vue'
   },
 })
 export default class VssueStatus extends Vue {
-  @Inject() vssue!: Vssue.Store
+  @Inject() vssue!: Vssue.Store;
 
-  get status (): string | null {
+  get status(): string | null {
     if (this.vssue.isFailed) {
-      return 'failed'
+      return 'failed';
     } else if (this.vssue.isInitializing) {
-      return 'initializing'
+      return 'initializing';
     } else if (this.vssue.isIssueNotCreated && !this.vssue.isCreatingIssue) {
       if (this.vssue.isAdmin || !this.vssue.isLogined) {
-        return 'issueNotCreated'
+        return 'issueNotCreated';
       } else {
-        return 'failed'
+        return 'failed';
       }
     } else if (this.vssue.isLoginRequired) {
-      return 'loginRequired'
+      return 'loginRequired';
     } else if (!this.vssue.comments || this.vssue.isCreatingIssue) {
-      return 'loadingComments'
+      return 'loadingComments';
     } else if (this.vssue.comments.data.length === 0) {
-      return 'noComments'
+      return 'noComments';
     } else {
-      return null
+      return null;
     }
   }
 
-  handleClick (): void {
+  handleClick(): void {
     if (this.status === 'issueNotCreated') {
-      this.vssue.postIssue()
+      this.vssue.postIssue();
     } else if (this.status === 'loginRequired') {
-      this.vssue.login()
+      this.vssue.login();
     }
   }
 }

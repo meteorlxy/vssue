@@ -7,9 +7,13 @@
       target="_blank"
     >
       <span>
-        {{ vssue.comments
-          ? vssue.$tc('comments', vssue.comments.count, { count: vssue.comments.count })
-          : vssue.$tc('comments', 0) }}
+        {{
+          vssue.comments
+            ? vssue.$tc('comments', vssue.comments.count, {
+                count: vssue.comments.count,
+              })
+            : vssue.$tc('comments', 0)
+        }}
       </span>
     </a>
 
@@ -21,7 +25,9 @@
         <a
           :href="vssue.API.platform.link"
           target="_blank"
-          :title="`${vssue.API.platform.name} API ${vssue.API.platform.version}`"
+          :title="
+            `${vssue.API.platform.name} API ${vssue.API.platform.version}`
+          "
         >
           {{ vssue.API.platform.name }}
         </a>
@@ -41,11 +47,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Inject } from 'vue-property-decorator'
-import { Vssue } from 'vssue'
+import { Vue, Component, Inject } from 'vue-property-decorator';
+import { Vssue } from 'vssue';
 
 @Component
 export default class VssueHeader extends Vue {
-  @Inject() vssue!: Vssue.Store
+  @Inject() vssue!: Vssue.Store;
 }
 </script>

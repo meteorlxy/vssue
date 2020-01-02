@@ -1,5 +1,5 @@
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   name: 'VssueIcon',
@@ -14,18 +14,15 @@ export default Vue.extend({
     },
   },
 
-  render (h, { props, data, children }) {
+  render(h, { props, data, children }) {
     return h(
       'button',
       {
         ...data,
-        'class': [
-          'vssue-button',
-          `vssue-button-${props.type}`,
-        ],
+        class: ['vssue-button', `vssue-button-${props.type}`],
       },
-      children,
-    )
+      children
+    );
   },
-})
+});
 </script>

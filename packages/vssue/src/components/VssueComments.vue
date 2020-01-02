@@ -18,11 +18,11 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Inject } from 'vue-property-decorator'
-import { Vssue } from 'vssue'
-import TransitionFade from './TransitionFade.vue'
-import VssueComment from './VssueComment.vue'
-import VssuePagination from './VssuePagination.vue'
+import { Vue, Component, Inject } from 'vue-property-decorator';
+import { Vssue } from 'vssue';
+import TransitionFade from './TransitionFade.vue';
+import VssueComment from './VssueComment.vue';
+import VssuePagination from './VssuePagination.vue';
 
 @Component({
   components: {
@@ -32,6 +32,6 @@ import VssuePagination from './VssuePagination.vue'
   },
 })
 export default class VssueComments extends Vue {
-  @Inject() vssue!: Vssue.Store
+  @Inject() vssue!: Vssue.Store;
 }
 </script>

@@ -1,16 +1,8 @@
-import { VssueAPI } from 'vssue'
+import { VssueAPI } from 'vssue';
 
-import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-} from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-import {
-  buildURL,
-  concatURL,
-  getCleanURL,
-  parseQuery,
-} from '@vssue/utils'
+import { buildURL, concatURL, getCleanURL, parseQuery } from '@vssue/utils';
 
 import {
   normalizeUser,
@@ -18,7 +10,7 @@ import {
   normalizeComment,
   normalizeReactions,
   mapReactionName,
-} from './utils'
+} from './utils';
 
 /**
  * Github GraphQL API v4
@@ -28,27 +20,27 @@ import {
  * @see https://developer.github.com/apps/building-oauth-apps/
  */
 export default class GithubV4 implements VssueAPI.Instance {
-  baseURL: string
-  owner: string
-  repo: string
-  labels: Array<string>
-  clientId: string
-  clientSecret: string
-  state: string
-  proxy: string | ((url: string) => string)
-  $http: AxiosInstance
+  baseURL: string;
+  owner: string;
+  repo: string;
+  labels: Array<string>;
+  clientId: string;
+  clientSecret: string;
+  state: string;
+  proxy: string | ((url: string) => string);
+  $http: AxiosInstance;
 
   private _pageInfo: {
-    page: number
-    startCursor: string | null
-    endCursor: string | null
-    sort: string | null
-    perPage: number | null
-  }
+    page: number;
+    startCursor: string | null;
+    endCursor: string | null;
+    sort: string | null;
+    perPage: number | null;
+  };
 
-  private _issueNodeId: string | null
+  private _issueNodeId: string | null;
 
-  constructor ({
+  constructor({
     baseURL = 'https://github.com',
     owner,
     repo,
@@ -59,17 +51,17 @@ export default class GithubV4 implements VssueAPI.Instance {
     proxy,
   }: VssueAPI.Options) {
     if (typeof clientSecret === 'undefined' || typeof proxy === 'undefined') {
-      throw new Error('clientSecret and proxy is required for GitHub V4')
+      throw new Error('clientSecret and proxy is required for GitHub V4');
     }
-    this.baseURL = baseURL
-    this.owner = owner
-    this.repo = repo
-    this.labels = labels
+    this.baseURL = baseURL;
+    this.owner = owner;
+    this.repo = repo;
+    this.labels = labels;
 
-    this.clientId = clientId
-    this.clientSecret = clientSecret
-    this.state = state
-    this.proxy = proxy
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
+    this.state = state;
+    this.proxy = proxy;
 
     this._pageInfo = {
       page: 1,
@@ -77,32 +69,35 @@ export default class GithubV4 implements VssueAPI.Instance {
       endCursor: null,
       sort: null,
       perPage: null,
-    }
+    };
 
-    this._issueNodeId = null
+    this._issueNodeId = null;
 
     this.$http = axios.create({
-      baseURL: baseURL === 'https://github.com' ? 'https://api.github.com' : concatURL(baseURL, 'api'),
+      baseURL:
+        baseURL === 'https://github.com'
+          ? 'https://api.github.com'
+          : concatURL(baseURL, 'api'),
       headers: {
-        'Accept': 'application/vnd.github.v3+json',
+        Accept: 'application/vnd.github.v3+json',
       },
-    })
+    });
 
     this.$http.interceptors.response.use(response => {
       if (response.data.error) {
-        return Promise.reject(response.data.error_description)
+        return Promise.reject(response.data.error_description);
       }
       if (response.data.errors) {
-        return Promise.reject(response.data.errors[0].message)
+        return Promise.reject(response.data.errors[0].message);
       }
-      return response
-    })
+      return response;
+    });
   }
 
   /**
    * The platform api info
    */
-  get platform (): VssueAPI.Platform {
+  get platform(): VssueAPI.Platform {
     return {
       name: 'GitHub',
       link: this.baseURL,
@@ -111,7 +106,7 @@ export default class GithubV4 implements VssueAPI.Instance {
         reactable: true,
         sortable: true,
       },
-    }
+    };
   }
 
   /**
@@ -119,13 +114,16 @@ export default class GithubV4 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#1-request-a-users-github-identity
    */
-  redirectAuth (): void {
-    window.location.href = buildURL(concatURL(this.baseURL, 'login/oauth/authorize'), {
-      client_id: this.clientId,
-      redirect_uri: window.location.href,
-      scope: 'public_repo',
-      state: this.state,
-    })
+  redirectAuth(): void {
+    window.location.href = buildURL(
+      concatURL(this.baseURL, 'login/oauth/authorize'),
+      {
+        client_id: this.clientId,
+        redirect_uri: window.location.href,
+        scope: 'public_repo',
+        state: this.state,
+      }
+    );
   }
 
   /**
@@ -138,21 +136,23 @@ export default class GithubV4 implements VssueAPI.Instance {
    * @remarks
    * If the `code` and `state` exist in the query, and the `state` matches, remove them from query, and try to get the access token.
    */
-  async handleAuth (): Promise<VssueAPI.AccessToken> {
-    const query = parseQuery(window.location.search)
+  async handleAuth(): Promise<VssueAPI.AccessToken> {
+    const query = parseQuery(window.location.search);
     if (query.code) {
       if (query.state !== this.state) {
-        return null
+        return null;
       }
-      const code = query.code
-      delete query.code
-      delete query.state
-      const replaceURL = buildURL(getCleanURL(window.location.href), query) + window.location.hash
-      window.history.replaceState(null, '', replaceURL)
-      const accessToken = await this.getAccessToken({ code })
-      return accessToken
+      const code = query.code;
+      delete query.code;
+      delete query.state;
+      const replaceURL =
+        buildURL(getCleanURL(window.location.href), query) +
+        window.location.hash;
+      window.history.replaceState(null, '', replaceURL);
+      const accessToken = await this.getAccessToken({ code });
+      return accessToken;
     }
-    return null
+    return null;
   }
 
   /**
@@ -164,34 +164,33 @@ export default class GithubV4 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github
    */
-  async getAccessToken ({
-    code,
-  }: {
-    code: string
-  }): Promise<string> {
+  async getAccessToken({ code }: { code: string }): Promise<string> {
     /**
      * access_token api does not support cors
      * @see https://github.com/isaacs/github/issues/330
      */
-    const originalURL = concatURL(this.baseURL, 'login/oauth/access_token')
-    const proxyURL = typeof this.proxy === 'function'
-      ? this.proxy(originalURL)
-      : this.proxy
-    const { data } = await this.$http.post(proxyURL, {
-      client_id: this.clientId,
-      client_secret: this.clientSecret,
-      code,
-      /**
-       * useless but mentioned in docs
-       */
-      // redirect_uri: window.location.href,
-      // state: this.state,
-    }, {
-      headers: {
-        'Accept': 'application/json',
+    const originalURL = concatURL(this.baseURL, 'login/oauth/access_token');
+    const proxyURL =
+      typeof this.proxy === 'function' ? this.proxy(originalURL) : this.proxy;
+    const { data } = await this.$http.post(
+      proxyURL,
+      {
+        client_id: this.clientId,
+        client_secret: this.clientSecret,
+        code,
+        /**
+         * useless but mentioned in docs
+         */
+        // redirect_uri: window.location.href,
+        // state: this.state,
       },
-    })
-    return data.access_token
+      {
+        headers: {
+          Accept: 'application/json',
+        },
+      }
+    );
+    return data.access_token;
   }
 
   /**
@@ -204,13 +203,15 @@ export default class GithubV4 implements VssueAPI.Instance {
    * @see https://developer.github.com/v4/query/ viewer
    * @see https://developer.github.com/v4/object/user/
    */
-  async getUser ({
+  async getUser({
     accessToken,
   }: {
-    accessToken: VssueAPI.AccessToken
+    accessToken: VssueAPI.AccessToken;
   }): Promise<VssueAPI.User> {
-    const { data } = await this.$http.post('graphql', {
-      query: `\
+    const { data } = await this.$http.post(
+      'graphql',
+      {
+        query: `\
 query getUser {
   viewer {
     login
@@ -218,10 +219,12 @@ query getUser {
     url
   }
 }`,
-    }, {
-      headers: { 'Authorization': `token ${accessToken}` },
-    })
-    return normalizeUser(data.data.viewer)
+      },
+      {
+        headers: { Authorization: `token ${accessToken}` },
+      }
+    );
+    return normalizeUser(data.data.viewer);
   }
 
   /**
@@ -241,27 +244,29 @@ query getUser {
    * The IssueConnection does not have title filter for now, and the number of results is limited to 100.
    * For now, if issues with the labels are more than 100, we have to request the next page(not implemented yet).
    */
-  async getIssue ({
+  async getIssue({
     accessToken,
     issueId,
     issueTitle,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId?: string | number
-    issueTitle?: string
+    accessToken: VssueAPI.AccessToken;
+    issueId?: string | number;
+    issueTitle?: string;
   }): Promise<VssueAPI.Issue | null> {
-    const options: AxiosRequestConfig = {}
+    const options: AxiosRequestConfig = {};
 
     if (accessToken) {
       options.headers = {
-        'Authorization': `token ${accessToken}`,
-      }
+        Authorization: `token ${accessToken}`,
+      };
     }
 
     if (issueId) {
       try {
-        const { data } = await this.$http.post(`graphql`, {
-          query: `\
+        const { data } = await this.$http.post(
+          `graphql`,
+          {
+            query: `\
 query getIssueById {
   repository(owner: "${this.owner}", name: "${this.repo}") {
     issue (number: ${issueId}) {
@@ -273,15 +278,17 @@ query getIssueById {
     }
   }
 }`,
-        }, options)
+          },
+          options
+        );
         // postComment needs issue NodeId, so we store it internally
-        this._issueNodeId = data.data.repository.issue.id
-        return normalizeIssue(data.data.repository.issue)
+        this._issueNodeId = data.data.repository.issue.id;
+        return normalizeIssue(data.data.repository.issue);
       } catch (e) {
         if (e.response && e.response.status === 404) {
-          return null
+          return null;
         } else {
-          throw e
+          throw e;
         }
       }
     } else {
@@ -291,13 +298,15 @@ query getIssueById {
         `repo:${this.owner}/${this.repo}`,
         `is:public`,
         ...this.labels.map(label => `label:${label}`),
-      ].join(' ')
+      ].join(' ');
 
-      const { data } = await this.$http.post(`graphql`, {
-        variables: {
-          query,
-        },
-        query: `\
+      const { data } = await this.$http.post(
+        `graphql`,
+        {
+          variables: {
+            query,
+          },
+          query: `\
 query getIssueByTitle(
   $query: String!
 ) {
@@ -317,15 +326,19 @@ query getIssueByTitle(
     }
   }
 }`,
-      }, options)
-      const issue = data.data.search.nodes.find(item => item.title === issueTitle)
+        },
+        options
+      );
+      const issue = data.data.search.nodes.find(
+        item => item.title === issueTitle
+      );
 
       // postComment needs issue NodeId, so we store it internally
       if (issue) {
-        this._issueNodeId = issue.id
-        return normalizeIssue(issue)
+        this._issueNodeId = issue.id;
+        return normalizeIssue(issue);
       }
-      return null
+      return null;
     }
   }
 
@@ -348,28 +361,32 @@ query getIssueByTitle(
    *
    * For these reasons, fallback to v3 for now
    */
-  async postIssue ({
+  async postIssue({
     accessToken,
     title,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    title: string
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    title: string;
+    content: string;
   }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues`, {
-      title,
-      body: content,
-      labels: this.labels,
-    }, {
-      headers: { 'Authorization': `token ${accessToken}` },
-    })
+    const { data } = await this.$http.post(
+      `repos/${this.owner}/${this.repo}/issues`,
+      {
+        title,
+        body: content,
+        labels: this.labels,
+      },
+      {
+        headers: { Authorization: `token ${accessToken}` },
+      }
+    );
     // `html_url` in v3
     // `url` in v4
-    data.url = data.html_url
+    data.url = data.html_url;
     // postComment needs issue NodeId, so we store it internally
-    this._issueNodeId = data.node_id
-    return normalizeIssue(data)
+    this._issueNodeId = data.node_id;
+    return normalizeIssue(data);
   }
 
   /**
@@ -387,47 +404,41 @@ query getIssueByTitle(
    * No offset implemented, so it's difficult to implement REST-like pagination
    * For now, we use an internal `_pageInfo` var to hack that
    */
-  async getComments ({
+  async getComments({
     accessToken,
     issueId,
-    query: {
-      page = 1,
-      perPage = 10,
-      sort = 'desc',
-    } = {},
+    query: { page = 1, perPage = 10, sort = 'desc' } = {},
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    query?: Partial<VssueAPI.Query>
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    query?: Partial<VssueAPI.Query>;
   }): Promise<VssueAPI.Comments> {
-    const options: AxiosRequestConfig = {}
+    const options: AxiosRequestConfig = {};
     if (accessToken) {
       options.headers = {
-        'Authorization': `token ${accessToken}`,
-      }
+        Authorization: `token ${accessToken}`,
+      };
     }
 
     if (this._pageInfo.sort !== null && sort !== this._pageInfo.sort) {
-      page = 1
+      page = 1;
     }
 
-    const {
-      firstOrLast,
-      afterOrBefore,
-      cursor,
-    } = this._getQueryParams({
+    const { firstOrLast, afterOrBefore, cursor } = this._getQueryParams({
       page,
       sort,
-    })
+    });
 
-    const { data } = await this.$http.post(`graphql`, {
-      variables: {
-        owner: this.owner,
-        repo: this.repo,
-        issueId,
-        perPage,
-      },
-      query: `\
+    const { data } = await this.$http.post(
+      `graphql`,
+      {
+        variables: {
+          owner: this.owner,
+          repo: this.repo,
+          issueId,
+          perPage,
+        },
+        query: `\
 query getComments(
   $owner: String!
   $repo: String!
@@ -467,12 +478,14 @@ query getComments(
     }
   }
 }`,
-    }, options)
+      },
+      options
+    );
 
-    const comments = data.data.repository.issue.comments
+    const comments = data.data.repository.issue.comments;
 
     if (sort === 'desc') {
-      comments.nodes.reverse()
+      comments.nodes.reverse();
     }
 
     this._pageInfo = {
@@ -481,14 +494,14 @@ query getComments(
       endCursor: comments.pageInfo.endCursor,
       sort,
       perPage,
-    }
+    };
 
     return {
       count: comments.totalCount,
       page: page,
       perPage: perPage,
       data: comments.nodes.map(normalizeComment),
-    }
+    };
   }
 
   /**
@@ -503,22 +516,23 @@ query getComments(
    * @see https://developer.github.com/v4/mutation/addcomment/
    * @see https://developer.github.com/v4/input_object/addcommentinput/
    */
-  async postComment ({
+  async postComment({
     accessToken,
-    issueId,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(`graphql`, {
-      variables: {
-        // postComment needs issue NodeId, so we store it internally
-        issueNodeId: this._issueNodeId,
-        content,
-      },
-      query: `\
+    const { data } = await this.$http.post(
+      `graphql`,
+      {
+        variables: {
+          // postComment needs issue NodeId, so we store it internally
+          issueNodeId: this._issueNodeId,
+          content,
+        },
+        query: `\
 mutation postComment(
   $issueNodeId: ID!
   $content: String!
@@ -551,12 +565,14 @@ mutation postComment(
     }
   }
 }`,
-    }, {
-      headers: {
-        'Authorization': `token ${accessToken}`,
       },
-    })
-    return normalizeComment(data.data.addComment.commentEdge.node)
+      {
+        headers: {
+          Authorization: `token ${accessToken}`,
+        },
+      }
+    );
+    return normalizeComment(data.data.addComment.commentEdge.node);
   }
 
   /**
@@ -571,22 +587,24 @@ mutation postComment(
    * @see https://developer.github.com/v4/mutation/updateissuecomment/
    * @see https://developer.github.com/v4/input_object/updateissuecommentinput/
    */
-  async putComment ({
+  async putComment({
     accessToken,
     commentId,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
+    content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(`graphql`, {
-      variables: {
-        commentId,
-        content,
-      },
-      query: `\
+    const { data } = await this.$http.post(
+      `graphql`,
+      {
+        variables: {
+          commentId,
+          content,
+        },
+        query: `\
 mutation putComment(
   $commentId: ID!,
   $content: String!,
@@ -615,12 +633,14 @@ mutation putComment(
     }
   }
 }`,
-    }, {
-      headers: {
-        'Authorization': `token ${accessToken}`,
       },
-    })
-    return normalizeComment(data.data.updateIssueComment.issueComment)
+      {
+        headers: {
+          Authorization: `token ${accessToken}`,
+        },
+      }
+    );
+    return normalizeComment(data.data.updateIssueComment.issueComment);
   }
 
   /**
@@ -633,19 +653,21 @@ mutation putComment(
    *
    * @see https://developer.github.com/v4/mutation/deleteissuecomment/
    */
-  async deleteComment ({
+  async deleteComment({
     accessToken,
     commentId,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
   }): Promise<boolean> {
-    await this.$http.post(`graphql`, {
-      variables: {
-        commentId,
-      },
-      query: `\
+    await this.$http.post(
+      `graphql`,
+      {
+        variables: {
+          commentId,
+        },
+        query: `\
 mutation deleteComment(
   $commentId: ID!,
 ) {
@@ -655,12 +677,14 @@ mutation deleteComment(
     clientMutationId
   }
 }`,
-    }, {
-      headers: {
-        'Authorization': `token ${accessToken}`,
       },
-    })
-    return true
+      {
+        headers: {
+          Authorization: `token ${accessToken}`,
+        },
+      }
+    );
+    return true;
   }
 
   /**
@@ -675,29 +699,27 @@ mutation deleteComment(
    * @remarks
    * This query has not been implemented, use the comments query instead
    */
-  async getCommentReactions ({
+  async getCommentReactions({
     accessToken,
     issueId,
     commentId,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
   }): Promise<VssueAPI.Reactions> {
-    const {
-      firstOrLast,
-      afterOrBefore,
-      cursor,
-    } = this._getQueryParams()
+    const { firstOrLast, afterOrBefore, cursor } = this._getQueryParams();
 
-    const { data } = await this.$http.post(`graphql`, {
-      variables: {
-        owner: this.owner,
-        repo: this.repo,
-        issueId,
-        perPage: this._pageInfo.perPage,
-      },
-      query: `\
+    const { data } = await this.$http.post(
+      `graphql`,
+      {
+        variables: {
+          owner: this.owner,
+          repo: this.repo,
+          issueId,
+          perPage: this._pageInfo.perPage,
+        },
+        query: `\
 query getComments(
   $owner: String!
   $repo: String!
@@ -723,13 +745,17 @@ query getComments(
     }
   }
 }`,
-    }, {
-      headers: { 'Authorization': `token ${accessToken}` },
-    })
+      },
+      {
+        headers: { Authorization: `token ${accessToken}` },
+      }
+    );
 
-    const comment = data.data.repository.issue.comments.nodes.find(item => item.id === commentId)
+    const comment = data.data.repository.issue.comments.nodes.find(
+      item => item.id === commentId
+    );
 
-    return normalizeReactions(comment.reactionGroups)
+    return normalizeReactions(comment.reactionGroups);
   }
 
   /**
@@ -744,22 +770,24 @@ query getComments(
    * @see https://developer.github.com/v4/mutation/addreaction/
    * @see https://developer.github.com/v4/input_object/addreactioninput/
    */
-  async postCommentReaction ({
+  async postCommentReaction({
     accessToken,
     commentId,
     reaction,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
-    reaction: keyof VssueAPI.Reactions
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
+    reaction: keyof VssueAPI.Reactions;
   }): Promise<boolean> {
-    await this.$http.post(`graphql`, {
-      variables: {
-        commentId,
-        content: mapReactionName(reaction),
-      },
-      query: `\
+    await this.$http.post(
+      `graphql`,
+      {
+        variables: {
+          commentId,
+          content: mapReactionName(reaction),
+        },
+        query: `\
 mutation postCommentReaction(
   $commentId: ID!,
   $content: ReactionContent!,
@@ -773,51 +801,53 @@ mutation postCommentReaction(
     }
   }
 }`,
-    }, {
-      headers: { 'Authorization': `token ${accessToken}` },
-    })
-    return true
+      },
+      {
+        headers: { Authorization: `token ${accessToken}` },
+      }
+    );
+    return true;
   }
 
-  private _getQueryParams ({
+  private _getQueryParams({
     page = this._pageInfo.page,
     sort = this._pageInfo.sort,
   }: {
-    page?: number
-    sort?: string | null
+    page?: number;
+    sort?: string | null;
   } = {}): {
-    firstOrLast: string
-    afterOrBefore: string | null
-    cursor: string | null
+    firstOrLast: string;
+    afterOrBefore: string | null;
+    cursor: string | null;
   } {
-    let firstOrLast: string
-    let afterOrBefore: string | null
-    let cursor: string | null
+    let firstOrLast: string;
+    let afterOrBefore: string | null;
+    let cursor: string | null;
 
     if (page === 1) {
-      firstOrLast = (sort === 'asc' ? 'first' : 'last')
-      afterOrBefore = null
-      cursor = null
+      firstOrLast = sort === 'asc' ? 'first' : 'last';
+      afterOrBefore = null;
+      cursor = null;
     } else {
       if (sort === 'asc') {
         if (page > this._pageInfo.page) {
-          firstOrLast = 'first'
-          afterOrBefore = 'after'
-          cursor = this._pageInfo.endCursor!
+          firstOrLast = 'first';
+          afterOrBefore = 'after';
+          cursor = this._pageInfo.endCursor!;
         } else {
-          firstOrLast = 'last'
-          afterOrBefore = 'before'
-          cursor = this._pageInfo.startCursor!
+          firstOrLast = 'last';
+          afterOrBefore = 'before';
+          cursor = this._pageInfo.startCursor!;
         }
       } else {
         if (page > this._pageInfo.page) {
-          firstOrLast = 'last'
-          afterOrBefore = 'before'
-          cursor = this._pageInfo.startCursor!
+          firstOrLast = 'last';
+          afterOrBefore = 'before';
+          cursor = this._pageInfo.startCursor!;
         } else {
-          firstOrLast = 'first'
-          afterOrBefore = 'after'
-          cursor = this._pageInfo.endCursor!
+          firstOrLast = 'first';
+          afterOrBefore = 'after';
+          cursor = this._pageInfo.endCursor!;
         }
       }
     }
@@ -825,6 +855,6 @@ mutation postCommentReaction(
       firstOrLast,
       afterOrBefore,
       cursor,
-    }
+    };
   }
 }

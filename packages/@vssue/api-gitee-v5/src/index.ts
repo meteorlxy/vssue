@@ -1,22 +1,10 @@
-import { VssueAPI } from 'vssue'
+import { VssueAPI } from 'vssue';
 
-import axios, {
-  AxiosInstance,
-  AxiosRequestConfig,
-} from 'axios'
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-import {
-  buildURL,
-  concatURL,
-  getCleanURL,
-  parseQuery,
-} from '@vssue/utils'
+import { buildURL, concatURL, getCleanURL, parseQuery } from '@vssue/utils';
 
-import {
-  normalizeUser,
-  normalizeIssue,
-  normalizeComment,
-} from './utils'
+import { normalizeUser, normalizeIssue, normalizeComment } from './utils';
 
 /**
  * Gitee REST API v5
@@ -25,17 +13,17 @@ import {
  * @see https://gitee.com/api/v5/oauth_doc
  */
 export default class GiteeV5 implements VssueAPI.Instance {
-  baseURL: string
-  owner: string
-  repo: string
-  labels: Array<string>
-  clientId: string
-  clientSecret: string
-  state: string
-  proxy: string | ((url: string) => string)
-  $http: AxiosInstance
+  baseURL: string;
+  owner: string;
+  repo: string;
+  labels: Array<string>;
+  clientId: string;
+  clientSecret: string;
+  state: string;
+  proxy: string | ((url: string) => string);
+  $http: AxiosInstance;
 
-  constructor ({
+  constructor({
     baseURL = 'https://gitee.com',
     owner,
     repo,
@@ -47,34 +35,37 @@ export default class GiteeV5 implements VssueAPI.Instance {
   }: VssueAPI.Options) {
     /* istanbul ignore if */
     if (typeof clientSecret === 'undefined' || typeof proxy === 'undefined') {
-      throw new Error('clientSecret and proxy is required for Gitee V5')
+      throw new Error('clientSecret and proxy is required for Gitee V5');
     }
-    this.baseURL = baseURL
-    this.owner = owner
-    this.repo = repo
-    this.labels = labels
+    this.baseURL = baseURL;
+    this.owner = owner;
+    this.repo = repo;
+    this.labels = labels;
 
-    this.clientId = clientId
-    this.clientSecret = clientSecret
-    this.state = state
-    this.proxy = proxy
+    this.clientId = clientId;
+    this.clientSecret = clientSecret;
+    this.state = state;
+    this.proxy = proxy;
 
     this.$http = axios.create({
       baseURL: concatURL(baseURL, 'api/v5'),
-    })
+    });
 
-    this.$http.interceptors.response.use(response => response, error => {
-      if (error.response.data && error.response.data.message) {
-        error.message = error.response.data.message
+    this.$http.interceptors.response.use(
+      response => response,
+      error => {
+        if (error.response.data && error.response.data.message) {
+          error.message = error.response.data.message;
+        }
+        return Promise.reject(error);
       }
-      return Promise.reject(error)
-    })
+    );
   }
 
   /**
    * The platform api info
    */
-  get platform (): VssueAPI.Platform {
+  get platform(): VssueAPI.Platform {
     return {
       name: 'Gitee',
       link: this.baseURL,
@@ -83,7 +74,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
         reactable: false,
         sortable: false,
       },
-    }
+    };
   }
 
   /**
@@ -91,14 +82,17 @@ export default class GiteeV5 implements VssueAPI.Instance {
    *
    * @see https://gitee.com/api/v5/oauth_doc
    */
-  redirectAuth (): void {
-    window.location.href = buildURL(concatURL(this.baseURL, 'oauth/authorize'), {
-      client_id: this.clientId,
-      redirect_uri: window.location.href,
-      scope: 'user_info issues notes',
-      response_type: 'code',
-      state: this.state,
-    })
+  redirectAuth(): void {
+    window.location.href = buildURL(
+      concatURL(this.baseURL, 'oauth/authorize'),
+      {
+        client_id: this.clientId,
+        redirect_uri: window.location.href,
+        scope: 'user_info issues notes',
+        response_type: 'code',
+        state: this.state,
+      }
+    );
   }
 
   /**
@@ -111,21 +105,23 @@ export default class GiteeV5 implements VssueAPI.Instance {
    * @remarks
    * If the `code` and `state` exist in the query, and the `state` matches, remove them from query, and try to get the access token.
    */
-  async handleAuth (): Promise<VssueAPI.AccessToken> {
-    const query = parseQuery(window.location.search)
+  async handleAuth(): Promise<VssueAPI.AccessToken> {
+    const query = parseQuery(window.location.search);
     if (query.code) {
       if (query.state !== this.state) {
-        return null
+        return null;
       }
-      const code = query.code
-      delete query.code
-      delete query.state
-      const replaceURL = buildURL(getCleanURL(window.location.href), query) + window.location.hash
-      window.history.replaceState(null, '', replaceURL)
-      const accessToken = await this.getAccessToken({ code })
-      return accessToken
+      const code = query.code;
+      delete query.code;
+      delete query.state;
+      const replaceURL =
+        buildURL(getCleanURL(window.location.href), query) +
+        window.location.hash;
+      window.history.replaceState(null, '', replaceURL);
+      const accessToken = await this.getAccessToken({ code });
+      return accessToken;
     }
-    return null
+    return null;
   }
 
   /**
@@ -137,23 +133,18 @@ export default class GiteeV5 implements VssueAPI.Instance {
    *
    * @see https://gitee.com/api/v5/oauth_doc
    */
-  async getAccessToken ({
-    code,
-  }: {
-    code: string
-  }): Promise<string> {
-    const originalURL = concatURL(this.baseURL, 'oauth/token')
-    const proxyURL = typeof this.proxy === 'function'
-      ? this.proxy(originalURL)
-      : this.proxy
+  async getAccessToken({ code }: { code: string }): Promise<string> {
+    const originalURL = concatURL(this.baseURL, 'oauth/token');
+    const proxyURL =
+      typeof this.proxy === 'function' ? this.proxy(originalURL) : this.proxy;
     const { data } = await this.$http.post(proxyURL, {
       client_id: this.clientId,
       client_secret: this.clientSecret,
       code,
       grant_type: 'authorization_code',
       redirect_uri: window.location.href,
-    })
-    return data.access_token
+    });
+    return data.access_token;
   }
 
   /**
@@ -165,15 +156,15 @@ export default class GiteeV5 implements VssueAPI.Instance {
    *
    * @see https://gitee.com/api/v5/swagger#/getV5User
    */
-  async getUser ({
+  async getUser({
     accessToken,
   }: {
-    accessToken: VssueAPI.AccessToken
+    accessToken: VssueAPI.AccessToken;
   }): Promise<VssueAPI.User> {
     const { data } = await this.$http.get('user', {
       params: { access_token: accessToken },
-    })
-    return normalizeUser(data)
+    });
+    return normalizeUser(data);
   }
 
   /**
@@ -189,30 +180,33 @@ export default class GiteeV5 implements VssueAPI.Instance {
    * @see https://gitee.com/api/v5/swagger#/getV5ReposOwnerRepoIssuesNumber
    * @see https://gitee.com/api/v5/swagger#/getV5SearchIssues
    */
-  async getIssue ({
+  async getIssue({
     accessToken,
     issueId,
     issueTitle,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId?: string | number
-    issueTitle?: string
+    accessToken: VssueAPI.AccessToken;
+    issueId?: string | number;
+    issueTitle?: string;
   }): Promise<VssueAPI.Issue | null> {
-    const options: AxiosRequestConfig = { params: {} }
+    const options: AxiosRequestConfig = { params: {} };
 
     if (accessToken) {
-      options.params.access_token = accessToken
+      options.params.access_token = accessToken;
     }
 
     if (issueId) {
       try {
-        const { data } = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}`, options)
-        return normalizeIssue(data)
+        const { data } = await this.$http.get(
+          `repos/${this.owner}/${this.repo}/issues/${issueId}`,
+          options
+        );
+        return normalizeIssue(data);
       } catch (e) {
         if (e.response && e.response.status === 404) {
-          return null
+          return null;
         } else {
-          throw e
+          throw e;
         }
       }
     } else {
@@ -220,10 +214,12 @@ export default class GiteeV5 implements VssueAPI.Instance {
         q: issueTitle,
         repo: `${this.owner}/${this.repo}`,
         per_page: 1,
-      })
-      const { data } = await this.$http.get(`search/issues`, options)
-      const issue = data.map(normalizeIssue).find(item => item.title === issueTitle)
-      return issue || null
+      });
+      const { data } = await this.$http.get(`search/issues`, options);
+      const issue = data
+        .map(normalizeIssue)
+        .find(item => item.title === issueTitle);
+      return issue || null;
     }
   }
 
@@ -238,14 +234,14 @@ export default class GiteeV5 implements VssueAPI.Instance {
    *
    * @see https://gitee.com/api/v5/swagger#/postV5ReposOwnerIssues
    */
-  async postIssue ({
+  async postIssue({
     accessToken,
     title,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    title: string
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    title: string;
+    content: string;
   }): Promise<VssueAPI.Issue> {
     const { data } = await this.$http.post(`repos/${this.owner}/issues`, {
       access_token: accessToken,
@@ -253,8 +249,8 @@ export default class GiteeV5 implements VssueAPI.Instance {
       title,
       body: content,
       labels: this.labels.join(','),
-    })
-    return normalizeIssue(data)
+    });
+    return normalizeIssue(data);
   }
 
   /**
@@ -271,45 +267,44 @@ export default class GiteeV5 implements VssueAPI.Instance {
    * @remarks
    * Gitee V3 does not support sort for issue comments now.
    */
-  async getComments ({
+  async getComments({
     accessToken,
     issueId,
-    query: {
-      page = 1,
-      perPage = 10,
-      sort = 'desc',
-    } = {},
+    query: { page = 1, perPage = 10 /*, sort = 'desc' */ } = {},
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    query?: Partial<VssueAPI.Query>
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    query?: Partial<VssueAPI.Query>;
   }): Promise<VssueAPI.Comments> {
     const options: AxiosRequestConfig = {
       params: {
         // pagination
-        'page': page,
-        'per_page': perPage,
+        page: page,
+        per_page: perPage,
         // 'sort': 'created',
         // 'direction': sort,
       },
       headers: {
         Accept: ['application/vnd.gitee.html+json'],
       },
-    }
+    };
     if (accessToken) {
-      options.params.access_token = accessToken
+      options.params.access_token = accessToken;
     }
 
-    const response = await this.$http.get(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, options)
+    const response = await this.$http.get(
+      `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
+      options
+    );
 
-    const count = Number(response.headers['total_count'])
+    const count = Number(response.headers.total_count);
 
     return {
       count: count,
       page: page,
       perPage: perPage,
       data: response.data.map(normalizeComment),
-    }
+    };
   }
 
   /**
@@ -323,24 +318,28 @@ export default class GiteeV5 implements VssueAPI.Instance {
    *
    * @see https://gitee.com/api/v5/swagger#/postV5ReposOwnerRepoIssuesNumberComments
    */
-  async postComment ({
+  async postComment({
     accessToken,
     issueId,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(`repos/${this.owner}/${this.repo}/issues/${issueId}/comments`, {
-      body: content,
-      access_token: accessToken,
-    }, {
-      headers: {
-        Accept: ['application/vnd.gitee.html+json'],
+    const { data } = await this.$http.post(
+      `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
+      {
+        body: content,
+        access_token: accessToken,
       },
-    })
-    return normalizeComment(data)
+      {
+        headers: {
+          Accept: ['application/vnd.gitee.html+json'],
+        },
+      }
+    );
+    return normalizeComment(data);
   }
 
   /**
@@ -354,25 +353,29 @@ export default class GiteeV5 implements VssueAPI.Instance {
    *
    * @see https://gitee.com/api/v5/swagger#/patchV5ReposOwnerRepoIssuesCommentsId
    */
-  async putComment ({
+  async putComment({
     accessToken,
     commentId,
     content,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
-    content: string
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
+    content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.patch(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}`, {
-      body: content,
-      access_token: accessToken,
-    }, {
-      headers: {
-        Accept: ['application/vnd.gitee.html+json'],
+    const { data } = await this.$http.patch(
+      `repos/${this.owner}/${this.repo}/issues/comments/${commentId}`,
+      {
+        body: content,
+        access_token: accessToken,
       },
-    })
-    return normalizeComment(data)
+      {
+        headers: {
+          Accept: ['application/vnd.gitee.html+json'],
+        },
+      }
+    );
+    return normalizeComment(data);
   }
 
   /**
@@ -385,31 +388,34 @@ export default class GiteeV5 implements VssueAPI.Instance {
    *
    * @see https://developer.github.com/v3/issues/comments/#delete-a-comment
    */
-  async deleteComment ({
+  async deleteComment({
     accessToken,
     commentId,
   }: {
-    accessToken: VssueAPI.AccessToken
-    issueId: string | number
-    commentId: string | number
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
   }): Promise<boolean> {
-    const { status } = await this.$http.delete(`repos/${this.owner}/${this.repo}/issues/comments/${commentId}`, {
-      params: { access_token: accessToken },
-    })
-    return status === 204
+    const { status } = await this.$http.delete(
+      `repos/${this.owner}/${this.repo}/issues/comments/${commentId}`,
+      {
+        params: { access_token: accessToken },
+      }
+    );
+    return status === 204;
   }
 
   /**
    * Gitee does not support reactions now
    */
-  async getCommentReactions (options): Promise<VssueAPI.Reactions> {
-    throw new Error('501 Not Implemented')
+  async getCommentReactions(options): Promise<VssueAPI.Reactions> {
+    throw new Error('501 Not Implemented');
   }
 
   /**
    * Gitee does not support reactions now
    */
-  async postCommentReaction (options): Promise<boolean> {
-    throw new Error('501 Not Implemented')
+  async postCommentReaction(options): Promise<boolean> {
+    throw new Error('501 Not Implemented');
   }
 }

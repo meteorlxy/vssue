@@ -1,5 +1,5 @@
 <script lang="ts">
-import Vue, { VueConstructor } from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   name: 'VssueIcon',
@@ -19,15 +19,12 @@ export default Vue.extend({
     },
   },
 
-  render (h, { props, data }) {
+  render(h, { props, data }) {
     return h(
       'svg',
       {
         ...data,
-        'class': [
-          'vssue-icon',
-          `vssue-icon-${props.name}`,
-        ],
+        class: ['vssue-icon', `vssue-icon-${props.name}`],
         attrs: {
           'aria-hidden': 'true',
         },
@@ -39,8 +36,8 @@ export default Vue.extend({
             'xlink:href': `#vssue-icon-${props.name}`,
           },
         }),
-      ],
-    )
+      ]
+    );
   },
-})
+});
 </script>

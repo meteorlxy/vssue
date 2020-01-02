@@ -8,12 +8,8 @@
   >
     <!-- avatar -->
     <div class="vssue-comment-avatar">
-      <a
-        :href="author.homepage"
-        :title="author.username"
-        target="_blank"
-      >
-        <img :src="author.avatar">
+      <a :href="author.homepage" :title="author.username" target="_blank">
+        <img :src="author.avatar" />
       </a>
     </div>
 
@@ -23,11 +19,7 @@
         <div class="vssue-comment-header">
           <!-- author - username - link to profile page -->
           <span class="vssue-comment-author">
-            <a
-              :href="author.homepage"
-              :title="author.username"
-              target="_blank"
-            >
+            <a :href="author.homepage" :title="author.username" target="_blank">
               {{ author.username }}
             </a>
           </span>
@@ -41,44 +33,47 @@
         <!-- comment content - html string - we trust platform api so use v-html -->
         <div class="vssue-comment-main">
           <textarea
-            ref="input"
             v-if="editMode"
+            ref="input"
+            v-model="editContent"
             class="vssue-edit-comment-input"
             :rows="editInputRows"
-            v-model="editContent"
             @keyup.enter.ctrl="putComment()"
           />
-          <article
-            v-else
-            class="markdown-body"
-            v-html="content"
-          />
+
+          <!-- eslint-disable vue/no-v-html -->
+          <article v-else class="markdown-body" v-html="content" />
+          <!-- eslint-enable vue/no-v-html -->
         </div>
 
         <div class="vssue-comment-footer">
           <!-- edit mode hint -->
-          <span
-            v-if="editMode"
-            class="vssue-comment-hint"
-          >
+          <span v-if="editMode" class="vssue-comment-hint">
             {{ vssue.$t('editMode') }}
           </span>
 
           <!-- reactions -->
-          <span
-            v-if="showReactions"
-            class="vssue-comment-reactions"
-          >
+          <span v-if="showReactions" class="vssue-comment-reactions">
             <span
               v-for="reaction in reactionKeys"
               :key="reaction"
               class="vssue-comment-reaction"
-              :title="vssue.$t(creatingReactions.includes(reaction) ? 'loading' : reaction)"
+              :title="
+                vssue.$t(
+                  creatingReactions.includes(reaction) ? 'loading' : reaction
+                )
+              "
               @click="postReaction({ reaction: reaction })"
             >
               <VssueIcon
-                :name="creatingReactions.includes(reaction) ? 'loading' : reaction"
-                :title="vssue.$t(creatingReactions.includes(reaction) ? 'loading' : reaction)"
+                :name="
+                  creatingReactions.includes(reaction) ? 'loading' : reaction
+                "
+                :title="
+                  vssue.$t(
+                    creatingReactions.includes(reaction) ? 'loading' : reaction
+                  )
+                "
               />
 
               <span class="vssue-comment-reaction-number">
@@ -120,10 +115,7 @@
               class="vssue-comment-operation"
               @click="enterEdit()"
             >
-              <VssueIcon
-                name="edit"
-                :title="vssue.$t('edit')"
-              />
+              <VssueIcon name="edit" :title="vssue.$t('edit')" />
             </span>
 
             <span
@@ -143,10 +135,7 @@
               class="vssue-comment-operation"
               @click="vssue.$emit('reply-comment', comment)"
             >
-              <VssueIcon
-                name="reply"
-                :title="vssue.$t('reply')"
-              />
+              <VssueIcon name="reply" :title="vssue.$t('reply')" />
             </span>
           </span>
         </div>
@@ -156,10 +145,10 @@
 </template>
 
 <script lang="ts">
-import { Vue, Component, Prop, Inject } from 'vue-property-decorator'
-import { VssueAPI, Vssue } from 'vssue'
-import { formatDateTime } from '@vssue/utils'
-import VssueIcon from './VssueIcon.vue'
+import { Vue, Component, Prop, Inject } from 'vue-property-decorator';
+import { VssueAPI, Vssue } from 'vssue';
+import { formatDateTime } from '@vssue/utils';
+import VssueIcon from './VssueIcon.vue';
 
 @Component({
   components: {
@@ -170,155 +159,189 @@ export default class VssueComment extends Vue {
   @Prop({
     type: Object,
     required: true,
-  }) comment!: VssueAPI.Comment
+  })
+  comment!: VssueAPI.Comment;
 
-  @Inject() vssue!: Vssue.Store
+  @Inject() vssue!: Vssue.Store;
 
-  editMode: boolean = false
-  editContent: string = this.comment.contentRaw
+  editMode = false;
+  editContent: string = this.comment.contentRaw;
 
-  creatingReactions: Array<keyof VssueAPI.Reactions> = []
-  isPutingComment: boolean = false
-  isDeletingComment: boolean = false
+  creatingReactions: Array<keyof VssueAPI.Reactions> = [];
+  isPutingComment = false;
+  isDeletingComment = false;
 
-  get currentUser (): string | null {
-    return this.vssue.user ? this.vssue.user.username : null
+  get currentUser(): string | null {
+    return this.vssue.user ? this.vssue.user.username : null;
   }
 
-  get content (): string {
-    return this.comment.content
+  get content(): string {
+    return this.comment.content;
   }
 
-  get author (): VssueAPI.User {
-    return this.comment.author
+  get author(): VssueAPI.User {
+    return this.comment.author;
   }
 
-  get createdAt (): string {
-    return formatDateTime(this.comment.createdAt)
+  get createdAt(): string {
+    return formatDateTime(this.comment.createdAt);
   }
 
-  get updatedAt (): string {
-    return formatDateTime(this.comment.updatedAt)
+  get updatedAt(): string {
+    return formatDateTime(this.comment.updatedAt);
   }
 
-  get showReactions (): boolean {
-    return Boolean(this.vssue.API && this.vssue.API.platform.meta.reactable && this.comment.reactions && !this.editMode)
+  get showReactions(): boolean {
+    return Boolean(
+      this.vssue.API &&
+        this.vssue.API.platform.meta.reactable &&
+        this.comment.reactions &&
+        !this.editMode
+    );
   }
 
-  get reactionKeys (): Array<keyof VssueAPI.Reactions> {
-    return ['heart', 'like', 'unlike']
+  get reactionKeys(): Array<keyof VssueAPI.Reactions> {
+    return ['heart', 'like', 'unlike'];
   }
 
-  get editContentRows (): number {
-    return this.editContent.split('\n').length - 1
+  get editContentRows(): number {
+    return this.editContent.split('\n').length - 1;
   }
 
-  get editInputRows (): number {
-    return this.editContentRows < 3 ? 5 : this.editContentRows + 2
+  get editInputRows(): number {
+    return this.editContentRows < 3 ? 5 : this.editContentRows + 2;
   }
 
-  async postReaction ({
+  async postReaction({
     reaction,
   }: {
-    reaction: keyof VssueAPI.Reactions
+    reaction: keyof VssueAPI.Reactions;
   }): Promise<void> {
     try {
-      if (this.creatingReactions.includes(reaction)) return
+      if (this.creatingReactions.includes(reaction)) return;
 
-      this.creatingReactions.push(reaction)
+      this.creatingReactions.push(reaction);
 
       const success = await this.vssue.postCommentReaction({
         commentId: this.comment.id,
         reaction,
-      })
+      });
 
       if (!success) {
-        this.vssue.$emit('error', new Error(this.vssue.$t('reactionGiven', { reaction: this.vssue.$t(reaction) }) as string))
+        this.vssue.$emit(
+          'error',
+          new Error(
+            this.vssue.$t('reactionGiven', {
+              reaction: this.vssue.$t(reaction),
+            }) as string
+          )
+        );
       }
 
       // always refresh reactions even already given
       const reactions = await this.vssue.getCommentReactions({
         commentId: this.comment.id,
-      })
+      });
       if (reactions) {
-        this.comment.reactions = reactions
+        this.comment.reactions = reactions;
       }
     } finally {
-      this.creatingReactions.splice(this.creatingReactions.findIndex(item => item === reaction), 1)
+      this.creatingReactions.splice(
+        this.creatingReactions.findIndex(item => item === reaction),
+        1
+      );
     }
   }
 
-  enterEdit (this: any): void {
-    this.editMode = true
+  enterEdit(): void {
+    this.editMode = true;
     this.$nextTick(() => {
-      this.$refs.input.focus()
-    })
+      ((this.$refs.input as unknown) as HTMLInputElement).focus();
+    });
   }
 
-  resetEdit (): void {
-    this.editMode = false
-    this.editContent = this.comment.contentRaw
+  resetEdit(): void {
+    this.editMode = false;
+    this.editContent = this.comment.contentRaw;
   }
 
-  async putComment (): Promise<void> {
+  async putComment(): Promise<void> {
     try {
-      if (this.vssue.isPending) return
+      if (this.vssue.isPending) return;
 
       if (this.editContent !== this.comment.contentRaw) {
-        this.isPutingComment = true
-        this.vssue.isUpdatingComment = true
+        this.isPutingComment = true;
+        this.vssue.isUpdatingComment = true;
 
         const comment = await this.vssue.putComment({
           commentId: this.comment.id,
           content: this.editContent,
-        })
+        });
 
         if (comment) {
-          this.vssue.comments!.data.splice(this.vssue.comments!.data.findIndex(item => item.id === this.comment.id), 1, comment)
+          this.vssue.comments!.data.splice(
+            this.vssue.comments!.data.findIndex(
+              item => item.id === this.comment.id
+            ),
+            1,
+            comment
+          );
         }
       }
 
-      this.editMode = false
+      this.editMode = false;
     } finally {
-      this.isPutingComment = false
-      this.vssue.isUpdatingComment = false
+      this.isPutingComment = false;
+      this.vssue.isUpdatingComment = false;
     }
   }
 
-  async deleteComment (): Promise<void> {
+  async deleteComment(): Promise<void> {
     try {
-      if (this.vssue.isPending) return
+      if (this.vssue.isPending) return;
 
-      if (!window.confirm(this.vssue.$t('deleteConfirm') as string)) return
+      if (!window.confirm(this.vssue.$t('deleteConfirm') as string)) return;
 
-      this.isDeletingComment = true
-      this.vssue.isUpdatingComment = true
+      this.isDeletingComment = true;
+      this.vssue.isUpdatingComment = true;
 
       const success = await this.vssue.deleteComment({
         commentId: this.comment.id,
-      })
+      });
 
       if (success) {
         // decrease count immediately
-        this.vssue.comments!.count -= 1
+        this.vssue.comments!.count -= 1;
 
         // if there are more than one comment on this page, remove the deleted comment immediately
         if (this.vssue.comments!.data.length > 1) {
-          this.vssue.comments!.data.splice(this.vssue.comments!.data.findIndex(item => item.id === this.comment.id), 1)
+          this.vssue.comments!.data.splice(
+            this.vssue.comments!.data.findIndex(
+              item => item.id === this.comment.id
+            ),
+            1
+          );
         }
 
         // if the page count should be decreased, change the query param to trigger comments reload
-        if (this.vssue.query.page > 1 && this.vssue.query.page > Math.ceil(this.vssue.comments!.count / this.vssue.query.perPage)) {
-          this.vssue.query.page -= 1
+        if (
+          this.vssue.query.page > 1 &&
+          this.vssue.query.page >
+            Math.ceil(this.vssue.comments!.count / this.vssue.query.perPage)
+        ) {
+          this.vssue.query.page -= 1;
         } else {
-          await this.vssue.getComments()
+          await this.vssue.getComments();
         }
       } else {
-        this.vssue.$emit('error', new Error(this.vssue.$t('deleteFailed') as string))
+        this.vssue.$emit(
+          'error',
+          new Error(this.vssue.$t('deleteFailed') as string)
+        );
       }
     } finally {
-      this.isDeletingComment = false
-      this.vssue.isUpdatingComment = false
+      this.isDeletingComment = false;
+      this.vssue.isUpdatingComment = false;
     }
   }
 }
