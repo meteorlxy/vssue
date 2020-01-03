@@ -1,10 +1,10 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v1.3.0
+ * @version v1.4.0
  * @link https://vssue.js.org
  * @license MIT
- * @copyright 2018-2019 meteorlxy
+ * @copyright 2018-2020 meteorlxy
  */
 
 import { Prop, Inject, Component, Vue as Vue$1, Watch, Provide } from 'vue-property-decorator';
@@ -38,90 +38,83 @@ var script = Vue.extend({
     name: 'Iconfont',
 });
 
-function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier
-/* server only */
-, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
-  if (typeof shadowMode !== 'boolean') {
-    createInjectorSSR = createInjector;
-    createInjector = shadowMode;
-    shadowMode = false;
-  } // Vue.extend constructor export interop.
-
-
-  var options = typeof script === 'function' ? script.options : script; // render functions
-
-  if (template && template.render) {
-    options.render = template.render;
-    options.staticRenderFns = template.staticRenderFns;
-    options._compiled = true; // functional template
-
-    if (isFunctionalTemplate) {
-      options.functional = true;
+function normalizeComponent(template, style, script, scopeId, isFunctionalTemplate, moduleIdentifier /* server only */, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
+    if (typeof shadowMode !== 'boolean') {
+        createInjectorSSR = createInjector;
+        createInjector = shadowMode;
+        shadowMode = false;
     }
-  } // scopedId
-
-
-  if (scopeId) {
-    options._scopeId = scopeId;
-  }
-
-  var hook;
-
-  if (moduleIdentifier) {
-    // server build
-    hook = function hook(context) {
-      // 2.3 injection
-      context = context || // cached call
-      this.$vnode && this.$vnode.ssrContext || // stateful
-      this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext; // functional
-      // 2.2 with runInNewContext: true
-
-      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
-        context = __VUE_SSR_CONTEXT__;
-      } // inject component styles
-
-
-      if (style) {
-        style.call(this, createInjectorSSR(context));
-      } // register component module identifier for async chunk inference
-
-
-      if (context && context._registeredComponents) {
-        context._registeredComponents.add(moduleIdentifier);
-      }
-    }; // used by ssr in case component is cached and beforeCreate
-    // never gets called
-
-
-    options._ssrRegister = hook;
-  } else if (style) {
-    hook = shadowMode ? function () {
-      style.call(this, createInjectorShadow(this.$root.$options.shadowRoot));
-    } : function (context) {
-      style.call(this, createInjector(context));
-    };
-  }
-
-  if (hook) {
-    if (options.functional) {
-      // register for functional component in vue file
-      var originalRender = options.render;
-
-      options.render = function renderWithStyleInjection(h, context) {
-        hook.call(context);
-        return originalRender(h, context);
-      };
-    } else {
-      // inject component registration as beforeCreate hook
-      var existing = options.beforeCreate;
-      options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+    // Vue.extend constructor export interop.
+    const options = typeof script === 'function' ? script.options : script;
+    // render functions
+    if (template && template.render) {
+        options.render = template.render;
+        options.staticRenderFns = template.staticRenderFns;
+        options._compiled = true;
+        // functional template
+        if (isFunctionalTemplate) {
+            options.functional = true;
+        }
     }
-  }
-
-  return script;
+    // scopedId
+    if (scopeId) {
+        options._scopeId = scopeId;
+    }
+    let hook;
+    if (moduleIdentifier) {
+        // server build
+        hook = function (context) {
+            // 2.3 injection
+            context =
+                context || // cached call
+                    (this.$vnode && this.$vnode.ssrContext) || // stateful
+                    (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext); // functional
+            // 2.2 with runInNewContext: true
+            if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+                context = __VUE_SSR_CONTEXT__;
+            }
+            // inject component styles
+            if (style) {
+                style.call(this, createInjectorSSR(context));
+            }
+            // register component module identifier for async chunk inference
+            if (context && context._registeredComponents) {
+                context._registeredComponents.add(moduleIdentifier);
+            }
+        };
+        // used by ssr in case component is cached and beforeCreate
+        // never gets called
+        options._ssrRegister = hook;
+    }
+    else if (style) {
+        hook = shadowMode
+            ? function (context) {
+                style.call(this, createInjectorShadow(context, this.$root.$options.shadowRoot));
+            }
+            : function (context) {
+                style.call(this, createInjector(context));
+            };
+    }
+    if (hook) {
+        if (options.functional) {
+            // register for functional component in vue file
+            const originalRender = options.render;
+            options.render = function renderWithStyleInjection(h, context) {
+                hook.call(context);
+                return originalRender(h, context);
+            };
+        }
+        else {
+            // inject component registration as beforeCreate hook
+            const existing = options.beforeCreate;
+            options.beforeCreate = existing ? [].concat(existing, hook) : [hook];
+        }
+    }
+    return script;
 }
 
-var normalizeComponent_1 = normalizeComponent;
+const isOldIE = typeof navigator !== 'undefined' &&
+    /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
 
 /* script */
 const __vue_script__ = script;
@@ -142,15 +135,19 @@ var __vue_staticRenderFns__ = [];
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var Iconfont = normalizeComponent_1(
+  const __vue_component__ = normalizeComponent(
     { render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ },
     __vue_inject_styles__,
     __vue_script__,
     __vue_scope_id__,
     __vue_is_functional_template__,
     __vue_module_identifier__,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -193,15 +190,19 @@ const __vue_script__$1 = script$1;
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var TransitionFade = normalizeComponent_1(
+  const __vue_component__$1 = normalizeComponent(
     {},
     __vue_inject_styles__$1,
     __vue_script__$1,
     __vue_scope_id__$1,
     __vue_is_functional_template__$1,
     __vue_module_identifier__$1,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -221,10 +222,7 @@ var script$2 = Vue.extend({
         },
     },
     render(h, { props, data }) {
-        return h('svg', Object.assign({}, data, { 'class': [
-                'vssue-icon',
-                `vssue-icon-${props.name}`,
-            ], attrs: {
+        return h('svg', Object.assign(Object.assign({}, data), { class: ['vssue-icon', `vssue-icon-${props.name}`], attrs: {
                 'aria-hidden': 'true',
             } }), [
             h('title', props.title),
@@ -254,15 +252,19 @@ const __vue_script__$2 = script$2;
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssueIcon = normalizeComponent_1(
+  const __vue_component__$2 = normalizeComponent(
     {},
     __vue_inject_styles__$2,
     __vue_script__$2,
     __vue_scope_id__$2,
     __vue_is_functional_template__$2,
     __vue_module_identifier__$2,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -292,7 +294,10 @@ let VssueComment = class VssueComment extends Vue$1 {
         return formatDateTime(this.comment.updatedAt);
     }
     get showReactions() {
-        return Boolean(this.vssue.API && this.vssue.API.platform.meta.reactable && this.comment.reactions && !this.editMode);
+        return Boolean(this.vssue.API &&
+            this.vssue.API.platform.meta.reactable &&
+            this.comment.reactions &&
+            !this.editMode);
     }
     get reactionKeys() {
         return ['heart', 'like', 'unlike'];
@@ -313,7 +318,9 @@ let VssueComment = class VssueComment extends Vue$1 {
                 reaction,
             });
             if (!success) {
-                this.vssue.$emit('error', new Error(this.vssue.$t('reactionGiven', { reaction: this.vssue.$t(reaction) })));
+                this.vssue.$emit('error', new Error(this.vssue.$t('reactionGiven', {
+                    reaction: this.vssue.$t(reaction),
+                })));
             }
             // always refresh reactions even already given
             const reactions = await this.vssue.getCommentReactions({
@@ -378,7 +385,9 @@ let VssueComment = class VssueComment extends Vue$1 {
                     this.vssue.comments.data.splice(this.vssue.comments.data.findIndex(item => item.id === this.comment.id), 1);
                 }
                 // if the page count should be decreased, change the query param to trigger comments reload
-                if (this.vssue.query.page > 1 && this.vssue.query.page > Math.ceil(this.vssue.comments.count / this.vssue.query.perPage)) {
+                if (this.vssue.query.page > 1 &&
+                    this.vssue.query.page >
+                        Math.ceil(this.vssue.comments.count / this.vssue.query.perPage)) {
                     this.vssue.query.page -= 1;
                 }
                 else {
@@ -407,7 +416,7 @@ __decorate([
 VssueComment = __decorate([
     Component({
         components: {
-            VssueIcon,
+            VssueIcon: __vue_component__$2,
         },
     })
 ], VssueComment);
@@ -420,7 +429,11 @@ const __vue_script__$3 = script$3;
 var __vue_render__$1 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-comment",class:{
     'vssue-comment-edit-mode': _vm.editMode,
     'vssue-comment-disabled': _vm.isDeletingComment || _vm.isPutingComment,
-  }},[_c('div',{staticClass:"vssue-comment-avatar"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_c('img',{attrs:{"src":_vm.author.avatar}})])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-body"},[_vm._t("body",[_c('div',{staticClass:"vssue-comment-header"},[_c('span',{staticClass:"vssue-comment-author"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_vm._v("\n            "+_vm._s(_vm.author.username)+"\n          ")])]),_vm._v(" "),_c('span',{staticClass:"vssue-comment-created-at"},[_vm._v("\n          "+_vm._s(_vm.createdAt)+"\n        ")])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-main"},[(_vm.editMode)?_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.editContent),expression:"editContent"}],ref:"input",staticClass:"vssue-edit-comment-input",attrs:{"rows":_vm.editInputRows},domProps:{"value":(_vm.editContent)},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }if(!$event.ctrlKey){ return null; }return _vm.putComment()},"input":function($event){if($event.target.composing){ return; }_vm.editContent=$event.target.value;}}}):_c('article',{staticClass:"markdown-body",domProps:{"innerHTML":_vm._s(_vm.content)}})]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-footer"},[(_vm.editMode)?_c('span',{staticClass:"vssue-comment-hint"},[_vm._v("\n          "+_vm._s(_vm.vssue.$t('editMode'))+"\n        ")]):_vm._e(),_vm._v(" "),(_vm.showReactions)?_c('span',{staticClass:"vssue-comment-reactions"},_vm._l((_vm.reactionKeys),function(reaction){return _c('span',{key:reaction,staticClass:"vssue-comment-reaction",attrs:{"title":_vm.vssue.$t(_vm.creatingReactions.includes(reaction) ? 'loading' : reaction)},on:{"click":function($event){return _vm.postReaction({ reaction: reaction })}}},[_c('VssueIcon',{attrs:{"name":_vm.creatingReactions.includes(reaction) ? 'loading' : reaction,"title":_vm.vssue.$t(_vm.creatingReactions.includes(reaction) ? 'loading' : reaction)}}),_vm._v(" "),_c('span',{staticClass:"vssue-comment-reaction-number"},[_vm._v("\n              "+_vm._s(_vm.comment.reactions[reaction])+"\n            ")])],1)}),0):_vm._e(),_vm._v(" "),_c('span',{staticClass:"vssue-comment-operations"},[(_vm.comment.author.username === _vm.currentUser && _vm.editMode)?_c('span',{staticClass:"vssue-comment-operation",class:{ 'vssue-comment-operation-muted': _vm.isPutingComment },attrs:{"title":_vm.vssue.$t(_vm.isPutingComment ? 'loading' : 'submit')},on:{"click":function($event){return _vm.putComment()}}},[_c('VssueIcon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isPutingComment),expression:"isPutingComment"}],attrs:{"name":"loading","title":_vm.vssue.$t('loading')}}),_vm._v("\n\n            "+_vm._s(_vm.vssue.$t('submit'))+"\n          ")],1):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser && _vm.editMode)?_c('span',{staticClass:"vssue-comment-operation vssue-comment-operation-muted",attrs:{"title":_vm.vssue.$t('cancel')},on:{"click":function($event){return _vm.resetEdit()}}},[_vm._v("\n            "+_vm._s(_vm.vssue.$t('cancel'))+"\n          ")]):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser)?_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){return _vm.enterEdit()}}},[_c('VssueIcon',{attrs:{"name":"edit","title":_vm.vssue.$t('edit')}})],1):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser || _vm.vssue.isAdmin)?_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){return _vm.deleteComment()}}},[_c('VssueIcon',{attrs:{"name":_vm.isDeletingComment ? 'loading' : 'delete',"title":_vm.vssue.$t(_vm.isDeletingComment ? 'loading' : 'delete')}})],1):_vm._e(),_vm._v(" "),_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){return _vm.vssue.$emit('reply-comment', _vm.comment)}}},[_c('VssueIcon',{attrs:{"name":"reply","title":_vm.vssue.$t('reply')}})],1)])])])],2)])};
+  }},[_c('div',{staticClass:"vssue-comment-avatar"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_c('img',{attrs:{"src":_vm.author.avatar}})])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-body"},[_vm._t("body",[_c('div',{staticClass:"vssue-comment-header"},[_c('span',{staticClass:"vssue-comment-author"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_vm._v("\n            "+_vm._s(_vm.author.username)+"\n          ")])]),_vm._v(" "),_c('span',{staticClass:"vssue-comment-created-at"},[_vm._v("\n          "+_vm._s(_vm.createdAt)+"\n        ")])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-main"},[(_vm.editMode)?_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.editContent),expression:"editContent"}],ref:"input",staticClass:"vssue-edit-comment-input",attrs:{"rows":_vm.editInputRows},domProps:{"value":(_vm.editContent)},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }if(!$event.ctrlKey){ return null; }return _vm.putComment()},"input":function($event){if($event.target.composing){ return; }_vm.editContent=$event.target.value;}}}):_c('article',{staticClass:"markdown-body",domProps:{"innerHTML":_vm._s(_vm.content)}})]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-footer"},[(_vm.editMode)?_c('span',{staticClass:"vssue-comment-hint"},[_vm._v("\n          "+_vm._s(_vm.vssue.$t('editMode'))+"\n        ")]):_vm._e(),_vm._v(" "),(_vm.showReactions)?_c('span',{staticClass:"vssue-comment-reactions"},_vm._l((_vm.reactionKeys),function(reaction){return _c('span',{key:reaction,staticClass:"vssue-comment-reaction",attrs:{"title":_vm.vssue.$t(
+                _vm.creatingReactions.includes(reaction) ? 'loading' : reaction
+              )},on:{"click":function($event){return _vm.postReaction({ reaction: reaction })}}},[_c('VssueIcon',{attrs:{"name":_vm.creatingReactions.includes(reaction) ? 'loading' : reaction,"title":_vm.vssue.$t(
+                  _vm.creatingReactions.includes(reaction) ? 'loading' : reaction
+                )}}),_vm._v(" "),_c('span',{staticClass:"vssue-comment-reaction-number"},[_vm._v("\n              "+_vm._s(_vm.comment.reactions[reaction])+"\n            ")])],1)}),0):_vm._e(),_vm._v(" "),_c('span',{staticClass:"vssue-comment-operations"},[(_vm.comment.author.username === _vm.currentUser && _vm.editMode)?_c('span',{staticClass:"vssue-comment-operation",class:{ 'vssue-comment-operation-muted': _vm.isPutingComment },attrs:{"title":_vm.vssue.$t(_vm.isPutingComment ? 'loading' : 'submit')},on:{"click":function($event){return _vm.putComment()}}},[_c('VssueIcon',{directives:[{name:"show",rawName:"v-show",value:(_vm.isPutingComment),expression:"isPutingComment"}],attrs:{"name":"loading","title":_vm.vssue.$t('loading')}}),_vm._v("\n\n            "+_vm._s(_vm.vssue.$t('submit'))+"\n          ")],1):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser && _vm.editMode)?_c('span',{staticClass:"vssue-comment-operation vssue-comment-operation-muted",attrs:{"title":_vm.vssue.$t('cancel')},on:{"click":function($event){return _vm.resetEdit()}}},[_vm._v("\n            "+_vm._s(_vm.vssue.$t('cancel'))+"\n          ")]):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser)?_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){return _vm.enterEdit()}}},[_c('VssueIcon',{attrs:{"name":"edit","title":_vm.vssue.$t('edit')}})],1):_vm._e(),_vm._v(" "),(_vm.comment.author.username === _vm.currentUser || _vm.vssue.isAdmin)?_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){return _vm.deleteComment()}}},[_c('VssueIcon',{attrs:{"name":_vm.isDeletingComment ? 'loading' : 'delete',"title":_vm.vssue.$t(_vm.isDeletingComment ? 'loading' : 'delete')}})],1):_vm._e(),_vm._v(" "),_c('span',{directives:[{name:"show",rawName:"v-show",value:(!_vm.editMode),expression:"!editMode"}],staticClass:"vssue-comment-operation",on:{"click":function($event){return _vm.vssue.$emit('reply-comment', _vm.comment)}}},[_c('VssueIcon',{attrs:{"name":"reply","title":_vm.vssue.$t('reply')}})],1)])])])],2)])};
 var __vue_staticRenderFns__$1 = [];
 
   /* style */
@@ -435,15 +448,19 @@ var __vue_staticRenderFns__$1 = [];
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssueComment$1 = normalizeComponent_1(
+  const __vue_component__$3 = normalizeComponent(
     { render: __vue_render__$1, staticRenderFns: __vue_staticRenderFns__$1 },
     __vue_inject_styles__$3,
     __vue_script__$3,
     __vue_scope_id__$3,
     __vue_is_functional_template__$3,
     __vue_module_identifier__$3,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -458,13 +475,16 @@ let VssuePagination = class VssuePagination extends Vue$1 {
     }
     get perPageOptions() {
         const perPageOptions = [5, 10, 20, 50];
-        if (!perPageOptions.includes(this.vssue.options.perPage) && this.vssue.options.perPage < 100) {
+        if (!perPageOptions.includes(this.vssue.options.perPage) &&
+            this.vssue.options.perPage < 100) {
             perPageOptions.push(this.vssue.options.perPage);
         }
         return perPageOptions.sort((a, b) => a - b);
     }
     get page() {
-        return this.vssue.query.page > this.pageCount ? this.pageCount : this.vssue.query.page;
+        return this.vssue.query.page > this.pageCount
+            ? this.pageCount
+            : this.vssue.query.page;
     }
     set page(val) {
         if (val > 0 && val <= this.pageCount) {
@@ -486,7 +506,7 @@ __decorate([
 VssuePagination = __decorate([
     Component({
         components: {
-            VssueIcon,
+            VssueIcon: __vue_component__$2,
         },
     })
 ], VssuePagination);
@@ -498,13 +518,13 @@ const __vue_script__$4 = script$4;
 /* template */
 var __vue_render__$2 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-pagination"},[_c('div',{staticClass:"vssue-pagination-per-page"},[_c('select',{directives:[{name:"model",rawName:"v-model",value:(_vm.perPage),expression:"perPage"}],staticClass:"vssue-pagination-select",attrs:{"disabled":_vm.disabled},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.perPage=$event.target.multiple ? $$selectedVal : $$selectedVal[0];}}},_vm._l((_vm.perPageOptions),function(val){return _c('option',{key:val,domProps:{"value":val}},[_vm._v("\n        "+_vm._s(val)+"\n      ")])}),0),_vm._v(" "),_c('span',[_vm._v("\n      "+_vm._s(_vm.vssue.$t('perPage'))+"\n    ")]),_vm._v(" "),(_vm.vssue.API.platform.meta.sortable)?_c('span',{class:{
         'vssue-pagination-link': true,
-        'disabled': _vm.disabled,
-      },attrs:{"title":_vm.vssue.$t('sort')},on:{"click":function($event){_vm.vssue.query.sort = (_vm.vssue.query.sort === 'asc' ? 'desc' : 'asc');}}},[_vm._v("\n      "+_vm._s(_vm.vssue.query.sort === 'asc' ? "↑" : "↓")+"\n    ")]):_vm._e()]),_vm._v(" "),_c('div',{staticClass:"vssue-pagination-page"},[_c('span',{class:{
+        disabled: _vm.disabled,
+      },attrs:{"title":_vm.vssue.$t('sort')},on:{"click":function($event){_vm.vssue.query.sort = _vm.vssue.query.sort === 'asc' ? 'desc' : 'asc';}}},[_vm._v("\n      "+_vm._s(_vm.vssue.query.sort === 'asc' ? "↑" : "↓")+"\n    ")]):_vm._e()]),_vm._v(" "),_c('div',{staticClass:"vssue-pagination-page"},[_c('span',{class:{
         'vssue-pagination-link': true,
-        'disabled': _vm.page === 1 || _vm.disabled,
+        disabled: _vm.page === 1 || _vm.disabled,
       },attrs:{"title":_vm.vssue.$t('prev')},domProps:{"textContent":_vm._s("<")},on:{"click":function($event){_vm.page -= 1;}}}),_vm._v(" "),_c('span',[_vm._v("\n      "+_vm._s(_vm.vssue.$t('page'))+"\n    ")]),_vm._v(" "),_c('select',{directives:[{name:"show",rawName:"v-show",value:(_vm.pageCount > 1),expression:"pageCount > 1"},{name:"model",rawName:"v-model",value:(_vm.page),expression:"page"}],staticClass:"vssue-pagination-select",attrs:{"disabled":_vm.disabled},on:{"change":function($event){var $$selectedVal = Array.prototype.filter.call($event.target.options,function(o){return o.selected}).map(function(o){var val = "_value" in o ? o._value : o.value;return val}); _vm.page=$event.target.multiple ? $$selectedVal : $$selectedVal[0];}}},_vm._l((_vm.pageCount),function(val){return _c('option',{key:val,domProps:{"value":val}},[_vm._v("\n        "+_vm._s(val)+"\n      ")])}),0),_vm._v(" "),_c('span',{directives:[{name:"show",rawName:"v-show",value:(_vm.pageCount < 2),expression:"pageCount < 2"}],domProps:{"textContent":_vm._s(_vm.page)}}),_vm._v(" "),_c('span',{domProps:{"textContent":_vm._s((" / " + _vm.pageCount + " "))}}),_vm._v(" "),_c('span',{class:{
         'vssue-pagination-link': true,
-        'disabled': _vm.page === _vm.pageCount || _vm.disabled,
+        disabled: _vm.page === _vm.pageCount || _vm.disabled,
       },attrs:{"title":_vm.vssue.$t('next')},domProps:{"textContent":_vm._s(">")},on:{"click":function($event){_vm.page += 1;}}})])])};
 var __vue_staticRenderFns__$2 = [];
 
@@ -520,15 +540,19 @@ var __vue_staticRenderFns__$2 = [];
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssuePagination$1 = normalizeComponent_1(
+  const __vue_component__$4 = normalizeComponent(
     { render: __vue_render__$2, staticRenderFns: __vue_staticRenderFns__$2 },
     __vue_inject_styles__$4,
     __vue_script__$4,
     __vue_scope_id__$4,
     __vue_is_functional_template__$4,
     __vue_module_identifier__$4,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -541,9 +565,9 @@ __decorate([
 VssueComments = __decorate([
     Component({
         components: {
-            TransitionFade,
-            VssueComment: VssueComment$1,
-            VssuePagination: VssuePagination$1,
+            TransitionFade: __vue_component__$1,
+            VssueComment: __vue_component__$3,
+            VssuePagination: __vue_component__$4,
         },
     })
 ], VssueComments);
@@ -568,15 +592,19 @@ var __vue_staticRenderFns__$3 = [];
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssueComments$1 = normalizeComponent_1(
+  const __vue_component__$5 = normalizeComponent(
     { render: __vue_render__$3, staticRenderFns: __vue_staticRenderFns__$3 },
     __vue_inject_styles__$5,
     __vue_script__$5,
     __vue_scope_id__$5,
     __vue_is_functional_template__$5,
     __vue_module_identifier__$5,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -592,10 +620,7 @@ var script$6 = Vue.extend({
         },
     },
     render(h, { props, data, children }) {
-        return h('button', Object.assign({}, data, { 'class': [
-                'vssue-button',
-                `vssue-button-${props.type}`,
-            ] }), children);
+        return h('button', Object.assign(Object.assign({}, data), { class: ['vssue-button', `vssue-button-${props.type}`] }), children);
     },
 });
 
@@ -616,15 +641,19 @@ const __vue_script__$6 = script$6;
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssueButton = normalizeComponent_1(
+  const __vue_component__$6 = normalizeComponent(
     {},
     __vue_inject_styles__$6,
     __vue_script__$6,
     __vue_scope_id__$6,
     __vue_is_functional_template__$6,
     __vue_module_identifier__$6,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -644,7 +673,7 @@ let VssueNewComment = class VssueNewComment extends Vue$1 {
         return this.loading || this.user === null || this.vssue.issue === null;
     }
     get isSubmitDisabled() {
-        return this.content === '' || this.vssue.isPending || this.vssue.issue === null;
+        return (this.content === '' || this.vssue.isPending || this.vssue.issue === null);
     }
     get loading() {
         return this.vssue.isCreatingComment;
@@ -656,7 +685,7 @@ let VssueNewComment = class VssueNewComment extends Vue$1 {
         return this.contentRows < 3 ? 5 : this.contentRows + 2;
     }
     created() {
-        this.vssue.$on('reply-comment', (comment) => {
+        this.vssue.$on('reply-comment', comment => {
             const quotedComment = comment.contentRaw.replace(/\n/g, '\n> ');
             const replyContent = `@${comment.author.username}\n\n> ${quotedComment}\n\n`;
             this.content = this.content.concat(replyContent);
@@ -683,8 +712,8 @@ __decorate([
 VssueNewComment = __decorate([
     Component({
         components: {
-            VssueButton,
-            VssueIcon,
+            VssueButton: __vue_component__$6,
+            VssueIcon: __vue_component__$2,
         },
     })
 ], VssueNewComment);
@@ -709,15 +738,19 @@ var __vue_staticRenderFns__$4 = [];
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssueNewComment$1 = normalizeComponent_1(
+  const __vue_component__$7 = normalizeComponent(
     { render: __vue_render__$4, staticRenderFns: __vue_staticRenderFns__$4 },
     __vue_inject_styles__$7,
     __vue_script__$7,
     __vue_scope_id__$7,
     __vue_is_functional_template__$7,
     __vue_module_identifier__$7,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -819,7 +852,7 @@ __decorate([
 VssueNotice = __decorate([
     Component({
         components: {
-            TransitionFade,
+            TransitionFade: __vue_component__$1,
         },
     })
 ], VssueNotice);
@@ -830,8 +863,8 @@ const __vue_script__$8 = script$8;
 
 /* template */
 var __vue_render__$5 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-notice"},[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.progress.show),expression:"progress.show"}],staticClass:"vssue-progress",style:({
-      'width': ((_vm.progress.percent) + "%"),
-      'transition': ("all " + (_vm.progress.speed) + "ms linear"),
+      width: ((_vm.progress.percent) + "%"),
+      transition: ("all " + (_vm.progress.speed) + "ms linear"),
     })}),_vm._v(" "),_c('TransitionFade',[_c('div',{directives:[{name:"show",rawName:"v-show",value:(_vm.alert.show),expression:"alert.show"}],staticClass:"vssue-alert",domProps:{"textContent":_vm._s(_vm.alert.message)},on:{"click":function($event){return _vm.alertHide()}}})])],1)};
 var __vue_staticRenderFns__$5 = [];
 
@@ -847,15 +880,19 @@ var __vue_staticRenderFns__$5 = [];
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssueNotice$1 = normalizeComponent_1(
+  const __vue_component__$8 = normalizeComponent(
     { render: __vue_render__$5, staticRenderFns: __vue_staticRenderFns__$5 },
     __vue_inject_styles__$8,
     __vue_script__$8,
     __vue_scope_id__$8,
     __vue_is_functional_template__$8,
     __vue_module_identifier__$8,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -904,8 +941,8 @@ __decorate([
 VssueStatus = __decorate([
     Component({
         components: {
-            TransitionFade,
-            VssueIcon,
+            TransitionFade: __vue_component__$1,
+            VssueIcon: __vue_component__$2,
         },
     })
 ], VssueStatus);
@@ -930,15 +967,19 @@ var __vue_staticRenderFns__$6 = [];
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssueStatus$1 = normalizeComponent_1(
+  const __vue_component__$9 = normalizeComponent(
     { render: __vue_render__$6, staticRenderFns: __vue_staticRenderFns__$6 },
     __vue_inject_styles__$9,
     __vue_script__$9,
     __vue_scope_id__$9,
     __vue_is_functional_template__$9,
     __vue_module_identifier__$9,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -951,12 +992,12 @@ __decorate([
 VssueBody = __decorate([
     Component({
         components: {
-            TransitionFade,
-            VssueIcon,
-            VssueComments: VssueComments$1,
-            VssueNewComment: VssueNewComment$1,
-            VssueNotice: VssueNotice$1,
-            VssueStatus: VssueStatus$1,
+            TransitionFade: __vue_component__$1,
+            VssueIcon: __vue_component__$2,
+            VssueComments: __vue_component__$5,
+            VssueNewComment: __vue_component__$7,
+            VssueNotice: __vue_component__$8,
+            VssueStatus: __vue_component__$9,
         },
     })
 ], VssueBody);
@@ -981,15 +1022,19 @@ var __vue_staticRenderFns__$7 = [];
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssueBody$1 = normalizeComponent_1(
+  const __vue_component__$a = normalizeComponent(
     { render: __vue_render__$7, staticRenderFns: __vue_staticRenderFns__$7 },
     __vue_inject_styles__$a,
     __vue_script__$a,
     __vue_scope_id__$a,
     __vue_is_functional_template__$a,
     __vue_module_identifier__$a,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -1009,8 +1054,10 @@ const __vue_script__$b = script$b;
 
 /* template */
 var __vue_render__$8 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-header"},[_c('a',{staticClass:"vssue-header-comments-count",attrs:{"href":_vm.vssue.issue ? _vm.vssue.issue.link : null,"target":"_blank"}},[_c('span',[_vm._v("\n      "+_vm._s(_vm.vssue.comments
-        ? _vm.vssue.$tc('comments', _vm.vssue.comments.count, { count: _vm.vssue.comments.count })
-        : _vm.vssue.$tc('comments', 0))+"\n    ")])]),_vm._v(" "),_c('span',{staticClass:"vssue-header-powered-by"},[_c('span',[_vm._v("Powered by")]),_vm._v(" "),(_vm.vssue.API)?_c('span',[_c('a',{attrs:{"href":_vm.vssue.API.platform.link,"target":"_blank","title":((_vm.vssue.API.platform.name) + " API " + (_vm.vssue.API.platform.version))}},[_vm._v("\n        "+_vm._s(_vm.vssue.API.platform.name)+"\n      ")]),_vm._v(" "),_c('span',[_vm._v("&")])]):_vm._e(),_vm._v(" "),_c('a',{attrs:{"href":"https://github.com/meteorlxy/vssue","target":"_blank","title":("Vssue v" + (_vm.vssue.version))}},[_vm._v("\n      Vssue\n    ")])])])};
+          ? _vm.vssue.$tc('comments', _vm.vssue.comments.count, {
+              count: _vm.vssue.comments.count,
+            })
+          : _vm.vssue.$tc('comments', 0))+"\n    ")])]),_vm._v(" "),_c('span',{staticClass:"vssue-header-powered-by"},[_c('span',[_vm._v("Powered by")]),_vm._v(" "),(_vm.vssue.API)?_c('span',[_c('a',{attrs:{"href":_vm.vssue.API.platform.link,"target":"_blank","title":((_vm.vssue.API.platform.name) + " API " + (_vm.vssue.API.platform.version))}},[_vm._v("\n        "+_vm._s(_vm.vssue.API.platform.name)+"\n      ")]),_vm._v(" "),_c('span',[_vm._v("&")])]):_vm._e(),_vm._v(" "),_c('a',{attrs:{"href":"https://github.com/meteorlxy/vssue","target":"_blank","title":("Vssue v" + (_vm.vssue.version))}},[_vm._v("\n      Vssue\n    ")])])])};
 var __vue_staticRenderFns__$8 = [];
 
   /* style */
@@ -1025,15 +1072,19 @@ var __vue_staticRenderFns__$8 = [];
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssueHeader$1 = normalizeComponent_1(
+  const __vue_component__$b = normalizeComponent(
     { render: __vue_render__$8, staticRenderFns: __vue_staticRenderFns__$8 },
     __vue_inject_styles__$b,
     __vue_script__$b,
     __vue_scope_id__$b,
     __vue_is_functional_template__$b,
     __vue_module_identifier__$b,
+    false,
+    undefined,
     undefined,
     undefined
   );
@@ -1253,22 +1304,22 @@ const messages$4 = {
     deleteFailed: 'כשלון במחיקת התגובה',
 };
 
-if (!Vue.prototype.hasOwnProperty('$i18n')) {
+if (!Object.prototype.hasOwnProperty.call(Vue, '$i18n')) {
     Vue.use(VueI18n);
 }
 const i18n = new VueI18n({
     locale: 'en',
     fallbackLocale: 'en',
     messages: {
-        'en': messages,
+        en: messages,
         'en-US': messages,
-        'zh': messages$1,
+        zh: messages$1,
         'zh-CN': messages$1,
-        'pt': messages$2,
+        pt: messages$2,
         'pt-BR': messages$2,
-        'ja': messages$3,
+        ja: messages$3,
         'ja-JP': messages$3,
-        'he': messages$4,
+        he: messages$4,
         'he-IL': messages$4,
     },
 });
@@ -1299,30 +1350,36 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "1.3.0";
+        return "1.4.0";
     }
     get issueTitle() {
         if (this.options === null) {
             return '';
         }
-        return typeof this.title === 'function' ? this.title(this.options) : `${this.options.prefix}${this.title}`;
+        return typeof this.title === 'function'
+            ? this.title(this.options)
+            : `${this.options.prefix}${this.title}`;
     }
     get isPending() {
-        return this.isLoadingComments || this.isCreatingComment || this.isUpdatingComment;
+        return (this.isLoadingComments || this.isCreatingComment || this.isUpdatingComment);
     }
     get isLogined() {
         return this.accessToken !== null && this.user !== null;
     }
     get isAdmin() {
-        return this.options !== null && this.accessToken !== null && this.user !== null &&
+        return (this.options !== null &&
+            this.accessToken !== null &&
+            this.user !== null &&
             (this.user.username === this.options.owner ||
-                this.options.admins.includes(this.user.username));
+                this.options.admins.includes(this.user.username)));
     }
     /**
      * the key of access token for local storage
      */
     get accessTokenKey() {
-        return this.API ? `Vssue.${this.API.platform.name.toLowerCase()}.access_token` : '';
+        return this.API
+            ? `Vssue.${this.API.platform.name.toLowerCase()}.access_token`
+            : '';
     }
     onQueryPerPageChange() {
         this.query.page = 1;
@@ -1346,12 +1403,7 @@ let VssueStore = class VssueStore extends Vue$1 {
             autoCreateIssue: false,
         }, options);
         // check options
-        const requiredOptions = [
-            'api',
-            'owner',
-            'repo',
-            'clientId',
-        ];
+        const requiredOptions = ['api', 'owner', 'repo', 'clientId'];
         for (const opt of requiredOptions) {
             if (!this.options[opt]) {
                 console.warn(`[Vssue] the option '${opt}' is required`);
@@ -1364,7 +1416,8 @@ let VssueStore = class VssueStore extends Vue$1 {
         else {
             const locales = Object.keys(this.$i18n.messages);
             const navLangs = window.navigator.languages;
-            this.$i18n.locale = navLangs.filter(item => locales.includes(item)).shift() || 'en';
+            this.$i18n.locale =
+                navLangs.filter(item => locales.includes(item)).shift() || 'en';
         }
     }
     /**
@@ -1534,7 +1587,9 @@ let VssueStore = class VssueStore extends Vue$1 {
             return comments;
         }
         catch (e) {
-            if (e.response && [401, 403].includes(e.response.status) && !this.isLogined) {
+            if (e.response &&
+                [401, 403].includes(e.response.status) &&
+                !this.isLogined) {
                 this.isLoginRequired = true;
             }
             else {
@@ -1778,9 +1833,9 @@ __decorate([
 Vssue = __decorate([
     Component({
         components: {
-            Iconfont,
-            VssueBody: VssueBody$1,
-            VssueHeader: VssueHeader$1,
+            Iconfont: __vue_component__,
+            VssueBody: __vue_component__$a,
+            VssueHeader: __vue_component__$b,
         },
     })
 ], Vssue);
@@ -1805,22 +1860,26 @@ var __vue_staticRenderFns__$9 = [];
   
   /* style inject SSR */
   
+  /* style inject shadow dom */
+  
 
   
-  var VssueComponent = normalizeComponent_1(
+  const __vue_component__$c = normalizeComponent(
     { render: __vue_render__$9, staticRenderFns: __vue_staticRenderFns__$9 },
     __vue_inject_styles__$c,
     __vue_script__$c,
     __vue_scope_id__$c,
     __vue_is_functional_template__$c,
     __vue_module_identifier__$c,
+    false,
+    undefined,
     undefined,
     undefined
   );
 
 const VssuePlugin = {
     get version() {
-        return "1.3.0";
+        return "1.4.0";
     },
     installed: false,
     install(Vue, options) {
@@ -1848,7 +1907,7 @@ const VssuePlugin = {
                 },
             },
             render(h, { data, props }) {
-                return h(VssueComponent, Object.assign({}, data, { props: {
+                return h(__vue_component__$c, Object.assign(Object.assign({}, data), { props: {
                         title: props.title,
                         issueId: props.issueId,
                         options: Object.assign({}, options, props.options),
@@ -1856,8 +1915,8 @@ const VssuePlugin = {
             },
         });
     },
-    VssueComponent: VssueComponent,
+    VssueComponent: __vue_component__$c,
 };
 
 export default VssuePlugin;
-export { VssueComponent };
+export { __vue_component__$c as VssueComponent };

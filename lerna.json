@@ -1,14 +1,10 @@
 {
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "version": "1.3.0",
+  "version": "1.4.0",
   "command": {
     "version": {
-      "ignoreChanges": [
-        "**/__tests__/**",
-        "**/*.md",
-        "packages/docs/**"
-      ]
+      "ignoreChanges": ["**/__tests__/**", "**/*.md", "packages/docs/**"]
     }
   }
 }

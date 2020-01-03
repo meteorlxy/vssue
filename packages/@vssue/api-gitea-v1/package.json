@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-gitea-v1",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Vssue api for gitea v1",
   "keywords": [
     "comment",
@@ -26,7 +26,7 @@
     "build": "rimraf lib types && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vssue/utils": "1.1.1",
+    "@vssue/utils": "^1.4.0",
     "axios": "^0.18.1"
   },
   "publishConfig": {

@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-github-v3",
-  "version": "1.1.2",
+  "version": "1.4.0",
   "description": "Vssue api for github v3",
   "keywords": [
     "comment",
@@ -26,7 +26,7 @@
     "build": "rimraf lib && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vssue/utils": "^1.1.1",
+    "@vssue/utils": "^1.4.0",
     "axios": "^0.18.1"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 {
   "name": "@vssue/utils",
-  "version": "1.1.1",
+  "version": "1.4.0",
   "description": "Vssue internal utils",
   "keywords": [
     "comment",
