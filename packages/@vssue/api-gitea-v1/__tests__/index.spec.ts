@@ -365,7 +365,7 @@ describe('methods', () => {
         )
         .reply(200, fixtures.comments)
         .onPost(new RegExp(`markdown$`))
-        .reply(200, { html: '<p>Faked HTML body</p>' })
+        .reply(200, '<p>Faked HTML body</p>')
         .onGet(
           new RegExp(
             `repos/${options.owner}/${options.repo}/issues/comments/\\d*/reactions$`
@@ -436,13 +436,22 @@ describe('methods', () => {
     const issueId = 1;
     const commentId = fixtures.comment.id;
     const content = fixtures.comment.body;
+    const contentHTML = '<p>Faked HTML body</p>';
     mock
       .onPatch(
         new RegExp(
           `repos/${options.owner}/${options.repo}/issues/comments/${commentId}$`
         )
       )
-      .reply(201, fixtures.comment);
+      .reply(200, fixtures.comment)
+      .onPost(new RegExp(`markdown$`))
+      .reply(200, contentHTML)
+      .onGet(
+        new RegExp(
+          `repos/${options.owner}/${options.repo}/issues/comments/\\d*/reactions$`
+        )
+      )
+      .reply(200, fixtures.reactions);
 
     const comment = (await API.putComment({
       issueId,
@@ -450,13 +459,26 @@ describe('methods', () => {
       content,
       accessToken: mockToken,
     })) as VssueAPI.Comment;
+
     expect(mock.history.patch.length).toBe(1);
+    expect(mock.history.get.length).toBe(1);
+    expect(mock.history.post.length).toBe(1);
+
     const request = mock.history.patch[0];
     expect(request.method).toBe('patch');
     expect(request.headers.Authorization).toBe(`bearer ${mockToken}`);
     const data = JSON.parse(request.data);
     expect(data.body).toBe(content);
-    expect(comment).toEqual(normalizeComment(fixtures.comment, baseURL));
+    expect(comment).toEqual(
+      normalizeComment(
+        {
+          ...fixtures.comment,
+          body_html: contentHTML,
+          reactions: normalizeReactions(fixtures.reactions),
+        },
+        baseURL
+      )
+    );
   });
 
   test('deleteComment', async () => {
