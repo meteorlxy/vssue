@@ -1,0 +1,11 @@
+{
+  "avatar_url": "string",
+  "created": "2020-01-03T12:43:03.587Z",
+  "email": "user@example.com",
+  "full_name": "string",
+  "id": 1,
+  "is_admin": true,
+  "language": "string",
+  "last_login": "2020-01-03T12:43:03.587Z",
+  "login": "string"
+}

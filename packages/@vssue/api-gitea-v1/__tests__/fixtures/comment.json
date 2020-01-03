@@ -1,0 +1,22 @@
+{
+  "body": "string",
+  "created_at": "2020-01-03T12:49:42.012Z",
+  "html_url": "string",
+  "id": 1,
+  "issue_url": "string",
+  "original_author": "string",
+  "original_author_id": 0,
+  "pull_request_url": "string",
+  "updated_at": "2020-01-03T12:49:42.012Z",
+  "user": {
+    "avatar_url": "string",
+    "created": "2020-01-03T12:49:42.012Z",
+    "email": "user@example.com",
+    "full_name": "string",
+    "id": 1,
+    "is_admin": true,
+    "language": "string",
+    "last_login": "2020-01-03T12:49:42.012Z",
+    "login": "string"
+  }
+}

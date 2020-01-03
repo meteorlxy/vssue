@@ -366,10 +366,6 @@ export default class GiteaV1 implements VssueAPI.Instance {
         headers: { Authorization: `bearer ${accessToken}` },
       }
     );
-    data.body_html = await this.getMarkdownContent({
-      accessToken: accessToken,
-      contentRaw: data.body,
-    });
     return normalizeComment(data, this.baseURL);
   }
 
@@ -397,10 +393,6 @@ export default class GiteaV1 implements VssueAPI.Instance {
         headers: { Authorization: `bearer ${accessToken}` },
       }
     );
-    data.body_html = await this.getMarkdownContent({
-      accessToken: accessToken,
-      contentRaw: data.body,
-    });
     return normalizeComment(data, this.baseURL);
   }
 
@@ -481,6 +473,7 @@ export default class GiteaV1 implements VssueAPI.Instance {
       return response.status === 201;
     } catch (e) {
       // https://github.com/go-gitea/gitea/issues/9544
+      /* istanbul ignore next */
       if (e.response && e.response.status === 500) {
         return this.deleteCommentReaction({
           accessToken,

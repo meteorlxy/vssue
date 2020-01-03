@@ -1,0 +1,85 @@
+{
+  "assignee": {
+    "avatar_url": "string",
+    "created": "2020-01-03T12:21:13.014Z",
+    "email": "user@example.com",
+    "full_name": "string",
+    "id": 1,
+    "is_admin": true,
+    "language": "string",
+    "last_login": "2020-01-03T12:21:13.014Z",
+    "login": "string"
+  },
+  "assignees": [
+    {
+      "avatar_url": "string",
+      "created": "2020-01-03T12:21:13.014Z",
+      "email": "user@example.com",
+      "full_name": "string",
+      "id": 1,
+      "is_admin": true,
+      "language": "string",
+      "last_login": "2020-01-03T12:21:13.014Z",
+      "login": "string"
+    }
+  ],
+  "body": "string",
+  "closed_at": "2020-01-03T12:21:13.014Z",
+  "comments": 0,
+  "created_at": "2020-01-03T12:21:13.014Z",
+  "due_date": "2020-01-03T12:21:13.014Z",
+  "id": 1,
+  "labels": [
+    {
+      "color": "00aabb",
+      "description": "string",
+      "id": 1,
+      "name": "string",
+      "url": "string"
+    },
+    {
+      "color": "ccddbb",
+      "description": "string2",
+      "id": 2,
+      "name": "string2",
+      "url": "string2"
+    }
+  ],
+  "milestone": {
+    "closed_at": "2020-01-03T12:21:13.014Z",
+    "closed_issues": 0,
+    "description": "string",
+    "due_on": "2020-01-03T12:21:13.014Z",
+    "id": 1,
+    "open_issues": 0,
+    "state": "string",
+    "title": "string"
+  },
+  "number": 1,
+  "original_author": "string",
+  "original_author_id": 0,
+  "pull_request": {
+    "merged": true,
+    "merged_at": "2020-01-03T12:21:13.014Z"
+  },
+  "repository": {
+    "full_name": "string",
+    "id": 1,
+    "name": "string"
+  },
+  "state": "string",
+  "title": "string",
+  "updated_at": "2020-01-03T12:21:13.014Z",
+  "url": "string",
+  "user": {
+    "avatar_url": "string",
+    "created": "2020-01-03T12:21:13.014Z",
+    "email": "user@example.com",
+    "full_name": "string",
+    "id": 1,
+    "is_admin": true,
+    "language": "string",
+    "last_login": "2020-01-03T12:21:13.014Z",
+    "login": "string"
+  }
+}
