@@ -460,30 +460,27 @@ export default class GiteaV1 implements VssueAPI.Instance {
     commentId: string | number;
     reaction: keyof VssueAPI.Reactions;
   }): Promise<boolean> {
-    try {
-      const response = await this.$http.post(
-        `repos/${this.owner}/${this.repo}/issues/comments/${commentId}/reactions`,
-        {
-          content: mapReactionName(reaction),
-        },
-        {
-          headers: { Authorization: `bearer ${accessToken}` },
-        }
-      );
-      return response.status === 201;
-    } catch (e) {
-      // https://github.com/go-gitea/gitea/issues/9544
-      /* istanbul ignore next */
-      if (e.response && e.response.status === 500) {
-        return this.deleteCommentReaction({
-          accessToken,
-          commentId,
-          reaction,
-        });
-      } else {
-        throw e;
+    const response = await this.$http.post(
+      `repos/${this.owner}/${this.repo}/issues/comments/${commentId}/reactions`,
+      {
+        content: mapReactionName(reaction),
+      },
+      {
+        headers: { Authorization: `bearer ${accessToken}` },
       }
+    );
+
+    // 200 OK if the reaction is already token
+    if (response.status === 200) {
+      return this.deleteCommentReaction({
+        accessToken,
+        commentId,
+        reaction,
+      });
     }
+
+    // 201 CREATED
+    return response.status === 201;
   }
 
   /**
