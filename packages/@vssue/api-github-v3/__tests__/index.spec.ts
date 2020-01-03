@@ -535,29 +535,63 @@ describe('methods', () => {
     expect(reactions).toEqual(normalizeReactions(fixtures.comment.reactions));
   });
 
-  test('postCommentReaction', async () => {
-    const issueId = 1;
-    const commentId = fixtures.comment.id;
-    mock
-      .onPost(
-        new RegExp(
-          `repos/${options.owner}/${options.repo}/issues/comments/${commentId}/reactions$`
+  describe('postCommentReaction', () => {
+    test('created', async () => {
+      const issueId = 1;
+      const commentId = fixtures.comment.id;
+      mock
+        .onPost(
+          new RegExp(
+            `repos/${options.owner}/${options.repo}/issues/comments/${commentId}/reactions$`
+          )
         )
-      )
-      .reply(201);
-    const success = (await API.postCommentReaction({
-      issueId,
-      commentId,
-      accessToken: mockToken,
-      reaction: 'like',
-    })) as VssueAPI.Reactions;
-    expect(mock.history.post.length).toBe(1);
-    const request = mock.history.post[0];
-    expect(request.method).toBe('post');
-    expect(request.headers.Authorization).toBe(`token ${mockToken}`);
-    expect(request.headers.Accept).toBe(
-      'application/vnd.github.squirrel-girl-preview'
-    );
-    expect(success).toBe(true);
+        .reply(201);
+      const success = (await API.postCommentReaction({
+        issueId,
+        commentId,
+        accessToken: mockToken,
+        reaction: 'like',
+      })) as VssueAPI.Reactions;
+      expect(mock.history.post.length).toBe(1);
+      const request = mock.history.post[0];
+      expect(request.method).toBe('post');
+      expect(request.headers.Authorization).toBe(`token ${mockToken}`);
+      expect(request.headers.Accept).toBe(
+        'application/vnd.github.squirrel-girl-preview'
+      );
+      expect(success).toBe(true);
+    });
+
+    test('deleted', async () => {
+      const issueId = 1;
+      const commentId = fixtures.comment.id;
+      const reactionId = fixtures.reaction.id;
+      mock
+        .onPost(
+          new RegExp(
+            `repos/${options.owner}/${options.repo}/issues/comments/${commentId}/reactions$`
+          )
+        )
+        .reply(200, fixtures.reaction);
+      mock.onDelete(new RegExp(`reactions/${reactionId}$`)).reply(204);
+
+      const success = (await API.postCommentReaction({
+        issueId,
+        commentId,
+        accessToken: mockToken,
+        reaction: 'like',
+      })) as VssueAPI.Reactions;
+
+      expect(mock.history.post.length).toBe(1);
+      expect(mock.history.delete.length).toBe(1);
+      const request = mock.history.delete[0];
+      expect(request.method).toBe('delete');
+      expect(request.headers.Authorization).toBe(`token ${mockToken}`);
+      expect(request.headers.Accept).toBe(
+        'application/vnd.github.squirrel-girl-preview'
+      );
+
+      expect(success).toBe(true);
+    });
   });
 });
