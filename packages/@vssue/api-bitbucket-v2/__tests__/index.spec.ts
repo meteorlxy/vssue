@@ -404,7 +404,7 @@ describe('methods', () => {
           `repositories/${options.owner}/${options.repo}/issues/${issueId}/comments/${commentId}$`
         )
       )
-      .reply(201, fixtures.comment);
+      .reply(200, fixtures.comment);
     const comment = (await API.putComment({
       issueId,
       commentId,
