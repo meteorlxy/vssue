@@ -376,6 +376,7 @@ export default class GiteaV1 implements VssueAPI.Instance {
    */
   async putComment({
     accessToken,
+    issueId,
     commentId,
     content,
   }: {
@@ -393,6 +394,22 @@ export default class GiteaV1 implements VssueAPI.Instance {
         headers: { Authorization: `bearer ${accessToken}` },
       }
     );
+
+    const [contentHTML, reactions] = await Promise.all([
+      this.getMarkdownContent({
+        accessToken: accessToken,
+        contentRaw: data.body,
+      }),
+      this.getCommentReactions({
+        accessToken: accessToken,
+        issueId: issueId,
+        commentId: data.id,
+      }),
+    ]);
+
+    data.body_html = contentHTML;
+    data.reactions = reactions;
+
     return normalizeComment(data, this.baseURL);
   }
 
