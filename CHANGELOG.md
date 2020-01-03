@@ -1,3 +1,9 @@
+## [1.4.2](https://github.com/meteorlxy/vssue/compare/v1.4.1...v1.4.2) (2020-01-03)
+
+### Bug Fixes
+
+- **api-gitea-v1:** get content and reactions after put-comment ([bcdcb56](https://github.com/meteorlxy/vssue/commit/bcdcb5606460387dbafb25b1a7fbc8a4ada245b9))
+
 ## [1.4.1](https://github.com/meteorlxy/vssue/compare/v1.4.0...v1.4.1) (2020-01-03)
 
 ### Bug Fixes
