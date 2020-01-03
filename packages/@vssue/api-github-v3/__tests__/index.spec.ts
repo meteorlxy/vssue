@@ -176,7 +176,7 @@ describe('methods', () => {
 
   describe('getIssue', () => {
     describe('with issue id', () => {
-      const issueId = fixtures.issues.items[0].id;
+      const issueId = fixtures.issue.number;
 
       describe('issue exists', () => {
         beforeEach(() => {
@@ -333,8 +333,7 @@ describe('methods', () => {
             `repos/${options.owner}/${options.repo}/issues/${issueId}$`
           )
         )
-        .reply(200, fixtures.issue);
-      mock
+        .reply(200, fixtures.issue)
         .onGet(
           new RegExp(
             `repos/${options.owner}/${options.repo}/issues/${issueId}/comments$`
@@ -572,8 +571,9 @@ describe('methods', () => {
             `repos/${options.owner}/${options.repo}/issues/comments/${commentId}/reactions$`
           )
         )
-        .reply(200, fixtures.reaction);
-      mock.onDelete(new RegExp(`reactions/${reactionId}$`)).reply(204);
+        .reply(200, fixtures.reaction)
+        .onDelete(new RegExp(`reactions/${reactionId}$`))
+        .reply(204);
 
       const success = (await API.postCommentReaction({
         issueId,
