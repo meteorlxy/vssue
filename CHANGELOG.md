@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/meteorlxy/vssue/compare/v1.4.0...v1.4.1) (2020-01-03)
+
+### Bug Fixes
+
+- **api-gitea-v1:** correct status code of post-reaction ([a76b07c](https://github.com/meteorlxy/vssue/commit/a76b07c46a2a5b4282170631b79cea7dedbcdd40))
+- **vuepress-plugin-vssue:** disable import-helpers ([75f1507](https://github.com/meteorlxy/vssue/commit/75f150706458498b11701eace38a51c931e2dcf1))
+
 # [1.4.0](https://github.com/meteorlxy/vssue/compare/v1.3.0...v1.4.0) (2020-01-03)
 
 ### Features
