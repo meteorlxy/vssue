@@ -16,10 +16,10 @@ export interface ResponseComment {
   id: number;
   author: ResponseUser;
   body: string;
-  body_html: string;
+  body_html?: string;
   created_at: string;
   updated_at: string;
-  reactions: unknown;
+  reactions?: unknown;
 }
 
 export interface ResponseReaction {

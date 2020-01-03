@@ -27,7 +27,7 @@ export function normalizeIssue(issue: ResponseIssue): VssueAPI.Issue {
 export function normalizeComment(comment: ResponseComment): VssueAPI.Comment {
   return {
     id: comment.id,
-    content: comment.body_html,
+    content: comment.body_html || '',
     contentRaw: comment.body,
     author: normalizeUser(comment.author),
     createdAt: comment.created_at,
