@@ -26,7 +26,7 @@ test('normalizeIssue', () => {
 test('normalizeComment', () => {
   const comment = normalizeComment(fixtures.comment);
   expect(comment.id).toBe(fixtures.comment.id);
-  expect(comment.content).toBeUndefined();
+  expect(comment.content).toBe('');
   expect(comment.contentRaw).toBe(fixtures.comment.body);
   expect(comment.author).toEqual(normalizeUser(fixtures.comment.author));
   expect(comment.createdAt).toBe(fixtures.comment.created_at);
