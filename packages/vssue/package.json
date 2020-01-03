@@ -1,6 +1,6 @@
 {
   "name": "vssue",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A vue-powered issue-based comment plugin",
   "keywords": [
     "comment",
@@ -48,7 +48,7 @@
     "@rollup/plugin-replace": "^2.3.0",
     "@rollup/plugin-typescript": "^2.0.1",
     "@vssue/api-bitbucket-v2": "^1.4.0",
-    "@vssue/api-gitea-v1": "^1.4.1",
+    "@vssue/api-gitea-v1": "^1.4.2",
     "@vssue/api-gitee-v5": "^1.4.0",
     "@vssue/api-github-v3": "^1.4.0",
     "@vssue/api-github-v4": "^1.4.0",
