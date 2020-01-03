@@ -380,15 +380,16 @@ describe('methods', () => {
     const issueId = 1;
     const commentId = fixtures.comment.id;
     const content = fixtures.comment.body;
+    const contentHTML = '<p>Faked HTML body</p>';
     mock
       .onPut(
         new RegExp(
           `projects/${encodedRepo}/issues/${issueId}/notes/${commentId}$`
         )
       )
-      .reply(201, fixtures.comment)
+      .reply(200, fixtures.comment)
       .onPost(new RegExp(`markdown$`))
-      .reply(200, { html: '<p>Faked HTML body</p>' })
+      .reply(200, { html: contentHTML })
       .onGet(
         new RegExp(
           `projects/${encodedRepo}/issues/${issueId}/notes/\\d*/award_emoji$`
@@ -410,15 +411,11 @@ describe('methods', () => {
     const data = JSON.parse(request.data);
     expect(data.body).toBe(content);
     expect(comment).toEqual(
-      normalizeComment(
-        Object.assign(
-          {
-            body_html: '<p>Faked HTML body</p>',
-            reactions: normalizeReactions(fixtures.reactions),
-          },
-          fixtures.comment
-        )
-      )
+      normalizeComment({
+        ...fixtures.comment,
+        body_html: contentHTML,
+        reactions: normalizeReactions(fixtures.reactions),
+      })
     );
   });
 
