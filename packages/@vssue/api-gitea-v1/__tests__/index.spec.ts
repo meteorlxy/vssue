@@ -561,7 +561,7 @@ describe('methods', () => {
             `repos/${options.owner}/${options.repo}/issues/comments/${commentId}/reactions$`
           )
         )
-        .reply(500)
+        .reply(200)
         .onDelete(
           new RegExp(
             `repos/${options.owner}/${options.repo}/issues/comments/${commentId}/reactions$`
