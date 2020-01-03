@@ -1,7 +1,16 @@
 import { VssueAPI } from 'vssue';
 import { concatURL } from '@vssue/utils';
+import {
+  ResponseUser,
+  ResponseIssue,
+  ResponseComment,
+  ResponseReaction,
+} from './types';
 
-export function normalizeUser(user: any, baseURL: string): VssueAPI.User {
+export function normalizeUser(
+  user: ResponseUser,
+  baseURL: string
+): VssueAPI.User {
   return {
     username: user.login,
     avatar: user.avatar_url,
@@ -10,7 +19,7 @@ export function normalizeUser(user: any, baseURL: string): VssueAPI.User {
 }
 
 export function normalizeIssue(
-  issue: any,
+  issue: ResponseIssue,
   baseURL: string,
   owner: string,
   repo: string
@@ -24,21 +33,23 @@ export function normalizeIssue(
 }
 
 export function normalizeComment(
-  comment: any,
+  comment: ResponseComment,
   baseURL: string
 ): VssueAPI.Comment {
   return {
     id: comment.id,
-    content: comment.body_html,
+    content: comment.body_html || '',
     contentRaw: comment.body,
     author: normalizeUser(comment.user, baseURL),
     createdAt: comment.created_at,
     updatedAt: comment.updated_at,
-    reactions: comment.reactions,
+    reactions: comment.reactions as VssueAPI.Reactions,
   };
 }
 
-export function normalizeReactions(reactions: any): VssueAPI.Reactions {
+export function normalizeReactions(
+  reactions: ResponseReaction[]
+): VssueAPI.Reactions {
   return {
     like: reactions.filter(item => item.content === '+1').length,
     unlike: reactions.filter(item => item.content === '-1').length,

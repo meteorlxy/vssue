@@ -1,6 +1,13 @@
 import { VssueAPI } from 'vssue';
 
-export function normalizeUser(user: any): VssueAPI.User {
+import {
+  ResponseUser,
+  ResponseIssue,
+  ResponseComment,
+  ResponseReaction,
+} from './types';
+
+export function normalizeUser(user: ResponseUser): VssueAPI.User {
   // workaround for deleted user
   // @see https://github.community/t5/GitHub-API-Development-and/Keep-deleted-issue-author-as-ghost/td-p/15456
   if (user === null) {
@@ -17,7 +24,7 @@ export function normalizeUser(user: any): VssueAPI.User {
   };
 }
 
-export function normalizeIssue(issue: any): VssueAPI.Issue {
+export function normalizeIssue(issue: ResponseIssue): VssueAPI.Issue {
   return {
     id: issue.number,
     title: issue.title,
@@ -26,16 +33,19 @@ export function normalizeIssue(issue: any): VssueAPI.Issue {
   };
 }
 
-export function normalizeReactions(reactions: any): VssueAPI.Reactions {
+export function normalizeReactions(
+  reactions: ResponseReaction[]
+): VssueAPI.Reactions {
   return {
-    like: reactions.find(item => item.content === 'THUMBS_UP').users.totalCount,
-    unlike: reactions.find(item => item.content === 'THUMBS_DOWN').users
+    like: reactions.find(item => item.content === 'THUMBS_UP')!.users
       .totalCount,
-    heart: reactions.find(item => item.content === 'HEART').users.totalCount,
+    unlike: reactions.find(item => item.content === 'THUMBS_DOWN')!.users
+      .totalCount,
+    heart: reactions.find(item => item.content === 'HEART')!.users.totalCount,
   };
 }
 
-export function normalizeComment(comment: any): VssueAPI.Comment {
+export function normalizeComment(comment: ResponseComment): VssueAPI.Comment {
   return {
     id: comment.id,
     content: comment.bodyHTML,

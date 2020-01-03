@@ -12,6 +12,18 @@ import {
   mapReactionName,
 } from './utils';
 
+import {
+  ResponseAccessToken,
+  ResponseIssue,
+  ResponseGraphqlGetUser,
+  ResponseGraphqlGetIssue,
+  ResponseGraphqlGetIssueSearch,
+  ResponseGraphqlGetComments,
+  ResponseGraphqlPostComment,
+  ResponseGraphqlPutComment,
+  ResponseGraphqlGetCommentReactions,
+} from './types';
+
 /**
  * Github GraphQL API v4
  *
@@ -129,8 +141,6 @@ export default class GithubV4 implements VssueAPI.Instance {
   /**
    * Handle authorization.
    *
-   * @return A string for access token, `null` for no authorization code
-   *
    * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/
    *
    * @remarks
@@ -158,10 +168,6 @@ export default class GithubV4 implements VssueAPI.Instance {
   /**
    * Get user access token via `code`
    *
-   * @param options.code - The code from the query
-   *
-   * @return User access token
-   *
    * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github
    */
   async getAccessToken({ code }: { code: string }): Promise<string> {
@@ -172,7 +178,7 @@ export default class GithubV4 implements VssueAPI.Instance {
     const originalURL = concatURL(this.baseURL, 'login/oauth/access_token');
     const proxyURL =
       typeof this.proxy === 'function' ? this.proxy(originalURL) : this.proxy;
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseAccessToken>(
       proxyURL,
       {
         client_id: this.clientId,
@@ -196,10 +202,6 @@ export default class GithubV4 implements VssueAPI.Instance {
   /**
    * Get the logged-in user with access token.
    *
-   * @param options.accessToken - User access token
-   *
-   * @return The user
-   *
    * @see https://developer.github.com/v4/query/ viewer
    * @see https://developer.github.com/v4/object/user/
    */
@@ -208,7 +210,7 @@ export default class GithubV4 implements VssueAPI.Instance {
   }: {
     accessToken: VssueAPI.AccessToken;
   }): Promise<VssueAPI.User> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseGraphqlGetUser>(
       'graphql',
       {
         query: `\
@@ -229,12 +231,6 @@ query getUser {
 
   /**
    * Get issue of this page according to the issue id or the issue title
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.issueTitle - The title of issue
-   *
-   * @return The raw response of issue
    *
    * @see https://developer.github.com/v4/object/repository/
    * @see https://developer.github.com/v4/object/issueconnection/
@@ -263,7 +259,7 @@ query getUser {
 
     if (issueId) {
       try {
-        const { data } = await this.$http.post(
+        const { data } = await this.$http.post<ResponseGraphqlGetIssue>(
           `graphql`,
           {
             query: `\
@@ -300,7 +296,7 @@ query getIssueById {
         ...this.labels.map(label => `label:${label}`),
       ].join(' ');
 
-      const { data } = await this.$http.post(
+      const { data } = await this.$http.post<ResponseGraphqlGetIssueSearch>(
         `graphql`,
         {
           variables: {
@@ -345,12 +341,6 @@ query getIssueByTitle(
   /**
    * Create a new issue
    *
-   * @param options.accessToken - User access token
-   * @param options.title - The title of issue
-   * @param options.content - The content of issue
-   *
-   * @return The created issue
-   *
    * @see https://developer.github.com/v4/mutation/createissue/
    * @see https://developer.github.com/v4/input_object/createissueinput/
    *
@@ -370,7 +360,12 @@ query getIssueByTitle(
     title: string;
     content: string;
   }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<
+      ResponseIssue & {
+        html_url: string;
+        node_id: string;
+      }
+    >(
       `repos/${this.owner}/${this.repo}/issues`,
       {
         title,
@@ -391,12 +386,6 @@ query getIssueByTitle(
 
   /**
    * Get comments of this page according to the issue id
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.query - The query parameters
-   *
-   * @return The comments
    *
    * @see https://developer.github.com/v4/object/issuecommentconnection/
    *
@@ -429,7 +418,7 @@ query getIssueByTitle(
       sort,
     });
 
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseGraphqlGetComments>(
       `graphql`,
       {
         variables: {
@@ -507,12 +496,6 @@ query getComments(
   /**
    * Create a new comment
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.content - The content of comment
-   *
-   * @return The created comment
-   *
    * @see https://developer.github.com/v4/mutation/addcomment/
    * @see https://developer.github.com/v4/input_object/addcommentinput/
    */
@@ -524,7 +507,7 @@ query getComments(
     issueId: string | number;
     content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseGraphqlPostComment>(
       `graphql`,
       {
         variables: {
@@ -578,12 +561,6 @@ mutation postComment(
   /**
    * Edit a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.commentId - The id of comment
-   * @param options.content - The content of comment
-   *
-   * @return The edited comment
-   *
    * @see https://developer.github.com/v4/mutation/updateissuecomment/
    * @see https://developer.github.com/v4/input_object/updateissuecommentinput/
    */
@@ -597,7 +574,7 @@ mutation postComment(
     commentId: string | number;
     content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseGraphqlPutComment>(
       `graphql`,
       {
         variables: {
@@ -646,11 +623,6 @@ mutation putComment(
   /**
    * Delete a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.commentId - The id of comment
-   *
-   * @return `true` if succeed, `false` if failed
-   *
    * @see https://developer.github.com/v4/mutation/deleteissuecomment/
    */
   async deleteComment({
@@ -690,12 +662,6 @@ mutation deleteComment(
   /**
    * Get reactions of a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.commentId - The id of comment
-   *
-   * @return The comments
-   *
    * @remarks
    * This query has not been implemented, use the comments query instead
    */
@@ -710,7 +676,7 @@ mutation deleteComment(
   }): Promise<VssueAPI.Reactions> {
     const { firstOrLast, afterOrBefore, cursor } = this._getQueryParams();
 
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseGraphqlGetCommentReactions>(
       `graphql`,
       {
         variables: {
@@ -755,17 +721,11 @@ query getComments(
       item => item.id === commentId
     );
 
-    return normalizeReactions(comment.reactionGroups);
+    return normalizeReactions(comment!.reactionGroups);
   }
 
   /**
    * Create a new reaction of a comment
-   *
-   * @param options.accessToken - User access token
-   * @param options.commentId - The id of comment
-   * @param options.reaction - The reaction
-   *
-   * @return `true` if succeed, `false` if already token
    *
    * @see https://developer.github.com/v4/mutation/addreaction/
    * @see https://developer.github.com/v4/input_object/addreactioninput/

@@ -1,6 +1,13 @@
 import { VssueAPI } from 'vssue';
 
-export function normalizeUser(user: any): VssueAPI.User {
+import {
+  ResponseUser,
+  ResponseIssue,
+  ResponseComment,
+  ResponseReaction,
+} from './types';
+
+export function normalizeUser(user: ResponseUser): VssueAPI.User {
   return {
     username: user.username,
     avatar: user.avatar_url,
@@ -8,7 +15,7 @@ export function normalizeUser(user: any): VssueAPI.User {
   };
 }
 
-export function normalizeIssue(issue: any): VssueAPI.Issue {
+export function normalizeIssue(issue: ResponseIssue): VssueAPI.Issue {
   return {
     id: issue.iid,
     title: issue.title,
@@ -17,7 +24,7 @@ export function normalizeIssue(issue: any): VssueAPI.Issue {
   };
 }
 
-export function normalizeComment(comment: any): VssueAPI.Comment {
+export function normalizeComment(comment: ResponseComment): VssueAPI.Comment {
   return {
     id: comment.id,
     content: comment.body_html,
@@ -25,11 +32,13 @@ export function normalizeComment(comment: any): VssueAPI.Comment {
     author: normalizeUser(comment.author),
     createdAt: comment.created_at,
     updatedAt: comment.updated_at,
-    reactions: comment.reactions,
+    reactions: comment.reactions as VssueAPI.Reactions,
   };
 }
 
-export function normalizeReactions(reactions: any): VssueAPI.Reactions {
+export function normalizeReactions(
+  reactions: ResponseReaction[]
+): VssueAPI.Reactions {
   return {
     like: reactions.filter(item => item.name === 'thumbsup').length,
     unlike: reactions.filter(item => item.name === 'thumbsdown').length,

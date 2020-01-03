@@ -6,6 +6,13 @@ import { buildURL, concatURL, getCleanURL, parseQuery } from '@vssue/utils';
 
 import { normalizeUser, normalizeIssue, normalizeComment } from './utils';
 
+import {
+  ResponseAccessToken,
+  ResponseUser,
+  ResponseIssue,
+  ResponseComment,
+} from './types';
+
 /**
  * Gitee REST API v5
  *
@@ -98,8 +105,6 @@ export default class GiteeV5 implements VssueAPI.Instance {
   /**
    * Handle authorization.
    *
-   * @return A string for access token, `null` for no authorization code
-   *
    * @see https://gitee.com/api/v5/oauth_doc
    *
    * @remarks
@@ -127,17 +132,13 @@ export default class GiteeV5 implements VssueAPI.Instance {
   /**
    * Get user access token via `code`
    *
-   * @param options.code - The code from the query
-   *
-   * @return User access token
-   *
    * @see https://gitee.com/api/v5/oauth_doc
    */
   async getAccessToken({ code }: { code: string }): Promise<string> {
     const originalURL = concatURL(this.baseURL, 'oauth/token');
     const proxyURL =
       typeof this.proxy === 'function' ? this.proxy(originalURL) : this.proxy;
-    const { data } = await this.$http.post(proxyURL, {
+    const { data } = await this.$http.post<ResponseAccessToken>(proxyURL, {
       client_id: this.clientId,
       client_secret: this.clientSecret,
       code,
@@ -150,10 +151,6 @@ export default class GiteeV5 implements VssueAPI.Instance {
   /**
    * Get the logged-in user with access token.
    *
-   * @param options.accessToken - User access token
-   *
-   * @return The user
-   *
    * @see https://gitee.com/api/v5/swagger#/getV5User
    */
   async getUser({
@@ -161,7 +158,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
   }: {
     accessToken: VssueAPI.AccessToken;
   }): Promise<VssueAPI.User> {
-    const { data } = await this.$http.get('user', {
+    const { data } = await this.$http.get<ResponseUser>('user', {
       params: { access_token: accessToken },
     });
     return normalizeUser(data);
@@ -169,12 +166,6 @@ export default class GiteeV5 implements VssueAPI.Instance {
 
   /**
    * Get issue of this page according to the issue id or the issue title
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.issueTitle - The title of issue
-   *
-   * @return The raw response of issue
    *
    * @see https://gitee.com/api/v5/swagger#/getV5ReposOwnerRepoIssues
    * @see https://gitee.com/api/v5/swagger#/getV5ReposOwnerRepoIssuesNumber
@@ -197,7 +188,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
 
     if (issueId) {
       try {
-        const { data } = await this.$http.get(
+        const { data } = await this.$http.get<ResponseIssue>(
           `repos/${this.owner}/${this.repo}/issues/${issueId}`,
           options
         );
@@ -215,7 +206,10 @@ export default class GiteeV5 implements VssueAPI.Instance {
         repo: `${this.owner}/${this.repo}`,
         per_page: 1,
       });
-      const { data } = await this.$http.get(`search/issues`, options);
+      const { data } = await this.$http.get<ResponseIssue[]>(
+        `search/issues`,
+        options
+      );
       const issue = data
         .map(normalizeIssue)
         .find(item => item.title === issueTitle);
@@ -225,12 +219,6 @@ export default class GiteeV5 implements VssueAPI.Instance {
 
   /**
    * Create a new issue
-   *
-   * @param options.accessToken - User access token
-   * @param options.title - The title of issue
-   * @param options.content - The content of issue
-   *
-   * @return The created issue
    *
    * @see https://gitee.com/api/v5/swagger#/postV5ReposOwnerIssues
    */
@@ -243,24 +231,21 @@ export default class GiteeV5 implements VssueAPI.Instance {
     title: string;
     content: string;
   }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(`repos/${this.owner}/issues`, {
-      access_token: accessToken,
-      repo: this.repo,
-      title,
-      body: content,
-      labels: this.labels.join(','),
-    });
+    const { data } = await this.$http.post<ResponseIssue>(
+      `repos/${this.owner}/issues`,
+      {
+        access_token: accessToken,
+        repo: this.repo,
+        title,
+        body: content,
+        labels: this.labels.join(','),
+      }
+    );
     return normalizeIssue(data);
   }
 
   /**
    * Get comments of this page according to the issue id
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.query - The query parameters
-   *
-   * @return The comments
    *
    * @see https://gitee.com/api/v5/swagger#/getV5ReposOwnerRepoIssuesNumberComments
    *
@@ -292,7 +277,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
       options.params.access_token = accessToken;
     }
 
-    const response = await this.$http.get(
+    const response = await this.$http.get<ResponseComment[]>(
       `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
       options
     );
@@ -310,12 +295,6 @@ export default class GiteeV5 implements VssueAPI.Instance {
   /**
    * Create a new comment
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.content - The content of comment
-   *
-   * @return The created comment
-   *
    * @see https://gitee.com/api/v5/swagger#/postV5ReposOwnerRepoIssuesNumberComments
    */
   async postComment({
@@ -327,7 +306,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
     issueId: string | number;
     content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseComment>(
       `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
       {
         body: content,
@@ -345,12 +324,6 @@ export default class GiteeV5 implements VssueAPI.Instance {
   /**
    * Edit a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.commentId - The id of comment
-   * @param options.content - The content of comment
-   *
-   * @return The edited comment
-   *
    * @see https://gitee.com/api/v5/swagger#/patchV5ReposOwnerRepoIssuesCommentsId
    */
   async putComment({
@@ -363,7 +336,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
     commentId: string | number;
     content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.patch(
+    const { data } = await this.$http.patch<ResponseComment>(
       `repos/${this.owner}/${this.repo}/issues/comments/${commentId}`,
       {
         body: content,
@@ -380,11 +353,6 @@ export default class GiteeV5 implements VssueAPI.Instance {
 
   /**
    * Delete a comment
-   *
-   * @param options.accessToken - User access token
-   * @param options.commentId - The id of comment
-   *
-   * @return `true` if succeed, `false` if failed
    *
    * @see https://developer.github.com/v3/issues/comments/#delete-a-comment
    */
@@ -408,6 +376,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
   /**
    * Gitee does not support reactions now
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getCommentReactions(options): Promise<VssueAPI.Reactions> {
     throw new Error('501 Not Implemented');
   }
@@ -415,6 +384,7 @@ export default class GiteeV5 implements VssueAPI.Instance {
   /**
    * Gitee does not support reactions now
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async postCommentReaction(options): Promise<boolean> {
     throw new Error('501 Not Implemented');
   }

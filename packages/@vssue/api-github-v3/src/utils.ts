@@ -1,6 +1,13 @@
 import { VssueAPI } from 'vssue';
 
-export function normalizeUser(user: any): VssueAPI.User {
+import {
+  ResponseUser,
+  ResponseIssue,
+  ResponseComment,
+  ResponseReactionsSummary,
+} from './types';
+
+export function normalizeUser(user: ResponseUser): VssueAPI.User {
   return {
     username: user.login,
     avatar: user.avatar_url,
@@ -8,7 +15,7 @@ export function normalizeUser(user: any): VssueAPI.User {
   };
 }
 
-export function normalizeIssue(issue: any): VssueAPI.Issue {
+export function normalizeIssue(issue: ResponseIssue): VssueAPI.Issue {
   return {
     id: issue.number,
     title: issue.title,
@@ -17,7 +24,9 @@ export function normalizeIssue(issue: any): VssueAPI.Issue {
   };
 }
 
-export function normalizeReactions(reactions: any): VssueAPI.Reactions {
+export function normalizeReactions(
+  reactions: ResponseReactionsSummary
+): VssueAPI.Reactions {
   return {
     like: reactions['+1'],
     unlike: reactions['-1'],
@@ -25,7 +34,7 @@ export function normalizeReactions(reactions: any): VssueAPI.Reactions {
   };
 }
 
-export function normalizeComment(comment: any): VssueAPI.Comment {
+export function normalizeComment(comment: ResponseComment): VssueAPI.Comment {
   return {
     id: comment.id,
     content: comment.body_html,

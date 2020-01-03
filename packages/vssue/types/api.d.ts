@@ -29,14 +29,14 @@ export namespace VssueAPI {
   };
 
   export type Issue = {
-    id: string;
+    id: string | number;
     title: string;
     content: string;
     link: string;
   };
 
   export type Comment = {
-    id: string;
+    id: string | number;
     content: string;
     contentRaw: string;
     author: VssueAPI.User;
@@ -80,17 +80,11 @@ export namespace VssueAPI {
      *
      * @remarks
      * If the `code` and `state` exist in the query, and the `state` matches, remove them from query, and try to get the access token.
-     *
-     * @return A string for access token, `null` for no authorization code
      */
     handleAuth(): Promise<VssueAPI.AccessToken>;
 
     /**
      * Get the logined user with access token.
-     *
-     * @param options.accessToken - User access token
-     *
-     * @return The user
      */
     getUser(options: {
       accessToken: VssueAPI.AccessToken;
@@ -98,12 +92,6 @@ export namespace VssueAPI {
 
     /**
      * Get issue according to id or title
-     *
-     * @param options.accessToken - User access token
-     * @param options.issueId - The id of issue
-     * @param options.issueTitle - The title of issue
-     *
-     * @return The comments
      */
     getIssue(options: {
       accessToken: VssueAPI.AccessToken;
@@ -113,12 +101,6 @@ export namespace VssueAPI {
 
     /**
      * Create a new issue
-     *
-     * @param options.accessToken - User access token
-     * @param options.title - The title of issue
-     * @param options.content - The content of issue
-     *
-     * @return The created issue
      */
     postIssue(options: {
       accessToken: VssueAPI.AccessToken;
@@ -128,12 +110,6 @@ export namespace VssueAPI {
 
     /**
      * Get comments of issue according to the issue id
-     *
-     * @param options.accessToken - User access token
-     * @param options.issueId - The id of issue
-     * @param options.query - The query parameters
-     *
-     * @return The comments
      */
     getComments(options: {
       accessToken: VssueAPI.AccessToken;
@@ -143,12 +119,6 @@ export namespace VssueAPI {
 
     /**
      * Create a new comment
-     *
-     * @param options.accessToken - User access token
-     * @param options.issueId - The id of issue
-     * @param options.content - The content of comment
-     *
-     * @return The created comment
      */
     postComment(options: {
       accessToken: VssueAPI.AccessToken;
@@ -158,13 +128,6 @@ export namespace VssueAPI {
 
     /**
      * Edit a comment
-     *
-     * @param options.accessToken - User access token
-     * @param options.issueId - The id of issue
-     * @param options.commentId - The id of comment
-     * @param options.content - The content of comment
-     *
-     * @return The edited comment
      */
     putComment(options: {
       accessToken: VssueAPI.AccessToken;
@@ -175,12 +138,6 @@ export namespace VssueAPI {
 
     /**
      * Delete a comment
-     *
-     * @param options.accessToken - User access token
-     * @param options.issueId - The id of issue
-     * @param options.commentId - The id of comment
-     *
-     * @return `true` if succeed, `false` if failed
      */
     deleteComment(options: {
       accessToken: VssueAPI.AccessToken;
@@ -190,12 +147,6 @@ export namespace VssueAPI {
 
     /**
      * Get reaction of a comment
-     *
-     * @param options.accessToken - User access token
-     * @param options.issueId - The id of issue
-     * @param options.commentId - The id of comment
-     *
-     * @return `true` if succeed, `false` if failed
      */
     getCommentReactions(options: {
       accessToken: VssueAPI.AccessToken;
@@ -205,13 +156,6 @@ export namespace VssueAPI {
 
     /**
      * Create a new reaction of a comment
-     *
-     * @param options.accessToken - User access token
-     * @param options.issueId - The id of issue
-     * @param options.commentId - The id of comment
-     * @param options.reaction - The reaction
-     *
-     * @return `true` if succeed, `false` if failed
      */
     postCommentReaction(options: {
       accessToken: VssueAPI.AccessToken;

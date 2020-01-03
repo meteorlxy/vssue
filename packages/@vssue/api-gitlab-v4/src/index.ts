@@ -18,6 +18,14 @@ import {
   mapReactionName,
 } from './utils';
 
+import {
+  ResponseUser,
+  ResponseIssue,
+  ResponseComment,
+  ResponseReaction,
+  ResponseMarkdown,
+} from './types';
+
 /**
  * GitLab API V4
  *
@@ -97,8 +105,6 @@ export default class GitlabV4 implements VssueAPI.Instance {
   /**
    * Handle authorization.
    *
-   * @return A string for access token, `null` for no authorization code
-   *
    * @see https://docs.gitlab.com/ce/api/oauth2.html#implicit-grant-flow
    *
    * @remarks
@@ -125,17 +131,13 @@ export default class GitlabV4 implements VssueAPI.Instance {
 
   /**
    * Get the logged-in user with access token.
-   *
-   * @param options.accessToken - User access token
-   *
-   * @return The user
    */
   async getUser({
     accessToken,
   }: {
     accessToken: VssueAPI.AccessToken;
   }): Promise<VssueAPI.User> {
-    const { data } = await this.$http.get('user', {
+    const { data } = await this.$http.get<ResponseUser>('user', {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     return normalizeUser(data);
@@ -143,12 +145,6 @@ export default class GitlabV4 implements VssueAPI.Instance {
 
   /**
    * Get issue of this page according to the issue id or the issue title
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.issueTitle - The title of issue
-   *
-   * @return The issue
    *
    * @see https://docs.gitlab.com/ce/api/issues.html#single-issue
    * @see https://docs.gitlab.com/ce/api/issues.html#list-issues
@@ -174,7 +170,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
 
     if (issueId) {
       try {
-        const { data } = await this.$http.get(
+        const { data } = await this.$http.get<ResponseIssue>(
           `projects/${this._encodedRepo}/issues/${issueId}`,
           options
         );
@@ -193,7 +189,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
         sort: 'asc',
         search: issueTitle,
       };
-      const { data } = await this.$http.get(
+      const { data } = await this.$http.get<ResponseIssue[]>(
         `projects/${this._encodedRepo}/issues`,
         options
       );
@@ -207,12 +203,6 @@ export default class GitlabV4 implements VssueAPI.Instance {
   /**
    * Create a new issue
    *
-   * @param options.accessToken - User access token
-   * @param options.title - The title of issue
-   * @param options.content - The content of issue
-   *
-   * @return The created issue
-   *
    * @see https://docs.gitlab.com/ce/api/issues.html#new-issue
    */
   async postIssue({
@@ -224,7 +214,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     title: string;
     content: string;
   }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseIssue>(
       `projects/${this._encodedRepo}/issues`,
       {
         title,
@@ -240,12 +230,6 @@ export default class GitlabV4 implements VssueAPI.Instance {
 
   /**
    * Get comments of this page according to the issue id
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.query - The query parameters
-   *
-   * @return The comments
    *
    * @see https://docs.gitlab.com/ce/api/notes.html#list-project-issue-notes
    * @see https://docs.gitlab.com/ce/api/README.html#pagination
@@ -277,7 +261,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
         Authorization: `Bearer ${accessToken}`,
       };
     }
-    const response = await this.$http.get(
+    const response = await this.$http.get<ResponseComment[]>(
       `projects/${this._encodedRepo}/issues/${issueId}/notes`,
       options
     );
@@ -320,12 +304,6 @@ export default class GitlabV4 implements VssueAPI.Instance {
   /**
    * Create a new comment
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.content - The content of comment
-   *
-   * @return The created comment
-   *
    * @see https://docs.gitlab.com/ce/api/notes.html#create-new-issue-note
    */
   async postComment({
@@ -337,7 +315,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     issueId: string | number;
     content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseComment>(
       `projects/${this._encodedRepo}/issues/${issueId}/notes`,
       {
         body: content,
@@ -352,13 +330,6 @@ export default class GitlabV4 implements VssueAPI.Instance {
   /**
    * Edit a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.commentId - The id of comment
-   * @param options.content - The content of comment
-   *
-   * @return The edited comment
-   *
    * @see https://docs.gitlab.com/ce/api/notes.html#modify-existing-issue-note
    */
   async putComment({
@@ -372,7 +343,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     commentId: string | number;
     content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.put(
+    const { data } = await this.$http.put<ResponseComment>(
       `projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}`,
       {
         body: content,
@@ -403,12 +374,6 @@ export default class GitlabV4 implements VssueAPI.Instance {
   /**
    * Delete a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.commentId - The id of comment
-   *
-   * @return `true` if succeed, `false` if failed
-   *
    * @see https://docs.gitlab.com/ce/api/notes.html#delete-an-issue-note
    */
   async deleteComment({
@@ -432,12 +397,6 @@ export default class GitlabV4 implements VssueAPI.Instance {
   /**
    * Get reactions of a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.commentId - The id of comment
-   *
-   * @return The comments
-   *
    * @see https://docs.gitlab.com/ce/api/award_emoji.html#list-an-awardables-award-emoji
    */
   async getCommentReactions({
@@ -449,7 +408,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     issueId: string | number;
     commentId: string | number;
   }): Promise<VssueAPI.Reactions> {
-    const { data } = await this.$http.get(
+    const { data } = await this.$http.get<ResponseReaction[]>(
       `projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji`,
       {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -460,13 +419,6 @@ export default class GitlabV4 implements VssueAPI.Instance {
 
   /**
    * Create a new reaction of a comment
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.commentId - The id of comment
-   * @param options.reaction - The reaction
-   *
-   * @return `true` if succeed, `false` if already token
    *
    * @see https://docs.gitlab.com/ce/api/award_emoji.html#award-a-new-emoji
    */
@@ -510,11 +462,6 @@ export default class GitlabV4 implements VssueAPI.Instance {
   /**
    * Get the parse HTML of markdown content
    *
-   * @param options.accessToken - User access token
-   * @param options.contentRaw - The id of issue
-   *
-   * @return The HTML string of parsed markdown
-   *
    * @see https://docs.gitlab.com/ce/api/markdown.html
    */
   async getMarkdownContent({
@@ -530,7 +477,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
         Authorization: `Bearer ${accessToken}`,
       };
     }
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseMarkdown>(
       `markdown`,
       {
         text: contentRaw,

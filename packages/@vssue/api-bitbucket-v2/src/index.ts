@@ -12,6 +12,13 @@ import {
 
 import { normalizeUser, normalizeIssue, normalizeComment } from './utils';
 
+import {
+  ResponseUser,
+  ResponseIssue,
+  ResponseComment,
+  ResponsePagination,
+} from './types';
+
 /**
  * Bitbucket API V2
  *
@@ -83,8 +90,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   /**
    * Handle authorization.
    *
-   * @return A string for access token, `null` for no authorization code
-   *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/authentication#oauth-2
    *
    * @remarks
@@ -113,10 +118,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   /**
    * Get the logged-in user with access token.
    *
-   * @param options.accessToken - User access token
-   *
-   * @return The user
-   *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/user
    */
   async getUser({
@@ -124,7 +125,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   }: {
     accessToken: VssueAPI.AccessToken;
   }): Promise<VssueAPI.User> {
-    const { data } = await this.$http.get('user', {
+    const { data } = await this.$http.get<ResponseUser>('user', {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     return normalizeUser(data);
@@ -132,12 +133,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
 
   /**
    * Get issue of this page according to the issue id or the issue title
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.issueTitle - The title of issue
-   *
-   * @return The raw response of issue
    *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D#get
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues#get
@@ -166,7 +161,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
           // to avoid caching
           timestamp: Date.now(),
         };
-        const { data } = await this.$http.get(
+        const { data } = await this.$http.get<ResponseIssue>(
           `repositories/${this.owner}/${this.repo}/issues/${issueId}`,
           options
         );
@@ -185,7 +180,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
         // to avoid caching
         timestamp: Date.now(),
       };
-      const { data } = await this.$http.get(
+      const { data } = await this.$http.get<ResponsePagination<ResponseIssue>>(
         `repositories/${this.owner}/${this.repo}/issues`,
         options
       );
@@ -195,12 +190,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
 
   /**
    * Create a new issue
-   *
-   * @param options.accessToken - User access token
-   * @param options.title - The title of issue
-   * @param options.content - The content of issue
-   *
-   * @return The created issue
    *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues#post
    */
@@ -213,7 +202,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     title: string;
     content: string;
   }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseIssue>(
       `repositories/${this.owner}/${this.repo}/issues`,
       {
         title,
@@ -238,12 +227,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
 
   /**
    * Get comments of this page according to the issue id
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.query - The query parameters
-   *
-   * @return The comments
    *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments#get
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/meta/pagination
@@ -272,7 +255,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
         Authorization: `Bearer ${accessToken}`,
       };
     }
-    const { data } = await this.$http.get(
+    const { data } = await this.$http.get<ResponsePagination<ResponseComment>>(
       `repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`,
       options
     );
@@ -289,12 +272,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   /**
    * Create a new comment
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.content - The content of comment
-   *
-   * @return The created comment
-   *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments#post
    */
   async postComment({
@@ -306,7 +283,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     issueId: string | number;
     content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseComment>(
       `repositories/${this.owner}/${this.repo}/issues/${issueId}/comments`,
       {
         content: {
@@ -323,13 +300,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   /**
    * Edit a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.commentId - The id of comment
-   * @param options.content - The content of comment
-   *
-   * @return The edited comment
-   *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments/%7Bcomment_id%7D#put
    */
   async putComment({
@@ -343,7 +313,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     commentId: string | number;
     content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.put(
+    const { data } = await this.$http.put<ResponseComment>(
       `repositories/${this.owner}/${this.repo}/issues/${issueId}/comments/${commentId}`,
       {
         content: {
@@ -359,12 +329,6 @@ export default class BitbucketV2 implements VssueAPI.Instance {
 
   /**
    * Delete a comment
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.commentId - The id of comment
-   *
-   * @return `true` if succeed, `false` if failed
    *
    * @see https://developer.atlassian.com/bitbucket/api/2/reference/resource/repositories/%7Busername%7D/%7Brepo_slug%7D/issues/%7Bissue_id%7D/comments/%7Bcomment_id%7D#delete
    */
@@ -389,6 +353,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   /**
    * Bitbucket does not support reactions now
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getCommentReactions(options): Promise<VssueAPI.Reactions> {
     throw new Error('501 Not Implemented');
   }
@@ -396,6 +361,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   /**
    * Bitbucket does not support reactions now
    */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async postCommentReaction(options): Promise<boolean> {
     throw new Error('501 Not Implemented');
   }

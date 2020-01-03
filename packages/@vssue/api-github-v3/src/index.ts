@@ -12,6 +12,15 @@ import {
   mapReactionName,
 } from './utils';
 
+import {
+  ResponseAccessToken,
+  ResponseUser,
+  ResponseIssue,
+  ResponseComment,
+  ResponseReaction,
+  ResponseSearch,
+} from './types';
+
 /**
  * Github REST API v3
  *
@@ -106,8 +115,6 @@ export default class GithubV3 implements VssueAPI.Instance {
   /**
    * Handle authorization.
    *
-   * @return A string for access token, `null` for no authorization code
-   *
    * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/
    *
    * @remarks
@@ -135,10 +142,6 @@ export default class GithubV3 implements VssueAPI.Instance {
   /**
    * Get user access token via `code`
    *
-   * @param options.code - The code from the query
-   *
-   * @return User access token
-   *
    * @see https://developer.github.com/apps/building-oauth-apps/authorizing-oauth-apps/#2-users-are-redirected-back-to-your-site-by-github
    */
   async getAccessToken({ code }: { code: string }): Promise<string> {
@@ -149,7 +152,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     const originalURL = concatURL(this.baseURL, 'login/oauth/access_token');
     const proxyURL =
       typeof this.proxy === 'function' ? this.proxy(originalURL) : this.proxy;
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseAccessToken>(
       proxyURL,
       {
         client_id: this.clientId,
@@ -173,10 +176,6 @@ export default class GithubV3 implements VssueAPI.Instance {
   /**
    * Get the logged-in user with access token.
    *
-   * @param options.accessToken - User access token
-   *
-   * @return The user
-   *
    * @see https://developer.github.com/v3/users/#get-the-authenticated-user
    */
   async getUser({
@@ -184,7 +183,7 @@ export default class GithubV3 implements VssueAPI.Instance {
   }: {
     accessToken: VssueAPI.AccessToken;
   }): Promise<VssueAPI.User> {
-    const { data } = await this.$http.get('user', {
+    const { data } = await this.$http.get<ResponseUser>('user', {
       headers: { Authorization: `token ${accessToken}` },
     });
     return normalizeUser(data);
@@ -192,12 +191,6 @@ export default class GithubV3 implements VssueAPI.Instance {
 
   /**
    * Get issue of this page according to the issue id or the issue title
-   *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.issueTitle - The title of issue
-   *
-   * @return The raw response of issue
    *
    * @see https://developer.github.com/v3/issues/#list-issues-for-a-repository
    * @see https://developer.github.com/v3/issues/#get-a-single-issue
@@ -227,7 +220,7 @@ export default class GithubV3 implements VssueAPI.Instance {
           // to avoid caching
           timestamp: Date.now(),
         };
-        const { data } = await this.$http.get(
+        const { data } = await this.$http.get<ResponseIssue>(
           `repos/${this.owner}/${this.repo}/issues/${issueId}`,
           options
         );
@@ -250,7 +243,10 @@ export default class GithubV3 implements VssueAPI.Instance {
           ...this.labels.map(label => `label:${label}`),
         ].join(' '),
       };
-      const { data } = await this.$http.get(`search/issues`, options);
+      const { data } = await this.$http.get<ResponseSearch<ResponseIssue>>(
+        `search/issues`,
+        options
+      );
       const issue = data.items
         .map(normalizeIssue)
         .find(item => item.title === issueTitle);
@@ -260,12 +256,6 @@ export default class GithubV3 implements VssueAPI.Instance {
 
   /**
    * Create a new issue
-   *
-   * @param options.accessToken - User access token
-   * @param options.title - The title of issue
-   * @param options.content - The content of issue
-   *
-   * @return The created issue
    *
    * @see https://developer.github.com/v3/issues/#create-an-issue
    */
@@ -278,7 +268,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     title: string;
     content: string;
   }): Promise<VssueAPI.Issue> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseIssue>(
       `repos/${this.owner}/${this.repo}/issues`,
       {
         title,
@@ -295,12 +285,6 @@ export default class GithubV3 implements VssueAPI.Instance {
   /**
    * Get comments of this page according to the issue id
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.query - The query parameters
-   *
-   * @return The comments
-   *
    * @see https://developer.github.com/v3/issues/comments/#list-comments-on-an-issue
    * @see https://developer.github.com/v3/#pagination
    *
@@ -311,7 +295,7 @@ export default class GithubV3 implements VssueAPI.Instance {
   async getComments({
     accessToken,
     issueId,
-    query: { page = 1, perPage = 10, sort = 'desc' } = {},
+    query: { page = 1, perPage = 10 /*, sort = 'desc' */ } = {},
   }: {
     accessToken: VssueAPI.AccessToken;
     issueId: string | number;
@@ -354,11 +338,11 @@ export default class GithubV3 implements VssueAPI.Instance {
 
     // github v3 have to get the total count of comments by requesting the issue
     const [issueRes, commentsRes] = await Promise.all([
-      this.$http.get(
+      this.$http.get<ResponseIssue>(
         `repos/${this.owner}/${this.repo}/issues/${issueId}`,
         issueOptions
       ),
-      this.$http.get(
+      this.$http.get<ResponseComment[]>(
         `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
         commentsOptions
       ),
@@ -390,12 +374,6 @@ export default class GithubV3 implements VssueAPI.Instance {
   /**
    * Create a new comment
    *
-   * @param options.accessToken - User access token
-   * @param options.issueId - The id of issue
-   * @param options.content - The content of comment
-   *
-   * @return The created comment
-   *
    * @see https://developer.github.com/v3/issues/comments/#create-a-comment
    */
   async postComment({
@@ -407,7 +385,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     issueId: string | number;
     content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.post(
+    const { data } = await this.$http.post<ResponseComment>(
       `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
       {
         body: content,
@@ -429,12 +407,6 @@ export default class GithubV3 implements VssueAPI.Instance {
   /**
    * Edit a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.commentId - The id of comment
-   * @param options.content - The content of comment
-   *
-   * @return The edited comment
-   *
    * @see https://developer.github.com/v3/issues/comments/#edit-a-comment
    */
   async putComment({
@@ -447,7 +419,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     commentId: string | number;
     content: string;
   }): Promise<VssueAPI.Comment> {
-    const { data } = await this.$http.patch(
+    const { data } = await this.$http.patch<ResponseComment>(
       `repos/${this.owner}/${this.repo}/issues/comments/${commentId}`,
       {
         body: content,
@@ -468,11 +440,6 @@ export default class GithubV3 implements VssueAPI.Instance {
 
   /**
    * Delete a comment
-   *
-   * @param options.accessToken - User access token
-   * @param options.commentId - The id of comment
-   *
-   * @return `true` if succeed, `false` if failed
    *
    * @see https://developer.github.com/v3/issues/comments/#delete-a-comment
    */
@@ -496,11 +463,6 @@ export default class GithubV3 implements VssueAPI.Instance {
   /**
    * Get reactions of a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.commentId - The id of comment
-   *
-   * @return The comments
-   *
    * @see https://developer.github.com/v3/issues/comments/#get-a-single-comment
    * @see https://developer.github.com/v3/reactions/#list-reactions-for-an-issue-comment
    *
@@ -516,7 +478,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     issueId: string | number;
     commentId: string | number;
   }): Promise<VssueAPI.Reactions> {
-    const { data } = await this.$http.get(
+    const { data } = await this.$http.get<ResponseComment>(
       `repos/${this.owner}/${this.repo}/issues/comments/${commentId}`,
       {
         headers: {
@@ -531,12 +493,6 @@ export default class GithubV3 implements VssueAPI.Instance {
   /**
    * Create a new reaction of a comment
    *
-   * @param options.accessToken - User access token
-   * @param options.commentId - The id of comment
-   * @param options.reaction - The reaction
-   *
-   * @return `true` if succeed, `false` if already token
-   *
    * @see https://developer.github.com/v3/reactions/#create-reaction-for-an-issue-comment
    */
   async postCommentReaction({
@@ -549,7 +505,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     commentId: string | number;
     reaction: keyof VssueAPI.Reactions;
   }): Promise<boolean> {
-    const response = await this.$http.post(
+    const response = await this.$http.post<ResponseReaction>(
       `repos/${this.owner}/${this.repo}/issues/comments/${commentId}/reactions`,
       {
         content: mapReactionName(reaction),

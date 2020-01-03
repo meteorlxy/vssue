@@ -1,6 +1,7 @@
 import { VssueAPI } from 'vssue';
+import { ResponseUser, ResponseIssue, ResponseComment } from './types';
 
-export function normalizeUser(user): VssueAPI.User {
+export function normalizeUser(user: ResponseUser): VssueAPI.User {
   return {
     username: user.nickname,
     avatar: user.links.avatar.href,
@@ -8,7 +9,7 @@ export function normalizeUser(user): VssueAPI.User {
   };
 }
 
-export function normalizeIssue(issue): VssueAPI.Issue {
+export function normalizeIssue(issue: ResponseIssue): VssueAPI.Issue {
   return {
     id: issue.id,
     title: issue.title,
@@ -17,7 +18,7 @@ export function normalizeIssue(issue): VssueAPI.Issue {
   };
 }
 
-export function normalizeComment(comment: any): VssueAPI.Comment {
+export function normalizeComment(comment: ResponseComment): VssueAPI.Comment {
   return {
     id: comment.id,
     content: comment.content.html,
