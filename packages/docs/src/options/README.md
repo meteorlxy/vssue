@@ -9,18 +9,18 @@ sidebar: auto
 Vssue Options (type `VssueOptions`) is set when calling `Vue.use()`:
 
 ```js
-import Vue from 'vue'
-import Vssue from 'vssue'
+import Vue from 'vue';
+import Vssue from 'vssue';
 
 Vue.use(Vssue, {
   // Vssue Options
-})
+});
 ```
 
 ### api
 
-- __Type__: `VssueAPI.Constructor`
-- __Details__:
+- **Type**: `VssueAPI.Constructor`
+- **Details**:
 
   The constructor of the VssueAPI class that implements `VssueAPI.Instance` interface.
 
@@ -30,17 +30,17 @@ Vue.use(Vssue, {
 
   Check [Supported Platforms](../guide/supported-platforms.md) for available VssueAPI packages.
 
-- __Example__:
+- **Example**:
 
   ```js
-  import Vue from 'vue'
-  import Vssue from 'vssue'
-  import GithubV3 from '@vssue/api-github-v3'
+  import Vue from 'vue';
+  import Vssue from 'vssue';
+  import GithubV3 from '@vssue/api-github-v3';
 
   Vue.use(Vssue, {
     api: GithubV3,
     // Other Vssue Options
-  })
+  });
   ```
 
   ::: tip
@@ -51,40 +51,40 @@ Vue.use(Vssue, {
 
 ### owner
 
-- __Type__: `string`
-- __Details__:
+- **Type**: `string`
+- **Details**:
 
-  The owner's name of repository to store the issues and comments. Could be the name of a __user__ or an organization (__Github Organization__ / __Gitlab Group__ / __Bitbucket Team__).
+  The owner's name of repository to store the issues and comments. Could be the name of a **user** or an organization (**Github Organization** / **Gitlab Group** / **Bitbucket Team**).
 
   Together with `repo`, Vssue could locate the repository on the platform.
 
-- __Reference__: [repo](#repo)
+- **Reference**: [repo](#repo)
 
 ### repo
 
-- __Type__: `string`
-- __Details__:
+- **Type**: `string`
+- **Details**:
 
   The name of repository to store the issues and comments.
 
   Together with `owner`, Vssue could locate the repository on the platform.
 
-- __Reference__: [owner](#owner)
+- **Reference**: [owner](#owner)
 
 ::: tip
-The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
+The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}` ``:
 
 - Github: `https://github.com/${owner}/${repo}`
 - Gitlab: `https://gitlab.com/${owner}/${repo}`
 - Bitbucket: `https://bitbucket.org/${owner}/${repo}`
 - Gitee: `https://gitee.com/${owner}/${repo}`
 - Gitea: `https://gitea.com/${owner}/${repo}`
-:::
+  :::
 
 ### clientId
 
-- __Type__: `string`
-- __Details__:
+- **Type**: `string`
+- **Details**:
 
   The `client_id` introduced in [OAuth2 spec](https://tools.ietf.org/html/rfc6749#section-2.3.1).
 
@@ -92,14 +92,14 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
   Vssue will use it to get user's access token.
 
-- __Reference__:
+- **Reference**:
   - [Set up OAuth App](../guide/supported-platforms.md)
 
 ### clientSecret
 
-- __Type__: `string`
-- __Default__: `undefined`
-- __Details__:
+- **Type**: `string`
+- **Default**: `undefined`
+- **Details**:
 
   The `client_secret` introduced in [OAuth2 spec](https://tools.ietf.org/html/rfc6749#section-2.3.1).
 
@@ -113,16 +113,16 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   However, some platforms (e.g. GitHub, Gitee and Gitea) do not support it now, so `clientSecret` is required for those platforms.
   :::
 
-- __Reference__:
+- **Reference**:
   - [clientId](#clientid)
   - [proxy](#proxy)
   - [Set up OAuth App](../guide/supported-platforms.md)
 
 ### baseURL
 
-- __Type__: `string`
-- __Default__: `undefined` (according to the platform)
-- __Details__:
+- **Type**: `string`
+- **Default**: `undefined` (according to the platform)
+- **Details**:
 
   This is the base URL of your platform.
 
@@ -135,30 +135,30 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   - `'https://gitea.com'` for Gitea
 
   ::: warning ATTENTION
-  Only when you choose to use __self-hosted__ platform should you set this option. (e.g. __GitLab Community / Enterprise Edition__ or __GitHub Enterprise Server__)
+  Only when you choose to use **self-hosted** platform should you set this option. (e.g. **GitLab Community / Enterprise Edition** or **GitHub Enterprise Server**)
   :::
 
-- __Reference__:
+- **Reference**:
   - [GitHub OAuth App](../guide/github.md)
   - [GitLab Application](../guide/gitlab.md)
 
 ### state
 
-- __Type__: `string`
-- __Default__: `'Vssue'`
-- __Details__:
+- **Type**: `string`
+- **Default**: `'Vssue'`
+- **Details**:
 
   The `state` element introduced in [OAuth2 spec](https://tools.ietf.org/html/rfc6749#section-4.1.1).
-  
+
   Vssue will send it with OAuth redirection and check if it is matched in callback.
 
   It's designed for preventing [CSRF](https://tools.ietf.org/html/rfc6749#section-10.12), but it's not so useful here as we put everything in a static page. So just ignore it or set it to anything you like.
 
 ### labels
 
-- __Type__: `string`
-- __Default__: `['Vssue']`
-- __Details__:
+- **Type**: `string`
+- **Default**: `['Vssue']`
+- **Details**:
 
   To set the labels of issues that Vssue uses.
 
@@ -170,13 +170,13 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   Github supports emoji in labels' name, e.g. `[':heart:Vssue', ':mailbox:Comments']`.
   :::
 
-- __Reference__: [title](#title)
+- **Reference**: [title](#title)
 
 ### prefix
 
-- __Type__: `string`
-- __Default__: `'[Vssue]'`
-- __Details__:
+- **Type**: `string`
+- **Default**: `'[Vssue]'`
+- **Details**:
 
   The title prefix for issues. Used for generating the actual title of the corresponding issue.
 
@@ -184,13 +184,13 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
   It will be ignored if the type of `title` is `Function`.
 
-- __Reference__: [title](#title)
+- **Reference**: [title](#title)
 
 ### admins
 
-- __Type__: `Array<string>`
-- __Default__: `[]`
-- __Details__:
+- **Type**: `Array<string>`
+- **Default**: `[]`
+- **Details**:
 
   Array of username that has admin access to Vssue. The `owner` always has admin access.
 
@@ -202,21 +202,21 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   If you want to auto create the issue when the `owner` is a organization rather than a user, you can add your username into `admins`.
   :::
 
-- __Reference__: [owner](#owner)
+- **Reference**: [owner](#owner)
 
 ### perPage
 
-- __Type__: `number`
-- __Default__: `10`
-- __Details__:
+- **Type**: `number`
+- **Default**: `10`
+- **Details**:
 
   The default value of how many comments to show per page.
 
 ### locale
 
-- __Type__: `string`
-- __Default__: `undefined`
-- __Details__:
+- **Type**: `string`
+- **Default**: `undefined`
+- **Details**:
 
   The locale language.
 
@@ -238,48 +238,49 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
 ### proxy
 
-- __Type__: `string | ((url: string) => string)`
-- __Default__: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
-- __Details__:
+- **Type**: `string | ((url: string) => string)`
+- **Default**: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
+- **Details**:
 
   Some platforms (e.g. GitHub, Gitee and Gitea) do not support Implicit Grant, so we have to request the API of the platform to get the access token.
-  
+
   However, the access token API of the platforms do not support CORS (see [related issue of GitHub](https://github.com/isaacs/github/issues/330)). As Vssue is a pure front-end plugin, we have to use a proxy to request access token.
 
   By default, we use an open source CORS proxy service [cors-anywhere](https://github.com/Rob--W/cors-anywhere) for that.
-  
+
   If you want to use your own proxy, you need to set this option.
 
   If the platform you use does not require `clientSecret`, this option will be ignored.
 
-- __Example__:
+- **Example**:
 
   ```js
-  proxy: url => `https://your.cors.porxy?target=${url}`
+  proxy: url => `https://your.cors.porxy?target=${url}`;
   ```
 
-- __Reference__:
+- **Reference**:
   - [clientSecret](#clientsecret)
 
 ### issueContent
 
-- __Type__: `((param: { options: Vssue.Options, url: string }) => string | Promise<string>)`
-- __Default__: `({ url }) => url`
-- __Details__:
+- **Type**: `((param: { options: Vssue.Options, url: string }) => string | Promise<string>)`
+- **Default**: `({ url }) => url`
+- **Details**:
 
   The content of issue that auto created by Vssue.
 
   Vssue will use the return value of the function as the content.
-  
+
   The parameter includes two properties:
 
   - `options` is the options of Vssue.
   - `url` is the URL of current page, which is the default content.
 
-- __Example__:
+- **Example**:
 
   ```js
-  issueContent: ({ url }) => `This issue is auto created by Vssue to store comments of this page: ${url}`
+  issueContent: ({ url }) =>
+    `This issue is auto created by Vssue to store comments of this page: ${url}`;
   ```
 
   ::: tip
@@ -290,9 +291,9 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
 ### autoCreateIssue
 
-- __Type__: `boolean`
-- __Default__: `false`
-- __Details__:
+- **Type**: `boolean`
+- **Default**: `false`
+- **Details**:
 
   If `autoCreateIssue` is set to `true`, Vssue will try to create an issue automatically when the corresponding issue does not exist. Notice that if you have not logged-in, Vssue will redirect to the authorization page automatically.
 
@@ -300,12 +301,22 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
 
 ## Component Props
 
+Vssue component props are set when using `<Vssue />` component:
+
+```vue
+<!-- use title -->
+<Vssue title="Hello, Vssue!" :options="{ locale: 'en' }" />
+
+<!-- OR: use issueId -->
+<Vssue :issue-id="1" :options="{ locale: 'en' }" />
+```
+
 ### title
 
-- __Type__: `string | ((options: VssueOptions) => string)`
-- __Required__: `false`
-- __Default__: `` options => `${options.prefix}${document.title}` ``
-- __Details__:
+- **Type**: `string | ((options: VssueOptions) => string)`
+- **Required**: `false`
+- **Default**: `` options => `${options.prefix}${document.title}` ``
+- **Details**:
 
   The title of issue that used by this Vssue component.
 
@@ -316,24 +327,24 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   When trying to load comments, Vssue will request the corresponding issue according to `labels` and `title`. If the issue does not exist, Vssue will try to create a new issue with `title`, `issueContent` and `labels`.
 
   In other words, `labels` and `title` is the identifier of the corresponding issue.
-  
+
   So make sure that Vssue on different pages have different `title`s. Vssue with same `title` will correspond to the same issue, and share the same comments.
   :::
 
-- __Reference__:
+- **Reference**:
   - [prefix](#prefix)
   - [labels](#labels)
   - [issueContent](#issuecontent)
 
 ### issueId
 
-- __Type__: `string | number`
-- __Required__: `false`
-- __Default__: `null`
-- __Details__:
+- **Type**: `string | number`
+- **Required**: `false`
+- **Default**: `null`
+- **Details**:
 
   The id of issue that used by this Vssue component.
-  
+
   If `issueId` is set, these parameters will be ignored:
 
   - Options: `labels`, `prefix`, `issueContent` and `autoCreateIssue`
@@ -342,18 +353,18 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}`  ``:
   ::: danger ATTENTION
   If `issueId` is set, Vssue will use it to determine which issue to use directly, instead of requesting issues according to `labels` and `title`. This will make the initialization process faster.
 
-  In this case, however, you have to __create issues manually__. If the corresponding issue is not found, Vssue will not try to create a new issue for you. 
+  In this case, however, you have to **create issues manually**. If the corresponding issue is not found, Vssue will not try to create a new issue for you.
   :::
 
 ### options
 
-- __Type__: `Object` (`Partial<VssueOptions>`)
-- __Required__: `false`
-- __Default__: `{}`
-- __Details__:
+- **Type**: `Object` (`Partial<VssueOptions>`)
+- **Required**: `false`
+- **Default**: `{}`
+- **Details**:
 
   The properties in prop `options` will override those set by `Vue.use()`. Accepts all the properties in `VssueOptions`.
 
-  You can take the options set by `Vue.use()` as __global__ / __default__ options, and take the prop `options` as __local__ options.
+  You can take the options set by `Vue.use()` as **global** / **default** options, and take the prop `options` as **local** options.
 
-- __Reference__: [Vssue Options](#vssue-options)
+- **Reference**: [Vssue Options](#vssue-options)
