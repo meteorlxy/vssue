@@ -1,3 +1,10 @@
+## [1.4.3](https://github.com/meteorlxy/vssue/compare/v1.4.2...v1.4.3) (2020-03-26)
+
+### Bug Fixes
+
+- **api-github-v3:** handle 403 rate limit exceeded error ([4389035](https://github.com/meteorlxy/vssue/commit/438903509c7b26a87d90acdff0f4a83588bc930b))
+- **api-github-v3:** migrate deprecated delete reaction api ([5b52896](https://github.com/meteorlxy/vssue/commit/5b5289684c84bb58818caef2718056d588e50c58))
+
 ## [1.4.2](https://github.com/meteorlxy/vssue/compare/v1.4.1...v1.4.2) (2020-01-03)
 
 ### Bug Fixes
