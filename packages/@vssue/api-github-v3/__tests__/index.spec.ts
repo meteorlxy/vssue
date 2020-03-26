@@ -572,7 +572,11 @@ describe('methods', () => {
           )
         )
         .reply(200, fixtures.reaction)
-        .onDelete(new RegExp(`reactions/${reactionId}$`))
+        .onDelete(
+          new RegExp(
+            `repos/${options.owner}/${options.repo}/issues/comments/${commentId}/reactions/${reactionId}$`
+          )
+        )
         .reply(204);
 
       const success = (await API.postCommentReaction({
