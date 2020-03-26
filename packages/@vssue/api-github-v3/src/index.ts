@@ -83,6 +83,7 @@ export default class GithubV3 implements VssueAPI.Instance {
         // 403 rate limit exceeded in OPTIONS request will cause a Network Error
         // here we always treat Network Error as 403 rate limit exceeded
         // @see https://github.com/axios/axios/issues/838
+        /* istanbul ignore next */
         if (
           typeof error.response === 'undefined' &&
           error.message === 'Network Error'
