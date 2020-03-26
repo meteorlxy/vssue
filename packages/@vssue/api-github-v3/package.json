@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-github-v3",
-  "version": "1.4.0",
+  "version": "1.4.3",
   "description": "Vssue api for github v3",
   "keywords": [
     "comment",

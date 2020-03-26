@@ -1,6 +1,6 @@
 {
   "name": "vssue",
-  "version": "1.4.2",
+  "version": "1.4.3",
   "description": "A vue-powered issue-based comment plugin",
   "keywords": [
     "comment",
@@ -50,7 +50,7 @@
     "@vssue/api-bitbucket-v2": "^1.4.0",
     "@vssue/api-gitea-v1": "^1.4.2",
     "@vssue/api-gitee-v5": "^1.4.0",
-    "@vssue/api-github-v3": "^1.4.0",
+    "@vssue/api-github-v3": "^1.4.3",
     "@vssue/api-github-v4": "^1.4.0",
     "@vssue/api-gitlab-v4": "^1.4.0",
     "@vue/babel-preset-app": "^3.8.0",
