@@ -72,12 +72,28 @@ export default class GithubV3 implements VssueAPI.Instance {
       },
     });
 
-    this.$http.interceptors.response.use(response => {
-      if (response.data && response.data.error) {
-        return Promise.reject(new Error(response.data.error_description));
+    this.$http.interceptors.response.use(
+      response => {
+        if (response.data && response.data.error) {
+          return Promise.reject(new Error(response.data.error_description));
+        }
+        return response;
+      },
+      error => {
+        // 403 rate limit exceeded in OPTIONS request will cause a Network Error
+        // here we always treat Network Error as 403 rate limit exceeded
+        // @see https://github.com/axios/axios/issues/838
+        if (
+          typeof error.response === 'undefined' &&
+          error.message === 'Network Error'
+        ) {
+          error.response = {
+            status: 403,
+          };
+        }
+        return Promise.reject(error);
       }
-      return response;
-    });
+    );
   }
 
   /**
