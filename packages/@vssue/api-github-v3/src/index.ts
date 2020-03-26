@@ -522,6 +522,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     if (response.status === 200) {
       return this.deleteCommentReaction({
         accessToken,
+        commentId,
         reactionId: response.data.id,
       });
     }
@@ -537,17 +538,22 @@ export default class GithubV3 implements VssueAPI.Instance {
    */
   async deleteCommentReaction({
     accessToken,
+    commentId,
     reactionId,
   }: {
     accessToken: VssueAPI.AccessToken;
+    commentId: string | number;
     reactionId: string | number;
   }): Promise<boolean> {
-    const response = await this.$http.delete(`reactions/${reactionId}`, {
-      headers: {
-        Authorization: `token ${accessToken}`,
-        Accept: 'application/vnd.github.squirrel-girl-preview',
-      },
-    });
+    const response = await this.$http.delete(
+      `repos/${this.owner}/${this.repo}/issues/comments/${commentId}/reactions/${reactionId}`,
+      {
+        headers: {
+          Authorization: `token ${accessToken}`,
+          Accept: 'application/vnd.github.squirrel-girl-preview',
+        },
+      }
+    );
     return response.status === 204;
   }
 }
