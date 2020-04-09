@@ -37,7 +37,7 @@ module.exports = {
       clientSecret: 'YOUR_CLIENT_SECRET',
     },
   },
-}
+};
 ```
 
 ::: tip
@@ -51,12 +51,14 @@ module.exports = {
 - platform `bitbucket` - api 包 `@vssue/api-bitbucket-v2`
 - platform `gitee` - api 包 `@vssue/api-gitee-v5`
 - platform `gitea` - api 包 `@vssue/api-gitea-v1`
-:::
+  :::
 
 ::: tip
+
 如果你不设置 `locale`，Vssue 会自动使用 VuePress 的 `$lang` 作为当前页面的语言。
 
-> 参考 Vssue 的 [locale](../options/README.md#locale) 设置，以及 VuePress 的 [$lang](https://vuepress.vuejs.org/zh/guide/global-computed.html#lang) 属性。
+> 参考 Vssue 的 [locale](../options/README.md#locale) 设置，以及 VuePress 的 [\$lang](https://vuepress.vuejs.org/zh/guide/global-computed.html#lang) 属性。
+
 :::
 
 ### 使用 Vssue 组件
@@ -68,7 +70,7 @@ module.exports = {
 
 # Vssue Demo
 
-<Vssue title="Vssue Demo" />
+<Vssue :title="$title" />
 ```
 
 ::: tip

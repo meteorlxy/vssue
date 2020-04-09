@@ -37,7 +37,7 @@ module.exports = {
       clientSecret: 'YOUR_CLIENT_SECRET',
     },
   },
-}
+};
 ```
 
 ::: tip
@@ -51,12 +51,14 @@ The only difference is that, you should set `platform` rather than the `api` pac
 - platform `bitbucket` - api package `@vssue/api-bitbucket-v2`
 - platform `gitee` - api package `@vssue/api-gitee-v5`
 - platform `gitea` - api package `@vssue/api-gitea-v1`
-:::
+  :::
 
 ::: tip
+
 If you don't set the `locale` option, Vssue will use VuePress's `$lang` as the language of current page.
 
-> See [locale](../options/README.md#locale) of Vssue and [$lang](https://vuepress.vuejs.org/guide/global-computed.html#lang) of VuePress
+> See [locale](../options/README.md#locale) of Vssue and [\$lang](https://vuepress.vuejs.org/guide/global-computed.html#lang) of VuePress
+
 :::
 
 ### Use Vssue Component
@@ -68,7 +70,7 @@ If you don't set the `locale` option, Vssue will use VuePress's `$lang` as the l
 
 # Vssue Demo
 
-<Vssue title="Vssue Demo" />
+<Vssue :title="$title" />
 ```
 
 ::: tip
