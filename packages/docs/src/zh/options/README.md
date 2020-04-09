@@ -324,6 +324,10 @@ Vssue 组件 Props 是在使用 `<Vssue />` 组件时设置的：
   - 如果类型是 `string`，实际标题是 `` `${prefix}${title}` ``。
   - 如果类型是 `Function`，实际标题是函数的返回值。注意，这个函数的第一个参数是 Vssue 的 options，你可以通过它们来生成实际的标题。
 
+  ::: tip 提示
+  虽然 `title` 有默认值，但是我们建议你在 SPA 中明确设置 `title` 的值，否则在 SPA 的不同页面间切换时，Vue.js 可能会只使用同一个 Vssue 组件实例。当然，你也可以使用 [key](https://cn.vuejs.org/v2/api/#key) 来帮助 Vue.js 辨识组件。
+  :::
+
   ::: warning 注意
   Vssue 在尝试加载评论时，将会根据 `labels` 和 `title` 来请求对应的 Issue。如果这个 Issue 不存在，将会使用 `title` 、 `issueContent` 和 `labels` 来创建一个新的 Issue。
 

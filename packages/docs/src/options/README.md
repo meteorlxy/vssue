@@ -324,6 +324,10 @@ Vssue component props are set when using `<Vssue />` component:
   - If the type is `string`, the actual title of issue is `` `${prefix}${title}` ``.
   - If the type is `Function`, the actual title of issue is the return value of the function. Notice that the first parameter of the function is the options of Vssue, and you can use them to generate the actual title.
 
+  ::: tip
+  Although `title` has its default value, it's suggested to always set `title` explicitly in SPA, or Vue.js may always use the same Vssue component instance when navigating between different SPA pages. Alternatively, you can add [key](https://vuejs.org/v2/api/#key) to help Vue.js identify the components.
+  :::
+
   ::: warning ATTENTION
   When trying to load comments, Vssue will request the corresponding issue according to `labels` and `title`. If the issue does not exist, Vssue will try to create a new issue with `title`, `issueContent` and `labels`.
 
