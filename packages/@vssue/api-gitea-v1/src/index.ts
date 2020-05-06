@@ -448,7 +448,12 @@ export default class GiteaV1 implements VssueAPI.Instance {
     issueId: string | number;
     commentId: string | number;
   }): Promise<VssueAPI.Reactions> {
-    const options: AxiosRequestConfig = {};
+    const options: AxiosRequestConfig = {
+      params: {
+        // to avoid caching
+        timestamp: Date.now(),
+      },
+    };
     if (accessToken) {
       options.headers = {
         Authorization: `bearer ${accessToken}`,
@@ -533,7 +538,12 @@ export default class GiteaV1 implements VssueAPI.Instance {
   }: {
     accessToken: VssueAPI.AccessToken;
   }): Promise<ResponseLabel[]> {
-    const options: AxiosRequestConfig = {};
+    const options: AxiosRequestConfig = {
+      params: {
+        // to avoid caching
+        timestamp: Date.now(),
+      },
+    };
     if (accessToken) {
       options.headers = {
         Authorization: `bearer ${accessToken}`,
