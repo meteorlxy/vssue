@@ -1,3 +1,11 @@
+## [1.4.4](https://github.com/meteorlxy/vssue/compare/v1.4.3...v1.4.4) (2020-05-06)
+
+### Bug Fixes
+
+- **api-gitea-v1:** add timestamp to avoid caching ([5ce7114](https://github.com/meteorlxy/vssue/commit/5ce711404426986f4e286ce3d2f1db53bb5b4c1d))
+- **api-gitee-v5:** add timestamp to avoid caching ([e28ab03](https://github.com/meteorlxy/vssue/commit/e28ab03c69c449392de5156241311d41be5511ff))
+- **api-github-v3:** add timestamp to avoid caching (close [#91](https://github.com/meteorlxy/vssue/issues/91)) ([0ba5fd4](https://github.com/meteorlxy/vssue/commit/0ba5fd46752f5ca43ba22909d2a6c08b76269e36))
+
 ## [1.4.3](https://github.com/meteorlxy/vssue/compare/v1.4.2...v1.4.3) (2020-03-26)
 
 ### Bug Fixes
