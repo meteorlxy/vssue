@@ -259,6 +259,8 @@ export default class GithubV3 implements VssueAPI.Instance {
           `is:public`,
           ...this.labels.map(label => `label:${label}`),
         ].join(' '),
+        // to avoid caching
+        timestamp: Date.now(),
       };
       const { data } = await this.$http.get<ResponseSearch<ResponseIssue>>(
         `search/issues`,
@@ -498,6 +500,10 @@ export default class GithubV3 implements VssueAPI.Instance {
     const { data } = await this.$http.get<ResponseComment>(
       `repos/${this.owner}/${this.repo}/issues/comments/${commentId}`,
       {
+        params: {
+          // to avoid caching
+          timestamp: Date.now(),
+        },
         headers: {
           Authorization: `token ${accessToken}`,
           Accept: 'application/vnd.github.squirrel-girl-preview',
