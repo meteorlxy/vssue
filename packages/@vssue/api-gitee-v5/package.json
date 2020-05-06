@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-gitee-v5",
-  "version": "1.4.0",
+  "version": "1.4.4",
   "description": "Vssue api for gitee v5",
   "keywords": [
     "comment",
