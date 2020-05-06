@@ -180,7 +180,12 @@ export default class GiteeV5 implements VssueAPI.Instance {
     issueId?: string | number;
     issueTitle?: string;
   }): Promise<VssueAPI.Issue | null> {
-    const options: AxiosRequestConfig = { params: {} };
+    const options: AxiosRequestConfig = {
+      params: {
+        // to avoid caching
+        timestamp: Date.now(),
+      },
+    };
 
     if (accessToken) {
       options.params.access_token = accessToken;
@@ -268,6 +273,8 @@ export default class GiteeV5 implements VssueAPI.Instance {
         per_page: perPage,
         // 'sort': 'created',
         // 'direction': sort,
+        // to avoid caching
+        timestamp: Date.now(),
       },
       headers: {
         Accept: ['application/vnd.gitee.html+json'],
