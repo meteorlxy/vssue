@@ -86,7 +86,6 @@
   - 评论可以编辑
   - 评论可以删除
   - 可以不登录浏览评论
-  - 只支持 unicode emoji 表情 - [参考](https://github.com/go-gitea/gitea/issues/6628)
   - 只支持单个固定的回调地址 - [参考](https://github.com/go-gitea/gitea/issues/9514)
 - 开发者参考：
   - [官方文档](https://docs.gitea.io/zh-cn)

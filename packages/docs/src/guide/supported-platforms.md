@@ -86,7 +86,6 @@ Guide: [Set up Gitea Application](./gitea.md)
   - comments editable
   - comments deletable
   - can view comments without login
-  - only support unicode emoji - [Ref](https://github.com/go-gitea/gitea/issues/6628)
   - only support a single fixed redirect_uri - [Ref](https://github.com/go-gitea/gitea/issues/9514)
 - Developer Reference:
   - [Official Docs](https://docs.gitea.io/en-us)
