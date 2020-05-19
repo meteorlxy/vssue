@@ -9,7 +9,7 @@
     <!-- avatar -->
     <div class="vssue-comment-avatar">
       <a :href="author.homepage" :title="author.username" target="_blank">
-        <img :src="author.avatar" />
+        <img :src="author.avatar" :alt="author.username" />
       </a>
     </div>
 
