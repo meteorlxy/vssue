@@ -1,7 +1,7 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v1.4.4
+ * @version v1.4.5
  * @link https://vssue.js.org
  * @license MIT
  * @copyright 2018-2020 meteorlxy
@@ -161,6 +161,11 @@ var script$1 = Vue.extend({
             required: false,
             default: false,
         },
+        tag: {
+            type: String,
+            required: false,
+            default: 'div',
+        },
     },
     render(h, { props, children }) {
         return h(props.group ? 'TransitionGroup' : 'Transition', {
@@ -168,6 +173,7 @@ var script$1 = Vue.extend({
                 name: 'fade',
                 mode: 'out-in',
                 appear: true,
+                tag: props.tag,
             },
         }, children);
     },
@@ -429,7 +435,7 @@ const __vue_script__$3 = script$3;
 var __vue_render__$1 = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vssue-comment",class:{
     'vssue-comment-edit-mode': _vm.editMode,
     'vssue-comment-disabled': _vm.isDeletingComment || _vm.isPutingComment,
-  }},[_c('div',{staticClass:"vssue-comment-avatar"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_c('img',{attrs:{"src":_vm.author.avatar}})])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-body"},[_vm._t("body",[_c('div',{staticClass:"vssue-comment-header"},[_c('span',{staticClass:"vssue-comment-author"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_vm._v("\n            "+_vm._s(_vm.author.username)+"\n          ")])]),_vm._v(" "),_c('span',{staticClass:"vssue-comment-created-at"},[_vm._v("\n          "+_vm._s(_vm.createdAt)+"\n        ")])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-main"},[(_vm.editMode)?_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.editContent),expression:"editContent"}],ref:"input",staticClass:"vssue-edit-comment-input",attrs:{"rows":_vm.editInputRows},domProps:{"value":(_vm.editContent)},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }if(!$event.ctrlKey){ return null; }return _vm.putComment()},"input":function($event){if($event.target.composing){ return; }_vm.editContent=$event.target.value;}}}):_c('article',{staticClass:"markdown-body",domProps:{"innerHTML":_vm._s(_vm.content)}})]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-footer"},[(_vm.editMode)?_c('span',{staticClass:"vssue-comment-hint"},[_vm._v("\n          "+_vm._s(_vm.vssue.$t('editMode'))+"\n        ")]):_vm._e(),_vm._v(" "),(_vm.showReactions)?_c('span',{staticClass:"vssue-comment-reactions"},_vm._l((_vm.reactionKeys),function(reaction){return _c('span',{key:reaction,staticClass:"vssue-comment-reaction",attrs:{"title":_vm.vssue.$t(
+  }},[_c('div',{staticClass:"vssue-comment-avatar"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_c('img',{attrs:{"src":_vm.author.avatar,"alt":_vm.author.username}})])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-body"},[_vm._t("body",[_c('div',{staticClass:"vssue-comment-header"},[_c('span',{staticClass:"vssue-comment-author"},[_c('a',{attrs:{"href":_vm.author.homepage,"title":_vm.author.username,"target":"_blank"}},[_vm._v("\n            "+_vm._s(_vm.author.username)+"\n          ")])]),_vm._v(" "),_c('span',{staticClass:"vssue-comment-created-at"},[_vm._v("\n          "+_vm._s(_vm.createdAt)+"\n        ")])]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-main"},[(_vm.editMode)?_c('textarea',{directives:[{name:"model",rawName:"v-model",value:(_vm.editContent),expression:"editContent"}],ref:"input",staticClass:"vssue-edit-comment-input",attrs:{"rows":_vm.editInputRows},domProps:{"value":(_vm.editContent)},on:{"keyup":function($event){if(!$event.type.indexOf('key')&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }if(!$event.ctrlKey){ return null; }return _vm.putComment()},"input":function($event){if($event.target.composing){ return; }_vm.editContent=$event.target.value;}}}):_c('article',{staticClass:"markdown-body",domProps:{"innerHTML":_vm._s(_vm.content)}})]),_vm._v(" "),_c('div',{staticClass:"vssue-comment-footer"},[(_vm.editMode)?_c('span',{staticClass:"vssue-comment-hint"},[_vm._v("\n          "+_vm._s(_vm.vssue.$t('editMode'))+"\n        ")]):_vm._e(),_vm._v(" "),(_vm.showReactions)?_c('span',{staticClass:"vssue-comment-reactions"},_vm._l((_vm.reactionKeys),function(reaction){return _c('span',{key:reaction,staticClass:"vssue-comment-reaction",attrs:{"title":_vm.vssue.$t(
                 _vm.creatingReactions.includes(reaction) ? 'loading' : reaction
               )},on:{"click":function($event){return _vm.postReaction({ reaction: reaction })}}},[_c('VssueIcon',{attrs:{"name":_vm.creatingReactions.includes(reaction) ? 'loading' : reaction,"title":_vm.vssue.$t(
                   _vm.creatingReactions.includes(reaction) ? 'loading' : reaction
@@ -1350,7 +1356,7 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "1.4.4";
+        return "1.4.5";
     }
     get issueTitle() {
         if (this.options === null) {
@@ -1879,7 +1885,7 @@ var __vue_staticRenderFns__$9 = [];
 
 const VssuePlugin = {
     get version() {
-        return "1.4.4";
+        return "1.4.5";
     },
     installed: false,
     install(Vue, options) {
