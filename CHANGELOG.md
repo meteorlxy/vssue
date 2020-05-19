@@ -1,3 +1,10 @@
+## [1.4.5](https://github.com/meteorlxy/vssue/compare/v1.4.4...v1.4.5) (2020-05-19)
+
+### Bug Fixes
+
+- **vssue:** add alt for use avatar (close [#95](https://github.com/meteorlxy/vssue/issues/95)) ([f5b721c](https://github.com/meteorlxy/vssue/commit/f5b721c658881e8ea25158f1a0f1a3e3fb1e00b5))
+- **vssue:** use div tag for transition group (close [#95](https://github.com/meteorlxy/vssue/issues/95)) ([b229602](https://github.com/meteorlxy/vssue/commit/b229602b7e824cd69113de858d0d698893070176))
+
 ## [1.4.4](https://github.com/meteorlxy/vssue/compare/v1.4.3...v1.4.4) (2020-05-06)
 
 ### Bug Fixes
