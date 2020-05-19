@@ -12,6 +12,12 @@ export default Vue.extend({
       required: false,
       default: false,
     },
+
+    tag: {
+      type: String,
+      required: false,
+      default: 'div',
+    },
   },
 
   render(h, { props, children }) {
@@ -22,6 +28,7 @@ export default Vue.extend({
           name: 'fade',
           mode: 'out-in',
           appear: true,
+          tag: props.tag,
         },
       },
       children
