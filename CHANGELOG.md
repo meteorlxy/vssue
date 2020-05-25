@@ -1,3 +1,9 @@
+## [1.4.6](https://github.com/meteorlxy/vssue/compare/v1.4.5...v1.4.6) (2020-05-25)
+
+### Performance Improvements
+
+- **vssue:** improve accessibility (close [#96](https://github.com/meteorlxy/vssue/issues/96)) ([270b110](https://github.com/meteorlxy/vssue/commit/270b11056fb03035867ecc0b1d42affdb29d8020))
+
 ## [1.4.5](https://github.com/meteorlxy/vssue/compare/v1.4.4...v1.4.5) (2020-05-19)
 
 ### Bug Fixes
