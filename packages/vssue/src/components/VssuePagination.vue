@@ -1,19 +1,21 @@
 <template>
   <div class="vssue-pagination">
     <div class="vssue-pagination-per-page">
-      <select
-        v-model="perPage"
-        class="vssue-pagination-select"
-        :disabled="disabled"
-      >
-        <option v-for="val in perPageOptions" :key="val" :value="val">
-          {{ val }}
-        </option>
-      </select>
+      <label>
+        <select
+          v-model="perPage"
+          class="vssue-pagination-select"
+          :disabled="disabled"
+        >
+          <option v-for="val in perPageOptions" :key="val" :value="val">
+            {{ val }}
+          </option>
+        </select>
 
-      <span>
-        {{ vssue.$t('perPage') }}
-      </span>
+        <span>
+          {{ vssue.$t('perPage') }}
+        </span>
+      </label>
 
       <span
         v-if="vssue.API.platform.meta.sortable"
@@ -39,24 +41,26 @@
         v-text="`<`"
       />
 
-      <span>
-        {{ vssue.$t('page') }}
-      </span>
+      <label>
+        <span>
+          {{ vssue.$t('page') }}
+        </span>
 
-      <select
-        v-show="pageCount > 1"
-        v-model="page"
-        class="vssue-pagination-select"
-        :disabled="disabled"
-      >
-        <option v-for="val in pageCount" :key="val" :value="val">
-          {{ val }}
-        </option>
-      </select>
+        <select
+          v-show="pageCount > 1"
+          v-model="page"
+          class="vssue-pagination-select"
+          :disabled="disabled"
+        >
+          <option v-for="val in pageCount" :key="val" :value="val">
+            {{ val }}
+          </option>
+        </select>
 
-      <span v-show="pageCount < 2" v-text="page" />
+        <span v-show="pageCount < 2" v-text="page" />
 
-      <span v-text="` / ${pageCount} `" />
+        <span v-text="` / ${pageCount} `" />
+      </label>
 
       <span
         :class="{

@@ -5,6 +5,7 @@
       class="vssue-header-comments-count"
       :href="vssue.issue ? vssue.issue.link : null"
       target="_blank"
+      rel="noopener noreferrer"
     >
       <span>
         {{
@@ -24,10 +25,11 @@
       <span v-if="vssue.API">
         <a
           :href="vssue.API.platform.link"
-          target="_blank"
           :title="
             `${vssue.API.platform.name} API ${vssue.API.platform.version}`
           "
+          target="_blank"
+          rel="noopener noreferrer"
         >
           {{ vssue.API.platform.name }}
         </a>
@@ -37,8 +39,9 @@
 
       <a
         href="https://github.com/meteorlxy/vssue"
-        target="_blank"
         :title="`Vssue v${vssue.version}`"
+        target="_blank"
+        rel="noopener noreferrer"
       >
         Vssue
       </a>

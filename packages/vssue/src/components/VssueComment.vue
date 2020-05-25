@@ -8,7 +8,12 @@
   >
     <!-- avatar -->
     <div class="vssue-comment-avatar">
-      <a :href="author.homepage" :title="author.username" target="_blank">
+      <a
+        :href="author.homepage"
+        :title="author.username"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <img :src="author.avatar" :alt="author.username" />
       </a>
     </div>
@@ -19,7 +24,12 @@
         <div class="vssue-comment-header">
           <!-- author - username - link to profile page -->
           <span class="vssue-comment-author">
-            <a :href="author.homepage" :title="author.username" target="_blank">
+            <a
+              :href="author.homepage"
+              :title="author.username"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {{ author.username }}
             </a>
           </span>

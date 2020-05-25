@@ -6,8 +6,9 @@
         :href="user.homepage"
         :title="user.username"
         target="_blank"
+        rel="noopener noreferrer"
       >
-        <img :src="user.avatar" />
+        <img :src="user.avatar" :alt="user.username" />
       </a>
 
       <VssueIcon
@@ -28,6 +29,7 @@
         :disabled="isInputDisabled"
         :placeholder="vssue.$t(user ? 'placeholder' : 'noLoginPlaceHolder')"
         :spellcheck="false"
+        aria-label="leave a comment"
         @keyup.enter.ctrl="submit()"
       />
     </div>
