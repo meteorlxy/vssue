@@ -91,13 +91,17 @@ export default class GitlabV4 implements VssueAPI.Instance {
    * @see https://docs.gitlab.com/ce/api/oauth2.html#1-requesting-authorization-code
    */
   redirectAuth(): void {
+    const stateobj = {
+      state: this.state,
+      redirect_uri: window.location.href,
+    };
     window.location.href = buildURL(
       concatURL(this.baseURL, 'oauth/authorize'),
       {
         client_id: this.clientId,
-        redirect_uri: window.location.href,
+        redirect_uri: window.location.origin,
         response_type: 'token',
-        state: this.state,
+        state: btoa(JSON.stringify(stateobj)),
       }
     );
   }
@@ -112,7 +116,8 @@ export default class GitlabV4 implements VssueAPI.Instance {
    */
   async handleAuth(): Promise<VssueAPI.AccessToken> {
     const hash = parseQuery(window.location.hash.slice(1));
-    if (!hash.access_token || hash.state !== this.state) {
+    const stateobj = JSON.parse(atob(hash.state ? hash.state : btoa('{}')));
+    if (!stateobj.state) {
       return null;
     }
     const accessToken = hash.access_token;
@@ -120,12 +125,23 @@ export default class GitlabV4 implements VssueAPI.Instance {
     delete hash.token_type;
     delete hash.expires_in;
     delete hash.state;
-    const hashString = buildQuery(hash);
-    const newHash = hashString ? `#${hashString}` : '';
+    let hashString = buildQuery(hash);
+    hashString = hashString && hashString.length > 0 ? `#${hashString}` : '';
     const replaceURL = `${getCleanURL(window.location.href)}${
       window.location.search
-    }${newHash}`;
+    }${hashString}`;
     window.history.replaceState(null, '', replaceURL);
+    if (stateobj.redirect_uri) {
+      window.location.href = `${stateobj.redirect_uri}${hashString}`;
+    } else {
+      window.location.href = `${window.location.origin}${hashString}`;
+    }
+    if (stateobj.state !== this.state) {
+      return null;
+    }
+    if (!accessToken) {
+      return null;
+    }
     return accessToken;
   }
 
