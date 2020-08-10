@@ -230,6 +230,7 @@ Vue.use(Vssue, {
 
   - `'en'` (`'en-US'`)
   - `'zh'` (`'zh-CN'`)
+  - `'zh-TW'`
   - `'pt'` (`'pt-BR'`)
   - `'ja'` (`'ja-JP'`)
   - `'he'` (`'he-IL'`)
