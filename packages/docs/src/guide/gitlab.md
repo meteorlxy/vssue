@@ -11,7 +11,7 @@
 ->![Set up OAuth App - Gitlab 01](/assets/img/oauth-app-gitlab-01.png)<-
 ->![Set up OAuth App - Gitlab 02](/assets/img/oauth-app-gitlab-02.png)<-
 
-- Set the `Redirect URI` to your website URL (Here we take `localhost:8080` for example)
+- You must set the `Redirect URI` one by one to all of your website URLs (Here we take `localhost:8080` for example)
 - Select `api` scope
 
 ->![Set up OAuth App - Gitlab 03](/assets/img/oauth-app-gitlab-03.png)<-
