@@ -1,6 +1,6 @@
 {
   "name": "vssue",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "A vue-powered issue-based comment plugin",
   "keywords": [
     "comment",
@@ -33,7 +33,7 @@
     "staging": "cross-env NODE_ENV=production vue-cli-service serve ./dev/main.ts --mode staging"
   },
   "dependencies": {
-    "@vssue/utils": "^1.4.0",
+    "@vssue/utils": "^1.4.7",
     "github-markdown-css": "^3.0.1",
     "vue": "^2.6.10",
     "vue-i18n": "^8.11.2",
@@ -47,12 +47,12 @@
     "@rollup/plugin-node-resolve": "^6.0.0",
     "@rollup/plugin-replace": "^2.3.0",
     "@rollup/plugin-typescript": "^2.0.1",
-    "@vssue/api-bitbucket-v2": "^1.4.0",
-    "@vssue/api-gitea-v1": "^1.4.4",
-    "@vssue/api-gitee-v5": "^1.4.4",
-    "@vssue/api-github-v3": "^1.4.4",
-    "@vssue/api-github-v4": "^1.4.0",
-    "@vssue/api-gitlab-v4": "^1.4.0",
+    "@vssue/api-bitbucket-v2": "^1.4.7",
+    "@vssue/api-gitea-v1": "^1.4.7",
+    "@vssue/api-gitee-v5": "^1.4.7",
+    "@vssue/api-github-v3": "^1.4.7",
+    "@vssue/api-github-v4": "^1.4.7",
+    "@vssue/api-gitlab-v4": "^1.4.7",
     "@vue/babel-preset-app": "^3.8.0",
     "@vue/cli-plugin-babel": "^4.1.2",
     "@vue/cli-plugin-eslint": "^4.1.2",

@@ -1,6 +1,6 @@
 {
   "name": "@vssue/api-gitee-v5",
-  "version": "1.4.4",
+  "version": "1.4.7",
   "description": "Vssue api for gitee v5",
   "keywords": [
     "comment",
@@ -26,7 +26,7 @@
     "build": "rimraf lib && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@vssue/utils": "^1.4.0",
+    "@vssue/utils": "^1.4.7",
     "axios": "^0.21.1"
   },
   "devDependencies": {

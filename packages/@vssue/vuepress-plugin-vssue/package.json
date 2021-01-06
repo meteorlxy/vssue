@@ -1,6 +1,6 @@
 {
   "name": "@vssue/vuepress-plugin-vssue",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "description": "Vuepress plugin for vssue",
   "keywords": [
     "comment",
@@ -27,7 +27,7 @@
     "build": "rimraf lib && tsc -p tsconfig.json"
   },
   "dependencies": {
-    "vssue": "^1.4.6"
+    "vssue": "^1.4.7"
   },
   "devDependencies": {
     "vuepress-types": "^0.6.0"

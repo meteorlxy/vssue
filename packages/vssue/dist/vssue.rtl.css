@@ -1,10 +1,10 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v1.4.6
+ * @version v1.4.7
  * @link https://vssue.js.org
  * @license MIT
- * @copyright 2018-2020 meteorlxy
+ * @copyright 2018-2021 meteorlxy
  */
 .clearfix::after,
 .vssue .vssue-new-comment .vssue-new-comment-footer::after {

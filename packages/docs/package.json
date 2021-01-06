@@ -1,18 +1,18 @@
 {
   "name": "docs",
-  "version": "1.4.6",
+  "version": "1.4.7",
   "private": true,
   "scripts": {
     "build": "vuepress build src -d dist",
     "dev": "vuepress dev src"
   },
   "dependencies": {
-    "@vssue/api-bitbucket-v2": "^1.4.0",
-    "@vssue/api-gitee-v5": "^1.4.4",
-    "@vssue/api-github-v3": "^1.4.4",
-    "@vssue/api-github-v4": "^1.4.0",
-    "@vssue/api-gitlab-v4": "^1.4.0",
-    "@vssue/vuepress-plugin-vssue": "^1.4.6",
+    "@vssue/api-bitbucket-v2": "^1.4.7",
+    "@vssue/api-gitee-v5": "^1.4.7",
+    "@vssue/api-github-v3": "^1.4.7",
+    "@vssue/api-github-v4": "^1.4.7",
+    "@vssue/api-gitlab-v4": "^1.4.7",
+    "@vssue/vuepress-plugin-vssue": "^1.4.7",
     "@vuepress/plugin-back-to-top": "^1.5.0",
     "@vuepress/plugin-google-analytics": "1.5.0",
     "@vuepress/plugin-pwa": "^1.5.0",
