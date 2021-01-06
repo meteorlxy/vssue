@@ -1,3 +1,5 @@
+## [1.4.7](https://github.com/meteorlxy/vssue/compare/v1.4.6...v1.4.7) (2021-01-06)
+
 ## [1.4.6](https://github.com/meteorlxy/vssue/compare/v1.4.5...v1.4.6) (2020-05-25)
 
 ### Performance Improvements
