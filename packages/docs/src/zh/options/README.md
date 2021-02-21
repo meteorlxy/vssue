@@ -233,6 +233,7 @@ Vue.use(Vssue, {
   - `'pt'` (`'pt-BR'`)
   - `'ja'` (`'ja-JP'`)
   - `'he'` (`'he-IL'`)
+  - `'fr'` (`'fr-FR'`)
 
   欢迎贡献代码帮助 Vssue 支持更多语言。
   :::
