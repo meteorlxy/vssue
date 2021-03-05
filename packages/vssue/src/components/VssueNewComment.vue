@@ -8,7 +8,10 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img :src="user.avatar" :alt="user.username" />
+        <img
+          :src="user.avatar || require('../image/no_avatar.png')"
+          :alt="user.username"
+        />
       </a>
 
       <VssueIcon

@@ -14,7 +14,10 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img :src="author.avatar" :alt="author.username" />
+        <img
+          :src="author.avatar || require('../image/no_avatar.png')"
+          :alt="author.username"
+        />
       </a>
     </div>
 
