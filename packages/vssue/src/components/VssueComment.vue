@@ -15,7 +15,10 @@
         rel="noopener noreferrer"
       >
         <img
-          :src="author.avatar||'https://user-images.githubusercontent.com/41603959/110079354-f9531b00-7dc3-11eb-866a-a31d71d1dc8e.png'"
+          :src="
+            author.avatar ||
+              'https://user-images.githubusercontent.com/41603959/110079354-f9531b00-7dc3-11eb-866a-a31d71d1dc8e.png'
+          "
           :alt="author.username"
         />
       </a>
@@ -162,8 +165,6 @@ import { Vue, Component, Prop, Inject } from 'vue-property-decorator';
 import { VssueAPI, Vssue } from 'vssue';
 import { formatDateTime } from '@vssue/utils';
 import VssueIcon from './VssueIcon.vue';
-
-import {icon} from '../image/index'
 
 @Component({
   components: {
