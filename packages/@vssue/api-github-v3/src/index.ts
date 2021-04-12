@@ -107,7 +107,7 @@ export default class GithubV3 implements VssueAPI.Instance {
       version: 'v3',
       meta: {
         reactable: true,
-        sortable: false,
+        sortable: true,
       },
     };
   }
@@ -308,13 +308,13 @@ export default class GithubV3 implements VssueAPI.Instance {
    * @see https://developer.github.com/v3/#pagination
    *
    * @remarks
-   * Github V3 does not support sort for issue comments now.
+   * Github V3 does not support sort for issue comments now, but we could do the math.
    * Github V3 have to request the parent issue to get the count of comments.
    */
   async getComments({
     accessToken,
     issueId,
-    query: { page = 1, perPage = 10 /*, sort = 'desc' */ } = {},
+    query: { page = 1, perPage = 10, sort = 'desc' } = {},
   }: {
     accessToken: VssueAPI.AccessToken;
     issueId: string | number;
@@ -353,6 +353,67 @@ export default class GithubV3 implements VssueAPI.Instance {
         Authorization: `token ${accessToken}`,
       };
       commentsOptions.headers.Authorization = `token ${accessToken}`;
+    }
+
+    // although github doesn't support sort = 'desc' not, we still could do the math!
+    if (sort === 'desc') {
+      const issueRes = await this.$http.get<ResponseIssue>(
+        `repos/${this.owner}/${this.repo}/issues/${issueId}`,
+        issueOptions
+      );
+      const totalCount = Number(issueRes.data.comments);
+      const totalPage = Math.ceil(totalCount / perPage);
+      const lastPageCount = totalCount % perPage;
+      const ascPage = totalPage - page + 1;
+      if (
+        totalPage === 1 || // of course...
+        lastPageCount === 0 || // only need to get 1 page
+        page >= totalPage // last page
+      ) {
+        commentsOptions.params.page = ascPage;
+        if (page >= totalPage) {
+          commentsOptions.params.per_page =
+            lastPageCount === 0 ? perPage : lastPageCount;
+        }
+        const commentsRes = await this.$http.get<ResponseComment[]>(
+          `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
+          commentsOptions
+        );
+        commentsRes.data = commentsRes.data.reverse();
+        return {
+          count: totalCount,
+          page,
+          perPage,
+          data: commentsRes.data.map(normalizeComment),
+        };
+      } else {
+        const [commentsRes1, commentsRes2] = await Promise.all([
+          this.$http.get<ResponseComment[]>(
+            `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
+            {
+              params: { ...commentsOptions.params, page: ascPage },
+              headers: commentsOptions.headers,
+            }
+          ),
+          this.$http.get<ResponseComment[]>(
+            `repos/${this.owner}/${this.repo}/issues/${issueId}/comments`,
+            {
+              params: { ...commentsOptions.params, page: ascPage - 1 },
+              headers: commentsOptions.headers,
+            }
+          ),
+        ]);
+        const data = commentsRes1.data.splice(0, lastPageCount).reverse();
+        data.push(
+          ...commentsRes2.data.reverse().splice(0, perPage - lastPageCount)
+        );
+        return {
+          count: totalCount,
+          page,
+          perPage,
+          data: data.map(normalizeComment),
+        };
+      }
     }
 
     // github v3 have to get the total count of comments by requesting the issue
