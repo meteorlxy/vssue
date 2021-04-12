@@ -355,7 +355,7 @@ export default class GithubV3 implements VssueAPI.Instance {
       commentsOptions.headers.Authorization = `token ${accessToken}`;
     }
 
-    // although github doesn't support sort = 'desc' not, we still could do the math!
+    // Although github doesn't support sort, we still could do the math!
     if (sort === 'desc') {
       const issueRes = await this.$http.get<ResponseIssue>(
         `repos/${this.owner}/${this.repo}/issues/${issueId}`,
