@@ -1,3 +1,9 @@
+## [1.4.8](https://github.com/meteorlxy/vssue/compare/v1.4.7...v1.4.8) (2021-04-23)
+
+### Bug Fixes
+
+- **vssue:** switch default cors proxy (close [#130](https://github.com/meteorlxy/vssue/issues/130), close [#131](https://github.com/meteorlxy/vssue/issues/131)) ([b80aba7](https://github.com/meteorlxy/vssue/commit/b80aba7977a0156892c940c2e5a7b7078118b8a4))
+
 ## [1.4.7](https://github.com/meteorlxy/vssue/compare/v1.4.6...v1.4.7) (2021-01-06)
 
 ## [1.4.6](https://github.com/meteorlxy/vssue/compare/v1.4.5...v1.4.6) (2020-05-25)
