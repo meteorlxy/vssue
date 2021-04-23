@@ -240,7 +240,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}` ``:
 ### proxy
 
 - **Type**: `string | ((url: string) => string)`
-- **Default**: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
+- **Default**: `` url => `https://cors-anywhere.azm.workers.dev/${url}` ``
 - **Details**:
 
   Some platforms (e.g. GitHub, Gitee and Gitea) do not support Implicit Grant, so we have to request the API of the platform to get the access token.

@@ -240,7 +240,7 @@ Vue.use(Vssue, {
 ### proxy
 
 - **类型**: `string | ((url: string) => string)`
-- **默认值**: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
+- **默认值**: `` url => `https://cors-anywhere.azm.workers.dev/${url}` ``
 - **详细**:
 
   某些平台（如 GitHub, Gitee 和 Gitea）不支持 Implicit Grant，所以我们必须通过请求平台的 API 来获取 Access Token。

@@ -20,7 +20,7 @@ const options: Partial<Vssue.Options> = {
   prefix: '[Vssue]',
   admins: [],
   perPage: 5,
-  proxy: url => `https://cors-anywhere.herokuapp.com/${url}`,
+  proxy: url => `https://cors-anywhere.azm.workers.dev/${url}`,
   issueContent: ({ url }) => url,
   autoCreateIssue: false,
 };

@@ -110,7 +110,7 @@ class VssueStore extends Vue implements Vssue.Store {
         admins: [],
         perPage: 10,
         proxy: (url: string): string =>
-          `https://cors-anywhere.herokuapp.com/${url}`,
+          `https://cors-anywhere.azm.workers.dev/${url}`,
         issueContent: ({ url }): string => url,
         autoCreateIssue: false,
       },
