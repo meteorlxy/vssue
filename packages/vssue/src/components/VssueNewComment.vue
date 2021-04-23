@@ -8,7 +8,13 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        <img :src="user.avatar" :alt="user.username" />
+        <img
+          :src="
+            user.avatar ||
+              'https://user-images.githubusercontent.com/41603959/110079354-f9531b00-7dc3-11eb-866a-a31d71d1dc8e.png'
+          "
+          :alt="user.username"
+        />
       </a>
 
       <VssueIcon
