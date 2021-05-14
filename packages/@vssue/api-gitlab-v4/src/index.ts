@@ -38,6 +38,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
   repo: string;
   labels: Array<string>;
   clientId: string;
+  redirectUri: string;
   state: string;
   $http: AxiosInstance;
 
@@ -49,6 +50,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     repo,
     labels,
     clientId,
+    redirectUri = window.location.href,
     state,
   }: VssueAPI.Options) {
     this.baseURL = baseURL;
@@ -57,6 +59,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
     this.labels = labels;
 
     this.clientId = clientId;
+    this.redirectUri = redirectUri;
     this.state = state;
 
     // @see https://docs.gitlab.com/ce/api/README.html#namespaced-path-encoding
@@ -95,7 +98,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
       concatURL(this.baseURL, 'oauth/authorize'),
       {
         client_id: this.clientId,
-        redirect_uri: window.location.href,
+        redirect_uri: this.redirectUri,
         response_type: 'token',
         state: this.state,
       }

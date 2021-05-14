@@ -30,6 +30,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
   owner: string;
   repo: string;
   clientId: string;
+  redirectUri: string;
   state: string;
   $http: AxiosInstance;
 
@@ -38,6 +39,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     owner,
     repo,
     clientId,
+    redirectUri = window.location.href,
     state,
   }: VssueAPI.Options) {
     this.baseURL = baseURL;
@@ -45,6 +47,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
     this.repo = repo;
 
     this.clientId = clientId;
+    this.redirectUri = redirectUri;
     this.state = state;
 
     this.$http = axios.create({
@@ -80,7 +83,7 @@ export default class BitbucketV2 implements VssueAPI.Instance {
       concatURL(this.baseURL, 'site/oauth2/authorize'),
       {
         client_id: this.clientId,
-        redirect_uri: window.location.href,
+        redirect_uri: this.redirectUri,
         response_type: 'token',
         state: this.state,
       }

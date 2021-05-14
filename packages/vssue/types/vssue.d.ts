@@ -9,6 +9,7 @@ export namespace Vssue {
     repo: string;
     clientId: string;
     clientSecret: string;
+    redirectUri: string;
     baseURL: string;
     state: string;
     labels: Array<string>;

@@ -34,6 +34,7 @@ export default class GithubV3 implements VssueAPI.Instance {
   labels: Array<string>;
   clientId: string;
   clientSecret: string;
+  redirectUri: string;
   state: string;
   proxy: string | ((url: string) => string);
   $http: AxiosInstance;
@@ -45,6 +46,7 @@ export default class GithubV3 implements VssueAPI.Instance {
     labels,
     clientId,
     clientSecret,
+    redirectUri = window.location.href,
     state,
     proxy,
   }: VssueAPI.Options) {
@@ -59,6 +61,7 @@ export default class GithubV3 implements VssueAPI.Instance {
 
     this.clientId = clientId;
     this.clientSecret = clientSecret;
+    this.redirectUri = redirectUri;
     this.state = state;
     this.proxy = proxy;
 
@@ -122,7 +125,7 @@ export default class GithubV3 implements VssueAPI.Instance {
       concatURL(this.baseURL, 'login/oauth/authorize'),
       {
         client_id: this.clientId,
-        redirect_uri: window.location.href,
+        redirect_uri: this.redirectUri,
         scope: 'public_repo',
         state: this.state,
       }

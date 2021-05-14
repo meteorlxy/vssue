@@ -198,6 +198,7 @@ class VssueStore extends Vue implements Vssue.Store {
         repo: this.options.repo,
         clientId: this.options.clientId,
         clientSecret: this.options.clientSecret,
+        redirectUri: this.options.redirectUri,
         proxy: this.options.proxy,
       });
 
