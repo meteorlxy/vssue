@@ -229,8 +229,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}` ``:
   Language packages locate in [src/i18n/langs](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/src/i18n/langs) directory. Currently we have supported:
 
   - `'en'` (`'en-US'`)
-  - `'zh'` (`'zh-CN'`)
-  - `'zh-TW'`
+  - `'zh'` (`'zh-CN'`, `'zh-TW'`)
   - `'pt'` (`'pt-BR'`)
   - `'ja'` (`'ja-JP'`)
   - `'he'` (`'he-IL'`)
