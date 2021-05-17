@@ -229,8 +229,7 @@ Vue.use(Vssue, {
   语言包在 [src/i18n/langs](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/src/i18n/langs) 目录下。目前我们支持：
 
   - `'en'` (`'en-US'`)
-  - `'zh'` (`'zh-CN'`)
-  - `'zh-TW'`
+  - `'zh'` (`'zh-CN'`, `'zh-TW'`)
   - `'pt'` (`'pt-BR'`)
   - `'ja'` (`'ja-JP'`)
   - `'he'` (`'he-IL'`)
