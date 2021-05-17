@@ -229,11 +229,12 @@ Vue.use(Vssue, {
   语言包在 [src/i18n/langs](https://github.com/meteorlxy/vssue/tree/master/packages/vssue/src/i18n/langs) 目录下。目前我们支持：
 
   - `'en'` (`'en-US'`)
-  - `'zh'` (`'zh-CN'`)
+  - `'zh'` (`'zh-CN'`, `'zh-TW'`)
   - `'pt'` (`'pt-BR'`)
   - `'ja'` (`'ja-JP'`)
   - `'he'` (`'he-IL'`)
   - `'ko'` (`'ko-KR'`)
+  - `'fr'` (`'fr-FR'`)
 
   欢迎贡献代码帮助 Vssue 支持更多语言。
   :::
@@ -241,7 +242,7 @@ Vue.use(Vssue, {
 ### proxy
 
 - **类型**: `string | ((url: string) => string)`
-- **默认值**: `` url => `https://cors-anywhere.herokuapp.com/${url}` ``
+- **默认值**: `` url => `https://cors-anywhere.azm.workers.dev/${url}` ``
 - **详细**:
 
   某些平台（如 GitHub, Gitee 和 Gitea）不支持 Implicit Grant，所以我们必须通过请求平台的 API 来获取 Access Token。

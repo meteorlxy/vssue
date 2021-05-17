@@ -1,10 +1,10 @@
 /*!
  * vssue - A vue-powered issue-based comment plugin
  *
- * @version v1.4.6
+ * @version v1.4.8
  * @link https://vssue.js.org
  * @license MIT
- * @copyright 2018-2020 meteorlxy
+ * @copyright 2018-2021 meteorlxy
  */
 
 import { Prop, Inject, Component, Vue as Vue$1, Watch, Provide } from 'vue-property-decorator';
@@ -1356,7 +1356,7 @@ let VssueStore = class VssueStore extends Vue$1 {
         this.isUpdatingComment = false;
     }
     get version() {
-        return "1.4.6";
+        return "1.4.8";
     }
     get issueTitle() {
         if (this.options === null) {
@@ -1404,7 +1404,7 @@ let VssueStore = class VssueStore extends Vue$1 {
             prefix: '[Vssue]',
             admins: [],
             perPage: 10,
-            proxy: (url) => `https://cors-anywhere.herokuapp.com/${url}`,
+            proxy: (url) => `https://cors-anywhere.azm.workers.dev/${url}`,
             issueContent: ({ url }) => url,
             autoCreateIssue: false,
         }, options);
@@ -1885,7 +1885,7 @@ var __vue_staticRenderFns__$9 = [];
 
 const VssuePlugin = {
     get version() {
-        return "1.4.6";
+        return "1.4.8";
     },
     installed: false,
     install(Vue, options) {
