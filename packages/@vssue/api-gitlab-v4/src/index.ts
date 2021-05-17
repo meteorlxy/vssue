@@ -397,7 +397,7 @@ export default class GitlabV4 implements VssueAPI.Instance {
   /**
    * Get reactions of a comment
    *
-   * @see https://docs.gitlab.com/ce/api/award_emoji.html#list-an-awardables-award-emoji
+   * @see https://docs.gitlab.com/ce/api/award_emoji.html#list-a-comments-award-emoji
    */
   async getCommentReactions({
     accessToken,
@@ -420,13 +420,13 @@ export default class GitlabV4 implements VssueAPI.Instance {
   /**
    * Create a new reaction of a comment
    *
-   * @see https://docs.gitlab.com/ce/api/award_emoji.html#award-a-new-emoji
+   * @see https://docs.gitlab.com/ce/api/award_emoji.html#award-a-new-emoji-on-a-comment
    */
   async postCommentReaction({
+    accessToken,
     issueId,
     commentId,
     reaction,
-    accessToken,
   }: {
     accessToken: VssueAPI.AccessToken;
     issueId: string | number;
@@ -445,11 +445,24 @@ export default class GitlabV4 implements VssueAPI.Instance {
           },
         }
       );
+
+      // 200 OK if the reaction is already token
+      // TODO: https://gitlab.com/gitlab-org/gitlab/-/issues/26060
+      if (response.status === 200) {
+        return this.deleteCommentReaction({
+          accessToken,
+          issueId,
+          commentId,
+          reactionId: response.data.id,
+        });
+      }
+
+      // 201 CREATED
       return response.status === 201;
     } catch (e) {
-      // it could be a bug of gitlab
+      // this is a bug of gitlab
       // if a reaction (award emoji) has already existed, it returns a 404 response with a buggy message
-      // have submitted an issue: https://gitlab.com/gitlab-org/gitlab-ce/issues/56147
+      // TODO: https://gitlab.com/gitlab-org/gitlab/-/issues/26060
       /* istanbul ignore next */
       if (e.response && e.response.status === 404) {
         return false;
@@ -457,6 +470,33 @@ export default class GitlabV4 implements VssueAPI.Instance {
         throw e;
       }
     }
+  }
+
+  /**
+   * Delete a reaction of a comment
+   *
+   * @see https://docs.gitlab.com/ce/api/award_emoji.html#delete-an-award-emoji-from-a-comment
+   */
+  async deleteCommentReaction({
+    accessToken,
+    issueId,
+    commentId,
+    reactionId,
+  }: {
+    accessToken: VssueAPI.AccessToken;
+    issueId: string | number;
+    commentId: string | number;
+    reactionId: string | number;
+  }): Promise<boolean> {
+    const response = await this.$http.delete(
+      `projects/${this._encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji/${reactionId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+    return response.status === 204;
   }
 
   /**
