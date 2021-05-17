@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueI18n from 'vue-i18n';
 import enUS from './langs/en-US';
 import zhCN from './langs/zh-CN';
+import zhTW from './langs/zh-TW';
 import ptBR from './langs/pt-BR';
 import jaJP from './langs/ja-JP';
 import heIL from './langs/he-IL';
@@ -19,6 +20,7 @@ const i18n: VueI18n = new VueI18n({
     'en-US': enUS,
     zh: zhCN,
     'zh-CN': zhCN,
+    'zh-TW': zhTW,
     pt: ptBR,
     'pt-BR': ptBR,
     ja: jaJP,
