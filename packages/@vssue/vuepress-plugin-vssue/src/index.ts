@@ -10,6 +10,7 @@ module.exports = ({ platform = 'github', ...options }): Plugin => {
     gitlab: '@vssue/api-gitlab-v4',
     bitbucket: '@vssue/api-bitbucket-v2',
     gitee: '@vssue/api-gitee-v5',
+    gitea: '@vssue/api-gitea-v1'
   };
 
   const apiPkg = platformAPI[platform];
