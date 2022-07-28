@@ -1,5 +1,10 @@
 <template>
   <div class="vssue">
+    <script
+      type="application/javascript"
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML"
+    ></script>
     <!-- iconfont -->
     <Iconfont />
 

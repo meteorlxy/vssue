@@ -52,7 +52,8 @@
           />
 
           <!-- eslint-disable vue/no-v-html -->
-          <article v-else class="markdown-body" v-html="content" />
+          <article v-else class="markdown-body" />
+          <vue-mathjax :formula="content" :safe="false"></vue-mathjax>
           <!-- eslint-enable vue/no-v-html -->
         </div>
 
@@ -159,10 +160,12 @@ import { Vue, Component, Prop, Inject } from 'vue-property-decorator';
 import { VssueAPI, Vssue } from 'vssue';
 import { formatDateTime } from '@vssue/utils';
 import VssueIcon from './VssueIcon.vue';
+import { VueMathjax } from 'vue-mathjax';
 
 @Component({
   components: {
     VssueIcon,
+    'vue-mathjax': VueMathjax,
   },
 })
 export default class VssueComment extends Vue {
