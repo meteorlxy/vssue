@@ -235,6 +235,7 @@ Vue.use(Vssue, {
   - `'he'` (`'he-IL'`)
   - `'ko'` (`'ko-KR'`)
   - `'fr'` (`'fr-FR'`)
+  - `'id'` (`'id-ID'`)
 
   欢迎贡献代码帮助 Vssue 支持更多语言。
   :::

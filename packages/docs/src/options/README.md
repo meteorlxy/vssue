@@ -235,6 +235,7 @@ The common pattern of repository's URL is `` `${baseURL}/${owner}/${repo}` ``:
   - `'he'` (`'he-IL'`)
   - `'ko'` (`'ko-KR'`)
   - `'fr'` (`'fr-FR'`)
+  - `'id'` (`'id-ID'`)
 
   Contributions welcome for more languages support.
   :::

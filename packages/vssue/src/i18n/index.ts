@@ -8,6 +8,7 @@ import jaJP from './langs/ja-JP';
 import heIL from './langs/he-IL';
 import koKR from './langs/ko-KR';
 import frFR from './langs/fr-FR';
+import idID from './langs/id-ID';
 
 if (!Object.prototype.hasOwnProperty.call(Vue, '$i18n')) {
   Vue.use(VueI18n);
@@ -32,6 +33,8 @@ const i18n: VueI18n = new VueI18n({
     'ko-KR': koKR,
     fr: frFR,
     'fr-FR': frFR,
+    id: idID,
+    'id-ID': idID,
   },
 });
 
