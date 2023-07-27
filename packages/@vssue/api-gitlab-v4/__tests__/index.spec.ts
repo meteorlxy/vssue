@@ -485,4 +485,62 @@ describe('methods', () => {
     expect(request.headers.Authorization).toBe(`Bearer ${mockToken}`);
     expect(success).toBe(true);
   });
+
+  describe('postCommentReaction', () => {
+    test('created', async () => {
+      const issueId = 1;
+      const commentId = fixtures.comment.id;
+      mock
+        .onPost(
+          new RegExp(
+            `projects/${encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji$`
+          )
+        )
+        .reply(201);
+      const success = await API.postCommentReaction({
+        issueId,
+        commentId,
+        accessToken: mockToken,
+        reaction: 'like',
+      });
+      expect(mock.history.post.length).toBe(1);
+      const request = mock.history.post[0];
+      expect(request.method).toBe('post');
+      expect(request.headers.Authorization).toBe(`Bearer ${mockToken}`);
+      expect(success).toBe(true);
+    });
+
+    test('deleted', async () => {
+      const issueId = 1;
+      const commentId = fixtures.comment.id;
+      const reactionId = fixtures.reactions[0].id;
+      mock
+        .onPost(
+          new RegExp(
+            `projects/${encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji$`
+          )
+        )
+        .reply(200, fixtures.reactions[0])
+        .onDelete(
+          new RegExp(
+            `projects/${encodedRepo}/issues/${issueId}/notes/${commentId}/award_emoji/${reactionId}$`
+          )
+        )
+        .reply(204);
+
+      const success = await API.postCommentReaction({
+        issueId,
+        commentId,
+        accessToken: mockToken,
+        reaction: 'like',
+      });
+      expect(mock.history.post.length).toBe(1);
+      expect(mock.history.delete.length).toBe(1);
+      const request = mock.history.delete[0];
+      expect(request.method).toBe('delete');
+      expect(request.headers.Authorization).toBe(`Bearer ${mockToken}`);
+
+      expect(success).toBe(true);
+    });
+  });
 });
