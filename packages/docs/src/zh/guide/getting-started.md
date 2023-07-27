@@ -29,9 +29,9 @@ Vssue 可以在浏览器中通过 `<script>` 标签直接使用。由于 Vssue �
   <!-- 先引入 Vue -->
 
   <!-- Vue 运行时版 (runtime only)  -->
-  <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
+  <script src="https://unpkg.com/vue@2.7.14/dist/vue.runtime.min.js"></script>
   <!-- 或： Vue 完整版 (runtime + compiler) -->
-  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+  <script src="https://unpkg.com/vue@2.7.14/dist/vue.min.js"></script>
 
   <!-- 在 Vue 之后引入 Vssue -->
 

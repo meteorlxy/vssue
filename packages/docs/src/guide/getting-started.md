@@ -29,9 +29,9 @@ Vssue can be used directly via a `<script>` tag in browser. As Vssue depends on 
   <!-- Introduce Vue first -->
 
   <!-- vue runtime build (runtime only)  -->
-  <script src="https://unpkg.com/vue/dist/vue.runtime.min.js"></script>
+  <script src="https://unpkg.com/vue@2.7.14/dist/vue.runtime.min.js"></script>
   <!-- OR: vue full build (runtime + compiler)  -->
-  <script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+  <script src="https://unpkg.com/vue@2.7.14/dist/vue.min.js"></script>
 
   <!-- Introduce Vssue after Vue -->
 
