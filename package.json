@@ -1,0 +1,55 @@
+{
+  "name": "@vssue/monorepo",
+  "version": "2.0.0-dev",
+  "private": true,
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r --stream build",
+    "clean": "pnpm -r --stream clean",
+    "docs:build": "pnpm -F docs docs:build",
+    "docs:dev": "pnpm -F docs docs:dev",
+    "format": "prettier --write .",
+    "lint": "eslint . && prettier --check . && ls-lint",
+    "lint:fix": "eslint --fix . && prettier --write .",
+    "ls-lint": "ls-lint",
+    "prepare": "husky",
+    "release": "pnpm release:check && pnpm release:publish",
+    "release:check": "pnpm clean && pnpm build && pnpm lint && pnpm test",
+    "release:publish": "lerna publish",
+    "test": "pnpm test:unit",
+    "test:coverage": "vitest run --coverage",
+    "test:unit": "vitest run"
+  },
+  "lint-staged": {
+    "*.(js|ts|vue)": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.!(js|ts|vue)": "prettier --write --ignore-unknown",
+    "package.json": "sort-package-json"
+  },
+  "prettier": "@meteorlxy/prettier-config",
+  "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
+    "@lerna-lite/cli": "^3.4.0",
+    "@lerna-lite/publish": "^3.4.0",
+    "@ls-lint/ls-lint": "^2.2.3",
+    "@meteorlxy/eslint-config": "^3.7.0",
+    "@meteorlxy/prettier-config": "^3.2.0",
+    "@meteorlxy/tsconfig": "^3.0.0",
+    "@vitest/coverage-istanbul": "^1.6.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.26.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.5",
+    "prettier": "^3.2.5",
+    "sort-package-json": "^2.10.0",
+    "typescript": "^5.4.5",
+    "unbuild": "^2.0.0",
+    "vitest": "^1.6.0",
+    "vue-eslint-parser": "^9.4.2"
+  },
+  "packageManager": "pnpm@9.1.4"
+}

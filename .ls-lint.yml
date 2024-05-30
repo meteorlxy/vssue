@@ -1,0 +1,11 @@
+ls:
+  '{packages/*/src,test}':
+    .mjs: kebab-case
+    .js: kebab-case
+    .jsx: kebab-case
+    .mts: kebab-case
+    .ts: kebab-case
+    .tsx: kebab-case
+    .d.mts: kebab-case
+    .d.ts: kebab-case
+    .vue: kebab-case

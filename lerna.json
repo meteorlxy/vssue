@@ -1,0 +1,13 @@
+{
+  "npmClient": "pnpm",
+  "version": "2.0.0-dev",
+  "command": {
+    "version": {
+      "allowBranch": "main",
+      "conventionalCommits": true,
+      "exact": true,
+      "message": "build: version %v",
+      "syncWorkspaceLock": true
+    }
+  }
+}
